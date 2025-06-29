@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Buna Festival App
 
 A cross-platform Flutter app for the Buna art festival, supporting Android, iOS, and Web. Features onboarding, Firebase integration, multi-language support (English/Bulgarian), and more.
@@ -27,3 +28,6 @@ Make sure your environment and device meet this requirement.
 ---
 
 For license information, see [LICENSE](LICENSE).
+=======
+# buna_app
+>>>>>>> 5a9f087 (Initial commit)
