@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../../widgets/onboarding_step.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -72,16 +73,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               ],
             ),
             const SizedBox(height: 32),
-            Text(
-              _titles[_pageIndex],
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-            const SizedBox(height: 16),
-            Text(_descriptions[_pageIndex], textAlign: TextAlign.center),
-            const SizedBox(height: 32),
-            ElevatedButton(
-              onPressed: _next,
-              child: Text(_pageIndex == _titles.length - 1 ? 'Done' : 'Next'),
+            OnboardingStep(
+              title: _titles[_pageIndex],
+              description: _descriptions[_pageIndex],
+              onNext: _next,
+              isLast: _pageIndex == _titles.length - 1,
             ),
           ],
         ),
