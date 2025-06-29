@@ -45,5 +45,17 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>This app requires camera access to scan QR codes and capture photos.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>This app uses your location to show nearby venues and improve your festival experience.</string>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>This app uses tracking for personalized notifications and analytics.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>This app needs access to your photo library to save and share images.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>This app needs permission to add photos to your library.</string>
+	<key>UNUserNotificationCenter</key>
+	<string>This app uses notifications to keep you updated about festival events and news.</string>
 </dict>
 </plist>

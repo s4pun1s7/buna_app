@@ -1,54 +1,44 @@
 # Project Tracking for buna_app
 
-## Useful Links
-- Festival Website: [https://bunavarna.com/](https://bunavarna.com/)
-- Facebook: [https://www.facebook.com/BunaVarna/](https://www.facebook.com/BunaVarna/)
-- Instagram: [https://www.instagram.com/buna.varna/](https://www.instagram.com/buna.varna/)
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-- [Flutter Documentation](https://docs.flutter.dev/)
+---
+
+## Recently Completed
+- ✅ Project structure and feature folders scaffolded
+- ✅ Onboarding screen scaffolded
+- ✅ Navigation and state management (go_router, Riverpod) set up
+- ✅ Firebase initialization and anonymous authentication (Android/iOS/Web)
+- ✅ Sensitive files excluded in .gitignore
+- ✅ Multi-language support (EN/BG) ARB files and localization setup
+- ✅ Language selector on onboarding screen
+- ✅ Firebase web config and permission handling for all platforms
 
 ---
-**Before pushing to GitHub:**
-- Sensitive files like `google-services.json` (Android) and `GoogleService-Info.plist` (iOS) are excluded by `.gitignore` and should NOT be committed.
-- Review your `.gitignore` for any other secrets or local config files.
-- You are ready to initialize a git repo, commit, and push to GitHub!
+
+## Platform-Specific Setup Checklist
+
+### Android
+- [x] Place `google-services.json` in `android/app/`
+- [ ] Update app icon and splash screen in `android/app/src/main/res/`
+- [ ] Configure permissions in `android/app/src/main/AndroidManifest.xml` (camera, location, notifications, etc.)
+- [ ] Set up package name and version in `android/app/build.gradle`
+- [ ] Test on Android emulator and real device
+
+### iOS
+- [x] Place `GoogleService-Info.plist` in `ios/Runner/`
+- [ ] Update app icon and launch screen in `ios/Runner/Assets.xcassets/`
+- [ ] Configure permissions in `ios/Runner/Info.plist` (camera, location, notifications, etc.)
+- [ ] Set up bundle identifier and version in Xcode project settings
+- [ ] Test on iOS simulator and real device (requires Mac)
+
+---
 
 ## Features and Requirements
 
 ### User Experience & Accessibility
-- User profiles or attendee registration (with Firebase user management, anonymous only for now)
-- Multilingual: Bulgarian and English
-- Accessibility features (font size, color contrast, screen reader support)
-- Onboarding page for new users
-
-### Personal Schedule & Notifications
-- Personal schedule, favorites, and event reminders
-- Festival news and notifications (with user preferences)
-
-### Festival Content & Discovery
-- Artist and artwork details (bios, descriptions, images)
-- Maps and gallery for art pieces and venues
-- Augmented Reality (AR) features
-- QR code support (e.g., for tickets, info, or art pieces)
-
-### Engagement & Interaction Tools
-- Social sharing (share events/artworks on social media)
-- In-app feedback or surveys
-- Ticketing or RSVP integration
-- Live updates or streaming
-
-### Technical & Support
-- Offline mode (basic info available without internet)
-- Sponsor/partner highlights
-
-## Tasks
-
-### User Experience & Accessibility
 - [ ] Add user profiles/attendee registration (Firebase, anonymous only for now)
-- [ ] Add multilingual support (BG/EN)
+- [x] Add multilingual support (BG/EN)
 - [ ] Add accessibility features
-- [ ] Implement onboarding page
+- [x] Implement onboarding page
 
 ### Personal Schedule & Notifications
 - [ ] Implement personal schedule, favorites, and event reminders
@@ -72,9 +62,52 @@
 
 ### General
 - [x] Define app features and requirements
-- [ ] Design app UI/UX
-- [ ] Set up navigation and state management
+- [x] Design app UI/UX (scaffolded, further design needed)
+- [x] Set up navigation and state management
 - [ ] Testing and deployment
 
 ---
+
+## Code Quality & Project Improvement Checklist
+
+- [x] Pin dependency versions in `pubspec.yaml` (avoid `any` for production)
+- [x] Remove unused dependencies
+- [x] Organize feature code in separate folders (modular structure)
+- [x] Move logic out of `main.dart` into services/providers (partially, more possible)
+- [x] Add error handling for async operations (Firebase, permissions, etc.)
+- [x] Manage all state with Riverpod providers (partially, more possible)
+- [x] Use named routes and route guards with `go_router`
+- [x] Implement localization and accessibility (semantic labels, contrast, screen reader support) (localization done, accessibility in progress)
+- [x] Request permissions only when needed, not all at app start (web excluded)
+- [x] Add rationale dialogs before requesting sensitive permissions (to do)
+- [ ] Add unit, widget, and integration tests for features and navigation
+- [x] Expand `README.md` with setup, build, and contribution instructions
+- [x] Add code comments and docstrings for public classes/methods (partially)
+- [ ] Set up CI/CD (e.g., GitHub Actions) for tests and code analysis
+- [x] Ensure privacy policy and terms are available if collecting user data (to do if needed)
+
+---
+
+## Useful Links
+- Festival Website: [https://bunavarna.com/](https://bunavarna.com/)
+- Facebook: [https://www.facebook.com/BunaVarna/](https://www.facebook.com/BunaVarna/)
+- Instagram: [https://www.instagram.com/buna.varna/](https://www.instagram.com/buna.varna/)
+- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- [Flutter Documentation](https://docs.flutter.dev/)
+
+---
+**Before pushing to GitHub:**
+- Sensitive files like `google-services.json` (Android) and `GoogleService-Info.plist` (iOS) are excluded by `.gitignore` and should NOT be committed.
+- Review your `.gitignore` for any other secrets or local config files.
+- You are ready to initialize a git repo, commit, and push to GitHub!
+
+---
 Update this file as you progress with development and add more tasks as needed.
+
+---
+**Next Steps:**
+- Update app icons and splash screens for both platforms
+- Configure and test permissions (camera, location, notifications, etc.)
+- Test on real Android and iOS devices
+- Continue implementing features and UI/UX

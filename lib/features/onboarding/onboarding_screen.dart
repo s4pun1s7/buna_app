@@ -10,6 +10,7 @@ class OnboardingScreen extends StatefulWidget {
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
   int _pageIndex = 0;
+  String _selectedLanguage = 'en';
   final List<String> _titles = [
     'Welcome to Buna Festival',
     'Discover Art & Events',
@@ -31,6 +32,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   void _skip() => context.go('/home');
 
+  void _selectLanguage(String lang) {
+    setState(() {
+      _selectedLanguage = lang;
+      // TODO: Set app locale globally
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,6 +54,24 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            // Language selection at the top, centered
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ChoiceChip(
+                  label: const Text('English'),
+                  selected: _selectedLanguage == 'en',
+                  onSelected: (_) => _selectLanguage('en'),
+                ),
+                const SizedBox(width: 12),
+                ChoiceChip(
+                  label: const Text('Български'),
+                  selected: _selectedLanguage == 'bg',
+                  onSelected: (_) => _selectLanguage('bg'),
+                ),
+              ],
+            ),
+            const SizedBox(height: 32),
             Text(
               _titles[_pageIndex],
               style: Theme.of(context).textTheme.headlineSmall,

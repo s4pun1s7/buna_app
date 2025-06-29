@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:buna_app/l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'features/onboarding/onboarding_screen.dart';
@@ -110,16 +112,39 @@ class _LoggedInHome extends StatelessWidget {
   }
 }
 
-class BunaApp extends StatelessWidget {
+class BunaApp extends StatefulWidget {
   const BunaApp({super.key});
+
+  @override
+  State<BunaApp> createState() => _BunaAppState();
+}
+
+class _BunaAppState extends State<BunaApp> {
+  Locale? _locale;
+
+  void setLocale(Locale locale) {
+    setState(() {
+      _locale = locale;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
       title: 'Buna Festival',
+      debugShowCheckedModeBanner: false,
       routerConfig: _router,
+      locale: _locale,
+      supportedLocales: const [Locale('en'), Locale('bg')],
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
       ),
     );
   }

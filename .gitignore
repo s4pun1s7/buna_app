@@ -87,3 +87,15 @@ firebase.json
 
 # Coverage
 coverage/
+
+# Localization generated files
+lib/l10n/app_localizations.dart
+lib/l10n/app_localizations_*.dart
+# Exclude ARB files from build output, but keep them in source
+# (Do not ignore lib/l10n/*.arb)
+
+# Web Firebase config (if any custom files are used)
+web/firebase-config.js
+
+# Node/npm (if used for web hosting or CI)
+node_modules/
