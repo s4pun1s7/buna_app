@@ -119,7 +119,7 @@
 - [ ] Add unit, widget, and integration tests for features and navigation
 - [x] Expand `README.md` with setup, build, and contribution instructions
 - [x] Add code comments and docstrings for public classes/methods (partially)
-- [ ] Set up CI/CD (e.g., GitHub Actions) for tests and code analysis
+- [ ] Set up CI/CD (e.g., Actions) for tests and code analysis
 - [x] Ensure privacy policy and terms are available if collecting user data (to do if needed)
 
 ---
@@ -133,10 +133,10 @@
 - [Flutter Documentation](https://docs.flutter.dev/)
 
 ---
-**Before pushing to GitHub:**
+**Before pushing to remote:**
 - Sensitive files like `google-services.json` (Android) and `GoogleService-Info.plist` (iOS) are excluded by `.gitignore` and should NOT be committed.
 - Review your `.gitignore` for any other secrets or local config files.
-- You are ready to initialize a git repo, commit, and push to GitHub!
+- You are ready to initialize a git repo, commit, and push to your remote!
 
 ---
 Update this file as you progress with development and add more tasks as needed.
