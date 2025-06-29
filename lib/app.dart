@@ -8,6 +8,7 @@ import 'features/venues/venues_screen.dart';
 import 'features/maps/maps_screen.dart';
 import 'features/news/news_screen.dart';
 import 'features/info/info_screen.dart';
+import 'package:buna_app/theme/app_theme.dart';
 
 final _router = GoRouter(
   initialLocation: '/onboarding',
@@ -142,10 +143,7 @@ class _BunaAppState extends State<BunaApp> {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+      theme: AppTheme.lightTheme,
     );
   }
 }
