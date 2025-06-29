@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-# buna_app
-=======
->>>>>>> a67ea8da79b29d7866b04a5e0198895c14d71ba1
 # Buna Festival App
 
 A cross-platform Flutter app for the Buna art festival, supporting Android, iOS, and Web. Features onboarding, Firebase integration, multi-language support (English/Bulgarian), and more.
@@ -32,12 +26,8 @@ Make sure your environment and device meet this requirement.
 
 ---
 
-<<<<<<< HEAD
 For license information, see [LICENSE](LICENSE).
-=======
-# buna_app
->>>>>>> 5a9f087 (Initial commit)
-=======
+
 ### Setup
 1. Clone the repo:
    ```sh
@@ -108,5 +98,3 @@ See [PROJECT_TRACKING.md](PROJECT_TRACKING.md) for recent progress and completed
 
 ## License
 This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
->>>>>>> dev
->>>>>>> a67ea8da79b29d7866b04a5e0198895c14d71ba1
