@@ -43,6 +43,18 @@ ios/Runner.xcworkspace/
 ios/Runner/GeneratedPluginRegistrant.*
 ios/Runner/GoogleService-Info.plist
 
+# Xcode
+ios/Pods/
+ios/Podfile.lock
+ios/Runner.xcworkspace/
+ios/Flutter/Flutter.podspec
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec.lock
+ios/Flutter/ephemeral/
+ios/Flutter/App.framework
+ios/Flutter/engine/
+ios/Flutter/Generated.xcconfig
+
 # Android
 android/.gradle/
 android/app/build/
@@ -53,11 +65,21 @@ android/app/google-services.json
 
 # VS Code
 .vscode/
+.idea/
 
 # macOS
 macos/Flutter/ephemeral/
 macos/Flutter/GeneratedPluginRegistrant.swift
 macos/Pods/
+macos/Podfile.lock
+macos/Runner.xcworkspace/
+
+# Build outputs
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+pubspec.lock
 
 # Web
 web/.dart_tool/
