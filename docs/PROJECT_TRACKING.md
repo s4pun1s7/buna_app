@@ -14,42 +14,6 @@
 
 ---
 
-## v0.0.2 Roadmap
-
-### User Experience (UX)
-- [ ] Add loading indicators for network/content screens (e.g., news, venues, schedule)
-- [ ] Improve onboarding with festival info, visuals, and clear next steps
-- [ ] Add error messages and user-friendly error screens for failed network requests
-- [ ] Implement “pull to refresh” for news and schedule screens
-- [ ] Ensure consistent button styles, padding, and spacing across the app
-- [ ] Improve accessibility: larger tap targets, color contrast, and screen reader labels
-- [ ] Add feedback for permission requests (explain why permissions are needed)
-- [ ] Test and fix layout issues on different devices and orientations
-
-### Visual & Branding
-- [ ] Add custom app icon and splash/launch screens for Android and iOS
-- [ ] Add festival branding (logo, colors, fonts) throughout the app
-
-### Content & Features
-- [ ] Implement real festival data for venues, events, and news (static or from a simple backend)
-- [ ] Add a basic schedule/timetable screen
-- [ ] Add a map view with venue markers (Google Maps or OpenStreetMap)
-
-### Platform Polish
-- [ ] Test and fix layout issues on web, Android, and iOS
-- [ ] Improve accessibility (larger tap targets, color contrast, screen reader labels)
-
-### Code Quality & Maintenance
-- [ ] Add more widget and integration tests
-- [ ] Refactor code for modularity and maintainability
-- [ ] Update documentation and screenshots
-
-### Optional/Nice-to-have
-- [ ] Add a “favorites” feature for events/venues
-- [ ] Add push notification support for news/updates
-
----
-
 ## Platform-Specific Setup Checklist
 
 ### Android
@@ -142,8 +106,3 @@
 Update this file as you progress with development and add more tasks as needed.
 
 ---
-**Next Steps:**
-- Update app icons and splash screens for both platforms
-- Configure and test permissions (camera, location, notifications, etc.)
-- Test on real Android and iOS devices
-- Continue implementing features and UI/UX

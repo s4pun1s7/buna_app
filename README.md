@@ -1,45 +1,43 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
 # buna_app
 =======
+>>>>>>> a67ea8da79b29d7866b04a5e0198895c14d71ba1
 # Buna Festival App
 
 A cross-platform Flutter app for the Buna art festival, supporting Android, iOS, and Web. Features onboarding, Firebase integration, multi-language support (English/Bulgarian), and more.
 
 ---
 
-## Table of Contents
-- [Features](#features)
-- [Screenshots](#screenshots)
-- [Getting Started](#getting-started)
-- [Firebase Setup](#firebase-setup)
-- [Localization](#localization)
-- [Running & Building](#running--building)
-- [Testing](#testing)
-- [Contributing](#contributing)
-- [Troubleshooting & FAQ](#troubleshooting--faq)
-- [Changelog](#changelog)
-- [License](#license)
+## Documentation
+- [Features](docs/FEATURES.md)
+- [Getting Started](docs/GETTING_STARTED.md)
+- [Firebase Setup](docs/FIREBASE_SETUP.md)
+- [Localization](docs/LOCALIZATION.md)
+- [Running & Building](docs/RUNNING_BUILDING.md)
+- [Testing](docs/TESTING.md)
+- [Contributing](docs/CONTRIBUTING.md)
+- [Troubleshooting & FAQ](docs/TROUBLESHOOTING.md)
+- [Changelog](docs/CHANGELOG.md)
+- [Project Tracking](docs/PROJECT_TRACKING.md)
+- [Dependency Issues](docs/DEPENDENCY_ISSUES.md)
 
 ---
 
-## Features
-- Onboarding flow with language selection (EN/BG)
-- Firebase authentication (anonymous)
-- Modular navigation (go_router)
-- Venues, maps, news, info screens
-- Permission handling (camera, location, notifications)
-- Responsive UI for mobile and web
-- Project tracking and code quality checklist
+## iOS Minimum Version
 
-## Screenshots
-<!-- Add screenshots or GIFs here -->
+The minimum supported iOS version is **13.0**.  
+Make sure your environment and device meet this requirement.
 
-## Getting Started
-### Prerequisites
-- Flutter SDK (see [Flutter install guide](https://docs.flutter.dev/get-started/install))
-- Dart SDK
-- Firebase account
+---
 
+<<<<<<< HEAD
+For license information, see [LICENSE](LICENSE).
+=======
+# buna_app
+>>>>>>> 5a9f087 (Initial commit)
+=======
 ### Setup
 1. Clone the repo:
    ```sh
@@ -111,3 +109,4 @@ See [PROJECT_TRACKING.md](PROJECT_TRACKING.md) for recent progress and completed
 ## License
 This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
 >>>>>>> dev
+>>>>>>> a67ea8da79b29d7866b04a5e0198895c14d71ba1
