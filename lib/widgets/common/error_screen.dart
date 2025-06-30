@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../services/error_handler.dart';
-import '../theme/app_theme.dart';
+import '../../services/error_handler.dart' as error_handler;
+import '../../theme/app_theme.dart' as app_theme;
 
 class ErrorScreen extends StatelessWidget {
-  final AppException error;
+  final error_handler.AppException error;
   final VoidCallback? onRetry;
   final String? customMessage;
 
@@ -26,9 +26,7 @@ class ErrorScreen extends StatelessWidget {
               Icon(
                 _getErrorIcon(),
                 size: 80,
-                color: Theme.of(
-                  context,
-                ).colorScheme.error.withValues(alpha: 0.6),
+                color: app_theme.AppTheme.errorColor.withOpacity(0.6),
               ),
               const SizedBox(height: 24),
               Text(
@@ -55,7 +53,7 @@ class ErrorScreen extends StatelessWidget {
                   icon: const Icon(Icons.refresh),
                   label: const Text('Try Again'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppTheme.primaryColor,
+                    backgroundColor: app_theme.AppTheme.primaryColor,
                     foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(
                       horizontal: 24,
@@ -78,28 +76,28 @@ class ErrorScreen extends StatelessWidget {
 
   IconData _getErrorIcon() {
     switch (error.runtimeType) {
-      case NetworkException _:
+      case error_handler.NetworkException _:
         return Icons.wifi_off;
-      case ApiException _:
+      case error_handler.ApiException _:
         return Icons.error_outline;
-      case CacheException _:
+      case error_handler.CacheException _:
         return Icons.storage;
-      case ValidationException _:
+      case error_handler.ValidationException _:
         return Icons.warning;
       default:
         return Icons.error;
     }
   }
 
-  String _getErrorMessage(AppException error) {
+  String _getErrorMessage(error_handler.AppException error) {
     switch (error.runtimeType) {
-      case NetworkException _:
+      case error_handler.NetworkException _:
         return 'Please check your internet connection and try again.';
-      case ApiException _:
+      case error_handler.ApiException _:
         return 'There was a problem connecting to the server. Please try again later.';
-      case CacheException _:
+      case error_handler.CacheException _:
         return 'There was a problem loading cached data. Please refresh the page.';
-      case ValidationException _:
+      case error_handler.ValidationException _:
         return 'The data provided is invalid. Please check your input and try again.';
       default:
         return 'An unexpected error occurred. Please try again.';
@@ -170,13 +168,16 @@ class SimpleErrorScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ErrorScreen(error: AppException(message), onRetry: onRetry);
+    return ErrorScreen(
+      error: error_handler.AppException(message),
+      onRetry: onRetry,
+    );
   }
 }
 
 /// Error widget for use in lists or cards
 class ErrorCard extends StatelessWidget {
-  final AppException error;
+  final error_handler.AppException error;
   final VoidCallback? onRetry;
   final double? height;
 
@@ -184,7 +185,7 @@ class ErrorCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final errorHandler = ErrorHandler();
+    final errorHandler = error_handler.ErrorHandler();
 
     return Card(
       child: Container(

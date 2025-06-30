@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../widgets/common/index.dart';
 import '../../services/error_handler.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import '../../providers/user_provider.dart';
 
 /// Map gallery item model
 class MapGalleryItem {
@@ -577,94 +577,36 @@ class _MapGalleryScreenState extends ConsumerState<MapGalleryScreen>
     );
   }
 
-  Widget _buildListCard(MapGalleryItem item) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 12),
-      child: InkWell(
-        onTap: () => _showItemDetails(item),
-        borderRadius: BorderRadius.circular(12),
-        child: Builder(
-          builder: (context) {
-            final scale = MediaQuery.textScaleFactorOf(context);
-            return Padding(
-              padding: const EdgeInsets.all(16),
-              child: Row(
-                children: [
-                  // Icon
-                  Container(
-                    width: 60,
-                    height: 60,
-                    decoration: BoxDecoration(
-                      color: _getCategoryColor(item.category),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Icon(
-                      _getCategoryIcon(item.category),
-                      color: Colors.white,
-                      size: 30,
-                      semanticLabel: item.category,
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  // Content
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Text(
-                                item.title,
-                                style: Theme.of(context).textTheme.titleMedium
-                                    ?.copyWith(fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                            if (item.isInteractive)
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 6,
-                                  vertical: 2,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Colors.blue,
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Text(
-                                  'Interactive',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 10 * scale,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                          ],
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          item.location,
-                          style: Theme.of(context).textTheme.bodySmall
-                              ?.copyWith(
-                                color: Theme.of(context).colorScheme.outline,
-                              ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          item.description,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.bodySmall,
-                        ),
-                      ],
-                    ),
-                  ),
-                  const Icon(Icons.arrow_forward_ios),
-                ],
-              ),
-            );
-          },
-        ),
+  void _openFullMap() {
+    // In a real app, this would navigate to a full map screen or open a map modal
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Full Map'),
+        content: const Text('Full interactive map coming soon!'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Close'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showFilterDialog() {
+    // In a real app, this would show a filter dialog for categories/tags
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Filter Options'),
+        content: const Text('Filter dialog coming soon!'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Close'),
+          ),
+        ],
       ),
     );
   }
@@ -674,23 +616,9 @@ class _MapGalleryScreenState extends ConsumerState<MapGalleryScreen>
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.map,
-            size: 64,
-            color: Theme.of(context).colorScheme.outline,
-          ),
+          Icon(Icons.info_outline, size: 64, color: Colors.grey),
           const SizedBox(height: 16),
-          Text(
-            'No Map Items Found',
-            style: Theme.of(context).textTheme.headlineSmall,
-          ),
-          const SizedBox(height: 8),
-          const Text('Check back later for festival locations'),
-          const SizedBox(height: 16),
-          ElevatedButton(
-            onPressed: _loadMapGallery,
-            child: const Text('Refresh'),
-          ),
+          const Text('No locations found.'),
         ],
       ),
     );
@@ -701,204 +629,77 @@ class _MapGalleryScreenState extends ConsumerState<MapGalleryScreen>
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.search_off,
-            size: 64,
-            color: Theme.of(context).colorScheme.outline,
-          ),
+          Icon(Icons.search_off, size: 64, color: Colors.grey),
           const SizedBox(height: 16),
-          Text(
-            'No Items Found',
-            style: Theme.of(context).textTheme.headlineSmall,
-          ),
-          const SizedBox(height: 8),
-          const Text('Try adjusting your search or filters'),
+          const Text('No results match your search.'),
         ],
       ),
     );
   }
 
-  void _showItemDetails(MapGalleryItem item) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      builder: (context) => DraggableScrollableSheet(
-        initialChildSize: 0.8,
-        minChildSize: 0.6,
-        maxChildSize: 0.95,
-        builder: (context, scrollController) => Container(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Container(
-                    width: 60,
-                    height: 60,
-                    decoration: BoxDecoration(
-                      color: _getCategoryColor(item.category),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Icon(
-                      _getCategoryIcon(item.category),
-                      color: Colors.white,
-                      size: 30,
-                      semanticLabel: item.category,
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          item.title,
-                          style: Theme.of(context).textTheme.headlineSmall
-                              ?.copyWith(fontWeight: FontWeight.bold),
-                        ),
-                        Text(item.category),
-                      ],
-                    ),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.close),
-                    onPressed: () => Navigator.pop(context),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              _buildDetailRow('Location', item.location),
-              const SizedBox(height: 8),
-              _buildDetailRow(
-                'Date',
-                '${item.date.day}/${item.date.month}/${item.date.year}',
-              ),
-              const SizedBox(height: 16),
-              Text(
-                'Description',
-                style: Theme.of(
-                  context,
-                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 8),
-              Expanded(
-                child: SingleChildScrollView(
-                  controller: scrollController,
-                  child: Text(item.description),
-                ),
-              ),
-              if (item.tags.isNotEmpty) ...[
-                const SizedBox(height: 16),
-                Text(
-                  'Tags',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Wrap(
-                  spacing: 8,
-                  runSpacing: 4,
-                  children: item.tags
-                      .map(
-                        (tag) => Chip(
-                          label: Text(tag),
-                          backgroundColor: Theme.of(
-                            context,
-                          ).primaryColor.withValues(alpha: 0.1),
-                        ),
-                      )
-                      .toList(),
-                ),
-              ],
-              const SizedBox(height: 16),
-              Row(
-                children: [
-                  Expanded(
-                    child: OutlinedButton.icon(
-                      onPressed: () => _getDirections(item),
-                      icon: const Icon(Icons.directions),
-                      label: const Text('Directions'),
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: ElevatedButton.icon(
-                      onPressed: item.isInteractive
-                          ? () => _interactWithItem(item)
-                          : null,
-                      icon: const Icon(Icons.touch_app),
-                      label: Text(
-                        item.isInteractive ? 'Interact' : 'Not Interactive',
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
+  Widget _buildListCard(MapGalleryItem item) {
+    return Card(
+      child: ListTile(
+        leading: Icon(
+          _getCategoryIcon(item.category),
+          color: _getCategoryColor(item.category),
         ),
+        title: Text(item.title),
+        subtitle: Text(item.location),
+        trailing: item.isInteractive
+            ? const Icon(Icons.touch_app, color: Colors.blue)
+            : null,
+        onTap: () => _showItemDetails(item),
       ),
     );
   }
 
-  Widget _buildDetailRow(String label, String value) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(
-          width: 80,
-          child: Text(
-            label,
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ),
-        Expanded(child: Text(value)),
-      ],
-    );
-  }
-
-  void _getDirections(MapGalleryItem item) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Getting directions to ${item.title}'),
-        duration: const Duration(seconds: 2),
-      ),
-    );
-  }
-
-  void _interactWithItem(MapGalleryItem item) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Interacting with ${item.title}'),
-        duration: const Duration(seconds: 2),
-      ),
-    );
-  }
-
-  void _openFullMap() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Opening full interactive map'),
-        duration: Duration(seconds: 2),
-      ),
-    );
-  }
-
-  void _showFilterDialog() {
-    showDialog(
+  void _showItemDetails(MapGalleryItem item) async {
+    await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Filter Options'),
-        content: const Text('Advanced filter options coming soon...'),
+        title: Text(item.title),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(item.description),
+            const SizedBox(height: 8),
+            Text('Location: ${item.location}'),
+            Text('Category: ${item.category}'),
+            if (item.tags.isNotEmpty) ...[
+              const SizedBox(height: 8),
+              Text('Tags: ${item.tags.join(", ")}'),
+            ],
+          ],
+        ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Navigator.of(context).pop(),
             child: const Text('Close'),
           ),
         ],
       ),
     );
+    // After dialog closes, check authentication
+    final user = ref.read(userProvider).asData?.value;
+    if (user == null) {
+      // Not logged in, show login prompt
+      if (mounted) {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Login Required'),
+            content: const Text('Please log in to access this feature.'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('Close'),
+              ),
+            ],
+          ),
+        );
+      }
+    }
   }
 }

@@ -7,7 +7,12 @@ class Event {
   final String venue;
   final String date;
   final String time;
-  const Event({required this.name, required this.venue, required this.date, required this.time});
+  const Event({
+    required this.name,
+    required this.venue,
+    required this.date,
+    required this.time,
+  });
 }
 
 // Controller State
@@ -15,13 +20,20 @@ class FeaturedEventState {
   final bool isFavorite;
   final bool isRSVPed;
   final bool isLoading;
-  FeaturedEventState({this.isFavorite = false, this.isRSVPed = false, this.isLoading = false});
-  FeaturedEventState copyWith({bool? isFavorite, bool? isRSVPed, bool? isLoading}) =>
-      FeaturedEventState(
-        isFavorite: isFavorite ?? this.isFavorite,
-        isRSVPed: isRSVPed ?? this.isRSVPed,
-        isLoading: isLoading ?? this.isLoading,
-      );
+  FeaturedEventState({
+    this.isFavorite = false,
+    this.isRSVPed = false,
+    this.isLoading = false,
+  });
+  FeaturedEventState copyWith({
+    bool? isFavorite,
+    bool? isRSVPed,
+    bool? isLoading,
+  }) => FeaturedEventState(
+    isFavorite: isFavorite ?? this.isFavorite,
+    isRSVPed: isRSVPed ?? this.isRSVPed,
+    isLoading: isLoading ?? this.isLoading,
+  );
 }
 
 // Controller
@@ -44,7 +56,8 @@ class FeaturedEventController extends StateNotifier<FeaturedEventState> {
 
 final featuredEventControllerProvider =
     StateNotifierProvider<FeaturedEventController, FeaturedEventState>(
-        (ref) => FeaturedEventController());
+      (ref) => FeaturedEventController(),
+    );
 
 class FeaturedEventCard extends ConsumerWidget {
   final Event event;
@@ -64,10 +77,18 @@ class FeaturedEventCard extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ListTile(
-              title: Text(event.name, style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+              title: Text(
+                event.name,
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+              ),
               subtitle: Text('${event.venue} • ${event.date} ${event.time}'),
               trailing: IconButton(
-                icon: Icon(state.isFavorite ? Icons.favorite : Icons.favorite_border, color: Colors.pink),
+                icon: Icon(
+                  state.isFavorite ? Icons.favorite : Icons.favorite_border,
+                  color: Colors.pink,
+                ),
                 onPressed: controller.toggleFavorite,
                 tooltip: state.isFavorite ? 'Unfavorite' : 'Favorite',
               ),
@@ -77,7 +98,13 @@ class FeaturedEventCard extends ConsumerWidget {
             else if (state.isRSVPed)
               const Padding(
                 padding: EdgeInsets.symmetric(vertical: 8),
-                child: Text("You are RSVP'd!", style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold)),
+                child: Text(
+                  "You are RSVP'd!",
+                  style: TextStyle(
+                    color: Colors.green,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               )
             else
               Align(
@@ -92,4 +119,4 @@ class FeaturedEventCard extends ConsumerWidget {
       ),
     );
   }
-} 
+}

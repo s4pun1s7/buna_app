@@ -13,6 +13,7 @@ import 'package:buna_app/widgets/next_event_card.dart';
 import 'package:buna_app/features/artists/artists_screen.dart';
 import 'package:buna_app/features/venues/venues_data.dart';
 import 'package:buna_app/models/schedule.dart';
+import 'package:buna_app/main.dart';
 
 void main() {
   testWidgets('Buna app smoke test', (WidgetTester tester) async {

@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import '../models/schedule.dart';
+import '../../models/schedule.dart' as schedule_model;
 
 class NextEventCard extends StatelessWidget {
-  final ScheduleEntry entry;
+  final schedule_model.ScheduleEntry entry;
   final VoidCallback? onDetails;
 
-  const NextEventCard({Key? key, required this.entry, this.onDetails})
-    : super(key: key);
+  const NextEventCard({super.key, required this.entry, this.onDetails});
 
   @override
   Widget build(BuildContext context) {

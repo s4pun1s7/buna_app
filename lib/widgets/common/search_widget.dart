@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../providers/festival_data_provider.dart';
-import '../services/analytics_service.dart';
-import '../utils/debouncer.dart';
+import '../../providers/festival_data_provider.dart';
+import '../../services/analytics_service.dart';
+import '../../utils/debouncer.dart';
 
 class SearchWidget extends ConsumerStatefulWidget {
   final String? initialQuery;

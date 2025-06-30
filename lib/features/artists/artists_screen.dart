@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../widgets/common/index.dart';
 import '../../services/error_handler.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 /// Artist model for the festival
 class Artist {

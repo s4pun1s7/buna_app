@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import '../../features/artists/artists_screen.dart';
+import '../../features/artists/artists_screen.dart' as artists_screen;
 import 'package:cached_network_image/cached_network_image.dart';
 
 class FeaturedArtistCard extends StatelessWidget {
-  final Artist artist;
+  final artists_screen.Artist artist;
   final VoidCallback? onDetails;
 
-  const FeaturedArtistCard({Key? key, required this.artist, this.onDetails})
-    : super(key: key);
+  const FeaturedArtistCard({super.key, required this.artist, this.onDetails});
 
   @override
   Widget build(BuildContext context) {

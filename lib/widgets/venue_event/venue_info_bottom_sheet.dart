@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../features/venues/venues_data.dart';
+import '../../features/venues/venues_data.dart' as venues_data;
 
 class VenueInfoBottomSheet extends StatelessWidget {
-  final Venue venue;
+  final venues_data.Venue venue;
   const VenueInfoBottomSheet({super.key, required this.venue});
 
   @override

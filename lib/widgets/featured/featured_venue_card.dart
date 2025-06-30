@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import '../features/venues/venues_data.dart';
+import '../../features/venues/venues_data.dart' as venues_data;
 
 class FeaturedVenueCard extends StatelessWidget {
-  final Venue venue;
+  final venues_data.Venue venue;
   final VoidCallback? onDetails;
 
-  const FeaturedVenueCard({Key? key, required this.venue, this.onDetails})
-    : super(key: key);
+  const FeaturedVenueCard({super.key, required this.venue, this.onDetails});
 
   @override
   Widget build(BuildContext context) {

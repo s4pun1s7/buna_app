@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../models/festival_data.dart';
+import '../../models/festival_data.dart' as fest_data;
 
 /// Card widget for displaying festival events in the schedule
 class ScheduleCard extends StatelessWidget {
-  final FestivalEvent event;
+  final fest_data.FestivalEvent event;
   final VoidCallback? onTap;
 
   const ScheduleCard({super.key, required this.event, this.onTap});

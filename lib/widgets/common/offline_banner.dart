@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../services/connectivity_service.dart';
+import '../../services/connectivity_service.dart';
 
 /// Provider for connectivity status
 final connectivityProvider = StreamProvider<bool>((ref) {

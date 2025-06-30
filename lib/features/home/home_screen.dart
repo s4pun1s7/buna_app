@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../config/feature_flags.dart';
 import '../../navigation/app_router.dart';
-import '../../widgets/branding/index.dart';
 import '../../widgets/featured/index.dart';
-import '../../widgets/buna_logo.dart';
 import '../../widgets/featured_artist_card.dart';
 import '../../widgets/featured_venue_card.dart';
 import '../../widgets/next_event_card.dart';
 import '../../widgets/news_dashboard_card.dart';
 import '../artists/artists_screen.dart';
-import '../venues/venues_data.dart';
+import '../venues/venues_data.dart' as venues_data;
 import '../../models/schedule.dart';
-import '../../models/festival_data.dart';
+import '../../models/festival_data.dart' as fest_data;
 
 /// Home screen with feature flag integration
 class HomeScreen extends ConsumerWidget {
@@ -25,51 +22,89 @@ class HomeScreen extends ConsumerWidget {
     final event = ref.watch(nextEventProvider);
     final news = ref.watch(featuredNewsProvider);
 
+    final ScrollController scrollController = ScrollController();
+    final ValueNotifier<double> offsetNotifier = ValueNotifier<double>(0);
+
     return Scaffold(
       appBar: AppBar(title: const Text('Buna Festival Dashboard')),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (artist != null) ...[
-              FeaturedArtistCard(
-                artist: artist,
-                onDetails: () {
-                  /* navigate to artist */
-                },
+      body: Stack(
+        children: [
+          // Parallax background image
+          ValueListenableBuilder<double>(
+            valueListenable: offsetNotifier,
+            builder: (context, offset, child) {
+              return Transform.translate(
+                offset: Offset(0, offset * 0.4), // Parallax factor
+                child: SizedBox(
+                  width: double.infinity,
+                  height: 350,
+                  child: Image.asset(
+                    'assets/Buna blue.png', // Replace with your preferred asset
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              );
+            },
+          ),
+          NotificationListener<ScrollNotification>(
+            onNotification: (notification) {
+              if (notification is ScrollUpdateNotification) {
+                offsetNotifier.value = scrollController.offset;
+              }
+              return false;
+            },
+            child: SingleChildScrollView(
+              controller: scrollController,
+              padding: const EdgeInsets.only(
+                top: 200,
+                left: 16,
+                right: 16,
+                bottom: 16,
               ),
-              const SizedBox(height: 16),
-            ],
-            if (venue != null) ...[
-              FeaturedVenueCard(
-                venue: venue,
-                onDetails: () {
-                  /* navigate to venue */
-                },
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (artist != null) ...[
+                    FeaturedArtistCard(
+                      artist: artist,
+                      onDetails: () {
+                        /* navigate to artist */
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                  ],
+                  if (venue != null) ...[
+                    FeaturedVenueCard(
+                      venue: venue,
+                      onDetails: () {
+                        /* navigate to venue */
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                  ],
+                  if (event != null) ...[
+                    NextEventCard(
+                      entry: event,
+                      onDetails: () {
+                        /* navigate to event */
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                  ],
+                  if (news != null) ...[
+                    NewsDashboardCard(
+                      article: news,
+                      onDetails: () {
+                        /* navigate to news */
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                  ],
+                ],
               ),
-              const SizedBox(height: 16),
-            ],
-            if (event != null) ...[
-              NextEventCard(
-                entry: event,
-                onDetails: () {
-                  /* navigate to event */
-                },
-              ),
-              const SizedBox(height: 16),
-            ],
-            if (news != null) ...[
-              NewsDashboardCard(
-                article: news,
-                onDetails: () {
-                  /* navigate to news */
-                },
-              ),
-              const SizedBox(height: 16),
-            ],
-          ],
-        ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -95,8 +130,10 @@ final featuredArtistProvider = Provider<Artist?>((ref) {
   return artists.isNotEmpty ? artists.first : null;
 });
 
-final venuesProvider = Provider<List<Venue>>((ref) => venues);
-final featuredVenueProvider = Provider<Venue?>((ref) {
+final venuesProvider = Provider<List<venues_data.Venue>>(
+  (ref) => venues_data.venues,
+);
+final featuredVenueProvider = Provider<venues_data.Venue?>((ref) {
   final venues = ref.watch(venuesProvider);
   return venues.isNotEmpty ? venues.first : null;
 });
@@ -117,22 +154,22 @@ final nextEventProvider = Provider<ScheduleEntry?>((ref) {
   return schedule.isNotEmpty ? schedule.first : null;
 });
 
-final newsProvider = Provider<List<NewsArticle>>(
+final newsProvider = Provider<List<fest_data.NewsArticle>>(
   (ref) => [
-    NewsArticle(
+    fest_data.NewsArticle(
       id: 1,
-      title: 'Festival Opening Announced',
-      content: 'The opening ceremony will feature spectacular light shows...',
-      excerpt: 'The opening ceremony will feature spectacular light shows...',
+      title: 'Festival Opening',
+      content: 'Join us for the grand opening!',
+      excerpt: 'Grand opening event',
       date: DateTime.now(),
       featuredImageUrl: null,
-      author: 'Festival Team',
-      categories: ['Announcement'],
-      url: 'https://bunafestival.com/news/opening',
+      author: 'Team',
+      categories: ['General'],
+      url: 'https://bunavarna.com/opening',
     ),
   ],
 );
-final featuredNewsProvider = Provider<NewsArticle?>((ref) {
+final featuredNewsProvider = Provider<fest_data.NewsArticle?>((ref) {
   final news = ref.watch(newsProvider);
   return news.isNotEmpty ? news.first : null;
 });

@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import '../../models/festival_data.dart';
+import '../../models/festival_data.dart' as fest_data;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:intl/intl.dart';
 
 class NewsDashboardCard extends StatelessWidget {
-  final NewsArticle article;
+  final fest_data.NewsArticle article;
   final VoidCallback? onDetails;
 
-  const NewsDashboardCard({Key? key, required this.article, this.onDetails})
-    : super(key: key);
+  const NewsDashboardCard({super.key, required this.article, this.onDetails});
 
   @override
   Widget build(BuildContext context) {

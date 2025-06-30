@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../features/onboarding/onboarding_screen.dart';
 import '../features/venues/venues_screen.dart';
-import '../features/maps/maps_screen.dart';
 import '../features/news/news_screen.dart';
 import '../features/info/info_screen.dart';
 import '../features/schedule/schedule_screen.dart';
@@ -23,11 +22,11 @@ import 'route_guards.dart';
 import 'main_layout.dart';
 import 'route_observer.dart';
 import '../widgets/featured/index.dart';
-import '../features/venues/venues_data.dart';
+import '../features/venues/venues_data.dart' as venues_data;
 import '../models/schedule.dart';
-import '../models/festival_data.dart';
-import '../widgets/navigation/index.dart';
+import '../models/festival_data.dart' as fest_data;
 import '../widgets/common/index.dart';
+import '../widgets/splash_screen.dart';
 
 /// Simple home screen placeholder
 class HomeScreen extends StatelessWidget {
@@ -77,11 +76,11 @@ class HomeScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   FeaturedVenueCard(
-                    venue: Venue(
+                    venue: venues_data.Venue(
                       name: 'Mock Venue',
                       address: '123 Main St',
                       events: [
-                        Event(
+                        venues_data.Event(
                           name: 'Mock Event',
                           date: '2025-07-01',
                           time: '7 PM',
@@ -92,12 +91,12 @@ class HomeScreen extends StatelessWidget {
                   const SizedBox(height: 16),
                   NextEventCard(
                     entry: ScheduleEntry(
-                      event: Event(
+                      event: venues_data.Event(
                         name: 'Mock Event',
                         date: '2025-07-01',
                         time: '7 PM',
                       ),
-                      venue: Venue(
+                      venue: venues_data.Venue(
                         name: 'Mock Venue',
                         address: '123 Main St',
                         events: [],
@@ -106,7 +105,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   NewsDashboardCard(
-                    article: NewsArticle(
+                    article: fest_data.NewsArticle(
                       id: 1,
                       title: 'Mock News Headline',
                       content: 'Mock content',
@@ -174,12 +173,6 @@ class AppRouter {
               path: AppRoutes.venues,
               name: AppRoutes.venuesName,
               builder: (context, state) => const VenuesScreen(),
-            ),
-          if (FeatureFlags.enableMaps)
-            GoRoute(
-              path: AppRoutes.maps,
-              name: AppRoutes.mapsName,
-              builder: (context, state) => const MapGalleryScreen(),
             ),
           if (FeatureFlags.enableNews)
             GoRoute(
@@ -360,12 +353,6 @@ class AppRouter {
   static void goToVenues(BuildContext context) {
     if (FeatureFlags.enableVenues) {
       context.go(AppRoutes.venues);
-    }
-  }
-
-  static void goToMaps(BuildContext context) {
-    if (FeatureFlags.enableMaps) {
-      context.go(AppRoutes.maps);
     }
   }
 

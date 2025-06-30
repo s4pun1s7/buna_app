@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-import '../models/schedule.dart';
+export 'featured/next_event_card.dart';
 
-class NextEventCard extends StatelessWidget {
-  // ... existing code ...
-}
+// TODO: Cleanup barrel files in lib/widgets/ if all imports are updated to use the correct subfolder paths directly.
+// These files are temporary to resolve import errors quickly.

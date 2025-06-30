@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../navigation/route_constants.dart';
-import '../config/feature_flags.dart';
-import '../branding/index.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../providers/user_provider.dart';
-import '../services/auth_service.dart';
+import '../../navigation/route_constants.dart';
+import '../../config/feature_flags.dart';
+import '../../providers/user_provider.dart';
+import '../../services/auth_service.dart';
 import '../common/index.dart';
-import 'buna_logo.dart';
-import 'loading_indicator.dart';
-import 'error_screen.dart';
+import '../../widgets/loading_indicator.dart';
+import '../../widgets/error_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class BunaDrawer extends ConsumerWidget {
@@ -102,9 +100,9 @@ class BunaDrawer extends ConsumerWidget {
     final isGoogle =
         user != null &&
         user.providerData.any((p) => p.providerId == 'google.com');
-    final displayName = isGoogle ? user!.displayName ?? 'Google User' : 'Guest';
-    final email = isGoogle ? user!.email : null;
-    final avatarUrl = isGoogle ? user!.photoURL : null;
+    final displayName = isGoogle ? user.displayName ?? 'Google User' : 'Guest';
+    final email = isGoogle ? user.email : null;
+    final avatarUrl = isGoogle ? user.photoURL : null;
     return DrawerHeader(
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -134,7 +132,7 @@ class BunaDrawer extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  displayName ?? 'Guest',
+                  displayName,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
