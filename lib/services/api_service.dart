@@ -4,8 +4,13 @@ import 'package:http/http.dart' as http;
 import '../models/festival_data.dart';
 import '../utils/debouncer.dart';
 import 'error_handler.dart';
+import 'mock_data_service.dart';
 
+/// API service for communicating with the Buna Festival website
 class ApiService {
+  // Flag to temporarily disable API calls
+  static const bool _apiDisabled = true; // Set to false to re-enable API
+  
   static const String _baseUrl = 'https://bunavarna.com';
   static const String _apiEndpoint = '/wp-json/wp/v2';
   static const Duration _timeout = Duration(seconds: 30);
@@ -21,6 +26,10 @@ class ApiService {
 
   /// Fetch news articles from the festival website
   static Future<List<NewsArticle>> fetchNews({int page = 1, int perPage = 10}) async {
+    if (_apiDisabled) {
+      return MockDataService.getMockNews();
+    }
+    
     return await _debouncedApiCall(() async {
       try {
         final cacheKey = 'news_page_$page';
@@ -62,6 +71,10 @@ class ApiService {
 
   /// Fetch events from the festival website
   static Future<List<FestivalEvent>> fetchEvents({int page = 1, int perPage = 20}) async {
+    if (_apiDisabled) {
+      return MockDataService.getMockEvents();
+    }
+    
     return await _debouncedApiCall(() async {
       try {
         final cacheKey = 'events_page_$page';
@@ -107,6 +120,9 @@ class ApiService {
 
   /// Fetch events from posts with event category
   static Future<List<FestivalEvent>> _fetchEventsFromPosts({int page = 1, int perPage = 20}) async {
+    if (_apiDisabled) {
+      return MockDataService.getMockEvents();
+    }
     try {
       final response = await http.get(
         Uri.parse('$_baseUrl$_apiEndpoint/posts?categories=event&page=$page&per_page=$perPage&_embed'),
@@ -134,6 +150,10 @@ class ApiService {
 
   /// Fetch venue information
   static Future<List<Venue>> fetchVenues() async {
+    if (_apiDisabled) {
+      return MockDataService.getMockVenues();
+    }
+    
     return await _debouncedApiCall(() async {
       try {
         const cacheKey = 'venues';
@@ -178,6 +198,10 @@ class ApiService {
 
   /// Fetch festival information
   static Future<FestivalInfo> fetchFestivalInfo() async {
+    if (_apiDisabled) {
+      return MockDataService.getMockFestivalInfo();
+    }
+    
     return await _debouncedApiCall(() async {
       try {
         const cacheKey = 'festival_info';
@@ -227,6 +251,10 @@ class ApiService {
 
   /// Search content across the website
   static Future<SearchResults> search(String query, {int page = 1}) async {
+    if (_apiDisabled) {
+      return MockDataService.getMockSearchResults(query);
+    }
+    
     return await _debouncedApiCall(() async {
       try {
         if (query.trim().isEmpty) {
@@ -263,6 +291,13 @@ class ApiService {
     });
   }
 
+  /// Check if cache is valid
+  static bool _isCacheValid(String key) {
+    if (!_cache.containsKey(key)) return false;
+    final cached = _cache[key];
+    return DateTime.now().difference(cached['timestamp']) < _cacheExpiry;
+  }
+
   /// Debounced API call wrapper
   static Future<T> _debouncedApiCall<T>(Future<T> Function() apiCall) async {
     Completer<T> completer = Completer<T>();
@@ -285,6 +320,10 @@ class ApiService {
 
   /// Test API connectivity
   static Future<bool> testConnection() async {
+    if (_apiDisabled) {
+      return true; // Return true when API is disabled
+    }
+    
     try {
       final response = await http.get(
         Uri.parse('$_baseUrl$_apiEndpoint'),
@@ -307,20 +346,13 @@ class ApiService {
     _cache.remove(key);
   }
 
-  /// Check if cache is still valid
-  static bool _isCacheValid(String key) {
-    if (!_cache.containsKey(key)) return false;
-    
-    final timestamp = _cache[key]['timestamp'] as DateTime;
-    return DateTime.now().difference(timestamp) < _cacheExpiry;
-  }
-
   /// Get cache statistics for debugging
   static Map<String, dynamic> getCacheStats() {
     return {
       'total_entries': _cache.length,
       'entries': _cache.keys.toList(),
       'is_debouncer_active': _apiDebouncer.isActive,
+      'api_disabled': _apiDisabled,
     };
   }
 } 

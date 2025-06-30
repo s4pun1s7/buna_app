@@ -220,3 +220,65 @@ class ErrorCard extends StatelessWidget {
     );
   }
 }
+
+/// Animated error dialog for displaying errors with animation.
+class AnimatedErrorDialog extends StatelessWidget {
+  final String title;
+  final String message;
+  final VoidCallback? onRetry;
+  final VoidCallback? onCancel;
+  const AnimatedErrorDialog({
+    super.key,
+    required this.title,
+    required this.message,
+    this.onRetry,
+    this.onCancel,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: AnimatedScale(
+        scale: 1.0,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOutBack,
+        child: Material(
+          color: Colors.transparent,
+          child: Container(
+            padding: const EdgeInsets.all(32),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 16,
+                ),
+              ],
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.error_outline, color: Theme.of(context).colorScheme.error, size: 48),
+                const SizedBox(height: 16),
+                Text(title, style: Theme.of(context).textTheme.titleLarge),
+                const SizedBox(height: 8),
+                Text(message, textAlign: TextAlign.center),
+                const SizedBox(height: 24),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    if (onCancel != null)
+                      TextButton(onPressed: onCancel, child: const Text('Cancel')),
+                    if (onRetry != null)
+                      ElevatedButton(onPressed: onRetry, child: const Text('Retry')),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

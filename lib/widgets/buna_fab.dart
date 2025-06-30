@@ -6,11 +6,11 @@ class BunaFAB extends StatelessWidget {
   final String? tooltip;
 
   const BunaFAB({
-    Key? key,
+    super.key,
     required this.onPressed,
     required this.icon,
     this.tooltip,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

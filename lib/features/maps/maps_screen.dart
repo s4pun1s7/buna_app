@@ -178,62 +178,53 @@ class _MapsScreenState extends ConsumerState<MapsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Venues Map'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: () {
-              setState(() {});
-              _loadVenues();
-            },
-            tooltip: 'Refresh',
+      body: _buildBody(),
+    );
+  }
+
+  Widget _buildBody() {
+    return Stack(
+      children: [
+        GoogleMap(
+          initialCameraPosition: _calculateInitialCameraPosition(venues),
+          markers: _markers,
+          circles: _circles,
+          onMapCreated: (GoogleMapController controller) {
+            _mapController = controller;
+          },
+          myLocationEnabled: true,
+          myLocationButtonEnabled: false,
+          zoomControlsEnabled: false,
+          mapToolbarEnabled: false,
+        ),
+        
+        // Search bar
+        Positioned(
+          top: 16,
+          left: 16,
+          right: 16,
+          child: _buildSearchBar(),
+        ),
+        
+        // User location button
+        Positioned(
+          bottom: 200,
+          right: 16,
+          child: _buildUserLocationButton(),
+        ),
+        
+        // Venue list bottom sheet
+        Positioned(
+          bottom: 0,
+          left: 0,
+          right: 0,
+          child: _VenueListSheet(
+            venues: _getFilteredVenues(venues),
+            onVenueTap: _onMarkerTapped,
+            selectedVenue: _selectedVenue,
           ),
-        ],
-      ),
-      body: Stack(
-        children: [
-          GoogleMap(
-            initialCameraPosition: _calculateInitialCameraPosition(venues),
-            markers: _markers,
-            circles: _circles,
-            onMapCreated: (GoogleMapController controller) {
-              _mapController = controller;
-            },
-            myLocationEnabled: true,
-            myLocationButtonEnabled: false,
-            zoomControlsEnabled: false,
-            mapToolbarEnabled: false,
-          ),
-          
-          // Search bar
-          Positioned(
-            top: 16,
-            left: 16,
-            right: 16,
-            child: _buildSearchBar(),
-          ),
-          
-          // User location button
-          Positioned(
-            bottom: 200,
-            right: 16,
-            child: _buildUserLocationButton(),
-          ),
-          
-          // Venue list bottom sheet
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: _VenueListSheet(
-              venues: _getFilteredVenues(venues),
-              onVenueTap: _onMarkerTapped,
-              selectedVenue: _selectedVenue,
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 

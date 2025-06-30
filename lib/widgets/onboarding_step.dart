@@ -7,12 +7,12 @@ class OnboardingStep extends StatelessWidget {
   final bool isLast;
 
   const OnboardingStep({
-    Key? key,
+    super.key,
     required this.title,
     required this.description,
     required this.onNext,
     this.isLast = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

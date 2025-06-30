@@ -4,6 +4,9 @@ import 'package:go_router/go_router.dart';
 import '../../providers/locale_provider.dart';
 import '../../navigation/route_guards.dart';
 import '../../navigation/route_constants.dart';
+import '../../services/auth_service.dart';
+import 'package:buna_app/widgets/loading_indicator.dart';
+import 'package:buna_app/widgets/error_screen.dart';
 
 class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
@@ -15,6 +18,8 @@ class OnboardingScreen extends ConsumerStatefulWidget {
 class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   String _selectedLanguage = 'en';
   bool _isLoading = false;
+  String? _authError;
+  final AuthService _authService = AuthService();
 
   void _getStarted() async {
     if (_isLoading) return; // Prevent multiple calls
@@ -35,6 +40,10 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
       localeNotifier.setLocale(Locale(_selectedLanguage));
       debugPrint('Onboarding: Set locale to $_selectedLanguage');
       
+      // Invalidate the onboarding status provider to trigger a refresh
+      ref.invalidate(onboardingStatusProvider);
+      debugPrint('Onboarding: Invalidated onboarding status provider');
+      
       // Navigate to home
       if (mounted) {
         debugPrint('Onboarding: Navigating to home...');
@@ -45,6 +54,64 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
       setState(() {
         _isLoading = false;
       });
+    }
+  }
+
+  Future<void> _signInWithGoogle() async {
+    setState(() { _isLoading = true; _authError = null; });
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => const AnimatedLoadingDialog(message: 'Signing in...'),
+    );
+    try {
+      await _authService.signInWithGoogle();
+      if (mounted) Navigator.of(context).pop();
+      _getStarted();
+    } catch (e) {
+      if (mounted) Navigator.of(context).pop();
+      setState(() { _isLoading = false; _authError = 'Google sign-in failed. Please try again.'; });
+      showDialog(
+        context: context,
+        builder: (_) => AnimatedErrorDialog(
+          title: 'Sign-In Error',
+          message: _authError!,
+          onCancel: () => Navigator.of(context).pop(),
+          onRetry: () {
+            Navigator.of(context).pop();
+            _signInWithGoogle();
+          },
+        ),
+      );
+    }
+  }
+
+  Future<void> _signInAsGuest() async {
+    setState(() { _isLoading = true; _authError = null; });
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => const AnimatedLoadingDialog(message: 'Signing in...'),
+    );
+    try {
+      await _authService.signInAnonymously();
+      if (mounted) Navigator.of(context).pop();
+      _getStarted();
+    } catch (e) {
+      if (mounted) Navigator.of(context).pop();
+      setState(() { _isLoading = false; _authError = 'Guest sign-in failed. Please try again.'; });
+      showDialog(
+        context: context,
+        builder: (_) => AnimatedErrorDialog(
+          title: 'Sign-In Error',
+          message: _authError!,
+          onCancel: () => Navigator.of(context).pop(),
+          onRetry: () {
+            Navigator.of(context).pop();
+            _signInAsGuest();
+          },
+        ),
+      );
     }
   }
 
@@ -103,6 +170,27 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
             const Text(
               'Explore the festival, artists, and venues. Find art pieces, events, and more on the map. Bookmark favorites, set reminders, and get news.',
               textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 32),
+            ElevatedButton.icon(
+              icon: Image.asset('assets/Buna pink.png', width: 24, height: 24, cacheWidth: 48),
+              label: const Text('Continue with Google'),
+              onPressed: _isLoading ? null : _signInWithGoogle,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                foregroundColor: Colors.black,
+                minimumSize: const Size.fromHeight(48),
+                textStyle: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+            const SizedBox(height: 16),
+            OutlinedButton(
+              onPressed: _isLoading ? null : _signInAsGuest,
+              child: const Text('Continue as Guest'),
+              style: OutlinedButton.styleFrom(
+                minimumSize: const Size.fromHeight(48),
+                textStyle: const TextStyle(fontWeight: FontWeight.bold),
+              ),
             ),
             const SizedBox(height: 32),
             ElevatedButton(

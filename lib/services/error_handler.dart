@@ -23,16 +23,11 @@ class AppException implements Exception {
 
 class NetworkException extends AppException {
   NetworkException(
-    String message, {
-    String? code,
-    dynamic originalError,
-    StackTrace? stackTrace,
-  }) : super(
-          message,
-          code: code,
-          originalError: originalError,
-          stackTrace: stackTrace,
-        );
+    super.message, {
+    super.code,
+    super.originalError,
+    super.stackTrace,
+  });
 }
 
 class ApiException extends AppException {
@@ -40,49 +35,34 @@ class ApiException extends AppException {
   final String? endpoint;
 
   ApiException(
-    String message, {
+    super.message, {
     this.statusCode,
     this.endpoint,
-    String? code,
-    dynamic originalError,
-    StackTrace? stackTrace,
-  }) : super(
-          message,
-          code: code,
-          originalError: originalError,
-          stackTrace: stackTrace,
-        );
+    super.code,
+    super.originalError,
+    super.stackTrace,
+  });
 }
 
 class CacheException extends AppException {
   CacheException(
-    String message, {
-    String? code,
-    dynamic originalError,
-    StackTrace? stackTrace,
-  }) : super(
-          message,
-          code: code,
-          originalError: originalError,
-          stackTrace: stackTrace,
-        );
+    super.message, {
+    super.code,
+    super.originalError,
+    super.stackTrace,
+  });
 }
 
 class ValidationException extends AppException {
   final Map<String, String>? fieldErrors;
 
   ValidationException(
-    String message, {
+    super.message, {
     this.fieldErrors,
-    String? code,
-    dynamic originalError,
-    StackTrace? stackTrace,
-  }) : super(
-          message,
-          code: code,
-          originalError: originalError,
-          stackTrace: stackTrace,
-        );
+    super.code,
+    super.originalError,
+    super.stackTrace,
+  });
 }
 
 /// Centralized error handling service

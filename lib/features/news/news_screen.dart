@@ -88,31 +88,26 @@ class _NewsScreenState extends ConsumerState<NewsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      body: _buildBody(),
+    );
+  }
+
+  Widget _buildBody() {
     final newsState = ref.watch(newsStateProvider);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Festival News'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: () => ref.read(newsStateProvider.notifier).refresh(),
-          ),
-        ],
-      ),
-      body: RefreshIndicator(
-        onRefresh: () => ref.read(newsStateProvider.notifier).refresh(),
-        child: newsState.when(
-          data: (news) => _buildNewsList(news),
-          loading: () => const Center(child: CircularProgressIndicator()),
-          error: (error, stackTrace) {
-            final appError = error as AppException;
-            return ErrorScreen(
-              error: appError,
-              onRetry: () => ref.read(newsStateProvider.notifier).refresh(),
-            );
-          },
-        ),
+    return RefreshIndicator(
+      onRefresh: () => ref.read(newsStateProvider.notifier).refresh(),
+      child: newsState.when(
+        data: (news) => _buildNewsList(news),
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (error, stackTrace) {
+          final appError = error as AppException;
+          return ErrorScreen(
+            error: appError,
+            onRetry: () => ref.read(newsStateProvider.notifier).refresh(),
+          );
+        },
       ),
     );
   }

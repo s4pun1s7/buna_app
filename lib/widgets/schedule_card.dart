@@ -1,95 +1,124 @@
 import 'package:flutter/material.dart';
-import '../models/schedule.dart';
+import '../models/festival_data.dart';
 
+/// Card widget for displaying festival events in the schedule
 class ScheduleCard extends StatelessWidget {
-  final List<ScheduleEntry> schedule;
-  final bool expanded;
-  final VoidCallback? onExpand;
-  final VoidCallback? onCollapse;
-  final bool showExpandButton;
-  final bool showCollapseButton;
-  final String title;
+  final FestivalEvent event;
+  final VoidCallback? onTap;
 
   const ScheduleCard({
     super.key,
-    required this.schedule,
-    this.expanded = false,
-    this.onExpand,
-    this.onCollapse,
-    this.showExpandButton = false,
-    this.showCollapseButton = false,
-    this.title = 'Your Schedule',
+    required this.event,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Icon(Icons.schedule, color: Colors.deepPurple, size: 28),
-                const SizedBox(width: 8),
-                Text(title, style: Theme.of(context).textTheme.titleLarge),
-              ],
-            ),
-            const Divider(height: 24),
-            ...schedule.map(
-              (entry) => ListTile(
-                leading: Icon(Icons.event, color: Colors.deepPurple),
-                title: Text(entry.event.name),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
+      margin: const EdgeInsets.only(bottom: 8),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(8),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Icon(
-                          Icons.location_on,
-                          size: 14,
-                          color: Colors.blueGrey,
+                        Text(
+                          event.title,
+                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                        const SizedBox(width: 2),
-                        Flexible(child: Text(entry.venue.name)),
+                        const SizedBox(height: 4),
+                        if (event.startTime != null)
+                          Text(
+                            'Time: ${event.startTime}',
+                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: Theme.of(context).colorScheme.outline,
+                            ),
+                          ),
                       ],
                     ),
-                    Row(
-                      children: [
-                        const Icon(
-                          Icons.calendar_today,
-                          size: 14,
-                          color: Colors.teal,
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: _getCategoryColor(event.category),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Text(
+                      event.category ?? 'Event',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              if (event.venue != null)
+                Row(
+                  children: [
+                    Icon(
+                      Icons.location_on,
+                      size: 16,
+                      color: Theme.of(context).colorScheme.outline,
+                    ),
+                    const SizedBox(width: 4),
+                    Expanded(
+                      child: Text(
+                        event.venue!,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.outline,
                         ),
-                        const SizedBox(width: 2),
-                        Text(entry.event.date),
-                        const SizedBox(width: 8),
-                        const Icon(
-                          Icons.access_time,
-                          size: 14,
-                          color: Colors.indigo,
-                        ),
-                        const SizedBox(width: 2),
-                        Text(entry.event.time),
-                      ],
+                      ),
                     ),
                   ],
                 ),
+              const SizedBox(height: 8),
+              Text(
+                event.description,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.bodySmall,
               ),
-            ),
-            if (showExpandButton)
-              TextButton(
-                onPressed: onExpand,
-                child: const Text('See full schedule'),
-              ),
-            if (showCollapseButton)
-              TextButton(onPressed: onCollapse, child: const Text('Show less')),
-          ],
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  Color _getCategoryColor(String? category) {
+    if (category == null) return Colors.grey;
+    
+    switch (category.toLowerCase()) {
+      case 'music':
+        return Colors.orange;
+      case 'art':
+      case 'exhibition':
+        return Colors.purple;
+      case 'performance':
+        return Colors.pink;
+      case 'workshop':
+        return Colors.blue;
+      case 'ceremony':
+        return Colors.amber;
+      case 'digital art':
+        return Colors.cyan;
+      case 'environmental art':
+        return Colors.green;
+      default:
+        return Colors.grey;
+    }
   }
 }

@@ -52,6 +52,12 @@ class RouteGuards {
       }
     }
     
+    // If onboarding is completed and we're on onboarding page, redirect to home
+    if (onboardingStatus.hasValue && onboardingStatus.value! && state.uri.path == AppRoutes.onboarding) {
+      debugPrint('RouteGuards: Onboarding completed, redirecting to home');
+      return AppRoutes.home;
+    }
+    
     // Check authentication status
     final authStatus = container.read(authStatusProvider);
     

@@ -9,11 +9,11 @@ class LoadingIndicator extends StatelessWidget {
   final double? size;
 
   const LoadingIndicator({
-    Key? key,
+    super.key,
     this.message,
     this.color,
     this.size,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +36,40 @@ class LoadingIndicator extends StatelessWidget {
             ),
           ],
         ],
+      ),
+    );
+  }
+}
+
+/// Animated modal loading dialog for blocking UI during async operations.
+class AnimatedLoadingDialog extends StatelessWidget {
+  final String? message;
+  const AnimatedLoadingDialog({super.key, this.message});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: AnimatedScale(
+        scale: 1.0,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOutBack,
+        child: Material(
+          color: Colors.transparent,
+          child: Container(
+            padding: const EdgeInsets.all(32),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 16,
+                ),
+              ],
+            ),
+            child: LoadingIndicator(message: message),
+          ),
+        ),
       ),
     );
   }

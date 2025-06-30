@@ -4,8 +4,7 @@ class BunaAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final List<Widget>? actions;
 
-  const BunaAppBar({Key? key, required this.title, this.actions})
-    : super(key: key);
+  const BunaAppBar({super.key, required this.title, this.actions});
 
   @override
   Widget build(BuildContext context) {

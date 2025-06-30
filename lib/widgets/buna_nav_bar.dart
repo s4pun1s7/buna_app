@@ -4,8 +4,7 @@ class BunaNavBar extends StatelessWidget {
   final int currentIndex;
   final ValueChanged<int> onTap;
 
-  const BunaNavBar({Key? key, required this.currentIndex, required this.onTap})
-    : super(key: key);
+  const BunaNavBar({super.key, required this.currentIndex, required this.onTap});
 
   @override
   Widget build(BuildContext context) {

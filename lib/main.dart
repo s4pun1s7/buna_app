@@ -29,30 +29,34 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
   // Initialize Firebase
-  if (kIsWeb) {
-    await Firebase.initializeApp(
-      options: const FirebaseOptions(
-        apiKey: 'AIzaSyD2xqxPjbnA6t-TFsn2pNAuy1VHDOK4l-0',
-        authDomain: 'buna-app-4e064.firebaseapp.com',
-        projectId: 'buna-app-4e064',
-        storageBucket: 'buna-app-4e064.firebasestorage.app',
-        messagingSenderId: '177152010877',
-        appId: '1:177152010877:web:96f0625f1a29a0bc825f14',
-        measurementId: 'G-3XR3FVMHZY',
-      ),
-    );
-  } else {
-    await Firebase.initializeApp();
+  try {
+    if (kIsWeb) {
+      await Firebase.initializeApp(
+        options: const FirebaseOptions(
+          apiKey: 'AIzaSyD2xqxPjbnA6t-TFsn2pNAuy1VHDOK4l-0',
+          authDomain: 'buna-app-4e064.firebaseapp.com',
+          projectId: 'buna-app-4e064',
+          storageBucket: 'buna-app-4e064.firebasestorage.app',
+          messagingSenderId: '177152010877',
+          appId: '1:177152010877:web:96f0625f1a29a0bc825f14',
+          measurementId: 'G-3XR3FVMHZY',
+        ),
+      );
+    } else {
+      await Firebase.initializeApp();
+    }
+    
+    // Initialize services
+    await ConnectivityService().initialize();
+    
+    // Anonymous sign-in for development
+    await FirebaseAuth.instance.signInAnonymously();
+    
+    // Track app launch
+    AnalyticsService.logEvent(name: 'app_launch');
+  } catch (e) {
+    // Continue without Firebase for now
   }
-  
-  // Initialize services
-  await ConnectivityService().initialize();
-  
-  // Anonymous sign-in for development
-  await FirebaseAuth.instance.signInAnonymously();
-  
-  // Track app launch
-  AnalyticsService.logEvent(name: 'app_launch');
   
   runApp(const BunaAppWithPermissions());
 }

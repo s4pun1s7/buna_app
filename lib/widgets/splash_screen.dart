@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../navigation/route_guards.dart';
 import '../navigation/app_router.dart';
+import 'buna_logo.dart';
 
 class SplashScreen extends ConsumerWidget {
   const SplashScreen({super.key});
@@ -23,27 +24,45 @@ class SplashScreen extends ConsumerWidget {
           }
         });
         
-        return const Scaffold(
+        return Scaffold(
           body: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CircularProgressIndicator(),
-                SizedBox(height: 16),
-                Text('Loading Buna Festival...'),
+                const BunaLogoWithText(
+                  logoSize: 120,
+                  textSize: 32,
+                  showSubtitle: true,
+                ),
+                const SizedBox(height: 32),
+                const CircularProgressIndicator(),
+                const SizedBox(height: 16),
+                Text(
+                  'Loading...',
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
               ],
             ),
           ),
         );
       },
-      loading: () => const Scaffold(
+      loading: () => Scaffold(
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              CircularProgressIndicator(),
-              SizedBox(height: 16),
-              Text('Loading Buna Festival...'),
+              const BunaLogoWithText(
+                logoSize: 120,
+                textSize: 32,
+                showSubtitle: true,
+              ),
+              const SizedBox(height: 32),
+              const CircularProgressIndicator(),
+              const SizedBox(height: 16),
+              Text(
+                'Loading...',
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
             ],
           ),
         ),
@@ -54,16 +73,28 @@ class SplashScreen extends ConsumerWidget {
           AppRouter.goToOnboarding(context);
         });
         
-        return const Scaffold(
+        return Scaffold(
           body: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.error_outline, size: 64, color: Colors.red),
-                SizedBox(height: 16),
-                Text('Error loading app'),
-                SizedBox(height: 8),
-                Text('Redirecting to onboarding...'),
+                const BunaLogoWithText(
+                  logoSize: 120,
+                  textSize: 32,
+                  showSubtitle: true,
+                ),
+                const SizedBox(height: 32),
+                const Icon(Icons.error_outline, size: 64, color: Colors.red),
+                const SizedBox(height: 16),
+                Text(
+                  'Error loading app',
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Redirecting to onboarding...',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
               ],
             ),
           ),
