@@ -1,10 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-# buna_app
-=======
->>>>>>> d6432e1de732e79f0c39f66dd142f9d3cc1307e5
-=======
->>>>>>> d6432e1de732e79f0c39f66dd142f9d3cc1307e5
 # Buna Festival App
 
 A cross-platform Flutter app for the Buna art festival, supporting Android, iOS, and Web. Features onboarding, Firebase integration, multi-language support (English/Bulgarian), venue management, interactive maps, and real-time news updates.
@@ -53,8 +46,6 @@ A cross-platform Flutter app for the Buna art festival, supporting Android, iOS,
 
 ---
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 ## 📱 Platform Support
 
 ### iOS
@@ -81,14 +72,6 @@ A cross-platform Flutter app for the Buna art festival, supporting Android, iOS,
 
 ### Quick Start
 1. **Clone the repository**:
-=======
-=======
->>>>>>> d6432e1de732e79f0c39f66dd142f9d3cc1307e5
-For license information, see [LICENSE](LICENSE).
-
-### Setup
-1. Clone the repo:
->>>>>>> d6432e1de732e79f0c39f66dd142f9d3cc1307e5
    ```sh
    git clone <your-repo-url>
    cd buna_app
@@ -226,21 +209,143 @@ flutter build web
 ## 📄 License
 
 This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
-<<<<<<< HEAD
-<<<<<<< HEAD
+
+### Setup
+1. Clone the repo:
+   ```sh
+   git clone <your-repo-url>
+   cd buna_app
+   ```
+
+2. **Install dependencies**:
+   ```sh
+   flutter pub get
+   ```
+
+3. **Configure Firebase**:
+   - Android: Place `google-services.json` in `android/app/`
+   - iOS: Place `GoogleService-Info.plist` in `ios/Runner/`
+   - Web: Configure in Firebase Console and update `main.dart`
+
+4. **Run the app**:
+   ```sh
+   flutter run
+   ```
 
 ---
 
-## 🔗 Links
+## 🔧 Development
 
-- **Festival Website**: [bunavarna.com](https://bunavarna.com/)
-- **Facebook**: [Buna Varna](https://www.facebook.com/BunaVarna/)
-- **Instagram**: [@buna.varna](https://www.instagram.com/buna.varna/)
+### Project Structure
+```
+lib/
+├── features/           # Feature modules
+│   ├── onboarding/     # Onboarding flow
+│   ├── venues/         # Venue management
+│   ├── maps/           # Interactive maps
+│   ├── news/           # News and updates
+│   └── info/           # Festival information
+├── models/             # Data models
+├── providers/          # Riverpod state management
+├── services/           # Business logic
+├── widgets/            # Reusable UI components
+├── theme/              # App theming
+└── l10n/               # Localization files
+```
+
+### State Management
+The app uses **Riverpod** for state management with the following providers:
+- `localeProvider`: Global language management
+- `favoritesProvider`: User favorites and preferences
+- `scheduleProvider`: Personal schedule management
+
+### Localization
+- **Supported Languages**: English (EN) and Bulgarian (BG)
+- **Files**: ARB files in `lib/l10n/`
+- **Implementation**: Flutter's built-in localization with custom providers
 
 ---
 
-**Note**: Sensitive files like Firebase configuration files are excluded by `.gitignore` and should not be committed to version control.
-=======
->>>>>>> d6432e1de732e79f0c39f66dd142f9d3cc1307e5
-=======
->>>>>>> d6432e1de732e79f0c39f66dd142f9d3cc1307e5
+## 🧪 Testing
+
+### Run Tests
+```sh
+# All tests
+flutter test
+
+# Specific test file
+flutter test test/widget_test.dart
+
+# With coverage
+flutter test --coverage
+```
+
+### Test Coverage
+- Widget tests for UI components
+- Unit tests for business logic
+- Integration tests for user flows
+
+---
+
+## 📦 Building & Deployment
+
+### Development
+```sh
+# Run on device/emulator
+flutter run
+
+# Run on web
+flutter run -d chrome
+```
+
+### Production Builds
+```sh
+# Android APK
+flutter build apk
+
+# Android App Bundle
+flutter build appbundle
+
+# iOS (requires Mac)
+flutter build ios
+
+# Web
+flutter build web
+```
+
+---
+
+## 🤝 Contributing
+
+1. **Fork** the repository
+2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
+3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
+4. **Push** to the branch (`git push origin feature/amazing-feature`)
+5. **Open** a Pull Request
+
+### Code Style
+- Follow Flutter's official style guide
+- Use meaningful commit messages
+- Add tests for new features
+- Update documentation as needed
+
+---
+
+## 🐛 Troubleshooting
+
+### Common Issues
+- **Localization not working?** Run `flutter gen-l10n` to regenerate files
+- **Firebase errors?** Verify configuration files are in correct locations
+- **Permission issues?** Check platform-specific permission configurations
+- **Build failures?** Run `flutter clean && flutter pub get`
+
+### Getting Help
+- Check the [Troubleshooting Guide](docs/TROUBLESHOOTING.md)
+- Review [Flutter Documentation](https://docs.flutter.dev/)
+- Open an issue with detailed error information
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
