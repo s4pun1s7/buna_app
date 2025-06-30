@@ -4,6 +4,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:buna_app/models/favorites_manager.dart';
 import 'package:buna_app/widgets/error_screen.dart';
 import 'venues_data.dart';
+import '../../services/error_handler.dart';
 
 class VenuesScreen extends StatefulWidget {
   const VenuesScreen({super.key});
@@ -67,7 +68,7 @@ class _VenuesScreenState extends State<VenuesScreen> {
           }
           if (snapshot.hasError) {
             return ErrorScreen(
-              message: 'Failed to load venues.',
+              error: AppException('Failed to load venues.'),
               onRetry: () {
                 setState(() {
                   _future = _simulateLoad();

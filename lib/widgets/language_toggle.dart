@@ -10,57 +10,50 @@ class LanguageToggle extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentLocale = ref.watch(localeProvider);
-    final isBg = currentLocale.languageCode == 'bg';
-    final colorScheme = Theme.of(context).colorScheme;
-    final surfaceColor = colorScheme.surface;
-    final onSurface = colorScheme.onSurface;
-
-    return Material(
-      color: Colors.transparent,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-        decoration: BoxDecoration(
-          color: surfaceColor.withOpacity(0.95),
-          borderRadius: BorderRadius.circular(24),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.08),
-              blurRadius: 6,
-              offset: const Offset(0, 2),
-            ),
-          ],
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(Icons.language, color: onSurface.withOpacity(0.7), size: 20),
-            const SizedBox(width: 8),
-            Text(
-              'EN',
-              style: TextStyle(
-                fontWeight: !isBg ? FontWeight.bold : FontWeight.normal,
-                color: !isBg ? AppTheme.secondaryColor : onSurface,
-              ),
-            ),
-            Switch(
-              value: isBg,
-              onChanged: (val) {
-                ref.read(localeProvider.notifier).toggleLanguage();
-              },
-              activeColor: AppTheme.successColor,
-              inactiveThumbColor: AppTheme.secondaryColor,
-              inactiveTrackColor: AppTheme.secondaryColor.withOpacity(0.2),
-            ),
-            Text(
-              'BG',
-              style: TextStyle(
-                fontWeight: isBg ? FontWeight.bold : FontWeight.normal,
-                color: isBg ? AppTheme.successColor : onSurface,
-              ),
-            ),
-          ],
-        ),
+    
+    return PopupMenuButton<Locale>(
+      icon: Icon(
+        Icons.language,
+        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
       ),
+      tooltip: 'Change language',
+      onSelected: (locale) {
+        ref.read(localeProvider.notifier).setLocale(locale);
+      },
+      itemBuilder: (context) => [
+        PopupMenuItem(
+          value: const Locale('en'),
+          child: Row(
+            children: [
+              Icon(
+                Icons.check,
+                color: currentLocale.languageCode == 'en' 
+                    ? AppTheme.primaryColor 
+                    : Colors.transparent,
+                size: 20,
+              ),
+              const SizedBox(width: 8),
+              const Text('English'),
+            ],
+          ),
+        ),
+        PopupMenuItem(
+          value: const Locale('bg'),
+          child: Row(
+            children: [
+              Icon(
+                Icons.check,
+                color: currentLocale.languageCode == 'bg' 
+                    ? AppTheme.primaryColor 
+                    : Colors.transparent,
+                size: 20,
+              ),
+              const SizedBox(width: 8),
+              const Text('Български'),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

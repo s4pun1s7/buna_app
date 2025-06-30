@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../navigation/app_router.dart';
 import '../../widgets/search_widget.dart';
-import '../../providers/festival_data_provider.dart';
 import '../../providers/favorites_provider.dart';
 import '../../providers/schedule_provider.dart';
 import '../../theme/app_theme.dart';
 import '../../features/venues/venues_data.dart';
-import '../../models/favorites_manager.dart';
 
 /// Enhanced home screen with search and better UI
 class HomeScreen extends ConsumerWidget {
@@ -34,8 +32,8 @@ class HomeScreen extends ConsumerWidget {
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                     colors: [
-                      AppTheme.primaryColor.withOpacity(0.1),
-                      AppTheme.secondaryColor.withOpacity(0.05),
+                      AppTheme.primaryColor.withValues(alpha: 0.1),
+                      AppTheme.secondaryColor.withValues(alpha: 0.05),
                     ],
                   ),
                 ),
@@ -55,7 +53,7 @@ class HomeScreen extends ConsumerWidget {
                       Text(
                         'Discover contemporary art in Varna',
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: colorScheme.onSurface.withOpacity(0.7),
+                          color: colorScheme.onSurface.withValues(alpha: 0.7),
                         ),
                       ),
                     ],
@@ -173,34 +171,34 @@ class HomeScreen extends ConsumerWidget {
     return Row(
       children: [
         Expanded(
-          child: _buildActionCard(
+          child: _buildQuickActionCard(
             context,
-            icon: Icons.location_on,
-            title: 'Venues',
-            subtitle: 'Explore locations',
-            color: AppTheme.secondaryColor,
+            icon: Icons.schedule,
+            title: 'Schedule',
+            subtitle: 'View events',
+            color: AppTheme.primaryColor,
             onTap: () => AppRouter.goToVenues(context),
           ),
         ),
         const SizedBox(width: 12),
         Expanded(
-          child: _buildActionCard(
+          child: _buildQuickActionCard(
             context,
             icon: Icons.map,
             title: 'Map',
-            subtitle: 'View on map',
-            color: AppTheme.primaryColor,
+            subtitle: 'Find venues',
+            color: AppTheme.secondaryColor,
             onTap: () => AppRouter.goToMaps(context),
           ),
         ),
         const SizedBox(width: 12),
         Expanded(
-          child: _buildActionCard(
+          child: _buildQuickActionCard(
             context,
             icon: Icons.article,
             title: 'News',
             subtitle: 'Latest updates',
-            color: AppTheme.accentColor,
+            color: Colors.orange,
             onTap: () => AppRouter.goToNews(context),
           ),
         ),
@@ -208,7 +206,7 @@ class HomeScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildActionCard(
+  Widget _buildQuickActionCard(
     BuildContext context, {
     required IconData icon,
     required String title,
@@ -226,15 +224,12 @@ class HomeScreen extends ConsumerWidget {
           padding: const EdgeInsets.all(16),
           child: Column(
             children: [
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: color.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(12),
-                ),
+              CircleAvatar(
+                radius: 24,
+                backgroundColor: color.withValues(alpha: 0.1),
                 child: Icon(icon, color: color, size: 24),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 12),
               Text(
                 title,
                 style: const TextStyle(
@@ -243,12 +238,12 @@ class HomeScreen extends ConsumerWidget {
                 ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 2),
+              const SizedBox(height: 4),
               Text(
                 subtitle,
                 style: TextStyle(
                   fontSize: 12,
-                  color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                  color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -284,7 +279,7 @@ class HomeScreen extends ConsumerWidget {
               children: [
                 ...schedule.take(3).map((entry) => ListTile(
                   leading: CircleAvatar(
-                    backgroundColor: AppTheme.secondaryColor.withOpacity(0.1),
+                    backgroundColor: AppTheme.secondaryColor.withValues(alpha: 0.1),
                     child: Icon(
                       Icons.event,
                       color: AppTheme.secondaryColor,
@@ -315,10 +310,10 @@ class HomeScreen extends ConsumerWidget {
           child: Center(child: CircularProgressIndicator()),
         ),
       ),
-      error: (error, stack) => _buildEmptyState(
+      error: (error, stackTrace) => _buildEmptyState(
         context,
         icon: Icons.error_outline,
-        title: 'Error loading schedule',
+        title: 'Failed to load schedule',
         subtitle: 'Please try again later',
         actionText: 'Retry',
         onAction: () => ref.refresh(scheduleProvider),
@@ -327,17 +322,17 @@ class HomeScreen extends ConsumerWidget {
   }
 
   Widget _buildFavoritesSection(BuildContext context, WidgetRef ref) {
-    final favorites = ref.watch(favoritesProvider);
-    final favVenues = favorites.favoriteVenues;
-    final favEvents = _getFavoriteEvents(favorites);
+    final favMgr = ref.watch(favoritesProvider);
+    final favVenues = favMgr.favoriteVenues;
+    final favEvents = favMgr.favoriteEvents;
     
     if (favVenues.isEmpty && favEvents.isEmpty) {
       return _buildEmptyState(
         context,
         icon: Icons.favorite_border,
         title: 'No favorites yet',
-        subtitle: 'Start exploring venues and events to add them to your favorites',
-        actionText: 'Explore',
+        subtitle: 'Add venues and events to your favorites to see them here',
+        actionText: 'Browse Venues',
         onAction: () => AppRouter.goToVenues(context),
       );
     }
@@ -355,7 +350,7 @@ class HomeScreen extends ConsumerWidget {
               const SizedBox(height: 8),
               ...favVenues.take(2).map((venue) => ListTile(
                 leading: CircleAvatar(
-                  backgroundColor: AppTheme.secondaryColor.withOpacity(0.1),
+                  backgroundColor: AppTheme.secondaryColor.withValues(alpha: 0.1),
                   child: Icon(
                     Icons.location_on,
                     color: AppTheme.secondaryColor,
@@ -377,15 +372,16 @@ class HomeScreen extends ConsumerWidget {
             if (favEvents.isNotEmpty) ...[
               _buildSectionHeader('Events', Icons.star, AppTheme.primaryColor),
               const SizedBox(height: 8),
-              ...favEvents.take(2).map((eventData) {
-                final venue = eventData['venue'] as Venue?;
-                final event = eventData['event'] as Event?;
-                
-                if (venue == null || event == null) return const SizedBox.shrink();
+              ...favEvents.take(2).map((event) {
+                // Find the venue that contains this event
+                final venue = venues.firstWhere(
+                  (v) => v.events.contains(event),
+                  orElse: () => venues.first,
+                );
                 
                 return ListTile(
                   leading: CircleAvatar(
-                    backgroundColor: AppTheme.primaryColor.withOpacity(0.1),
+                    backgroundColor: AppTheme.primaryColor.withValues(alpha: 0.1),
                     child: Icon(
                       Icons.star,
                       color: AppTheme.primaryColor,
@@ -448,54 +444,66 @@ class HomeScreen extends ConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      height: 100,
-                      decoration: BoxDecoration(
-                        color: AppTheme.secondaryColor.withOpacity(0.1),
-                        borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-                      ),
-                      child: Center(
-                        child: Icon(
-                          Icons.location_on,
-                          size: 40,
-                          color: AppTheme.secondaryColor,
+                    Expanded(
+                      flex: 2,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+                          gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [
+                              AppTheme.primaryColor.withValues(alpha: 0.1),
+                              AppTheme.secondaryColor.withValues(alpha: 0.05),
+                            ],
+                          ),
+                        ),
+                        child: Center(
+                          child: Icon(
+                            Icons.location_city,
+                            size: 48,
+                            color: AppTheme.primaryColor.withValues(alpha: 0.6),
+                          ),
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            venue.name,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
+                    Expanded(
+                      flex: 1,
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              venue.name,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            venue.address,
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                            const SizedBox(height: 4),
+                            Text(
+                              venue.address,
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                              ),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
                             ),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            '${venue.events.length} events',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: AppTheme.secondaryColor,
-                              fontWeight: FontWeight.w600,
+                            const SizedBox(height: 8),
+                            Text(
+                              '${venue.events.length} events',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: AppTheme.secondaryColor,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ],
@@ -526,14 +534,14 @@ class HomeScreen extends ConsumerWidget {
             Icon(
               icon,
               size: 48,
-              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.3),
+              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.4),
             ),
             const SizedBox(height: 16),
             Text(
               title,
               style: const TextStyle(
+                fontSize: 18,
                 fontWeight: FontWeight.bold,
-                fontSize: 16,
               ),
               textAlign: TextAlign.center,
             ),
@@ -542,7 +550,7 @@ class HomeScreen extends ConsumerWidget {
               subtitle,
               style: TextStyle(
                 fontSize: 14,
-                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
               ),
               textAlign: TextAlign.center,
             ),
@@ -555,14 +563,5 @@ class HomeScreen extends ConsumerWidget {
         ),
       ),
     );
-  }
-
-  List<Map<String, dynamic>> _getFavoriteEvents(FavoritesManager favorites) {
-    return [
-      for (final venue in venues)
-        for (final event in venue.events)
-          if (favorites.isEventFavorite(venue, event))
-            {'venue': venue, 'event': event},
-    ];
   }
 } 

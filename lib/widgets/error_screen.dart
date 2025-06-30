@@ -1,128 +1,67 @@
 import 'package:flutter/material.dart';
 import '../services/error_handler.dart';
+import '../theme/app_theme.dart';
 
 class ErrorScreen extends StatelessWidget {
-  final AppException? error;
-  final String? message;
+  final AppException error;
   final VoidCallback? onRetry;
-  final VoidCallback? onBack;
-  final String? retryText;
-  final String? backText;
-  final bool showBackButton;
+  final String? customMessage;
 
   const ErrorScreen({
     super.key,
-    this.error,
-    this.message,
+    required this.error,
     this.onRetry,
-    this.onBack,
-    this.retryText,
-    this.backText,
-    this.showBackButton = true,
+    this.customMessage,
   });
 
   @override
   Widget build(BuildContext context) {
-    final errorHandler = ErrorHandler();
-    final appError = error ?? AppException(message ?? 'An error occurred');
-    
     return Scaffold(
-      body: SafeArea(
+      body: Center(
         child: Padding(
-          padding: const EdgeInsets.all(24.0),
+          padding: const EdgeInsets.all(24),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Error Icon
-              Container(
-                width: 120,
-                height: 120,
-                decoration: BoxDecoration(
-                  color: errorHandler.getErrorColor(appError).withOpacity(0.1),
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  errorHandler.getErrorIcon(appError),
-                  size: 60,
-                  color: errorHandler.getErrorColor(appError),
-                ),
+              Icon(
+                _getErrorIcon(),
+                size: 80,
+                color: Theme.of(context).colorScheme.error.withValues(alpha: 0.6),
               ),
-              
-              const SizedBox(height: 32),
-              
-              // Error Title
+              const SizedBox(height: 24),
               Text(
-                _getErrorTitle(appError),
+                customMessage ?? error.message,
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.bold,
-                  color: errorHandler.getErrorColor(appError),
                 ),
                 textAlign: TextAlign.center,
               ),
-              
-              const SizedBox(height: 16),
-              
-              // Error Message
+              const SizedBox(height: 12),
               Text(
-                errorHandler.getUserFriendlyMessage(appError),
-                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: Colors.grey.shade600,
+                _getErrorMessage(error),
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
                 ),
                 textAlign: TextAlign.center,
               ),
-              
-              const SizedBox(height: 32),
-              
-              // Action Buttons
-              Column(
-                children: [
-                  // Retry Button
-                  if (errorHandler.isRetryable(appError) && onRetry != null)
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton.icon(
-                        onPressed: onRetry,
-                        icon: const Icon(Icons.refresh),
-                        label: Text(retryText ?? 'Try Again'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: errorHandler.getErrorColor(appError),
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                      ),
-                    ),
-                  
-                  if (errorHandler.isRetryable(appError) && onRetry != null)
-                    const SizedBox(height: 16),
-                  
-                  // Back Button
-                  if (showBackButton)
-                    SizedBox(
-                      width: double.infinity,
-                      child: OutlinedButton.icon(
-                        onPressed: onBack ?? () => Navigator.of(context).pop(),
-                        icon: const Icon(Icons.arrow_back),
-                        label: Text(backText ?? 'Go Back'),
-                        style: OutlinedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                      ),
-                    ),
-                ],
+              if (onRetry != null) ...[
+                const SizedBox(height: 32),
+                ElevatedButton.icon(
+                  onPressed: onRetry,
+                  icon: const Icon(Icons.refresh),
+                  label: const Text('Try Again'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppTheme.primaryColor,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  ),
+                ),
+              ],
+              const SizedBox(height: 16),
+              TextButton(
+                onPressed: () => _showErrorDetails(context),
+                child: const Text('Error Details'),
               ),
-              
-              const SizedBox(height: 24),
-              
-              // Additional Help (for specific error types)
-              if (appError is NetworkException) _buildNetworkHelp(context),
-              if (appError is ApiException) _buildApiHelp(context, appError),
-              if (appError is ValidationException) _buildValidationHelp(context),
             ],
           ),
         ),
@@ -130,136 +69,80 @@ class ErrorScreen extends StatelessWidget {
     );
   }
 
-  String _getErrorTitle(AppException error) {
+  IconData _getErrorIcon() {
     switch (error.runtimeType) {
-      case NetworkException:
-        return 'Connection Error';
-      case ApiException:
-        return 'Service Error';
-      case CacheException:
-        return 'Data Error';
-      case ValidationException:
-        return 'Invalid Data';
+      case NetworkException _:
+        return Icons.wifi_off;
+      case ApiException _:
+        return Icons.error_outline;
+      case CacheException _:
+        return Icons.storage;
+      case ValidationException _:
+        return Icons.warning;
       default:
-        return 'Something Went Wrong';
+        return Icons.error;
     }
   }
 
-  Widget _buildNetworkHelp(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.blue.shade50,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.blue.shade200),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(Icons.info_outline, color: Colors.blue.shade700, size: 20),
-              const SizedBox(width: 8),
-              Text(
-                'Network Tips',
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: Colors.blue.shade700,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Text(
-            '• Check your internet connection\n'
-            '• Try switching between WiFi and mobile data\n'
-            '• Restart the app if the problem persists',
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: Colors.blue.shade700,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildApiHelp(BuildContext context, ApiException error) {
-    String helpText = 'The service is temporarily unavailable.';
-    
-    if (error.statusCode == 404) {
-      helpText = 'The requested content was not found.';
-    } else if (error.statusCode == 429) {
-      helpText = 'Too many requests. Please wait a moment before trying again.';
-    } else if (error.statusCode != null && error.statusCode! >= 500) {
-      helpText = 'Our servers are experiencing issues. Please try again later.';
+  String _getErrorMessage(AppException error) {
+    switch (error.runtimeType) {
+      case NetworkException _:
+        return 'Please check your internet connection and try again.';
+      case ApiException _:
+        return 'There was a problem connecting to the server. Please try again later.';
+      case CacheException _:
+        return 'There was a problem loading cached data. Please refresh the page.';
+      case ValidationException _:
+        return 'The data provided is invalid. Please check your input and try again.';
+      default:
+        return 'An unexpected error occurred. Please try again.';
     }
-
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.red.shade50,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.red.shade200),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(Icons.info_outline, color: Colors.red.shade700, size: 20),
-              const SizedBox(width: 8),
-              Text(
-                'Service Information',
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: Colors.red.shade700,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Text(
-            helpText,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: Colors.red.shade700,
-            ),
-          ),
-        ],
-      ),
-    );
   }
 
-  Widget _buildValidationHelp(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.amber.shade50,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.amber.shade200),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
+  void _showErrorDetails(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Error Details'),
+        content: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.info_outline, color: Colors.amber.shade700, size: 20),
-              const SizedBox(width: 8),
-              Text(
-                'Data Issue',
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: Colors.amber.shade700,
-                  fontWeight: FontWeight.bold,
+              Text('Type: ${error.runtimeType}'),
+              const SizedBox(height: 8),
+              Text('Message: ${error.message}'),
+              if (error.code != null) ...[
+                const SizedBox(height: 8),
+                Text('Code: ${error.code}'),
+              ],
+              if (error.originalError != null) ...[
+                const SizedBox(height: 8),
+                Text('Original Error: ${error.originalError}'),
+              ],
+              if (error.stackTrace != null) ...[
+                const SizedBox(height: 8),
+                const Text('Stack Trace:'),
+                const SizedBox(height: 4),
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[100],
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: Text(
+                    error.stackTrace.toString(),
+                    style: const TextStyle(fontSize: 12, fontFamily: 'monospace'),
+                  ),
                 ),
-              ),
+              ],
             ],
           ),
-          const SizedBox(height: 8),
-          Text(
-            'The data received is not in the expected format. '
-            'This might be a temporary issue with the server.',
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: Colors.amber.shade700,
-            ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Close'),
           ),
         ],
       ),
@@ -281,9 +164,8 @@ class SimpleErrorScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ErrorScreen(
-      message: message,
+      error: AppException(message),
       onRetry: onRetry,
-      showBackButton: false,
     );
   }
 }

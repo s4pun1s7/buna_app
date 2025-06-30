@@ -165,7 +165,7 @@ class _NewsScreenState extends ConsumerState<NewsScreen> {
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: InkWell(
-        onTap: () => _launchUrl(article.link),
+        onTap: () => _launchUrl(article.url),
         borderRadius: BorderRadius.circular(12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

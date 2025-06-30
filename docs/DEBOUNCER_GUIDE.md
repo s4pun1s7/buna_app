@@ -152,4 +152,13 @@ Test debouncers with:
 - Memory usage
 - Performance metrics
 
-This ensures debouncers work correctly under various conditions and provide the expected performance benefits. 
+This ensures debouncers work correctly under various conditions and provide the expected performance benefits.
+
+## Recent Updates (2024)
+
+- **Debouncers are now fully integrated** throughout the app for search, scroll, and API rate limiting.
+- **Favorites logic** in the Home Screen has been refactored for robustness and now uses the provider's `favoriteVenues` and `favoriteEvents` directly.
+- **ErrorScreen** has been updated for consistency: it now requires an `error` parameter and no longer uses the deprecated `showBackButton` or `message` parameters. All usages and tests have been updated accordingly.
+- **Navigation and error handling** have been improved for maintainability and best practices.
+
+For more details, see the codebase and the main README. 

@@ -20,8 +20,13 @@ class MainLayout extends ConsumerStatefulWidget {
 }
 
 class _MainLayoutState extends ConsumerState<MainLayout> {
+  int _currentIndex = 0;
+
   @override
   Widget build(BuildContext context) {
+    // Update current index based on route
+    _updateCurrentIndex();
+    
     return Scaffold(
       appBar: _buildAppBar(),
       body: widget.child,
@@ -29,6 +34,49 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
       floatingActionButton: _buildFloatingActionButton(),
       endDrawer: _buildEndDrawer(),
     );
+  }
+
+  void _updateCurrentIndex() {
+    final location = GoRouterState.of(context).uri.path;
+    switch (location) {
+      case AppRoutes.home:
+        _currentIndex = 0;
+        break;
+      case AppRoutes.venues:
+        _currentIndex = 1;
+        break;
+      case AppRoutes.maps:
+        _currentIndex = 2;
+        break;
+      case AppRoutes.news:
+        _currentIndex = 3;
+        break;
+      case AppRoutes.info:
+        _currentIndex = 4;
+        break;
+      default:
+        _currentIndex = 0;
+    }
+  }
+
+  void _onNavBarTap(int index) {
+    switch (index) {
+      case 0:
+        context.go(AppRoutes.home);
+        break;
+      case 1:
+        context.go(AppRoutes.venues);
+        break;
+      case 2:
+        context.go(AppRoutes.maps);
+        break;
+      case 3:
+        context.go(AppRoutes.news);
+        break;
+      case 4:
+        context.go(AppRoutes.info);
+        break;
+    }
   }
 
   PreferredSizeWidget _buildAppBar() {
@@ -285,7 +333,10 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
   }
 
   Widget _buildBottomNavigation() {
-    return const BunaNavBar();
+    return BunaNavBar(
+      currentIndex: _currentIndex,
+      onTap: _onNavBarTap,
+    );
   }
 
   Widget _buildFloatingActionButton() {
