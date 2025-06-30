@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../widgets/loading_indicator.dart';
-import '../../widgets/error_screen.dart';
+import '../../widgets/common/index.dart';
 import '../../services/error_handler.dart';
 
 /// Sponsor model for the festival
@@ -26,13 +25,7 @@ class Sponsor {
 }
 
 /// Sponsor levels
-enum SponsorLevel {
-  platinum,
-  gold,
-  silver,
-  bronze,
-  partner,
-}
+enum SponsorLevel { platinum, gold, silver, bronze, partner }
 
 /// Sponsors screen showing all festival sponsors
 class SponsorsScreen extends ConsumerStatefulWidget {
@@ -71,7 +64,8 @@ class _SponsorsScreenState extends ConsumerState<SponsorsScreen> {
           id: '1',
           name: 'Varna Municipality',
           category: 'Government',
-          description: 'Official partner and supporter of Buna Festival, providing venues and infrastructure support.',
+          description:
+              'Official partner and supporter of Buna Festival, providing venues and infrastructure support.',
           level: SponsorLevel.platinum,
           website: 'https://varna.bg',
         ),
@@ -79,7 +73,8 @@ class _SponsorsScreenState extends ConsumerState<SponsorsScreen> {
           id: '2',
           name: 'Bulgarian National Bank',
           category: 'Financial',
-          description: 'Supporting cultural initiatives and promoting Bulgarian arts and culture.',
+          description:
+              'Supporting cultural initiatives and promoting Bulgarian arts and culture.',
           level: SponsorLevel.gold,
           website: 'https://bnb.bg',
         ),
@@ -87,7 +82,8 @@ class _SponsorsScreenState extends ConsumerState<SponsorsScreen> {
           id: '3',
           name: 'Varna Free University',
           category: 'Education',
-          description: 'Academic partner providing research support and student participation opportunities.',
+          description:
+              'Academic partner providing research support and student participation opportunities.',
           level: SponsorLevel.gold,
           website: 'https://vfu.bg',
         ),
@@ -95,7 +91,8 @@ class _SponsorsScreenState extends ConsumerState<SponsorsScreen> {
           id: '4',
           name: 'Bulgarian Cultural Institute',
           category: 'Cultural',
-          description: 'Promoting Bulgarian culture and supporting international cultural exchange.',
+          description:
+              'Promoting Bulgarian culture and supporting international cultural exchange.',
           level: SponsorLevel.silver,
           website: 'https://bci.bg',
         ),
@@ -103,7 +100,8 @@ class _SponsorsScreenState extends ConsumerState<SponsorsScreen> {
           id: '5',
           name: 'Varna Art Gallery',
           category: 'Arts',
-          description: 'Local art institution providing exhibition spaces and curatorial support.',
+          description:
+              'Local art institution providing exhibition spaces and curatorial support.',
           level: SponsorLevel.silver,
           website: 'https://varnaartgallery.bg',
         ),
@@ -111,7 +109,8 @@ class _SponsorsScreenState extends ConsumerState<SponsorsScreen> {
           id: '6',
           name: 'Black Sea Tourism',
           category: 'Tourism',
-          description: 'Promoting cultural tourism and supporting local cultural events.',
+          description:
+              'Promoting cultural tourism and supporting local cultural events.',
           level: SponsorLevel.bronze,
           website: 'https://blackseatourism.bg',
         ),
@@ -119,7 +118,8 @@ class _SponsorsScreenState extends ConsumerState<SponsorsScreen> {
           id: '7',
           name: 'Varna Port Authority',
           category: 'Infrastructure',
-          description: 'Providing logistical support and access to port facilities for installations.',
+          description:
+              'Providing logistical support and access to port facilities for installations.',
           level: SponsorLevel.bronze,
           website: 'https://varnaport.bg',
         ),
@@ -127,7 +127,8 @@ class _SponsorsScreenState extends ConsumerState<SponsorsScreen> {
           id: '8',
           name: 'Local Artists Collective',
           category: 'Community',
-          description: 'Community partner supporting local artist participation and workshops.',
+          description:
+              'Community partner supporting local artist participation and workshops.',
           level: SponsorLevel.partner,
           website: 'https://localartists.bg',
         ),
@@ -135,7 +136,8 @@ class _SponsorsScreenState extends ConsumerState<SponsorsScreen> {
           id: '9',
           name: 'Varna Cultural Center',
           category: 'Cultural',
-          description: 'Providing performance spaces and technical support for festival events.',
+          description:
+              'Providing performance spaces and technical support for festival events.',
           level: SponsorLevel.partner,
           website: 'https://varnacultural.bg',
         ),
@@ -143,7 +145,8 @@ class _SponsorsScreenState extends ConsumerState<SponsorsScreen> {
           id: '10',
           name: 'Bulgarian Arts Foundation',
           category: 'Foundation',
-          description: 'Supporting emerging artists and providing grants for festival participants.',
+          description:
+              'Supporting emerging artists and providing grants for festival participants.',
           level: SponsorLevel.partner,
           website: 'https://bulgarianarts.bg',
         ),
@@ -202,9 +205,7 @@ class _SponsorsScreenState extends ConsumerState<SponsorsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _buildBody(),
-    );
+    return Scaffold(body: _buildBody());
   }
 
   Widget _buildBody() {
@@ -226,9 +227,7 @@ class _SponsorsScreenState extends ConsumerState<SponsorsScreen> {
     return Column(
       children: [
         _buildLevelFilter(),
-        Expanded(
-          child: _buildSponsorsList(),
-        ),
+        Expanded(child: _buildSponsorsList()),
       ],
     );
   }
@@ -255,21 +254,23 @@ class _SponsorsScreenState extends ConsumerState<SponsorsScreen> {
               },
             ),
           ),
-          ...SponsorLevel.values.map((level) => Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 4),
-            child: ChoiceChip(
-              label: Text(_getLevelName(level)),
-              selected: _selectedLevel == level,
-              onSelected: (selected) {
-                if (selected) {
-                  setState(() {
-                    _selectedLevel = level;
-                  });
-                  _filterSponsors();
-                }
-              },
+          ...SponsorLevel.values.map(
+            (level) => Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              child: ChoiceChip(
+                label: Text(_getLevelName(level)),
+                selected: _selectedLevel == level,
+                onSelected: (selected) {
+                  if (selected) {
+                    setState(() {
+                      _selectedLevel = level;
+                    });
+                    _filterSponsors();
+                  }
+                },
+              ),
             ),
-          )),
+          ),
         ],
       ),
     );
@@ -323,22 +324,27 @@ class _SponsorsScreenState extends ConsumerState<SponsorsScreen> {
                           children: [
                             Text(
                               sponsor.name,
-                              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
+                              style: Theme.of(context).textTheme.titleLarge
+                                  ?.copyWith(fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(height: 4),
                             Text(
                               sponsor.category,
-                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                color: Theme.of(context).colorScheme.outline,
-                              ),
+                              style: Theme.of(context).textTheme.bodyMedium
+                                  ?.copyWith(
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.outline,
+                                  ),
                             ),
                           ],
                         ),
                       ),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
                         decoration: BoxDecoration(
                           color: _getLevelColor(sponsor.level),
                           borderRadius: BorderRadius.circular(12),
@@ -461,4 +467,4 @@ class _SponsorsScreenState extends ConsumerState<SponsorsScreen> {
       ),
     );
   }
-} 
+}

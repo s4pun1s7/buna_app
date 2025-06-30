@@ -36,7 +36,7 @@ class AppRouteObserver extends RouteObserver<PageRoute<dynamic>> {
   ) {
     final routeName = route.settings.name ?? 'unknown';
     final previousRouteName = previousRoute?.settings.name ?? 'none';
-    
+
     // Track route changes for analytics
     AnalyticsService.logEvent(
       name: 'route_change',
@@ -47,8 +47,8 @@ class AppRouteObserver extends RouteObserver<PageRoute<dynamic>> {
         'timestamp': DateTime.now().toIso8601String(),
       },
     );
-    
+
     // Debug logging
     debugPrint('Route $action: $previousRouteName -> $routeName');
   }
-} 
+}

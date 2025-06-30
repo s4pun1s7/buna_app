@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../widgets/loading_indicator.dart';
+import '../../widgets/common/index.dart';
 
 /// QR code scanner screen for festival interactions
 class QRScreen extends ConsumerStatefulWidget {
@@ -30,10 +30,7 @@ class _QRScreenState extends ConsumerState<QRScreen> {
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: _buildBody(),
-      ),
+      body: Padding(padding: const EdgeInsets.all(16), child: _buildBody()),
     );
   }
 
@@ -41,9 +38,7 @@ class _QRScreenState extends ConsumerState<QRScreen> {
     return Column(
       children: [
         _buildHeader(),
-        Expanded(
-          child: _buildScannerArea(),
-        ),
+        Expanded(child: _buildScannerArea()),
         _buildBottomSection(),
       ],
     );
@@ -57,9 +52,9 @@ class _QRScreenState extends ConsumerState<QRScreen> {
         children: [
           Text(
             'Scan Festival QR Codes',
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
           Text(
@@ -104,8 +99,14 @@ class _QRScreenState extends ConsumerState<QRScreen> {
                     height: 30,
                     decoration: BoxDecoration(
                       border: Border(
-                        top: BorderSide(color: Theme.of(context).primaryColor, width: 3),
-                        left: BorderSide(color: Theme.of(context).primaryColor, width: 3),
+                        top: BorderSide(
+                          color: Theme.of(context).primaryColor,
+                          width: 3,
+                        ),
+                        left: BorderSide(
+                          color: Theme.of(context).primaryColor,
+                          width: 3,
+                        ),
                       ),
                     ),
                   ),
@@ -118,8 +119,14 @@ class _QRScreenState extends ConsumerState<QRScreen> {
                     height: 30,
                     decoration: BoxDecoration(
                       border: Border(
-                        top: BorderSide(color: Theme.of(context).primaryColor, width: 3),
-                        right: BorderSide(color: Theme.of(context).primaryColor, width: 3),
+                        top: BorderSide(
+                          color: Theme.of(context).primaryColor,
+                          width: 3,
+                        ),
+                        right: BorderSide(
+                          color: Theme.of(context).primaryColor,
+                          width: 3,
+                        ),
                       ),
                     ),
                   ),
@@ -132,8 +139,14 @@ class _QRScreenState extends ConsumerState<QRScreen> {
                     height: 30,
                     decoration: BoxDecoration(
                       border: Border(
-                        bottom: BorderSide(color: Theme.of(context).primaryColor, width: 3),
-                        left: BorderSide(color: Theme.of(context).primaryColor, width: 3),
+                        bottom: BorderSide(
+                          color: Theme.of(context).primaryColor,
+                          width: 3,
+                        ),
+                        left: BorderSide(
+                          color: Theme.of(context).primaryColor,
+                          width: 3,
+                        ),
                       ),
                     ),
                   ),
@@ -146,8 +159,14 @@ class _QRScreenState extends ConsumerState<QRScreen> {
                     height: 30,
                     decoration: BoxDecoration(
                       border: Border(
-                        bottom: BorderSide(color: Theme.of(context).primaryColor, width: 3),
-                        right: BorderSide(color: Theme.of(context).primaryColor, width: 3),
+                        bottom: BorderSide(
+                          color: Theme.of(context).primaryColor,
+                          width: 3,
+                        ),
+                        right: BorderSide(
+                          color: Theme.of(context).primaryColor,
+                          width: 3,
+                        ),
                       ),
                     ),
                   ),
@@ -171,7 +190,9 @@ class _QRScreenState extends ConsumerState<QRScreen> {
                       ),
                       child: const LinearProgressIndicator(
                         backgroundColor: Colors.transparent,
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.transparent),
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          Colors.transparent,
+                        ),
                       ),
                     ),
                   ),
@@ -180,7 +201,9 @@ class _QRScreenState extends ConsumerState<QRScreen> {
                   child: Icon(
                     Icons.qr_code_scanner,
                     size: 64,
-                    color: Theme.of(context).primaryColor.withValues(alpha: 0.3),
+                    color: Theme.of(
+                      context,
+                    ).primaryColor.withValues(alpha: 0.3),
                   ),
                 ),
               ],
@@ -190,9 +213,9 @@ class _QRScreenState extends ConsumerState<QRScreen> {
           // Instructions
           Text(
             'Position the QR code within the frame',
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
           Text(
@@ -246,10 +269,7 @@ class _QRScreenState extends ConsumerState<QRScreen> {
           children: [
             Row(
               children: [
-                Icon(
-                  Icons.qr_code,
-                  color: Theme.of(context).primaryColor,
-                ),
+                Icon(Icons.qr_code, color: Theme.of(context).primaryColor),
                 const SizedBox(width: 8),
                 Text(
                   'Last Scanned',
@@ -326,11 +346,7 @@ class _QRScreenState extends ConsumerState<QRScreen> {
           padding: const EdgeInsets.all(16),
           child: Column(
             children: [
-              Icon(
-                icon,
-                size: 32,
-                color: Theme.of(context).primaryColor,
-              ),
+              Icon(icon, size: 32, color: Theme.of(context).primaryColor),
               const SizedBox(height: 8),
               Text(
                 title,
@@ -376,9 +392,9 @@ class _QRScreenState extends ConsumerState<QRScreen> {
       'buna://workshop/digital-art',
       'buna://reward/free-coffee',
     ];
-    
+
     final randomCode = mockCodes[DateTime.now().millisecond % mockCodes.length];
-    
+
     setState(() {
       _lastScannedCode = randomCode;
       _scanHistory.add(randomCode);
@@ -451,7 +467,9 @@ class _QRScreenState extends ConsumerState<QRScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Event Information'),
-        content: const Text('Opening Ceremony\n\nTime: 7:00 PM\nVenue: Main Square\n\nJoin us for the spectacular opening of Buna Festival 2024!'),
+        content: const Text(
+          'Opening Ceremony\n\nTime: 7:00 PM\nVenue: Main Square\n\nJoin us for the spectacular opening of Buna Festival 2024!',
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -467,7 +485,9 @@ class _QRScreenState extends ConsumerState<QRScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Venue Information'),
-        content: const Text('Main Square\n\nAddress: Central Square, Varna\n\nPrimary venue for major festival events.'),
+        content: const Text(
+          'Main Square\n\nAddress: Central Square, Varna\n\nPrimary venue for major festival events.',
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -483,7 +503,9 @@ class _QRScreenState extends ConsumerState<QRScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Artist Information'),
-        content: const Text('Elena Rodriguez\n\nLight artist known for large-scale environmental installations.'),
+        content: const Text(
+          'Elena Rodriguez\n\nLight artist known for large-scale environmental installations.',
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -499,7 +521,9 @@ class _QRScreenState extends ConsumerState<QRScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Workshop Information'),
-        content: const Text('Digital Art Creation\n\nLearn to create digital art using AI tools with Hiroshi Tanaka.'),
+        content: const Text(
+          'Digital Art Creation\n\nLearn to create digital art using AI tools with Hiroshi Tanaka.',
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -515,7 +539,9 @@ class _QRScreenState extends ConsumerState<QRScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Reward Unlocked!'),
-        content: const Text('Free Coffee\n\nShow this code at any festival café to claim your free coffee!'),
+        content: const Text(
+          'Free Coffee\n\nShow this code at any festival café to claim your free coffee!',
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -531,7 +557,9 @@ class _QRScreenState extends ConsumerState<QRScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('QR Code Information'),
-        content: Text('Code: $code\n\nThis QR code contains festival information.'),
+        content: Text(
+          'Code: $code\n\nThis QR code contains festival information.',
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -632,4 +660,4 @@ class _QRScreenState extends ConsumerState<QRScreen> {
       ),
     );
   }
-} 
+}

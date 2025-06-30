@@ -4,7 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:intl/intl.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
-import 'package:buna_app/widgets/error_screen.dart';
+import '../../widgets/common/index.dart';
 import 'package:buna_app/providers/festival_data_provider.dart';
 import 'package:buna_app/models/festival_data.dart';
 import 'package:buna_app/services/error_handler.dart';
@@ -48,7 +48,7 @@ class _NewsScreenState extends ConsumerState<NewsScreen> {
 
   Future<void> _loadMoreNews() async {
     if (_isLoadingMore) return;
-    
+
     setState(() {
       _isLoadingMore = true;
     });
@@ -89,9 +89,7 @@ class _NewsScreenState extends ConsumerState<NewsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _buildBody(),
-    );
+    return Scaffold(body: _buildBody());
   }
 
   Widget _buildBody() {
@@ -173,7 +171,9 @@ class _NewsScreenState extends ConsumerState<NewsScreen> {
           children: [
             if (article.featuredImageUrl != null)
               ClipRRect(
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(12),
+                ),
                 child: CachedNetworkImage(
                   imageUrl: article.featuredImageUrl!,
                   height: 200,
@@ -187,7 +187,12 @@ class _NewsScreenState extends ConsumerState<NewsScreen> {
                   errorWidget: (context, url, error) => Container(
                     height: 200,
                     color: Theme.of(context).colorScheme.surface,
-                    child: Icon(Icons.image, size: 64, color: Theme.of(context).colorScheme.outline, semanticLabel: 'Image not available'),
+                    child: Icon(
+                      Icons.image,
+                      size: 64,
+                      color: Theme.of(context).colorScheme.outline,
+                      semanticLabel: 'Image not available',
+                    ),
                   ),
                 ),
               ),
@@ -198,7 +203,12 @@ class _NewsScreenState extends ConsumerState<NewsScreen> {
                 children: [
                   Row(
                     children: [
-                      Icon(Icons.access_time, size: 16, color: Theme.of(context).colorScheme.outline, semanticLabel: 'Date'),
+                      Icon(
+                        Icons.access_time,
+                        size: 16,
+                        color: Theme.of(context).colorScheme.outline,
+                        semanticLabel: 'Date',
+                      ),
                       const SizedBox(width: 4),
                       Text(
                         _formatDate(article.date),
@@ -207,7 +217,12 @@ class _NewsScreenState extends ConsumerState<NewsScreen> {
                         ),
                       ),
                       const Spacer(),
-                      Icon(Icons.open_in_new, size: 16, color: Theme.of(context).colorScheme.outline, semanticLabel: 'Open article'),
+                      Icon(
+                        Icons.open_in_new,
+                        size: 16,
+                        color: Theme.of(context).colorScheme.outline,
+                        semanticLabel: 'Open article',
+                      ),
                     ],
                   ),
                   const SizedBox(height: 8),

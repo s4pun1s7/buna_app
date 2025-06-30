@@ -10,11 +10,11 @@ final themeProvider = StateNotifierProvider<ThemeNotifier, ThemeMode>((ref) {
 
 class ThemeNotifier extends StateNotifier<ThemeMode> {
   static const String _themeKey = 'theme_mode';
-  
+
   ThemeNotifier() : super(ThemeMode.system) {
     _loadTheme();
   }
-  
+
   /// Load saved theme preference
   Future<void> _loadTheme() async {
     try {
@@ -26,7 +26,7 @@ class ThemeNotifier extends StateNotifier<ThemeMode> {
       state = ThemeMode.system;
     }
   }
-  
+
   /// Save theme preference
   Future<void> _saveTheme(ThemeMode theme) async {
     try {
@@ -36,19 +36,21 @@ class ThemeNotifier extends StateNotifier<ThemeMode> {
       // Ignore save errors
     }
   }
-  
+
   /// Set theme mode
   Future<void> setTheme(ThemeMode theme) async {
     state = theme;
     await _saveTheme(theme);
   }
-  
+
   /// Toggle between light and dark mode
   Future<void> toggleTheme() async {
-    final newTheme = state == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
+    final newTheme = state == ThemeMode.light
+        ? ThemeMode.dark
+        : ThemeMode.light;
     await setTheme(newTheme);
   }
-  
+
   /// Get current theme data
   ThemeData getThemeData(ThemeMode mode) {
     switch (mode) {
@@ -61,14 +63,14 @@ class ThemeNotifier extends StateNotifier<ThemeMode> {
         return AppTheme.lightTheme;
     }
   }
-  
+
   /// Check if current theme is dark
   bool get isDarkMode {
     return state == ThemeMode.dark;
   }
-  
+
   /// Check if current theme is light
   bool get isLightMode {
     return state == ThemeMode.light;
   }
-} 
+}

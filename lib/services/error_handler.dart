@@ -10,12 +10,7 @@ class AppException implements Exception {
   final dynamic originalError;
   final StackTrace? stackTrace;
 
-  AppException(
-    this.message, {
-    this.code,
-    this.originalError,
-    this.stackTrace,
-  });
+  AppException(this.message, {this.code, this.originalError, this.stackTrace});
 
   @override
   String toString() => 'AppException: $message';
@@ -126,7 +121,11 @@ class ErrorHandler {
   }
 
   /// Handle API-specific errors
-  ApiException handleApiError(dynamic error, String endpoint, [int? statusCode]) {
+  ApiException handleApiError(
+    dynamic error,
+    String endpoint, [
+    int? statusCode,
+  ]) {
     _logError(error);
 
     if (error is ApiException) {
@@ -319,4 +318,4 @@ extension StreamErrorHandling<T> on Stream<T> {
       throw errorHandler.handleError(error, stackTrace);
     });
   }
-} 
+}

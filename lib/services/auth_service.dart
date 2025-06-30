@@ -18,18 +18,23 @@ class AuthService {
         final result = await _auth.signInWithPopup(googleProvider);
         debugPrint('Google sign-in: signInWithPopup complete');
         final idToken = await result.user?.getIdToken();
-        final accessToken = result.credential is OAuthCredential ? (result.credential as OAuthCredential).accessToken : null;
+        final accessToken = result.credential is OAuthCredential
+            ? (result.credential as OAuthCredential).accessToken
+            : null;
         await _saveCredentials(idToken, accessToken);
         return result;
       } else {
         debugPrint('Google sign-in: running on mobile');
         final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-        debugPrint('Google sign-in: googleUser = ' + (googleUser?.email ?? 'null'));
+        debugPrint(
+          'Google sign-in: googleUser = ' + (googleUser?.email ?? 'null'),
+        );
         if (googleUser == null) {
           debugPrint('Google sign-in: user cancelled');
           return null;
         }
-        final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+        final GoogleSignInAuthentication googleAuth =
+            await googleUser.authentication;
         debugPrint('Google sign-in: got authentication');
         final credential = GoogleAuthProvider.credential(
           accessToken: googleAuth.accessToken,
@@ -73,10 +78,7 @@ class AuthService {
     final prefs = await SharedPreferences.getInstance();
     final idToken = prefs.getString('auth_id_token');
     final accessToken = prefs.getString('auth_access_token');
-    return {
-      'idToken': idToken,
-      'accessToken': accessToken,
-    };
+    return {'idToken': idToken, 'accessToken': accessToken};
   }
 
   /// Clear saved credentials
@@ -102,7 +104,9 @@ class AuthService {
       try {
         final result = await _auth.getRedirectResult();
         if (result.user != null) {
-          debugPrint('Google sign-in: redirect result user = \\${result.user!.email}');
+          debugPrint(
+            'Google sign-in: redirect result user = \\${result.user!.email}',
+          );
           return result;
         }
       } catch (e) {
@@ -112,4 +116,4 @@ class AuthService {
     }
     return null;
   }
-} 
+}

@@ -14,7 +14,7 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _messageController = TextEditingController();
-  
+
   String _selectedCategory = 'General';
   int _rating = 0;
   bool _isSubmitting = false;
@@ -147,9 +147,9 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
         const SizedBox(height: 16),
         Text(
           'Share Your Feedback',
-          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
+          style: Theme.of(
+            context,
+          ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 8),
         Text(
@@ -168,25 +168,20 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
       children: [
         Text(
           'Category',
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
+          style: Theme.of(
+            context,
+          ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 8),
         DropdownButtonFormField<String>(
           value: _selectedCategory,
           decoration: InputDecoration(
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
             filled: true,
             fillColor: Theme.of(context).colorScheme.surface,
           ),
           items: _categories.map((category) {
-            return DropdownMenuItem(
-              value: category,
-              child: Text(category),
-            );
+            return DropdownMenuItem(value: category, child: Text(category));
           }).toList(),
           onChanged: (value) {
             setState(() {
@@ -204,9 +199,9 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
       children: [
         Text(
           'Overall Rating',
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
+          style: Theme.of(
+            context,
+          ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 8),
         Row(
@@ -244,9 +239,7 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
       controller: _nameController,
       decoration: InputDecoration(
         labelText: 'Name (Optional)',
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
         filled: true,
         fillColor: Theme.of(context).colorScheme.surface,
         prefixIcon: const Icon(Icons.person),
@@ -259,9 +252,7 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
       controller: _emailController,
       decoration: InputDecoration(
         labelText: 'Email (Optional)',
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
         filled: true,
         fillColor: Theme.of(context).colorScheme.surface,
         prefixIcon: const Icon(Icons.email),
@@ -283,9 +274,7 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
       controller: _messageController,
       decoration: InputDecoration(
         labelText: 'Message *',
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
         filled: true,
         fillColor: Theme.of(context).colorScheme.surface,
         prefixIcon: const Icon(Icons.message),
@@ -343,20 +332,16 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
           children: [
             Text(
               'Need Immediate Help?',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             const Text(
               'For urgent issues during the festival, please contact our support team:',
             ),
             const SizedBox(height: 12),
-            _buildContactItem(
-              Icons.phone,
-              '+359 52 123 456',
-              'Call Support',
-            ),
+            _buildContactItem(Icons.phone, '+359 52 123 456', 'Call Support'),
             const SizedBox(height: 8),
             _buildContactItem(
               Icons.email,
@@ -384,10 +369,7 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                text,
-                style: const TextStyle(fontWeight: FontWeight.w500),
-              ),
+              Text(text, style: const TextStyle(fontWeight: FontWeight.w500)),
               Text(
                 label,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -406,11 +388,18 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.check_circle, color: Colors.green, size: 64, semanticLabel: 'Success'),
+          Icon(
+            Icons.check_circle,
+            color: Colors.green,
+            size: 64,
+            semanticLabel: 'Success',
+          ),
           const SizedBox(height: 16),
           Text(
             'Thank you for your feedback!',
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+            style: Theme.of(
+              context,
+            ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
           Text(
@@ -438,4 +427,4 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
       ),
     );
   }
-} 
+}

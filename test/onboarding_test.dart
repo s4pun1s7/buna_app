@@ -4,7 +4,7 @@ import 'package:buna_app/navigation/route_guards.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
-  
+
   group('Onboarding Tests', () {
     setUp(() async {
       // Clear any existing preferences before each test
@@ -27,10 +27,10 @@ void main() {
       // First mark as completed
       await RouteGuards.markOnboardingCompleted();
       expect(await RouteGuards.hasCompletedOnboarding(), true);
-      
+
       // Then reset
       await RouteGuards.resetOnboardingStatus();
       expect(await RouteGuards.hasCompletedOnboarding(), false);
     });
   });
-} 
+}

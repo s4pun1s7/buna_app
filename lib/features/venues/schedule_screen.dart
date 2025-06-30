@@ -11,7 +11,7 @@ class ScheduleScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final scheduleAsync = ref.watch(scheduleProvider);
     final favMgr = ref.watch(favoritesProvider);
-    
+
     return Scaffold(
       appBar: AppBar(title: const Text('Festival Schedule')),
       body: scheduleAsync.when(

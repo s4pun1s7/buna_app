@@ -17,7 +17,7 @@ class BunaApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final themeMode = ref.watch(themeProvider);
     final locale = ref.watch(localeProvider);
-    
+
     return MaterialApp.router(
       title: 'Buna Festival',
       theme: AppTheme.lightTheme,
@@ -31,20 +31,20 @@ class BunaApp extends ConsumerWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      
+
       // Router configuration
       routerConfig: AppRouter.router,
-      
+
       // Debug banner
       debugShowCheckedModeBanner: false,
-      
+
       // Builder for analytics
       builder: (context, child) {
         // Track app lifecycle
         WidgetsBinding.instance.addPostFrameCallback((_) {
           AnalyticsService.logEvent(name: 'app_open');
         });
-        
+
         return child!;
       },
     );

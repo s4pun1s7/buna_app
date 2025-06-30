@@ -50,7 +50,9 @@ class AppTheme {
           foregroundColor: Colors.white,
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
           elevation: 2,
         ),
       ),
@@ -61,7 +63,9 @@ class AppTheme {
           side: const BorderSide(color: secondaryColor, width: 2),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
         ),
       ),
       textButtonTheme: TextButtonThemeData(
@@ -96,12 +100,18 @@ class AppTheme {
           borderRadius: BorderRadius.circular(12),
           borderSide: const BorderSide(color: secondaryColor, width: 2),
         ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 16,
+        ),
       ),
       chipTheme: ChipThemeData(
         backgroundColor: Colors.grey.shade100,
         selectedColor: secondaryColor,
-        labelStyle: const TextStyle(fontWeight: FontWeight.w500, color: Colors.black),
+        labelStyle: const TextStyle(
+          fontWeight: FontWeight.w500,
+          color: Colors.black,
+        ),
         secondaryLabelStyle: const TextStyle(color: Colors.white),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       ),
@@ -147,7 +157,9 @@ class AppTheme {
           foregroundColor: Colors.white,
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
           elevation: 2,
         ),
       ),
@@ -157,7 +169,9 @@ class AppTheme {
           side: const BorderSide(color: secondaryColor, width: 2),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
         ),
       ),
       textButtonTheme: TextButtonThemeData(
@@ -191,12 +205,18 @@ class AppTheme {
           borderRadius: BorderRadius.circular(12),
           borderSide: const BorderSide(color: secondaryColor, width: 2),
         ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 16,
+        ),
       ),
       chipTheme: ChipThemeData(
         backgroundColor: const Color(0xFF2A2A2A),
         selectedColor: secondaryColor,
-        labelStyle: const TextStyle(fontWeight: FontWeight.w500, color: Colors.white),
+        labelStyle: const TextStyle(
+          fontWeight: FontWeight.w500,
+          color: Colors.white,
+        ),
         secondaryLabelStyle: const TextStyle(color: Colors.black),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       ),

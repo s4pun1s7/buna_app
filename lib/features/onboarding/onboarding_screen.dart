@@ -5,8 +5,7 @@ import '../../providers/locale_provider.dart';
 import '../../navigation/route_guards.dart';
 import '../../navigation/route_constants.dart';
 import '../../services/auth_service.dart';
-import 'package:buna_app/widgets/loading_indicator.dart';
-import 'package:buna_app/widgets/error_screen.dart';
+import '../../widgets/common/index.dart';
 
 class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
@@ -32,7 +31,11 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
 
   Future<void> _signInWithGoogle() async {
     if (_isLoading) return;
-    setState(() { _isLoading = true; _authError = null; _statusMessage = 'Starting Google sign-in...'; });
+    setState(() {
+      _isLoading = true;
+      _authError = null;
+      _statusMessage = 'Starting Google sign-in...';
+    });
     try {
       _showStatusBanner('Opening Google sign-in dialog...');
       showDialog(
@@ -76,7 +79,10 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
 
   Future<void> _signInAnonymously() async {
     if (_isLoading) return;
-    setState(() { _isLoading = true; _authError = null; });
+    setState(() {
+      _isLoading = true;
+      _authError = null;
+    });
     try {
       showDialog(
         context: context,
@@ -89,7 +95,10 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     } catch (e) {
       if (mounted) {
         Navigator.of(context).maybePop();
-        setState(() { _isLoading = false; _authError = 'Anonymous sign-in failed. Please try again.'; });
+        setState(() {
+          _isLoading = false;
+          _authError = 'Anonymous sign-in failed. Please try again.';
+        });
         showDialog(
           context: context,
           builder: (_) => AnimatedErrorDialog(
@@ -120,7 +129,9 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
               fontWeight: FontWeight.w600,
             ),
           ),
-          backgroundColor: isDark ? const Color(0xFF333333) : const Color(0xFFD6ECFF),
+          backgroundColor: isDark
+              ? const Color(0xFF333333)
+              : const Color(0xFFD6ECFF),
           actions: [
             TextButton(
               onPressed: () => _hideStatusBanner(),
@@ -152,9 +163,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Welcome'),
-      ),
+      appBar: AppBar(title: const Text('Welcome')),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Column(
@@ -202,7 +211,11 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                   ? const Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2)),
+                        SizedBox(
+                          width: 16,
+                          height: 16,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        ),
                         SizedBox(width: 8),
                         Text('Loading...'),
                       ],

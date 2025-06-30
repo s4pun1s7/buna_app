@@ -79,7 +79,8 @@ class _StreamingScreenState extends ConsumerState<StreamingScreen>
         Stream(
           id: '1',
           title: 'Opening Ceremony Live',
-          description: 'Watch the spectacular opening ceremony of Buna Festival 2024 with live light shows and performances.',
+          description:
+              'Watch the spectacular opening ceremony of Buna Festival 2024 with live light shows and performances.',
           startTime: DateTime.now().subtract(const Duration(hours: 2)),
           isLive: true,
           isUpcoming: false,
@@ -89,7 +90,8 @@ class _StreamingScreenState extends ConsumerState<StreamingScreen>
         Stream(
           id: '2',
           title: 'Artist Workshop: Digital Art Creation',
-          description: 'Join Hiroshi Tanaka for an interactive workshop on creating digital art using AI tools.',
+          description:
+              'Join Hiroshi Tanaka for an interactive workshop on creating digital art using AI tools.',
           startTime: DateTime.now().add(const Duration(hours: 1)),
           isLive: false,
           isUpcoming: true,
@@ -99,7 +101,8 @@ class _StreamingScreenState extends ConsumerState<StreamingScreen>
         Stream(
           id: '3',
           title: 'Live Music Performance',
-          description: 'Enjoy live music from local and international artists at the Outdoor Amphitheater.',
+          description:
+              'Enjoy live music from local and international artists at the Outdoor Amphitheater.',
           startTime: DateTime.now().add(const Duration(hours: 3)),
           isLive: false,
           isUpcoming: true,
@@ -109,7 +112,8 @@ class _StreamingScreenState extends ConsumerState<StreamingScreen>
         Stream(
           id: '4',
           title: 'Behind the Scenes: Installation Setup',
-          description: 'Go behind the scenes as artists set up their installations and share their creative process.',
+          description:
+              'Go behind the scenes as artists set up their installations and share their creative process.',
           startTime: DateTime.now().subtract(const Duration(hours: 1)),
           endTime: DateTime.now().add(const Duration(hours: 1)),
           isLive: true,
@@ -120,7 +124,8 @@ class _StreamingScreenState extends ConsumerState<StreamingScreen>
         Stream(
           id: '5',
           title: 'Curator Talk: Contemporary Art Trends',
-          description: 'Join our curators for an insightful discussion about contemporary art trends and the festival\'s artistic vision.',
+          description:
+              'Join our curators for an insightful discussion about contemporary art trends and the festival\'s artistic vision.',
           startTime: DateTime.now().add(const Duration(hours: 4)),
           isLive: false,
           isUpcoming: true,
@@ -130,7 +135,8 @@ class _StreamingScreenState extends ConsumerState<StreamingScreen>
         Stream(
           id: '6',
           title: 'Venue Tour: Digital Art Pavilion',
-          description: 'Take a virtual tour of the Digital Art Pavilion and explore the cutting-edge installations.',
+          description:
+              'Take a virtual tour of the Digital Art Pavilion and explore the cutting-edge installations.',
           startTime: DateTime.now().add(const Duration(hours: 2)),
           isLive: false,
           isUpcoming: true,
@@ -140,7 +146,8 @@ class _StreamingScreenState extends ConsumerState<StreamingScreen>
         Stream(
           id: '7',
           title: 'Artist Interview: Elena Rodriguez',
-          description: 'Exclusive interview with light artist Elena Rodriguez about her installation "Urban Dreams".',
+          description:
+              'Exclusive interview with light artist Elena Rodriguez about her installation "Urban Dreams".',
           startTime: DateTime.now().add(const Duration(hours: 5)),
           isLive: false,
           isUpcoming: true,
@@ -150,7 +157,8 @@ class _StreamingScreenState extends ConsumerState<StreamingScreen>
         Stream(
           id: '8',
           title: 'Festival Highlights Reel',
-          description: 'Relive the best moments from the first week of Buna Festival 2024.',
+          description:
+              'Relive the best moments from the first week of Buna Festival 2024.',
           startTime: DateTime.now().subtract(const Duration(hours: 6)),
           isLive: false,
           isUpcoming: false,
@@ -175,13 +183,17 @@ class _StreamingScreenState extends ConsumerState<StreamingScreen>
   void _filterStreams() {
     setState(() {
       _filteredStreams = _allStreams.where((stream) {
-        return _selectedCategory == 'All' || stream.category == _selectedCategory;
+        return _selectedCategory == 'All' ||
+            stream.category == _selectedCategory;
       }).toList();
     });
   }
 
   List<String> _getCategories() {
-    final categories = _allStreams.map((stream) => stream.category).toSet().toList();
+    final categories = _allStreams
+        .map((stream) => stream.category)
+        .toSet()
+        .toList();
     categories.sort();
     return ['All', ...categories];
   }
@@ -233,10 +245,7 @@ class _StreamingScreenState extends ConsumerState<StreamingScreen>
     }
 
     if (_error != null) {
-      return ErrorScreen(
-        error: AppException(_error!),
-        onRetry: _loadStreams,
-      );
+      return ErrorScreen(error: AppException(_error!), onRetry: _loadStreams);
     }
 
     if (_allStreams.isEmpty) {
@@ -262,7 +271,7 @@ class _StreamingScreenState extends ConsumerState<StreamingScreen>
 
   Widget _buildCategoryFilter() {
     final categories = _getCategories();
-    
+
     return Container(
       height: 50,
       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -272,7 +281,7 @@ class _StreamingScreenState extends ConsumerState<StreamingScreen>
         itemBuilder: (context, index) {
           final category = categories[index];
           final isSelected = category == _selectedCategory;
-          
+
           return Padding(
             padding: const EdgeInsets.only(right: 8),
             child: ChoiceChip(
@@ -294,8 +303,10 @@ class _StreamingScreenState extends ConsumerState<StreamingScreen>
   }
 
   Widget _buildLiveStreams() {
-    final liveStreams = _filteredStreams.where((stream) => stream.isLive).toList();
-    
+    final liveStreams = _filteredStreams
+        .where((stream) => stream.isLive)
+        .toList();
+
     if (liveStreams.isEmpty) {
       return _buildNoLiveStreams();
     }
@@ -311,8 +322,10 @@ class _StreamingScreenState extends ConsumerState<StreamingScreen>
   }
 
   Widget _buildUpcomingStreams() {
-    final upcomingStreams = _filteredStreams.where((stream) => stream.isUpcoming).toList();
-    
+    final upcomingStreams = _filteredStreams
+        .where((stream) => stream.isUpcoming)
+        .toList();
+
     if (upcomingStreams.isEmpty) {
       return _buildNoUpcomingStreams();
     }
@@ -328,10 +341,10 @@ class _StreamingScreenState extends ConsumerState<StreamingScreen>
   }
 
   Widget _buildPastStreams() {
-    final pastStreams = _filteredStreams.where((stream) => 
-      !stream.isLive && !stream.isUpcoming
-    ).toList();
-    
+    final pastStreams = _filteredStreams
+        .where((stream) => !stream.isLive && !stream.isUpcoming)
+        .toList();
+
     if (pastStreams.isEmpty) {
       return _buildNoPastStreams();
     }
@@ -364,8 +377,12 @@ class _StreamingScreenState extends ConsumerState<StreamingScreen>
                   height: 200,
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor.withValues(alpha: 0.1),
-                    borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                    color: Theme.of(
+                      context,
+                    ).primaryColor.withValues(alpha: 0.1),
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(12),
+                    ),
                   ),
                   child: Stack(
                     children: [
@@ -381,7 +398,10 @@ class _StreamingScreenState extends ConsumerState<StreamingScreen>
                           top: 12,
                           left: 12,
                           child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 4,
+                            ),
                             decoration: BoxDecoration(
                               color: Colors.red,
                               borderRadius: BorderRadius.circular(12),
@@ -415,7 +435,10 @@ class _StreamingScreenState extends ConsumerState<StreamingScreen>
                           top: 12,
                           right: 12,
                           child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 4,
+                            ),
                             decoration: BoxDecoration(
                               color: Colors.black54,
                               borderRadius: BorderRadius.circular(12),
@@ -453,7 +476,10 @@ class _StreamingScreenState extends ConsumerState<StreamingScreen>
                       Row(
                         children: [
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 4,
+                            ),
                             decoration: BoxDecoration(
                               color: _getCategoryColor(stream.category),
                               borderRadius: BorderRadius.circular(12),
@@ -470,18 +496,18 @@ class _StreamingScreenState extends ConsumerState<StreamingScreen>
                           const Spacer(),
                           Text(
                             _formatTime(stream.startTime),
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: Theme.of(context).colorScheme.outline,
-                            ),
+                            style: Theme.of(context).textTheme.bodySmall
+                                ?.copyWith(
+                                  color: Theme.of(context).colorScheme.outline,
+                                ),
                           ),
                         ],
                       ),
                       const SizedBox(height: 8),
                       Text(
                         stream.title,
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: Theme.of(context).textTheme.titleMedium
+                            ?.copyWith(fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 4),
                       Text(
@@ -501,8 +527,11 @@ class _StreamingScreenState extends ConsumerState<StreamingScreen>
                           ),
                           const SizedBox(width: 8),
                           Text(
-                            stream.isLive ? 'Watch Live' : 
-                            stream.isUpcoming ? 'Set Reminder' : 'Watch Replay',
+                            stream.isLive
+                                ? 'Watch Live'
+                                : stream.isUpcoming
+                                ? 'Set Reminder'
+                                : 'Watch Replay',
                             style: TextStyle(
                               color: Theme.of(context).primaryColor,
                               fontWeight: FontWeight.bold,
@@ -607,10 +636,7 @@ class _StreamingScreenState extends ConsumerState<StreamingScreen>
           const SizedBox(height: 8),
           const Text('Check back later for live festival content'),
           const SizedBox(height: 16),
-          ElevatedButton(
-            onPressed: _loadStreams,
-            child: const Text('Refresh'),
-          ),
+          ElevatedButton(onPressed: _loadStreams, child: const Text('Refresh')),
         ],
       ),
     );
@@ -641,7 +667,10 @@ class _StreamingScreenState extends ConsumerState<StreamingScreen>
 
   void _watchStream(Stream stream) {
     final userAsync = ref.read(userProvider);
-    final isAnonymous = userAsync != null && userAsync.value != null && userAsync.value!.isAnonymous;
+    final isAnonymous =
+        userAsync != null &&
+        userAsync.value != null &&
+        userAsync.value!.isAnonymous;
     if (stream.isLive) {
       _showLiveStream(stream);
     } else if (stream.isUpcoming) {
@@ -706,7 +735,9 @@ class _StreamingScreenState extends ConsumerState<StreamingScreen>
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Stream Settings'),
-        content: const Text('Stream quality and notification settings coming soon...'),
+        content: const Text(
+          'Stream quality and notification settings coming soon...',
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -716,4 +747,4 @@ class _StreamingScreenState extends ConsumerState<StreamingScreen>
       ),
     );
   }
-} 
+}

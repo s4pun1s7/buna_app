@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../widgets/loading_indicator.dart';
-import '../../widgets/error_screen.dart';
+import '../../widgets/common/index.dart';
 import '../../services/error_handler.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -66,7 +65,8 @@ class _ArtistsScreenState extends ConsumerState<ArtistsScreen> {
           id: '1',
           name: 'Elena Rodriguez',
           country: 'Spain',
-          bio: 'Elena Rodriguez is a renowned light artist known for her large-scale environmental installations that transform urban spaces into magical landscapes. Her work explores the relationship between light, space, and human perception.',
+          bio:
+              'Elena Rodriguez is a renowned light artist known for her large-scale environmental installations that transform urban spaces into magical landscapes. Her work explores the relationship between light, space, and human perception.',
           specialty: 'Light Art & Environmental Installations',
           imageUrl: null,
           website: 'https://elenarodriguez.com',
@@ -76,7 +76,8 @@ class _ArtistsScreenState extends ConsumerState<ArtistsScreen> {
           id: '2',
           name: 'Hiroshi Tanaka',
           country: 'Japan',
-          bio: 'Hiroshi Tanaka is a digital art pioneer specializing in AI-generated artwork and virtual reality experiences that challenge our understanding of creativity and consciousness.',
+          bio:
+              'Hiroshi Tanaka is a digital art pioneer specializing in AI-generated artwork and virtual reality experiences that challenge our understanding of creativity and consciousness.',
           specialty: 'Digital Art & AI',
           imageUrl: null,
           website: 'https://hiroshitanaka.art',
@@ -86,7 +87,8 @@ class _ArtistsScreenState extends ConsumerState<ArtistsScreen> {
           id: '3',
           name: 'Sarah Johnson',
           country: 'USA',
-          bio: 'Sarah Johnson is a contemporary sculptor who creates thought-provoking works using recycled materials and sustainable practices. Her installations address environmental issues and human impact on nature.',
+          bio:
+              'Sarah Johnson is a contemporary sculptor who creates thought-provoking works using recycled materials and sustainable practices. Her installations address environmental issues and human impact on nature.',
           specialty: 'Sustainable Sculpture',
           imageUrl: null,
           website: 'https://sarahjohnson.art',
@@ -96,7 +98,8 @@ class _ArtistsScreenState extends ConsumerState<ArtistsScreen> {
           id: '4',
           name: 'Marcus Weber',
           country: 'Germany',
-          bio: 'Marcus Weber is a performance artist whose work explores themes of identity, migration, and social justice through powerful theatrical experiences that challenge societal norms.',
+          bio:
+              'Marcus Weber is a performance artist whose work explores themes of identity, migration, and social justice through powerful theatrical experiences that challenge societal norms.',
           specialty: 'Performance Art',
           imageUrl: null,
           website: 'https://marcusweber.art',
@@ -106,7 +109,8 @@ class _ArtistsScreenState extends ConsumerState<ArtistsScreen> {
           id: '5',
           name: 'Ana Popovic',
           country: 'Serbia',
-          bio: 'Ana Popovic is a multimedia artist who combines traditional techniques with digital technology to create innovative works that bridge past and present cultural expressions.',
+          bio:
+              'Ana Popovic is a multimedia artist who combines traditional techniques with digital technology to create innovative works that bridge past and present cultural expressions.',
           specialty: 'Multimedia Art',
           imageUrl: null,
           website: 'https://anapopovic.art',
@@ -116,7 +120,8 @@ class _ArtistsScreenState extends ConsumerState<ArtistsScreen> {
           id: '6',
           name: 'Dimitar Georgiev',
           country: 'Bulgaria',
-          bio: 'Dimitar Georgiev is a local artist specializing in traditional Bulgarian crafts and contemporary interpretations of cultural heritage.',
+          bio:
+              'Dimitar Georgiev is a local artist specializing in traditional Bulgarian crafts and contemporary interpretations of cultural heritage.',
           specialty: 'Traditional Crafts',
           imageUrl: null,
           website: 'https://dimitargeorgiev.art',
@@ -140,14 +145,17 @@ class _ArtistsScreenState extends ConsumerState<ArtistsScreen> {
   void _filterArtists() {
     setState(() {
       _filteredArtists = _artists.where((artist) {
-        final matchesSearch = _searchQuery.isEmpty ||
+        final matchesSearch =
+            _searchQuery.isEmpty ||
             artist.name.toLowerCase().contains(_searchQuery.toLowerCase()) ||
-            artist.specialty.toLowerCase().contains(_searchQuery.toLowerCase()) ||
+            artist.specialty.toLowerCase().contains(
+              _searchQuery.toLowerCase(),
+            ) ||
             artist.bio.toLowerCase().contains(_searchQuery.toLowerCase());
-        
-        final matchesCountry = _selectedCountry == 'All' ||
-            artist.country == _selectedCountry;
-        
+
+        final matchesCountry =
+            _selectedCountry == 'All' || artist.country == _selectedCountry;
+
         return matchesSearch && matchesCountry;
       }).toList();
     });
@@ -161,9 +169,7 @@ class _ArtistsScreenState extends ConsumerState<ArtistsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _buildBody(),
-    );
+    return Scaffold(body: _buildBody());
   }
 
   Widget _buildBody() {
@@ -172,10 +178,7 @@ class _ArtistsScreenState extends ConsumerState<ArtistsScreen> {
     }
 
     if (_error != null) {
-      return ErrorScreen(
-        error: AppException(_error!),
-        onRetry: _loadArtists,
-      );
+      return ErrorScreen(error: AppException(_error!), onRetry: _loadArtists);
     }
 
     if (_artists.isEmpty) {
@@ -186,9 +189,7 @@ class _ArtistsScreenState extends ConsumerState<ArtistsScreen> {
       children: [
         _buildSearchBar(),
         _buildCountryFilter(),
-        Expanded(
-          child: _buildArtistsList(),
-        ),
+        Expanded(child: _buildArtistsList()),
       ],
     );
   }
@@ -200,9 +201,7 @@ class _ArtistsScreenState extends ConsumerState<ArtistsScreen> {
         decoration: InputDecoration(
           hintText: 'Search artists...',
           prefixIcon: const Icon(Icons.search),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
           filled: true,
           fillColor: Theme.of(context).colorScheme.surface,
         ),
@@ -218,7 +217,7 @@ class _ArtistsScreenState extends ConsumerState<ArtistsScreen> {
 
   Widget _buildCountryFilter() {
     final countries = _getCountries();
-    
+
     return Container(
       height: 50,
       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -228,7 +227,7 @@ class _ArtistsScreenState extends ConsumerState<ArtistsScreen> {
         itemBuilder: (context, index) {
           final country = countries[index];
           final isSelected = country == _selectedCountry;
-          
+
           return Padding(
             padding: const EdgeInsets.only(right: 8),
             child: ChoiceChip(
@@ -289,9 +288,8 @@ class _ArtistsScreenState extends ConsumerState<ArtistsScreen> {
                       children: [
                         Text(
                           artist.name,
-                          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: Theme.of(context).textTheme.titleLarge
+                              ?.copyWith(fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: 4),
                         Row(
@@ -305,19 +303,23 @@ class _ArtistsScreenState extends ConsumerState<ArtistsScreen> {
                             const SizedBox(width: 4),
                             Text(
                               artist.country,
-                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                color: Theme.of(context).colorScheme.outline,
-                              ),
+                              style: Theme.of(context).textTheme.bodyMedium
+                                  ?.copyWith(
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.outline,
+                                  ),
                             ),
                           ],
                         ),
                         const SizedBox(height: 8),
                         Text(
                           artist.specialty,
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: Theme.of(context).primaryColor,
-                            fontWeight: FontWeight.w500,
-                          ),
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
+                                color: Theme.of(context).primaryColor,
+                                fontWeight: FontWeight.w500,
+                              ),
                         ),
                         const SizedBox(height: 8),
                         if (artist.bio.isNotEmpty) ...[
@@ -357,10 +359,7 @@ class _ArtistsScreenState extends ConsumerState<ArtistsScreen> {
           const SizedBox(height: 8),
           const Text('Check back later for artist announcements'),
           const SizedBox(height: 16),
-          ElevatedButton(
-            onPressed: _loadArtists,
-            child: const Text('Refresh'),
-          ),
+          ElevatedButton(onPressed: _loadArtists, child: const Text('Refresh')),
         ],
       ),
     );
@@ -414,4 +413,4 @@ class _ArtistsScreenState extends ConsumerState<ArtistsScreen> {
       ),
     );
   }
-} 
+}

@@ -7,7 +7,8 @@ class Debouncer {
   final Duration _delay;
 
   /// Create a debouncer with the specified delay
-  Debouncer({Duration? delay}) : _delay = delay ?? const Duration(milliseconds: 500);
+  Debouncer({Duration? delay})
+    : _delay = delay ?? const Duration(milliseconds: 500);
 
   /// Debounce a function call
   void call(VoidCallback action) {
@@ -48,4 +49,4 @@ class APIDebouncer extends Debouncer {
 /// A debouncer for scroll events
 class ScrollDebouncer extends Debouncer {
   ScrollDebouncer() : super(delay: const Duration(milliseconds: 150));
-} 
+}

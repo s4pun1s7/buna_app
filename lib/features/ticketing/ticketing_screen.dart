@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../widgets/loading_indicator.dart';
-import '../../widgets/error_screen.dart';
+import '../../widgets/common/index.dart';
 import '../../services/error_handler.dart';
 
 /// Ticket model for the festival
@@ -66,7 +65,8 @@ class _TicketingScreenState extends ConsumerState<TicketingScreen> {
         Ticket(
           id: '1',
           name: 'Day Pass',
-          description: 'Access to all venues and events for a single day of your choice.',
+          description:
+              'Access to all venues and events for a single day of your choice.',
           price: 25.0,
           features: [
             'Access to all venues',
@@ -82,7 +82,8 @@ class _TicketingScreenState extends ConsumerState<TicketingScreen> {
         Ticket(
           id: '2',
           name: 'Weekend Pass',
-          description: 'Access for Friday through Sunday - perfect for a weekend getaway.',
+          description:
+              'Access for Friday through Sunday - perfect for a weekend getaway.',
           price: 65.0,
           features: [
             'Access to all venues',
@@ -100,7 +101,8 @@ class _TicketingScreenState extends ConsumerState<TicketingScreen> {
         Ticket(
           id: '3',
           name: 'Full Festival Pass',
-          description: 'Complete access to all three weeks of the festival - the ultimate experience.',
+          description:
+              'Complete access to all three weeks of the festival - the ultimate experience.',
           price: 150.0,
           features: [
             'Access to all venues',
@@ -121,7 +123,8 @@ class _TicketingScreenState extends ConsumerState<TicketingScreen> {
         Ticket(
           id: '4',
           name: 'VIP Pass',
-          description: 'Premium access including exclusive events, artist meet-and-greets, and priority seating.',
+          description:
+              'Premium access including exclusive events, artist meet-and-greets, and priority seating.',
           price: 250.0,
           features: [
             'All Full Festival Pass features',
@@ -172,9 +175,7 @@ class _TicketingScreenState extends ConsumerState<TicketingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _buildBody(),
-    );
+    return Scaffold(body: _buildBody());
   }
 
   Widget _buildBody() {
@@ -196,9 +197,7 @@ class _TicketingScreenState extends ConsumerState<TicketingScreen> {
     return Column(
       children: [
         _buildHeader(),
-        Expanded(
-          child: _buildTicketsList(),
-        ),
+        Expanded(child: _buildTicketsList()),
       ],
     );
   }
@@ -211,9 +210,9 @@ class _TicketingScreenState extends ConsumerState<TicketingScreen> {
         children: [
           Text(
             'Choose Your Festival Experience',
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
           Text(
@@ -234,10 +233,7 @@ class _TicketingScreenState extends ConsumerState<TicketingScreen> {
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [
-            Colors.orange.shade400,
-            Colors.orange.shade600,
-          ],
+          colors: [Colors.orange.shade400, Colors.orange.shade600],
         ),
         borderRadius: BorderRadius.circular(8),
       ),
@@ -266,7 +262,7 @@ class _TicketingScreenState extends ConsumerState<TicketingScreen> {
       itemBuilder: (context, index) {
         final ticket = _tickets[index];
         final isSelected = ticket.id == _selectedTicketId;
-        
+
         return _buildTicketCard(ticket, isSelected);
       },
     );
@@ -278,7 +274,7 @@ class _TicketingScreenState extends ConsumerState<TicketingScreen> {
       elevation: isSelected ? 4 : 2,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
-        side: isSelected 
+        side: isSelected
             ? BorderSide(color: Theme.of(context).primaryColor, width: 2)
             : BorderSide.none,
       ),
@@ -301,16 +297,18 @@ class _TicketingScreenState extends ConsumerState<TicketingScreen> {
                           children: [
                             Text(
                               ticket.name,
-                              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
+                              style: Theme.of(context).textTheme.titleLarge
+                                  ?.copyWith(fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(height: 4),
                             Text(
                               ticket.description,
-                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                color: Theme.of(context).colorScheme.outline,
-                              ),
+                              style: Theme.of(context).textTheme.bodyMedium
+                                  ?.copyWith(
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.outline,
+                                  ),
                             ),
                           ],
                         ),
@@ -328,15 +326,19 @@ class _TicketingScreenState extends ConsumerState<TicketingScreen> {
                     children: [
                       Text(
                         '${ticket.price.toStringAsFixed(2)} ${ticket.currency}',
-                        style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: Theme.of(context).primaryColor,
-                        ),
+                        style: Theme.of(context).textTheme.headlineSmall
+                            ?.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).primaryColor,
+                            ),
                       ),
                       const Spacer(),
                       if (ticket.remainingQuantity <= 10)
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
                           decoration: BoxDecoration(
                             color: Colors.red,
                             borderRadius: BorderRadius.circular(12),
@@ -360,25 +362,29 @@ class _TicketingScreenState extends ConsumerState<TicketingScreen> {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  ...ticket.features.map((feature) => Padding(
-                    padding: const EdgeInsets.only(bottom: 4),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.check_circle,
-                          size: 16,
-                          color: Colors.green,
-                        ),
-                        const SizedBox(width: 8),
-                        Expanded(child: Text(feature)),
-                      ],
+                  ...ticket.features.map(
+                    (feature) => Padding(
+                      padding: const EdgeInsets.only(bottom: 4),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.check_circle,
+                            size: 16,
+                            color: Colors.green,
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(child: Text(feature)),
+                        ],
+                      ),
                     ),
-                  )),
+                  ),
                   const SizedBox(height: 16),
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: ticket.isAvailable ? () => _purchaseTicket(ticket) : null,
+                      onPressed: ticket.isAvailable
+                          ? () => _purchaseTicket(ticket)
+                          : null,
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
@@ -416,10 +422,7 @@ class _TicketingScreenState extends ConsumerState<TicketingScreen> {
           const SizedBox(height: 8),
           const Text('Check back later for ticket sales'),
           const SizedBox(height: 16),
-          ElevatedButton(
-            onPressed: _loadTickets,
-            child: const Text('Refresh'),
-          ),
+          ElevatedButton(onPressed: _loadTickets, child: const Text('Refresh')),
         ],
       ),
     );
@@ -455,9 +458,8 @@ class _TicketingScreenState extends ConsumerState<TicketingScreen> {
                   Expanded(
                     child: Text(
                       'Purchase ${ticket.name}',
-                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: Theme.of(context).textTheme.headlineSmall
+                          ?.copyWith(fontWeight: FontWeight.bold),
                     ),
                   ),
                   IconButton(
@@ -488,9 +490,9 @@ class _TicketingScreenState extends ConsumerState<TicketingScreen> {
           children: [
             Text(
               'Order Summary',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 12),
             Row(
@@ -505,7 +507,9 @@ class _TicketingScreenState extends ConsumerState<TicketingScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('Early Bird Discount'),
-                Text('-${(ticket.price * 0.3).toStringAsFixed(2)} ${ticket.currency}'),
+                Text(
+                  '-${(ticket.price * 0.3).toStringAsFixed(2)} ${ticket.currency}',
+                ),
               ],
             ),
             const Divider(),
@@ -534,17 +538,15 @@ class _TicketingScreenState extends ConsumerState<TicketingScreen> {
       children: [
         Text(
           'Payment Information',
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
+          style: Theme.of(
+            context,
+          ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 16),
         TextField(
           decoration: InputDecoration(
             labelText: 'Card Number',
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-            ),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
             prefixIcon: const Icon(Icons.credit_card),
           ),
         ),
@@ -580,9 +582,7 @@ class _TicketingScreenState extends ConsumerState<TicketingScreen> {
         TextField(
           decoration: InputDecoration(
             labelText: 'Cardholder Name',
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-            ),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
             prefixIcon: const Icon(Icons.person),
           ),
         ),
@@ -597,9 +597,7 @@ class _TicketingScreenState extends ConsumerState<TicketingScreen> {
       child: ElevatedButton(
         onPressed: () => _confirmPurchase(ticket),
         style: ElevatedButton.styleFrom(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         ),
         child: Builder(
           builder: (context) {
@@ -620,7 +618,9 @@ class _TicketingScreenState extends ConsumerState<TicketingScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Purchase Successful!'),
-        content: Text('Your ${ticket.name} has been purchased successfully. You will receive a confirmation email shortly.'),
+        content: Text(
+          'Your ${ticket.name} has been purchased successfully. You will receive a confirmation email shortly.',
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -630,4 +630,4 @@ class _TicketingScreenState extends ConsumerState<TicketingScreen> {
       ),
     );
   }
-} 
+}

@@ -7,7 +7,9 @@ void main() {
   group('ErrorScreen', () {
     testWidgets('displays default error message', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(home: Scaffold(body: ErrorScreen(error: AppException('Test error')))),
+        MaterialApp(
+          home: Scaffold(body: ErrorScreen(error: AppException('Test error'))),
+        ),
       );
       expect(find.text('Test error'), findsOneWidget);
     });

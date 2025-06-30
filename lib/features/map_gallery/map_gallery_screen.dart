@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../widgets/loading_indicator.dart';
-import '../../widgets/error_screen.dart';
+import '../../widgets/common/index.dart';
 import '../../services/error_handler.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -76,7 +75,8 @@ class _MapGalleryScreenState extends ConsumerState<MapGalleryScreen>
         MapGalleryItem(
           id: '1',
           title: 'Main Square',
-          description: 'The heart of Varna and the primary venue for major festival events. Features the iconic light installation "Urban Dreams" by Elena Rodriguez.',
+          description:
+              'The heart of Varna and the primary venue for major festival events. Features the iconic light installation "Urban Dreams" by Elena Rodriguez.',
           category: 'Venue',
           date: DateTime.now().subtract(const Duration(days: 1)),
           location: 'Central Square, Varna',
@@ -86,7 +86,8 @@ class _MapGalleryScreenState extends ConsumerState<MapGalleryScreen>
         MapGalleryItem(
           id: '2',
           title: 'City Gallery',
-          description: 'A modern, purpose-built gallery space showcasing contemporary art exhibitions from international and local artists.',
+          description:
+              'A modern, purpose-built gallery space showcasing contemporary art exhibitions from international and local artists.',
           category: 'Gallery',
           date: DateTime.now().subtract(const Duration(days: 2)),
           location: '123 Art Street, Varna',
@@ -96,7 +97,8 @@ class _MapGalleryScreenState extends ConsumerState<MapGalleryScreen>
         MapGalleryItem(
           id: '3',
           title: 'Digital Art Pavilion',
-          description: 'Cutting-edge venue for digital art and technology-based installations featuring VR experiences and AI-generated artwork.',
+          description:
+              'Cutting-edge venue for digital art and technology-based installations featuring VR experiences and AI-generated artwork.',
           category: 'Technology',
           date: DateTime.now().subtract(const Duration(days: 3)),
           location: '456 Innovation Boulevard, Varna',
@@ -106,7 +108,8 @@ class _MapGalleryScreenState extends ConsumerState<MapGalleryScreen>
         MapGalleryItem(
           id: '4',
           title: 'Seaside Park Environmental Installation',
-          description: 'Large-scale environmental art installation using sustainable materials to address climate change and environmental conservation.',
+          description:
+              'Large-scale environmental art installation using sustainable materials to address climate change and environmental conservation.',
           category: 'Environmental',
           date: DateTime.now().subtract(const Duration(days: 4)),
           location: 'Seaside Park, Varna',
@@ -116,7 +119,8 @@ class _MapGalleryScreenState extends ConsumerState<MapGalleryScreen>
         MapGalleryItem(
           id: '5',
           title: 'Outdoor Amphitheater',
-          description: 'Stunning open-air performance venue located on the Black Sea coast, perfect for live music and theatrical performances.',
+          description:
+              'Stunning open-air performance venue located on the Black Sea coast, perfect for live music and theatrical performances.',
           category: 'Performance',
           date: DateTime.now().subtract(const Duration(days: 5)),
           location: 'Seaside Park, Varna',
@@ -126,7 +130,8 @@ class _MapGalleryScreenState extends ConsumerState<MapGalleryScreen>
         MapGalleryItem(
           id: '6',
           title: 'Art Studio Complex',
-          description: 'Dedicated space for workshops and masterclasses with multiple studio spaces equipped for various art mediums.',
+          description:
+              'Dedicated space for workshops and masterclasses with multiple studio spaces equipped for various art mediums.',
           category: 'Workshop',
           date: DateTime.now().subtract(const Duration(days: 6)),
           location: '789 Creative Lane, Varna',
@@ -136,7 +141,8 @@ class _MapGalleryScreenState extends ConsumerState<MapGalleryScreen>
         MapGalleryItem(
           id: '7',
           title: 'Underground Theater',
-          description: 'Converted warehouse space transformed into an experimental theater venue with industrial aesthetic.',
+          description:
+              'Converted warehouse space transformed into an experimental theater venue with industrial aesthetic.',
           category: 'Theater',
           date: DateTime.now().subtract(const Duration(days: 7)),
           location: '321 Industrial Zone, Varna',
@@ -146,7 +152,8 @@ class _MapGalleryScreenState extends ConsumerState<MapGalleryScreen>
         MapGalleryItem(
           id: '8',
           title: 'Festival Information Center',
-          description: 'Central hub for festival information, ticket sales, and visitor assistance.',
+          description:
+              'Central hub for festival information, ticket sales, and visitor assistance.',
           category: 'Information',
           date: DateTime.now().subtract(const Duration(days: 8)),
           location: 'Festival Square, Varna',
@@ -156,7 +163,8 @@ class _MapGalleryScreenState extends ConsumerState<MapGalleryScreen>
         MapGalleryItem(
           id: '9',
           title: 'Food & Beverage Area',
-          description: 'Culinary zone featuring local and international cuisine, food trucks, and festival bars.',
+          description:
+              'Culinary zone featuring local and international cuisine, food trucks, and festival bars.',
           category: 'Food',
           date: DateTime.now().subtract(const Duration(days: 9)),
           location: 'Culinary Corner, Varna',
@@ -166,7 +174,8 @@ class _MapGalleryScreenState extends ConsumerState<MapGalleryScreen>
         MapGalleryItem(
           id: '10',
           title: 'Merchandise Shop',
-          description: 'Official festival merchandise store with limited edition items and artist collaborations.',
+          description:
+              'Official festival merchandise store with limited edition items and artist collaborations.',
           category: 'Shopping',
           date: DateTime.now().subtract(const Duration(days: 10)),
           location: 'Festival Market, Varna',
@@ -191,12 +200,18 @@ class _MapGalleryScreenState extends ConsumerState<MapGalleryScreen>
   void _filterItems() {
     setState(() {
       _filteredItems = _allItems.where((item) {
-        final matchesCategory = _selectedCategory == 'All' || item.category == _selectedCategory;
-        final matchesSearch = _searchQuery.isEmpty ||
+        final matchesCategory =
+            _selectedCategory == 'All' || item.category == _selectedCategory;
+        final matchesSearch =
+            _searchQuery.isEmpty ||
             item.title.toLowerCase().contains(_searchQuery.toLowerCase()) ||
-            item.description.toLowerCase().contains(_searchQuery.toLowerCase()) ||
-            item.tags.any((tag) => tag.toLowerCase().contains(_searchQuery.toLowerCase()));
-        
+            item.description.toLowerCase().contains(
+              _searchQuery.toLowerCase(),
+            ) ||
+            item.tags.any(
+              (tag) => tag.toLowerCase().contains(_searchQuery.toLowerCase()),
+            );
+
         return matchesCategory && matchesSearch;
       }).toList();
     });
@@ -316,11 +331,7 @@ class _MapGalleryScreenState extends ConsumerState<MapGalleryScreen>
         Expanded(
           child: TabBarView(
             controller: _tabController,
-            children: [
-              _buildGridView(),
-              _buildListView(),
-              _buildMapView(),
-            ],
+            children: [_buildGridView(), _buildListView(), _buildMapView()],
           ),
         ),
       ],
@@ -334,9 +345,7 @@ class _MapGalleryScreenState extends ConsumerState<MapGalleryScreen>
         decoration: InputDecoration(
           hintText: 'Search locations...',
           prefixIcon: Icon(Icons.search, semanticLabel: 'Search'),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
           filled: true,
           fillColor: Theme.of(context).colorScheme.surface,
         ),
@@ -352,7 +361,7 @@ class _MapGalleryScreenState extends ConsumerState<MapGalleryScreen>
 
   Widget _buildCategoryFilter() {
     final categories = _getCategories();
-    
+
     return Container(
       height: 50,
       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -362,11 +371,14 @@ class _MapGalleryScreenState extends ConsumerState<MapGalleryScreen>
         itemBuilder: (context, index) {
           final category = categories[index];
           final isSelected = category == _selectedCategory;
-          
+
           return Padding(
             padding: const EdgeInsets.only(right: 8),
             child: ChoiceChip(
-              label: Text(category, style: Theme.of(context).textTheme.bodyMedium),
+              label: Text(
+                category,
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
               selected: isSelected,
               onSelected: (selected) {
                 if (selected) {
@@ -425,11 +437,7 @@ class _MapGalleryScreenState extends ConsumerState<MapGalleryScreen>
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.map,
-            size: 64,
-            color: Theme.of(context).primaryColor,
-          ),
+          Icon(Icons.map, size: 64, color: Theme.of(context).primaryColor),
           const SizedBox(height: 16),
           Text(
             'Interactive Map',
@@ -464,8 +472,12 @@ class _MapGalleryScreenState extends ConsumerState<MapGalleryScreen>
                   child: Container(
                     width: double.infinity,
                     decoration: BoxDecoration(
-                      color: _getCategoryColor(item.category).withValues(alpha: 0.1),
-                      borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                      color: _getCategoryColor(
+                        item.category,
+                      ).withValues(alpha: 0.1),
+                      borderRadius: const BorderRadius.vertical(
+                        top: Radius.circular(12),
+                      ),
                     ),
                     child: Stack(
                       children: [
@@ -482,7 +494,10 @@ class _MapGalleryScreenState extends ConsumerState<MapGalleryScreen>
                             top: 8,
                             right: 8,
                             child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 6,
+                                vertical: 2,
+                              ),
                               decoration: BoxDecoration(
                                 color: Colors.blue,
                                 borderRadius: BorderRadius.circular(8),
@@ -511,16 +526,18 @@ class _MapGalleryScreenState extends ConsumerState<MapGalleryScreen>
                       children: [
                         Text(
                           item.title,
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(fontWeight: FontWeight.bold),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
                         const SizedBox(height: 4),
                         Text(
                           item.location,
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Theme.of(context).colorScheme.outline,
-                          ),
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(
+                                color: Theme.of(context).colorScheme.outline,
+                              ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -537,10 +554,11 @@ class _MapGalleryScreenState extends ConsumerState<MapGalleryScreen>
                             Expanded(
                               child: Text(
                                 item.category,
-                                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                  color: _getCategoryColor(item.category),
-                                  fontWeight: FontWeight.w500,
-                                ),
+                                style: Theme.of(context).textTheme.bodySmall
+                                    ?.copyWith(
+                                      color: _getCategoryColor(item.category),
+                                      fontWeight: FontWeight.w500,
+                                    ),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -598,12 +616,16 @@ class _MapGalleryScreenState extends ConsumerState<MapGalleryScreen>
                             Expanded(
                               child: Text(
                                 item.title,
-                                style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                                style: Theme.of(context).textTheme.titleMedium
+                                    ?.copyWith(fontWeight: FontWeight.bold),
                               ),
                             ),
                             if (item.isInteractive)
                               Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 6,
+                                  vertical: 2,
+                                ),
                                 decoration: BoxDecoration(
                                   color: Colors.blue,
                                   borderRadius: BorderRadius.circular(8),
@@ -622,9 +644,10 @@ class _MapGalleryScreenState extends ConsumerState<MapGalleryScreen>
                         const SizedBox(height: 4),
                         Text(
                           item.location,
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Theme.of(context).colorScheme.outline,
-                          ),
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(
+                                color: Theme.of(context).colorScheme.outline,
+                              ),
                         ),
                         const SizedBox(height: 8),
                         Text(
@@ -731,9 +754,8 @@ class _MapGalleryScreenState extends ConsumerState<MapGalleryScreen>
                       children: [
                         Text(
                           item.title,
-                          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: Theme.of(context).textTheme.headlineSmall
+                              ?.copyWith(fontWeight: FontWeight.bold),
                         ),
                         Text(item.category),
                       ],
@@ -748,13 +770,16 @@ class _MapGalleryScreenState extends ConsumerState<MapGalleryScreen>
               const SizedBox(height: 16),
               _buildDetailRow('Location', item.location),
               const SizedBox(height: 8),
-              _buildDetailRow('Date', '${item.date.day}/${item.date.month}/${item.date.year}'),
+              _buildDetailRow(
+                'Date',
+                '${item.date.day}/${item.date.month}/${item.date.year}',
+              ),
               const SizedBox(height: 16),
               Text(
                 'Description',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               Expanded(
@@ -775,10 +800,16 @@ class _MapGalleryScreenState extends ConsumerState<MapGalleryScreen>
                 Wrap(
                   spacing: 8,
                   runSpacing: 4,
-                  children: item.tags.map((tag) => Chip(
-                    label: Text(tag),
-                    backgroundColor: Theme.of(context).primaryColor.withValues(alpha: 0.1),
-                  )).toList(),
+                  children: item.tags
+                      .map(
+                        (tag) => Chip(
+                          label: Text(tag),
+                          backgroundColor: Theme.of(
+                            context,
+                          ).primaryColor.withValues(alpha: 0.1),
+                        ),
+                      )
+                      .toList(),
                 ),
               ],
               const SizedBox(height: 16),
@@ -794,9 +825,13 @@ class _MapGalleryScreenState extends ConsumerState<MapGalleryScreen>
                   const SizedBox(width: 8),
                   Expanded(
                     child: ElevatedButton.icon(
-                      onPressed: item.isInteractive ? () => _interactWithItem(item) : null,
+                      onPressed: item.isInteractive
+                          ? () => _interactWithItem(item)
+                          : null,
                       icon: const Icon(Icons.touch_app),
-                      label: Text(item.isInteractive ? 'Interact' : 'Not Interactive'),
+                      label: Text(
+                        item.isInteractive ? 'Interact' : 'Not Interactive',
+                      ),
                     ),
                   ),
                 ],
@@ -866,4 +901,4 @@ class _MapGalleryScreenState extends ConsumerState<MapGalleryScreen>
       ),
     );
   }
-} 
+}

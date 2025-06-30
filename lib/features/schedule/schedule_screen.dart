@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/festival_data.dart';
 import '../../services/api_service.dart';
-import '../../widgets/loading_indicator.dart';
-import '../../widgets/error_screen.dart';
-import '../../widgets/schedule_card.dart';
+import '../../widgets/common/index.dart';
+import '../../widgets/venue_event/index.dart';
 import '../../services/error_handler.dart';
 
 /// Schedule screen showing all festival events in a timeline
@@ -45,7 +44,7 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen>
       });
 
       final events = await ApiService.fetchEvents();
-      
+
       setState(() {
         _allEvents = events;
         _filteredEvents = events;
@@ -55,13 +54,16 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen>
       // Set initial selected date to today or first event date
       if (events.isNotEmpty) {
         final today = DateTime.now();
-        final todayEvents = events.where((event) => 
-          event.startDate != null && 
-          event.startDate!.year == today.year &&
-          event.startDate!.month == today.month &&
-          event.startDate!.day == today.day
-        ).toList();
-        
+        final todayEvents = events
+            .where(
+              (event) =>
+                  event.startDate != null &&
+                  event.startDate!.year == today.year &&
+                  event.startDate!.month == today.month &&
+                  event.startDate!.day == today.day,
+            )
+            .toList();
+
         if (todayEvents.isNotEmpty) {
           _selectedDate = _formatDate(today);
         } else {
@@ -84,7 +86,7 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen>
         if (event.startDate == null) return false;
         return _formatDate(event.startDate!) == date;
       }).toList();
-      
+
       // Sort by start time
       _filteredEvents.sort((a, b) {
         if (a.startTime == null || b.startTime == null) return 0;
@@ -101,14 +103,14 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen>
     final dateTime = DateTime.parse(date);
     final today = DateTime.now();
     final tomorrow = today.add(const Duration(days: 1));
-    
-    if (dateTime.year == today.year && 
-        dateTime.month == today.month && 
+
+    if (dateTime.year == today.year &&
+        dateTime.month == today.month &&
         dateTime.day == today.day) {
       return 'Today';
-    } else if (dateTime.year == tomorrow.year && 
-               dateTime.month == tomorrow.month && 
-               dateTime.day == tomorrow.day) {
+    } else if (dateTime.year == tomorrow.year &&
+        dateTime.month == tomorrow.month &&
+        dateTime.day == tomorrow.day) {
       return 'Tomorrow';
     } else {
       return '${dateTime.day}/${dateTime.month}/${dateTime.year}';
@@ -149,10 +151,7 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen>
     }
 
     if (_error != null) {
-      return ErrorScreen(
-        error: AppException(_error!),
-        onRetry: _loadEvents,
-      );
+      return ErrorScreen(error: AppException(_error!), onRetry: _loadEvents);
     }
 
     if (_allEvents.isEmpty) {
@@ -179,7 +178,7 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen>
 
   Widget _buildDateSelector() {
     final dates = _getUniqueDates();
-    
+
     return Container(
       height: 60,
       padding: const EdgeInsets.symmetric(vertical: 8),
@@ -189,7 +188,7 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen>
         itemBuilder: (context, index) {
           final date = dates[index];
           final isSelected = date == _selectedDate;
-          
+
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 4),
             child: ChoiceChip(
@@ -229,7 +228,7 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen>
       itemBuilder: (context, index) {
         final event = _filteredEvents[index];
         final isLast = index == _filteredEvents.length - 1;
-        
+
         return Row(
           children: [
             // Timeline line
@@ -252,7 +251,9 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen>
                   Container(
                     width: 2,
                     height: 80,
-                    color: Theme.of(context).primaryColor.withValues(alpha: 0.3),
+                    color: Theme.of(
+                      context,
+                    ).primaryColor.withValues(alpha: 0.3),
                   ),
               ],
             ),
@@ -285,10 +286,7 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen>
           child: ListTile(
             leading: CircleAvatar(
               backgroundColor: Theme.of(context).primaryColor,
-              child: Icon(
-                _getEventIcon(event.category),
-                color: Colors.white,
-              ),
+              child: Icon(_getEventIcon(event.category), color: Colors.white),
             ),
             title: Text(
               event.title,
@@ -297,10 +295,8 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen>
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (event.startTime != null)
-                  Text('Time: ${event.startTime}'),
-                if (event.venue != null)
-                  Text('Venue: ${event.venue}'),
+                if (event.startTime != null) Text('Time: ${event.startTime}'),
+                if (event.venue != null) Text('Venue: ${event.venue}'),
               ],
             ),
             trailing: const Icon(Icons.arrow_forward_ios),
@@ -339,7 +335,12 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen>
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.event_busy, size: 64, color: Theme.of(context).colorScheme.outline, semanticLabel: 'No events'),
+          Icon(
+            Icons.event_busy,
+            size: 64,
+            color: Theme.of(context).colorScheme.outline,
+            semanticLabel: 'No events',
+          ),
           const SizedBox(height: 16),
           Text(
             'No events scheduled',
@@ -431,7 +432,9 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen>
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('About the Schedule'),
-        content: const Text('This is a simple schedule viewer. It shows events in a timeline, list, and calendar view. You can filter events by date and view details about each event. The data is fetched from an API and may not be accurate or complete.'),
+        content: const Text(
+          'This is a simple schedule viewer. It shows events in a timeline, list, and calendar view. You can filter events by date and view details about each event. The data is fetched from an API and may not be accurate or complete.',
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -441,4 +444,4 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen>
       ),
     );
   }
-} 
+}

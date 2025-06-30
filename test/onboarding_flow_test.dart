@@ -17,50 +17,51 @@ void main() {
       await RouteGuards.resetOnboardingStatus();
     });
 
-    testWidgets('Onboarding screen shows language selection and get started button', (WidgetTester tester) async {
-      // Reset onboarding status to ensure we start fresh
+    testWidgets(
+      'Onboarding screen shows language selection and get started button',
+      (WidgetTester tester) async {
+        // Reset onboarding status to ensure we start fresh
+        await RouteGuards.resetOnboardingStatus();
+
+        await tester.pumpWidget(
+          ProviderScope(child: MaterialApp(home: const OnboardingScreen())),
+        );
+
+        // Wait for the widget to build
+        await tester.pumpAndSettle();
+
+        // Verify language selection chips are present
+        expect(find.text('English'), findsOneWidget);
+        expect(find.text('Български'), findsOneWidget);
+
+        // Verify welcome text is present
+        expect(find.text('Welcome to Buna Festival'), findsOneWidget);
+
+        // Verify get started button is present
+        expect(find.text('Get Started'), findsOneWidget);
+        expect(find.text('Skip'), findsOneWidget);
+      },
+    );
+
+    testWidgets('Language selection works correctly', (
+      WidgetTester tester,
+    ) async {
       await RouteGuards.resetOnboardingStatus();
 
       await tester.pumpWidget(
-        ProviderScope(
-          child: MaterialApp(
-            home: const OnboardingScreen(),
-          ),
-        ),
-      );
-
-      // Wait for the widget to build
-      await tester.pumpAndSettle();
-
-      // Verify language selection chips are present
-      expect(find.text('English'), findsOneWidget);
-      expect(find.text('Български'), findsOneWidget);
-
-      // Verify welcome text is present
-      expect(find.text('Welcome to Buna Festival'), findsOneWidget);
-
-      // Verify get started button is present
-      expect(find.text('Get Started'), findsOneWidget);
-      expect(find.text('Skip'), findsOneWidget);
-    });
-
-    testWidgets('Language selection works correctly', (WidgetTester tester) async {
-      await RouteGuards.resetOnboardingStatus();
-
-      await tester.pumpWidget(
-        ProviderScope(
-          child: MaterialApp(
-            home: const OnboardingScreen(),
-          ),
-        ),
+        ProviderScope(child: MaterialApp(home: const OnboardingScreen())),
       );
 
       await tester.pumpAndSettle();
 
       // Initially English should be selected (first ChoiceChip)
-      final englishChip = tester.widget<ChoiceChip>(find.byType(ChoiceChip).first);
-      final bulgarianChip = tester.widget<ChoiceChip>(find.byType(ChoiceChip).last);
-      
+      final englishChip = tester.widget<ChoiceChip>(
+        find.byType(ChoiceChip).first,
+      );
+      final bulgarianChip = tester.widget<ChoiceChip>(
+        find.byType(ChoiceChip).last,
+      );
+
       expect(englishChip.selected, isTrue);
       expect(bulgarianChip.selected, isFalse);
 
@@ -69,22 +70,24 @@ void main() {
       await tester.pumpAndSettle();
 
       // Now Bulgarian should be selected
-      final englishChipAfter = tester.widget<ChoiceChip>(find.byType(ChoiceChip).first);
-      final bulgarianChipAfter = tester.widget<ChoiceChip>(find.byType(ChoiceChip).last);
-      
+      final englishChipAfter = tester.widget<ChoiceChip>(
+        find.byType(ChoiceChip).first,
+      );
+      final bulgarianChipAfter = tester.widget<ChoiceChip>(
+        find.byType(ChoiceChip).last,
+      );
+
       expect(englishChipAfter.selected, isFalse);
       expect(bulgarianChipAfter.selected, isTrue);
     });
 
-    testWidgets('Get started button shows loading state when tapped', (WidgetTester tester) async {
+    testWidgets('Get started button shows loading state when tapped', (
+      WidgetTester tester,
+    ) async {
       await RouteGuards.resetOnboardingStatus();
 
       await tester.pumpWidget(
-        ProviderScope(
-          child: MaterialApp(
-            home: const OnboardingScreen(),
-          ),
-        ),
+        ProviderScope(child: MaterialApp(home: const OnboardingScreen())),
       );
 
       await tester.pumpAndSettle();
@@ -139,4 +142,4 @@ void main() {
       expect(status, isTrue);
     });
   });
-} 
+}

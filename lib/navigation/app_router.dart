@@ -16,14 +16,18 @@ import '../features/map_gallery/map_gallery_screen.dart';
 import '../features/social/social_screen.dart';
 import '../features/feedback/feedback_screen.dart';
 import '../features/settings/feature_flags_screen.dart';
-import '../widgets/error_screen.dart';
 import '../services/error_handler.dart';
 import '../config/feature_flags.dart';
 import 'route_constants.dart';
 import 'route_guards.dart';
 import 'main_layout.dart';
 import 'route_observer.dart';
-import '../widgets/splash_screen.dart';
+import '../widgets/featured/index.dart';
+import '../features/venues/venues_data.dart';
+import '../models/schedule.dart';
+import '../models/festival_data.dart';
+import '../widgets/navigation/index.dart';
+import '../widgets/common/index.dart';
 
 /// Simple home screen placeholder
 class HomeScreen extends StatelessWidget {
@@ -33,20 +37,92 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final scale = MediaQuery.textScaleFactorOf(context);
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.home, size: 64),
-            const SizedBox(height: 16),
-            Text(
-              'Welcome to Buna Festival',
-              style: TextStyle(fontSize: 24 * scale, fontWeight: FontWeight.bold),
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: Image.asset(
+              'assets/OPEN CALL visuals/BUNA3_BlueStory.png',
+              fit: BoxFit.cover,
             ),
-            const SizedBox(height: 8),
-            const Text('Use the navigation below to explore the festival'),
-          ],
-        ),
+          ),
+          Center(
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Icon(Icons.home, size: 64),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Welcome to Buna Festival',
+                    style: TextStyle(
+                      fontSize: 24 * scale,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  const Text(
+                    'Use the navigation below to explore the festival',
+                  ),
+                  const SizedBox(height: 32),
+                  // Dashboard widgets
+                  FeaturedArtistCard(
+                    artist: Artist(
+                      id: '1',
+                      name: 'Mock Artist',
+                      country: 'Mock Country',
+                      bio: 'This is a mock artist bio.',
+                      specialty: 'Mock Specialty',
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  FeaturedVenueCard(
+                    venue: Venue(
+                      name: 'Mock Venue',
+                      address: '123 Main St',
+                      events: [
+                        Event(
+                          name: 'Mock Event',
+                          date: '2025-07-01',
+                          time: '7 PM',
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  NextEventCard(
+                    entry: ScheduleEntry(
+                      event: Event(
+                        name: 'Mock Event',
+                        date: '2025-07-01',
+                        time: '7 PM',
+                      ),
+                      venue: Venue(
+                        name: 'Mock Venue',
+                        address: '123 Main St',
+                        events: [],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  NewsDashboardCard(
+                    article: NewsArticle(
+                      id: 1,
+                      title: 'Mock News Headline',
+                      content: 'Mock content',
+                      excerpt: 'Mock excerpt',
+                      date: DateTime.now(),
+                      featuredImageUrl: null,
+                      author: 'Mock Author',
+                      categories: ['Mock'],
+                      url: 'https://example.com',
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -64,10 +140,10 @@ class AppRouter {
   static final GoRouter router = GoRouter(
     initialLocation: '/splash',
     debugLogDiagnostics: FeatureFlags.enableDebugMode,
-    
+
     // Route observers for analytics
     observers: FeatureFlags.enableAnalytics ? [_routeObserver] : [],
-    
+
     // Routes configuration
     routes: [
       GoRoute(
@@ -81,7 +157,7 @@ class AppRouter {
         name: AppRoutes.onboardingName,
         builder: (context, state) => const OnboardingScreen(),
       ),
-      
+
       // Protected routes with shell layout
       ShellRoute(
         builder: (context, state, child) => MainLayout(child: child),
@@ -117,7 +193,7 @@ class AppRouter {
               name: AppRoutes.infoName,
               builder: (context, state) => const InfoScreen(),
             ),
-          
+
           // Festival feature routes
           if (FeatureFlags.enableSchedule)
             GoRoute(
@@ -149,7 +225,7 @@ class AppRouter {
               name: AppRoutes.streamingName,
               builder: (context, state) => const StreamingScreen(),
             ),
-          
+
           // Interactive feature routes
           if (FeatureFlags.enableQRScanner)
             GoRoute(
@@ -175,7 +251,7 @@ class AppRouter {
               name: AppRoutes.socialName,
               builder: (context, state) => const SocialScreen(),
             ),
-          
+
           // Support feature routes
           if (FeatureFlags.enableFeedback)
             GoRoute(
@@ -183,7 +259,7 @@ class AppRouter {
               name: AppRoutes.feedbackName,
               builder: (context, state) => const FeedbackScreen(),
             ),
-          
+
           // Development routes (only in debug mode)
           if (FeatureFlags.enableDebugMode)
             GoRoute(
@@ -193,7 +269,7 @@ class AppRouter {
             ),
         ],
       ),
-      
+
       // Detail routes (future implementation)
       GoRoute(
         path: AppRoutes.venueDetails,
@@ -250,13 +326,13 @@ class AppRouter {
         },
       ),
     ],
-    
+
     // Global error handling
     errorBuilder: (context, state) => ErrorScreen(
       error: AppException('Route not found: ${state.uri}'),
       onRetry: () => context.go(AppRoutes.home),
     ),
-    
+
     // Route guards and redirects
     redirect: (context, state) => RouteGuards.handleRedirect(context, state),
   );
@@ -394,4 +470,4 @@ class AppRouter {
     final path = getCurrentRoutePath(context);
     return AppRoutes.isMainRoute(path);
   }
-} 
+}

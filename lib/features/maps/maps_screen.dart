@@ -43,7 +43,7 @@ class _MapsScreenState extends ConsumerState<MapsScreen> {
 
   Future<void> _getUserLocation() async {
     setState(() => _isLoadingLocation = true);
-    
+
     try {
       // Check permissions
       LocationPermission permission = await Geolocator.checkPermission();
@@ -53,7 +53,7 @@ class _MapsScreenState extends ConsumerState<MapsScreen> {
           return;
         }
       }
-      
+
       if (permission == LocationPermission.deniedForever) {
         return;
       }
@@ -62,7 +62,7 @@ class _MapsScreenState extends ConsumerState<MapsScreen> {
       final position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
       );
-      
+
       setState(() {
         _userPosition = position;
         _addUserLocationMarker();
@@ -96,7 +96,9 @@ class _MapsScreenState extends ConsumerState<MapsScreen> {
         if (venue.latitude != null && venue.longitude != null) {
           _markers.add(
             Marker(
-              markerId: MarkerId(venue.name), // Use name as ID since local Venue doesn't have id
+              markerId: MarkerId(
+                venue.name,
+              ), // Use name as ID since local Venue doesn't have id
               position: LatLng(venue.latitude!, venue.longitude!),
               icon: BitmapDescriptor.defaultMarkerWithHue(
                 _getMarkerColor(venue),
@@ -128,7 +130,9 @@ class _MapsScreenState extends ConsumerState<MapsScreen> {
   }
 
   void _animateToVenue(Venue venue) {
-    if (_mapController != null && venue.latitude != null && venue.longitude != null) {
+    if (_mapController != null &&
+        venue.latitude != null &&
+        venue.longitude != null) {
       _mapController!.animateCamera(
         CameraUpdate.newLatLngZoom(
           LatLng(venue.latitude!, venue.longitude!),
@@ -160,7 +164,7 @@ class _MapsScreenState extends ConsumerState<MapsScreen> {
 
   void _onSearchChanged(String query) {
     setState(() => _searchQuery = query);
-    
+
     // Use the debouncer for search filtering
     _searchDebouncer.call(() {
       setState(() => _debouncedSearchQuery = query);
@@ -169,17 +173,22 @@ class _MapsScreenState extends ConsumerState<MapsScreen> {
 
   List<Venue> _getFilteredVenues(List<Venue> venues) {
     if (_debouncedSearchQuery.isEmpty) return venues;
-    return venues.where((venue) =>
-      venue.name.toLowerCase().contains(_debouncedSearchQuery.toLowerCase()) ||
-      venue.address.toLowerCase().contains(_debouncedSearchQuery.toLowerCase())
-    ).toList();
+    return venues
+        .where(
+          (venue) =>
+              venue.name.toLowerCase().contains(
+                _debouncedSearchQuery.toLowerCase(),
+              ) ||
+              venue.address.toLowerCase().contains(
+                _debouncedSearchQuery.toLowerCase(),
+              ),
+        )
+        .toList();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _buildBody(),
-    );
+    return Scaffold(body: _buildBody());
   }
 
   Widget _buildBody() {
@@ -197,22 +206,13 @@ class _MapsScreenState extends ConsumerState<MapsScreen> {
           zoomControlsEnabled: false,
           mapToolbarEnabled: false,
         ),
-        
+
         // Search bar
-        Positioned(
-          top: 16,
-          left: 16,
-          right: 16,
-          child: _buildSearchBar(),
-        ),
-        
+        Positioned(top: 16, left: 16, right: 16, child: _buildSearchBar()),
+
         // User location button
-        Positioned(
-          bottom: 200,
-          right: 16,
-          child: _buildUserLocationButton(),
-        ),
-        
+        Positioned(bottom: 200, right: 16, child: _buildUserLocationButton()),
+
         // Venue list bottom sheet
         Positioned(
           bottom: 0,
@@ -282,10 +282,18 @@ class _MapsScreenState extends ConsumerState<MapsScreen> {
     double? minLat, maxLat, minLng, maxLng;
     for (final venue in venues) {
       if (venue.latitude != null && venue.longitude != null) {
-        minLat = minLat == null ? venue.latitude! : min(minLat, venue.latitude!);
-        maxLat = maxLat == null ? venue.latitude! : max(maxLat, venue.latitude!);
-        minLng = minLng == null ? venue.longitude! : min(minLng, venue.longitude!);
-        maxLng = maxLng == null ? venue.longitude! : max(maxLng, venue.longitude!);
+        minLat = minLat == null
+            ? venue.latitude!
+            : min(minLat, venue.latitude!);
+        maxLat = maxLat == null
+            ? venue.latitude!
+            : max(maxLat, venue.latitude!);
+        minLng = minLng == null
+            ? venue.longitude!
+            : min(minLng, venue.longitude!);
+        maxLng = maxLng == null
+            ? venue.longitude!
+            : max(maxLng, venue.longitude!);
       }
     }
 
@@ -341,7 +349,7 @@ class _VenueListSheet extends StatelessWidget {
               borderRadius: BorderRadius.circular(2),
             ),
           ),
-          
+
           // Header
           Padding(
             padding: const EdgeInsets.all(16),
@@ -356,23 +364,23 @@ class _VenueListSheet extends StatelessWidget {
                 const Spacer(),
                 Text(
                   'Tap to view on map',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Colors.grey,
-                  ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodySmall?.copyWith(color: Colors.grey),
                 ),
               ],
             ),
           ),
-          
+
           // Venue list
           Expanded(
             child: venues.isEmpty
                 ? Center(
                     child: Text(
                       'No venues found',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Colors.grey,
-                      ),
+                      style: Theme.of(
+                        context,
+                      ).textTheme.bodyMedium?.copyWith(color: Colors.grey),
                     ),
                   )
                 : ListView.builder(
@@ -381,14 +389,18 @@ class _VenueListSheet extends StatelessWidget {
                     itemBuilder: (context, index) {
                       final venue = venues[index];
                       final isSelected = selectedVenue?.name == venue.name;
-                      
+
                       return Card(
                         margin: const EdgeInsets.only(bottom: 8),
                         elevation: isSelected ? 4 : 1,
-                        color: isSelected ? AppTheme.primaryColor.withValues(alpha: 0.1) : null,
+                        color: isSelected
+                            ? AppTheme.primaryColor.withValues(alpha: 0.1)
+                            : null,
                         child: ListTile(
                           leading: CircleAvatar(
-                            backgroundColor: _getVenueColor(venue).withValues(alpha: 0.2),
+                            backgroundColor: _getVenueColor(
+                              venue,
+                            ).withValues(alpha: 0.2),
                             child: Icon(
                               Icons.location_on,
                               color: _getVenueColor(venue),
@@ -398,7 +410,9 @@ class _VenueListSheet extends StatelessWidget {
                           title: Text(
                             venue.name,
                             style: TextStyle(
-                              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                              fontWeight: isSelected
+                                  ? FontWeight.bold
+                                  : FontWeight.normal,
                             ),
                           ),
                           subtitle: Text(
@@ -406,7 +420,10 @@ class _VenueListSheet extends StatelessWidget {
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
-                          trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                          trailing: const Icon(
+                            Icons.arrow_forward_ios,
+                            size: 16,
+                          ),
                           onTap: () => onVenueTap(venue),
                         ),
                       );
@@ -454,19 +471,19 @@ class _VenueDetailsSheet extends StatelessWidget {
               ),
             ),
           ),
-          
+
           const SizedBox(height: 16),
-          
+
           // Venue name
           Text(
             venue.name,
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
           ),
-          
+
           const SizedBox(height: 8),
-          
+
           // Address
           Row(
             children: [
@@ -475,16 +492,16 @@ class _VenueDetailsSheet extends StatelessWidget {
               Expanded(
                 child: Text(
                   venue.address,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Colors.grey,
-                  ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodyMedium?.copyWith(color: Colors.grey),
                 ),
               ),
             ],
           ),
-          
+
           const SizedBox(height: 16),
-          
+
           // Events count
           Row(
             children: [
@@ -499,9 +516,9 @@ class _VenueDetailsSheet extends StatelessWidget {
               ),
             ],
           ),
-          
+
           const SizedBox(height: 20),
-          
+
           // Action buttons
           Row(
             children: [
@@ -535,7 +552,8 @@ class _VenueDetailsSheet extends StatelessWidget {
 
   void _openDirections(Venue venue) async {
     if (venue.latitude != null && venue.longitude != null) {
-      final url = 'https://www.google.com/maps/dir/?api=1&destination=${venue.latitude},${venue.longitude}';
+      final url =
+          'https://www.google.com/maps/dir/?api=1&destination=${venue.latitude},${venue.longitude}';
       final uri = Uri.parse(url);
       if (await canLaunchUrl(uri)) {
         await launchUrl(uri, mode: LaunchMode.externalApplication);

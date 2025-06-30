@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../widgets/loading_indicator.dart';
-import '../../widgets/error_screen.dart';
+import '../../widgets/common/index.dart';
 import '../../services/error_handler.dart';
 import '../../providers/user_provider.dart';
 
@@ -78,7 +77,8 @@ class _SocialScreenState extends ConsumerState<SocialScreen>
           id: '1',
           platform: 'Instagram',
           username: '@bunafestival',
-          content: 'The opening ceremony was absolutely magical! ✨ Light installations transformed the city square into a wonderland. #BunaFestival2024 #Art #Varna',
+          content:
+              'The opening ceremony was absolutely magical! ✨ Light installations transformed the city square into a wonderland. #BunaFestival2024 #Art #Varna',
           imageUrl: null,
           timestamp: DateTime.now().subtract(const Duration(hours: 2)),
           likes: 1247,
@@ -90,7 +90,8 @@ class _SocialScreenState extends ConsumerState<SocialScreen>
           id: '2',
           platform: 'Twitter',
           username: '@BunaFestival',
-          content: 'Just announced: Digital Art & VR Experience extended by popular demand! 🎨🕶️ Don\'t miss this cutting-edge showcase. Tickets available at the venue.',
+          content:
+              'Just announced: Digital Art & VR Experience extended by popular demand! 🎨🕶️ Don\'t miss this cutting-edge showcase. Tickets available at the venue.',
           imageUrl: null,
           timestamp: DateTime.now().subtract(const Duration(hours: 4)),
           likes: 892,
@@ -102,7 +103,8 @@ class _SocialScreenState extends ConsumerState<SocialScreen>
           id: '3',
           platform: 'Facebook',
           username: 'Buna Festival',
-          content: 'Behind the scenes: Our amazing volunteers setting up the environmental art installation. These sustainable sculptures are made entirely from recycled materials! 🌱♻️',
+          content:
+              'Behind the scenes: Our amazing volunteers setting up the environmental art installation. These sustainable sculptures are made entirely from recycled materials! 🌱♻️',
           imageUrl: null,
           timestamp: DateTime.now().subtract(const Duration(hours: 6)),
           likes: 2156,
@@ -114,7 +116,8 @@ class _SocialScreenState extends ConsumerState<SocialScreen>
           id: '4',
           platform: 'Instagram',
           username: '@elenarodriguez_art',
-          content: 'Thrilled to be part of Buna Festival 2024! My light installation "Urban Dreams" is now live at the Main Square. Come experience the magic! ✨ #LightArt #BunaFestival',
+          content:
+              'Thrilled to be part of Buna Festival 2024! My light installation "Urban Dreams" is now live at the Main Square. Come experience the magic! ✨ #LightArt #BunaFestival',
           imageUrl: null,
           timestamp: DateTime.now().subtract(const Duration(hours: 8)),
           likes: 3421,
@@ -126,7 +129,8 @@ class _SocialScreenState extends ConsumerState<SocialScreen>
           id: '5',
           platform: 'Twitter',
           username: '@VarnaCity',
-          content: 'Proud to host Buna Festival 2024! The city is alive with creativity and culture. Check out the amazing installations throughout Varna! 🎨🏛️',
+          content:
+              'Proud to host Buna Festival 2024! The city is alive with creativity and culture. Check out the amazing installations throughout Varna! 🎨🏛️',
           imageUrl: null,
           timestamp: DateTime.now().subtract(const Duration(hours: 10)),
           likes: 1567,
@@ -138,7 +142,8 @@ class _SocialScreenState extends ConsumerState<SocialScreen>
           id: '6',
           platform: 'Facebook',
           username: 'Varna Art Gallery',
-          content: 'The contemporary art exhibition is now open! Featuring works from international and local artists. Free guided tours available daily at 2 PM. 🎨',
+          content:
+              'The contemporary art exhibition is now open! Featuring works from international and local artists. Free guided tours available daily at 2 PM. 🎨',
           imageUrl: null,
           timestamp: DateTime.now().subtract(const Duration(hours: 12)),
           likes: 987,
@@ -150,7 +155,8 @@ class _SocialScreenState extends ConsumerState<SocialScreen>
           id: '7',
           platform: 'Instagram',
           username: '@hiroshi_tanaka',
-          content: 'Excited to showcase my AI-generated artwork at Buna Festival! The Digital Art Pavilion is a perfect space for exploring the future of creativity. 🤖🎨',
+          content:
+              'Excited to showcase my AI-generated artwork at Buna Festival! The Digital Art Pavilion is a perfect space for exploring the future of creativity. 🤖🎨',
           imageUrl: null,
           timestamp: DateTime.now().subtract(const Duration(hours: 14)),
           likes: 2789,
@@ -162,7 +168,8 @@ class _SocialScreenState extends ConsumerState<SocialScreen>
           id: '8',
           platform: 'Twitter',
           username: '@BulgarianArts',
-          content: 'Buna Festival is a celebration of artistic diversity! From traditional Bulgarian crafts to cutting-edge digital art, there\'s something for everyone. 🎭🎨',
+          content:
+              'Buna Festival is a celebration of artistic diversity! From traditional Bulgarian crafts to cutting-edge digital art, there\'s something for everyone. 🎭🎨',
           imageUrl: null,
           timestamp: DateTime.now().subtract(const Duration(hours: 16)),
           likes: 1234,
@@ -304,7 +311,7 @@ class _SocialScreenState extends ConsumerState<SocialScreen>
 
   Widget _buildPlatformFilter() {
     final platforms = _getPlatforms();
-    
+
     return Container(
       height: 50,
       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -314,7 +321,7 @@ class _SocialScreenState extends ConsumerState<SocialScreen>
         itemBuilder: (context, index) {
           final platform = platforms[index];
           final isSelected = platform == _selectedPlatform;
-          
+
           return Padding(
             padding: const EdgeInsets.only(right: 8),
             child: ChoiceChip(
@@ -355,8 +362,10 @@ class _SocialScreenState extends ConsumerState<SocialScreen>
   Widget _buildTrendingView() {
     // Sort posts by engagement (likes + comments + shares)
     final trendingPosts = List<SocialPost>.from(_filteredPosts);
-    trendingPosts.sort((a, b) => 
-      (b.likes + b.comments + b.shares).compareTo(a.likes + a.comments + a.shares)
+    trendingPosts.sort(
+      (a, b) => (b.likes + b.comments + b.shares).compareTo(
+        a.likes + a.comments + a.shares,
+      ),
     );
 
     return ListView.builder(
@@ -365,7 +374,7 @@ class _SocialScreenState extends ConsumerState<SocialScreen>
       itemBuilder: (context, index) {
         final post = trendingPosts[index];
         final engagement = post.likes + post.comments + post.shares;
-        
+
         return _buildPostCard(post);
       },
     );
@@ -394,7 +403,6 @@ class _SocialScreenState extends ConsumerState<SocialScreen>
   }
 
   Widget _buildPostCard(SocialPost post) {
-    final scale = MediaQuery.textScaleFactorOf(context);
     return Card(
       margin: const EdgeInsets.only(bottom: 16),
       child: InkWell(
@@ -402,6 +410,12 @@ class _SocialScreenState extends ConsumerState<SocialScreen>
         borderRadius: BorderRadius.circular(12),
         child: Builder(
           builder: (context) {
+            final scale = MediaQuery.textScaleFactorOf(context);
+            final userAsync = ref.read(userProvider);
+            final isAnonymous =
+                userAsync != null &&
+                userAsync.value != null &&
+                userAsync.value!.isAnonymous;
             return Padding(
               padding: const EdgeInsets.all(16),
               child: Column(
@@ -425,13 +439,18 @@ class _SocialScreenState extends ConsumerState<SocialScreen>
                           children: [
                             Text(
                               post.username,
-                              style: const TextStyle(fontWeight: FontWeight.bold),
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                             Text(
                               '${post.platform} • ${_formatTimestamp(post.timestamp)}',
-                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                color: Theme.of(context).colorScheme.outline,
-                              ),
+                              style: Theme.of(context).textTheme.bodySmall
+                                  ?.copyWith(
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.outline,
+                                  ),
                             ),
                           ],
                         ),
@@ -459,37 +478,47 @@ class _SocialScreenState extends ConsumerState<SocialScreen>
                   // Engagement
                   Row(
                     children: [
-                      _buildEngagementItem(Icons.favorite, post.likes.toString()),
+                      _buildEngagementItem(
+                        Icons.favorite,
+                        post.likes.toString(),
+                      ),
                       const SizedBox(width: 16),
-                      _buildEngagementItem(Icons.comment, post.comments.toString()),
+                      _buildEngagementItem(
+                        Icons.comment,
+                        post.comments.toString(),
+                      ),
                       const SizedBox(width: 16),
                       _buildEngagementItem(Icons.share, post.shares.toString()),
                       const Spacer(),
                       IconButton(
                         icon: const Icon(Icons.favorite_border),
                         onPressed: isAnonymous
-                          ? () {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Please log in to use social features.'),
-                                  duration: Duration(seconds: 2),
-                                ),
-                              );
-                            }
-                          : () => _toggleFavorite(post),
+                            ? () {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                      'Please log in to use social features.',
+                                    ),
+                                    duration: Duration(seconds: 2),
+                                  ),
+                                );
+                              }
+                            : () => _toggleFavorite(post),
                       ),
                       IconButton(
                         icon: const Icon(Icons.share),
                         onPressed: isAnonymous
-                          ? () {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Please log in to use social features.'),
-                                  duration: Duration(seconds: 2),
-                                ),
-                              );
-                            }
-                          : () => _sharePost(post),
+                            ? () {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                      'Please log in to use social features.',
+                                    ),
+                                    duration: Duration(seconds: 2),
+                                  ),
+                                );
+                              }
+                            : () => _sharePost(post),
                       ),
                     ],
                   ),
@@ -568,7 +597,10 @@ class _SocialScreenState extends ConsumerState<SocialScreen>
 
   void _showPostOptions(SocialPost post) {
     final userAsync = ref.read(userProvider);
-    final isAnonymous = userAsync != null && userAsync.value != null && userAsync.value!.isAnonymous;
+    final isAnonymous =
+        userAsync != null &&
+        userAsync.value != null &&
+        userAsync.value!.isAnonymous;
     showModalBottomSheet(
       context: context,
       builder: (context) => Container(
@@ -580,55 +612,61 @@ class _SocialScreenState extends ConsumerState<SocialScreen>
               leading: const Icon(Icons.share),
               title: const Text('Share Post'),
               onTap: isAnonymous
-                ? () {
-                    Navigator.pop(context);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Please log in to use social features.'),
-                        duration: Duration(seconds: 2),
-                      ),
-                    );
-                  }
-                : () {
-                    Navigator.pop(context);
-                    _sharePost(post);
-                  },
+                  ? () {
+                      Navigator.pop(context);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                            'Please log in to use social features.',
+                          ),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
+                    }
+                  : () {
+                      Navigator.pop(context);
+                      _sharePost(post);
+                    },
             ),
             ListTile(
               leading: const Icon(Icons.favorite_border),
               title: const Text('Add to Favorites'),
               onTap: isAnonymous
-                ? () {
-                    Navigator.pop(context);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Please log in to use social features.'),
-                        duration: Duration(seconds: 2),
-                      ),
-                    );
-                  }
-                : () {
-                    Navigator.pop(context);
-                    _toggleFavorite(post);
-                  },
+                  ? () {
+                      Navigator.pop(context);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                            'Please log in to use social features.',
+                          ),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
+                    }
+                  : () {
+                      Navigator.pop(context);
+                      _toggleFavorite(post);
+                    },
             ),
             ListTile(
               leading: const Icon(Icons.report),
               title: const Text('Report Post'),
               onTap: isAnonymous
-                ? () {
-                    Navigator.pop(context);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Please log in to use social features.'),
-                        duration: Duration(seconds: 2),
-                      ),
-                    );
-                  }
-                : () {
-                    Navigator.pop(context);
-                    _reportPost(post);
-                  },
+                  ? () {
+                      Navigator.pop(context);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                            'Please log in to use social features.',
+                          ),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
+                    }
+                  : () {
+                      Navigator.pop(context);
+                      _reportPost(post);
+                    },
             ),
           ],
         ),
@@ -671,4 +709,4 @@ class _SocialScreenState extends ConsumerState<SocialScreen>
       ),
     );
   }
-} 
+}

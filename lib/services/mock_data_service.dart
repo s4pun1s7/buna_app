@@ -8,8 +8,10 @@ class MockDataService {
       NewsArticle(
         id: 1,
         title: 'Buna Festival 2024: A Celebration of Art and Culture',
-        content: 'The highly anticipated Buna Festival 2024 is set to transform Varna into a vibrant hub of creativity and cultural expression. This year\'s festival promises to be the most spectacular yet, featuring over 50 artists from 15 countries, innovative installations, and immersive experiences that will captivate audiences of all ages.',
-        excerpt: 'Get ready for the most spectacular art festival of the year with over 50 artists from 15 countries!',
+        content:
+            'The highly anticipated Buna Festival 2024 is set to transform Varna into a vibrant hub of creativity and cultural expression. This year\'s festival promises to be the most spectacular yet, featuring over 50 artists from 15 countries, innovative installations, and immersive experiences that will captivate audiences of all ages.',
+        excerpt:
+            'Get ready for the most spectacular art festival of the year with over 50 artists from 15 countries!',
         date: DateTime.now().subtract(const Duration(days: 2)),
         featuredImageUrl: null,
         author: 'Festival Team',
@@ -19,8 +21,10 @@ class MockDataService {
       NewsArticle(
         id: 2,
         title: 'New Interactive Venues Announced for Buna Festival',
-        content: 'Buna Festival is excited to announce the addition of three new interactive venues that will enhance the festival experience and provide unique spaces for artistic expression.',
-        excerpt: 'Three new interactive venues will transform the festival experience with digital art, floating galleries, and underground theaters.',
+        content:
+            'Buna Festival is excited to announce the addition of three new interactive venues that will enhance the festival experience and provide unique spaces for artistic expression.',
+        excerpt:
+            'Three new interactive venues will transform the festival experience with digital art, floating galleries, and underground theaters.',
         date: DateTime.now().subtract(const Duration(days: 5)),
         featuredImageUrl: null,
         author: 'Venue Coordinator',
@@ -30,8 +34,10 @@ class MockDataService {
       NewsArticle(
         id: 3,
         title: 'International Artist Lineup Revealed for Buna Festival 2024',
-        content: 'Buna Festival is proud to announce the complete lineup of international artists who will be participating in this year\'s event. The roster includes acclaimed artists from across Europe, Asia, and the Americas, representing a diverse range of artistic disciplines and cultural perspectives.',
-        excerpt: 'Discover the incredible international artists who will be showcasing their work at Buna Festival 2024.',
+        content:
+            'Buna Festival is proud to announce the complete lineup of international artists who will be participating in this year\'s event. The roster includes acclaimed artists from across Europe, Asia, and the Americas, representing a diverse range of artistic disciplines and cultural perspectives.',
+        excerpt:
+            'Discover the incredible international artists who will be showcasing their work at Buna Festival 2024.',
         date: DateTime.now().subtract(const Duration(days: 7)),
         featuredImageUrl: null,
         author: 'Art Director',
@@ -54,7 +60,8 @@ Early bird discounts offer up to 30% off regular prices, making this the perfect
 
 "We want to make the festival accessible to everyone," says marketing director Victoria Petrova. "The early bird discounts are our way of rewarding those who plan ahead and ensuring that art lovers can experience everything the festival has to offer."
         ''',
-        excerpt: 'Secure your spot at Buna Festival 2024 with early bird discounts of up to 30% off festival passes.',
+        excerpt:
+            'Secure your spot at Buna Festival 2024 with early bird discounts of up to 30% off festival passes.',
         date: DateTime.now().subtract(const Duration(days: 10)),
         author: 'Marketing Team',
         featuredImageUrl: null,
@@ -81,7 +88,8 @@ Volunteers receive free festival passes, exclusive behind-the-scenes access, and
 
 Applications are open until June 1st, with interviews and training sessions scheduled throughout June.
         ''',
-        excerpt: 'Join the Buna Festival team as a volunteer and be part of the most exciting art event of the year.',
+        excerpt:
+            'Join the Buna Festival team as a volunteer and be part of the most exciting art event of the year.',
         date: DateTime.now().subtract(const Duration(days: 12)),
         author: 'Volunteer Coordinator',
         featuredImageUrl: null,
@@ -97,7 +105,8 @@ Applications are open until June 1st, with interviews and training sessions sche
       FestivalEvent(
         id: 1,
         title: 'Opening Ceremony & Light Show',
-        description: 'Join us for the spectacular opening of Buna Festival 2024! The evening begins with a grand ceremony featuring local dignitaries and festival organizers, followed by an incredible light show.',
+        description:
+            'Join us for the spectacular opening of Buna Festival 2024! The evening begins with a grand ceremony featuring local dignitaries and festival organizers, followed by an incredible light show.',
         startDate: DateTime.now().add(const Duration(days: 30, hours: 19)),
         endDate: DateTime.now().add(const Duration(days: 30, hours: 23)),
         venue: 'Main Square',
@@ -108,7 +117,8 @@ Applications are open until June 1st, with interviews and training sessions sche
       FestivalEvent(
         id: 2,
         title: 'Contemporary Art Exhibition',
-        description: 'Experience the cutting edge of contemporary art at this major exhibition featuring works from international and local artists.',
+        description:
+            'Experience the cutting edge of contemporary art at this major exhibition featuring works from international and local artists.',
         startDate: DateTime.now().add(const Duration(days: 31)),
         endDate: DateTime.now().add(const Duration(days: 45)),
         venue: 'City Gallery',
@@ -119,7 +129,8 @@ Applications are open until June 1st, with interviews and training sessions sche
       FestivalEvent(
         id: 3,
         title: 'Live Music & Performance Night',
-        description: 'An evening of extraordinary live performances featuring musicians, dancers, and performance artists from around the world.',
+        description:
+            'An evening of extraordinary live performances featuring musicians, dancers, and performance artists from around the world.',
         startDate: DateTime.now().add(const Duration(days: 32, hours: 20)),
         endDate: DateTime.now().add(const Duration(days: 32, hours: 23)),
         venue: 'Outdoor Amphitheater',
@@ -210,7 +221,8 @@ The ceremony also includes awards for outstanding contributions to the festival 
         id: 1,
         name: 'Main Square',
         address: 'Central Square, Varna, Bulgaria',
-        description: 'The heart of Varna and the primary venue for major festival events.',
+        description:
+            'The heart of Varna and the primary venue for major festival events.',
         latitude: 43.2141,
         longitude: 27.9147,
         featuredImageUrl: null,
@@ -220,7 +232,8 @@ The ceremony also includes awards for outstanding contributions to the festival 
         id: 2,
         name: 'City Gallery',
         address: '123 Art Street, Varna, Bulgaria',
-        description: 'A modern, purpose-built gallery space that serves as the primary venue for contemporary art exhibitions.',
+        description:
+            'A modern, purpose-built gallery space that serves as the primary venue for contemporary art exhibitions.',
         latitude: 43.2150,
         longitude: 27.9150,
         featuredImageUrl: null,
@@ -230,7 +243,8 @@ The ceremony also includes awards for outstanding contributions to the festival 
         id: 3,
         name: 'Outdoor Amphitheater',
         address: 'Seaside Park, Varna, Bulgaria',
-        description: 'A stunning open-air performance venue located on the Black Sea coast.',
+        description:
+            'A stunning open-air performance venue located on the Black Sea coast.',
         latitude: 43.2130,
         longitude: 27.9130,
         featuredImageUrl: null,
@@ -307,10 +321,12 @@ The underground location creates an intimate atmosphere perfect for experimental
   static FestivalInfo getMockFestivalInfo() {
     return FestivalInfo(
       title: 'Buna Festival 2024',
-      description: 'Buna Festival is the premier art and culture festival in Varna, Bulgaria, bringing together artists, musicians, performers, and art enthusiasts from around the world for three weeks of creative celebration.',
+      description:
+          'Buna Festival is the premier art and culture festival in Varna, Bulgaria, bringing together artists, musicians, performers, and art enthusiasts from around the world for three weeks of creative celebration.',
       featuredImageUrl: null,
       metadata: {
-        'excerpt': 'Experience the magic of art and culture at Buna Festival 2024 - three weeks of creative celebration in Varna, Bulgaria.',
+        'excerpt':
+            'Experience the magic of art and culture at Buna Festival 2024 - three weeks of creative celebration in Varna, Bulgaria.',
         'url': 'https://bunavarna.com/about',
       },
     );
@@ -322,31 +338,42 @@ The underground location creates an intimate atmosphere perfect for experimental
     final mockNews = getMockNews();
     final mockEvents = getMockEvents();
     final mockVenues = getMockVenues();
-    
-    final filteredNews = mockNews.where((article) => 
-      article.title.toLowerCase().contains(lowercaseQuery) ||
-      article.content.toLowerCase().contains(lowercaseQuery) ||
-      article.excerpt.toLowerCase().contains(lowercaseQuery)
-    ).toList();
-    
-    final filteredEvents = mockEvents.where((event) => 
-      event.title.toLowerCase().contains(lowercaseQuery) ||
-      event.description.toLowerCase().contains(lowercaseQuery) ||
-      (event.venue?.toLowerCase().contains(lowercaseQuery) ?? false) ||
-      (event.category?.toLowerCase().contains(lowercaseQuery) ?? false)
-    ).toList();
-    
-    final filteredVenues = mockVenues.where((venue) => 
-      venue.name.toLowerCase().contains(lowercaseQuery) ||
-      (venue.description?.toLowerCase().contains(lowercaseQuery) ?? false) ||
-      venue.address.toLowerCase().contains(lowercaseQuery)
-    ).toList();
-    
+
+    final filteredNews = mockNews
+        .where(
+          (article) =>
+              article.title.toLowerCase().contains(lowercaseQuery) ||
+              article.content.toLowerCase().contains(lowercaseQuery) ||
+              article.excerpt.toLowerCase().contains(lowercaseQuery),
+        )
+        .toList();
+
+    final filteredEvents = mockEvents
+        .where(
+          (event) =>
+              event.title.toLowerCase().contains(lowercaseQuery) ||
+              event.description.toLowerCase().contains(lowercaseQuery) ||
+              (event.venue?.toLowerCase().contains(lowercaseQuery) ?? false) ||
+              (event.category?.toLowerCase().contains(lowercaseQuery) ?? false),
+        )
+        .toList();
+
+    final filteredVenues = mockVenues
+        .where(
+          (venue) =>
+              venue.name.toLowerCase().contains(lowercaseQuery) ||
+              (venue.description?.toLowerCase().contains(lowercaseQuery) ??
+                  false) ||
+              venue.address.toLowerCase().contains(lowercaseQuery),
+        )
+        .toList();
+
     return SearchResults(
       news: filteredNews,
       events: filteredEvents,
       venues: filteredVenues,
-      totalResults: filteredNews.length + filteredEvents.length + filteredVenues.length,
+      totalResults:
+          filteredNews.length + filteredEvents.length + filteredVenues.length,
     );
   }
-} 
+}

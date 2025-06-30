@@ -29,11 +29,14 @@ class NewsArticle {
       content: json['content']['rendered'] as String,
       excerpt: _parseHtml(json['excerpt']['rendered'] as String),
       date: DateTime.parse(json['date'] as String),
-      featuredImageUrl: json['_embedded']?['wp:featuredmedia']?[0]?['source_url'] as String?,
+      featuredImageUrl:
+          json['_embedded']?['wp:featuredmedia']?[0]?['source_url'] as String?,
       author: json['_embedded']?['author']?[0]?['name'] as String? ?? 'Unknown',
-      categories: (json['_embedded']?['wp:term']?[0] as List<dynamic>?)
-          ?.map((cat) => cat['name'] as String)
-          .toList() ?? [],
+      categories:
+          (json['_embedded']?['wp:term']?[0] as List<dynamic>?)
+              ?.map((cat) => cat['name'] as String)
+              .toList() ??
+          [],
       url: json['link'] as String,
     );
   }
@@ -97,7 +100,8 @@ class FestivalEvent {
       location: json['meta']?['event_location'] as String?,
       venue: json['meta']?['event_venue'] as String?,
       category: json['meta']?['event_category'] as String?,
-      featuredImageUrl: json['_embedded']?['wp:featuredmedia']?[0]?['source_url'] as String?,
+      featuredImageUrl:
+          json['_embedded']?['wp:featuredmedia']?[0]?['source_url'] as String?,
       url: json['link'] as String,
     );
   }
@@ -118,7 +122,8 @@ class FestivalEvent {
       location: json['meta']?['event_location'] as String?,
       venue: json['meta']?['event_venue'] as String?,
       category: json['meta']?['event_category'] as String?,
-      featuredImageUrl: json['_embedded']?['wp:featuredmedia']?[0]?['source_url'] as String?,
+      featuredImageUrl:
+          json['_embedded']?['wp:featuredmedia']?[0]?['source_url'] as String?,
       url: json['link'] as String,
     );
   }
@@ -178,7 +183,8 @@ class Venue {
       phone: json['meta']?['venue_phone'] as String?,
       email: json['meta']?['venue_email'] as String?,
       website: json['meta']?['venue_website'] as String?,
-      featuredImageUrl: json['_embedded']?['wp:featuredmedia']?[0]?['source_url'] as String?,
+      featuredImageUrl:
+          json['_embedded']?['wp:featuredmedia']?[0]?['source_url'] as String?,
       events: [], // Events will be populated separately
     );
   }
@@ -213,7 +219,8 @@ class FestivalInfo {
     return FestivalInfo(
       title: _parseHtml(json['title']['rendered'] as String),
       description: _parseHtml(json['content']['rendered'] as String),
-      featuredImageUrl: json['_embedded']?['wp:featuredmedia']?[0]?['source_url'] as String?,
+      featuredImageUrl:
+          json['_embedded']?['wp:featuredmedia']?[0]?['source_url'] as String?,
       metadata: json['meta'] as Map<String, dynamic>? ?? {},
     );
   }
@@ -246,15 +253,25 @@ class SearchResults {
 
   factory SearchResults.fromJson(Map<String, dynamic> json) {
     return SearchResults(
-      news: (json['news'] as List<dynamic>?)
-          ?.map((item) => NewsArticle.fromJson(item as Map<String, dynamic>))
-          .toList() ?? [],
-      events: (json['events'] as List<dynamic>?)
-          ?.map((item) => FestivalEvent.fromJson(item as Map<String, dynamic>))
-          .toList() ?? [],
-      venues: (json['venues'] as List<dynamic>?)
-          ?.map((item) => Venue.fromJson(item as Map<String, dynamic>))
-          .toList() ?? [],
+      news:
+          (json['news'] as List<dynamic>?)
+              ?.map(
+                (item) => NewsArticle.fromJson(item as Map<String, dynamic>),
+              )
+              .toList() ??
+          [],
+      events:
+          (json['events'] as List<dynamic>?)
+              ?.map(
+                (item) => FestivalEvent.fromJson(item as Map<String, dynamic>),
+              )
+              .toList() ??
+          [],
+      venues:
+          (json['venues'] as List<dynamic>?)
+              ?.map((item) => Venue.fromJson(item as Map<String, dynamic>))
+              .toList() ??
+          [],
       totalResults: json['total_results'] as int? ?? 0,
     );
   }
@@ -273,4 +290,4 @@ class Event {
     required this.time,
     this.description,
   });
-} 
+}

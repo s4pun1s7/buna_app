@@ -27,7 +27,7 @@ Future<void> requestFestivalPermissions() async {
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   // Initialize Firebase
   try {
     if (kIsWeb) {
@@ -45,16 +45,16 @@ Future<void> main() async {
     } else {
       await Firebase.initializeApp();
     }
-    
+
     // Initialize services
     await ConnectivityService().initialize();
-    
+
     // Track app launch
     AnalyticsService.logEvent(name: 'app_launch');
   } catch (e) {
     // Continue without Firebase for now
   }
-  
+
   runApp(const BunaAppWithPermissions());
 }
 
@@ -63,8 +63,6 @@ class BunaAppWithPermissions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RiverpodApp(
-      child: const BunaApp(),
-    );
+    return RiverpodApp(child: const BunaApp());
   }
 }

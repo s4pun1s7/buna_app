@@ -6,21 +6,27 @@ import '../utils/debouncer.dart';
 import 'error_handler.dart';
 import 'mock_data_service.dart';
 
+// TODO: Move Artist model to its own file (lib/models/artist.dart)
+class Artist {
+  final String name;
+  Artist({required this.name});
+}
+
 /// API service for communicating with the Buna Festival website
 class ApiService {
   // Flag to temporarily disable API calls
   static const bool _apiDisabled = true; // Set to false to re-enable API
-  
+
   static const String _baseUrl = 'https://bunavarna.com';
   static const String _apiEndpoint = '/wp-json/wp/v2';
   static const Duration _timeout = Duration(seconds: 30);
-  
+
   // Cache for API responses
   static final Map<String, dynamic> _cache = {};
   static const Duration _cacheExpiry = Duration(minutes: 15);
 
   static final ErrorHandler _errorHandler = ErrorHandler();
-  
+
   // Debouncer for API calls to prevent rate limiting
   static final APIDebouncer _apiDebouncer = APIDebouncer();
 
@@ -30,29 +36,42 @@ class ApiService {
   static const String _harvardApiKey = '';
 
   /// Fetch news from NewsAPI.org (free API, requires API key)
-  static Future<List<NewsArticle>> fetchPublicNews({int page = 1, int pageSize = 5}) async {
+  static Future<List<NewsArticle>> fetchPublicNews({
+    int page = 1,
+    int pageSize = 5,
+  }) async {
     if (_newsApiKey.isEmpty) {
       // Fallback to mock data if no API key
       return MockDataService.getMockNews();
     }
     try {
-      final response = await http.get(
-        Uri.parse('https://newsapi.org/v2/top-headlines?country=us&pageSize=$pageSize&page=$page&apiKey=$_newsApiKey'),
-      ).timeout(_timeout);
+      final response = await http
+          .get(
+            Uri.parse(
+              'https://newsapi.org/v2/top-headlines?country=us&pageSize=$pageSize&page=$page&apiKey=$_newsApiKey',
+            ),
+          )
+          .timeout(_timeout);
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         final List<dynamic> articles = data['articles'] ?? [];
-        return articles.map((json) => NewsArticle(
-          id: json['publishedAt']?.hashCode ?? 0,
-          title: json['title'] ?? '',
-          content: json['content'] ?? '',
-          excerpt: json['description'] ?? '',
-          date: DateTime.tryParse(json['publishedAt'] ?? '') ?? DateTime.now(),
-          featuredImageUrl: json['urlToImage'],
-          author: json['author'] ?? 'Unknown',
-          categories: [json['source']?['name'] ?? 'NewsAPI'],
-          url: json['url'] ?? '',
-        )).toList();
+        return articles
+            .map(
+              (json) => NewsArticle(
+                id: json['publishedAt']?.hashCode ?? 0,
+                title: json['title'] ?? '',
+                content: json['content'] ?? '',
+                excerpt: json['description'] ?? '',
+                date:
+                    DateTime.tryParse(json['publishedAt'] ?? '') ??
+                    DateTime.now(),
+                featuredImageUrl: json['urlToImage'],
+                author: json['author'] ?? 'Unknown',
+                categories: [json['source']?['name'] ?? 'NewsAPI'],
+                url: json['url'] ?? '',
+              ),
+            )
+            .toList();
       } else {
         throw _errorHandler.handleApiError(
           'Failed to load public news',
@@ -69,24 +88,24 @@ class ApiService {
     }
   }
 
-  // TEMPORARY: Stub Artist model for build
-  class Artist {
-    final String name;
-    Artist({required this.name});
-  }
-
   /// Fetch artists from Harvard Art Museums API (free API, requires API key)
-  static Future<List<Artist>> fetchPublicArtists({int page = 1, int size = 5}) async {
+  static Future<List<Artist>> fetchPublicArtists({
+    int page = 1,
+    int size = 5,
+  }) async {
     // TODO: Replace with real implementation
     return [];
   }
 
   /// Fetch news articles from the festival website
-  static Future<List<NewsArticle>> fetchNews({int page = 1, int perPage = 10}) async {
+  static Future<List<NewsArticle>> fetchNews({
+    int page = 1,
+    int perPage = 10,
+  }) async {
     if (_apiDisabled) {
       return MockDataService.getMockNews();
     }
-    
+
     return await _debouncedApiCall(() async {
       try {
         final cacheKey = 'news_page_$page';
@@ -94,20 +113,23 @@ class ApiService {
           return _cache[cacheKey]['data'];
         }
 
-        final response = await http.get(
-          Uri.parse('$_baseUrl$_apiEndpoint/posts?page=$page&per_page=$perPage&_embed'),
-          headers: {'Accept': 'application/json'},
-        ).timeout(_timeout);
+        final response = await http
+            .get(
+              Uri.parse(
+                '$_baseUrl$_apiEndpoint/posts?page=$page&per_page=$perPage&_embed',
+              ),
+              headers: {'Accept': 'application/json'},
+            )
+            .timeout(_timeout);
 
         if (response.statusCode == 200) {
           final List<dynamic> data = json.decode(response.body);
-          final articles = data.map((json) => NewsArticle.fromJson(json)).toList();
-          
-          _cache[cacheKey] = {
-            'data': articles,
-            'timestamp': DateTime.now(),
-          };
-          
+          final articles = data
+              .map((json) => NewsArticle.fromJson(json))
+              .toList();
+
+          _cache[cacheKey] = {'data': articles, 'timestamp': DateTime.now()};
+
           return articles;
         } else {
           throw _errorHandler.handleApiError(
@@ -127,11 +149,14 @@ class ApiService {
   }
 
   /// Fetch events from the festival website
-  static Future<List<FestivalEvent>> fetchEvents({int page = 1, int perPage = 20}) async {
+  static Future<List<FestivalEvent>> fetchEvents({
+    int page = 1,
+    int perPage = 20,
+  }) async {
     if (_apiDisabled) {
       return MockDataService.getMockEvents();
     }
-    
+
     return await _debouncedApiCall(() async {
       try {
         final cacheKey = 'events_page_$page';
@@ -140,20 +165,23 @@ class ApiService {
         }
 
         // Try to fetch from custom endpoint if available
-        final response = await http.get(
-          Uri.parse('$_baseUrl$_apiEndpoint/events?page=$page&per_page=$perPage&_embed'),
-          headers: {'Accept': 'application/json'},
-        ).timeout(_timeout);
+        final response = await http
+            .get(
+              Uri.parse(
+                '$_baseUrl$_apiEndpoint/events?page=$page&per_page=$perPage&_embed',
+              ),
+              headers: {'Accept': 'application/json'},
+            )
+            .timeout(_timeout);
 
         if (response.statusCode == 200) {
           final List<dynamic> data = json.decode(response.body);
-          final events = data.map((json) => FestivalEvent.fromJson(json)).toList();
-          
-          _cache[cacheKey] = {
-            'data': events,
-            'timestamp': DateTime.now(),
-          };
-          
+          final events = data
+              .map((json) => FestivalEvent.fromJson(json))
+              .toList();
+
+          _cache[cacheKey] = {'data': events, 'timestamp': DateTime.now()};
+
           return events;
         } else if (response.statusCode == 404) {
           // Fallback to posts with event category
@@ -176,15 +204,22 @@ class ApiService {
   }
 
   /// Fetch events from posts with event category
-  static Future<List<FestivalEvent>> _fetchEventsFromPosts({int page = 1, int perPage = 20}) async {
+  static Future<List<FestivalEvent>> _fetchEventsFromPosts({
+    int page = 1,
+    int perPage = 20,
+  }) async {
     if (_apiDisabled) {
       return MockDataService.getMockEvents();
     }
     try {
-      final response = await http.get(
-        Uri.parse('$_baseUrl$_apiEndpoint/posts?categories=event&page=$page&per_page=$perPage&_embed'),
-        headers: {'Accept': 'application/json'},
-      ).timeout(_timeout);
+      final response = await http
+          .get(
+            Uri.parse(
+              '$_baseUrl$_apiEndpoint/posts?categories=event&page=$page&per_page=$perPage&_embed',
+            ),
+            headers: {'Accept': 'application/json'},
+          )
+          .timeout(_timeout);
 
       if (response.statusCode == 200) {
         final List<dynamic> data = json.decode(response.body);
@@ -210,7 +245,7 @@ class ApiService {
     if (_apiDisabled) {
       return MockDataService.getMockVenues();
     }
-    
+
     return await _debouncedApiCall(() async {
       try {
         const cacheKey = 'venues';
@@ -218,20 +253,19 @@ class ApiService {
           return _cache[cacheKey]['data'];
         }
 
-        final response = await http.get(
-          Uri.parse('$_baseUrl$_apiEndpoint/venues?_embed'),
-          headers: {'Accept': 'application/json'},
-        ).timeout(_timeout);
+        final response = await http
+            .get(
+              Uri.parse('$_baseUrl$_apiEndpoint/venues?_embed'),
+              headers: {'Accept': 'application/json'},
+            )
+            .timeout(_timeout);
 
         if (response.statusCode == 200) {
           final List<dynamic> data = json.decode(response.body);
           final venues = data.map((json) => Venue.fromJson(json)).toList();
-          
-          _cache[cacheKey] = {
-            'data': venues,
-            'timestamp': DateTime.now(),
-          };
-          
+
+          _cache[cacheKey] = {'data': venues, 'timestamp': DateTime.now()};
+
           return venues;
         } else if (response.statusCode == 404) {
           // Return empty list if venues endpoint doesn't exist
@@ -258,7 +292,7 @@ class ApiService {
     if (_apiDisabled) {
       return MockDataService.getMockFestivalInfo();
     }
-    
+
     return await _debouncedApiCall(() async {
       try {
         const cacheKey = 'festival_info';
@@ -266,21 +300,20 @@ class ApiService {
           return _cache[cacheKey]['data'];
         }
 
-        final response = await http.get(
-          Uri.parse('$_baseUrl$_apiEndpoint/pages?slug=about&_embed'),
-          headers: {'Accept': 'application/json'},
-        ).timeout(_timeout);
+        final response = await http
+            .get(
+              Uri.parse('$_baseUrl$_apiEndpoint/pages?slug=about&_embed'),
+              headers: {'Accept': 'application/json'},
+            )
+            .timeout(_timeout);
 
         if (response.statusCode == 200) {
           final List<dynamic> data = json.decode(response.body);
           if (data.isNotEmpty) {
             final info = FestivalInfo.fromJson(data.first);
-            
-            _cache[cacheKey] = {
-              'data': info,
-              'timestamp': DateTime.now(),
-            };
-            
+
+            _cache[cacheKey] = {'data': info, 'timestamp': DateTime.now()};
+
             return info;
           } else {
             throw _errorHandler.handleApiError(
@@ -311,7 +344,7 @@ class ApiService {
     if (_apiDisabled) {
       return MockDataService.getMockSearchResults(query);
     }
-    
+
     return await _debouncedApiCall(() async {
       try {
         if (query.trim().isEmpty) {
@@ -323,10 +356,14 @@ class ApiService {
           );
         }
 
-        final response = await http.get(
-          Uri.parse('$_baseUrl$_apiEndpoint/search?search=${Uri.encodeComponent(query)}&page=$page&_embed'),
-          headers: {'Accept': 'application/json'},
-        ).timeout(_timeout);
+        final response = await http
+            .get(
+              Uri.parse(
+                '$_baseUrl$_apiEndpoint/search?search=${Uri.encodeComponent(query)}&page=$page&_embed',
+              ),
+              headers: {'Accept': 'application/json'},
+            )
+            .timeout(_timeout);
 
         if (response.statusCode == 200) {
           final data = json.decode(response.body);
@@ -340,7 +377,10 @@ class ApiService {
         }
       } on TimeoutException {
         throw _errorHandler.handleError(
-          TimeoutException('Search request timed out', const Duration(seconds: 30)),
+          TimeoutException(
+            'Search request timed out',
+            const Duration(seconds: 30),
+          ),
         );
       } catch (e, stackTrace) {
         throw _errorHandler.handleError(e, stackTrace);
@@ -358,7 +398,7 @@ class ApiService {
   /// Debounced API call wrapper
   static Future<T> _debouncedApiCall<T>(Future<T> Function() apiCall) async {
     Completer<T> completer = Completer<T>();
-    
+
     _apiDebouncer.call(() async {
       try {
         final result = await apiCall();
@@ -371,7 +411,7 @@ class ApiService {
         }
       }
     });
-    
+
     return completer.future;
   }
 
@@ -380,12 +420,14 @@ class ApiService {
     if (_apiDisabled) {
       return true; // Return true when API is disabled
     }
-    
+
     try {
-      final response = await http.get(
-        Uri.parse('$_baseUrl$_apiEndpoint'),
-        headers: {'Accept': 'application/json'},
-      ).timeout(const Duration(seconds: 10));
+      final response = await http
+          .get(
+            Uri.parse('$_baseUrl$_apiEndpoint'),
+            headers: {'Accept': 'application/json'},
+          )
+          .timeout(const Duration(seconds: 10));
 
       return response.statusCode == 200;
     } catch (e) {
@@ -431,4 +473,4 @@ class ApiService {
     }
     return config;
   }
-} 
+}

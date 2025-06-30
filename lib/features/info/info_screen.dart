@@ -13,9 +13,7 @@ class InfoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _buildBody(context),
-    );
+    return Scaffold(body: _buildBody(context));
   }
 
   Widget _buildBody(BuildContext context) {
@@ -34,16 +32,17 @@ class InfoScreen extends StatelessWidget {
                   height: 100,
                   cacheWidth: 200,
                   fit: BoxFit.contain,
-                  errorBuilder: (context, error, stackTrace) => const SizedBox.shrink(),
+                  errorBuilder: (context, error, stackTrace) =>
+                      const SizedBox.shrink(),
                 ),
               ),
               const SizedBox(height: 12),
               Text(
                 'Buna Forum',
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: colorScheme.primary,
-                    ),
+                  fontWeight: FontWeight.bold,
+                  color: colorScheme.primary,
+                ),
               ),
             ],
           ),
@@ -52,7 +51,9 @@ class InfoScreen extends StatelessWidget {
         // About Card
         Card(
           elevation: 2,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
           child: Padding(
             padding: const EdgeInsets.all(20),
             child: Column(
@@ -60,7 +61,9 @@ class InfoScreen extends StatelessWidget {
               children: [
                 Text(
                   'About',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 const SizedBox(height: 8),
                 const Text(
@@ -83,7 +86,9 @@ class InfoScreen extends StatelessWidget {
         // Editions Card
         Card(
           elevation: 2,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
           child: Padding(
             padding: const EdgeInsets.all(20),
             child: Column(
@@ -91,16 +96,30 @@ class InfoScreen extends StatelessWidget {
               children: [
                 Text(
                   'Editions',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 const SizedBox(height: 12),
                 Wrap(
                   spacing: 12,
                   runSpacing: 12,
                   children: [
-                    _editionButton(context, '2023', 'https://bunavarna.com/en/buna-2023/'),
-                    _editionButton(context, '2024', 'https://bunavarna.com/en/buna-2024/'),
-                    _editionButton(context, '2025', 'https://bunavarna.com/en/buna-2025/'),
+                    _editionButton(
+                      context,
+                      '2023',
+                      'https://bunavarna.com/en/buna-2023/',
+                    ),
+                    _editionButton(
+                      context,
+                      '2024',
+                      'https://bunavarna.com/en/buna-2024/',
+                    ),
+                    _editionButton(
+                      context,
+                      '2025',
+                      'https://bunavarna.com/en/buna-2025/',
+                    ),
                   ],
                 ),
               ],
@@ -111,7 +130,9 @@ class InfoScreen extends StatelessWidget {
         // Contact Card
         Card(
           elevation: 2,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
           child: Padding(
             padding: const EdgeInsets.all(20),
             child: Column(
@@ -119,7 +140,9 @@ class InfoScreen extends StatelessWidget {
               children: [
                 Text(
                   'Contact',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 const SizedBox(height: 12),
                 ListTile(
@@ -140,7 +163,9 @@ class InfoScreen extends StatelessWidget {
         // Social Card
         Card(
           elevation: 2,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
           child: Padding(
             padding: const EdgeInsets.all(20),
             child: Column(
@@ -148,19 +173,29 @@ class InfoScreen extends StatelessWidget {
               children: [
                 Text(
                   'Follow Us',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 const SizedBox(height: 12),
                 Row(
                   children: [
                     IconButton(
-                      icon: const Icon(Icons.facebook, color: Color(0xFF4267B2)),
-                      onPressed: () => _launchUrl('https://www.facebook.com/BunaVarna/'),
+                      icon: const Icon(
+                        Icons.facebook,
+                        color: Color(0xFF4267B2),
+                      ),
+                      onPressed: () =>
+                          _launchUrl('https://www.facebook.com/BunaVarna/'),
                       tooltip: 'Facebook',
                     ),
                     IconButton(
-                      icon: const Icon(Icons.camera_alt, color: Color(0xFFC13584)),
-                      onPressed: () => _launchUrl('https://www.instagram.com/buna.varna/'),
+                      icon: const Icon(
+                        Icons.camera_alt,
+                        color: Color(0xFFC13584),
+                      ),
+                      onPressed: () =>
+                          _launchUrl('https://www.instagram.com/buna.varna/'),
                       tooltip: 'Instagram',
                     ),
                   ],
@@ -173,7 +208,9 @@ class InfoScreen extends StatelessWidget {
         // Partners Card
         Card(
           elevation: 2,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
           child: Padding(
             padding: const EdgeInsets.all(20),
             child: Column(
@@ -181,7 +218,9 @@ class InfoScreen extends StatelessWidget {
               children: [
                 Text(
                   'Partners & Supporters',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 const SizedBox(height: 8),
                 const Text(

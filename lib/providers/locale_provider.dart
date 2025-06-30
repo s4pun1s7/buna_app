@@ -13,8 +13,8 @@ class LocaleNotifier extends StateNotifier<Locale> {
   }
 
   void toggleLanguage() {
-    state = state.languageCode == 'en' 
-        ? const Locale('bg') 
+    state = state.languageCode == 'en'
+        ? const Locale('bg')
         : const Locale('en');
   }
 }

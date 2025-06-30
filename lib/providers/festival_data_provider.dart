@@ -5,12 +5,18 @@ import '../services/error_handler.dart';
 import '../models/festival_data.dart';
 
 /// Provider for news articles
-final newsProvider = FutureProvider.family<List<NewsArticle>, int>((ref, page) async {
+final newsProvider = FutureProvider.family<List<NewsArticle>, int>((
+  ref,
+  page,
+) async {
   return await ApiService.fetchNews(page: page);
 });
 
 /// Provider for festival events
-final eventsProvider = FutureProvider.family<List<FestivalEvent>, int>((ref, page) async {
+final eventsProvider = FutureProvider.family<List<FestivalEvent>, int>((
+  ref,
+  page,
+) async {
   return await ApiService.fetchEvents(page: page);
 });
 
@@ -25,7 +31,10 @@ final festivalInfoProvider = FutureProvider<FestivalInfo>((ref) async {
 });
 
 /// Provider for search results
-final searchProvider = FutureProvider.family<SearchResults, String>((ref, query) async {
+final searchProvider = FutureProvider.family<SearchResults, String>((
+  ref,
+  query,
+) async {
   return await ApiService.search(query);
 });
 
@@ -33,13 +42,16 @@ final searchProvider = FutureProvider.family<SearchResults, String>((ref, query)
 final refreshProvider = StateProvider<bool>((ref) => false);
 
 /// Provider for managing news state
-final newsStateProvider = StateNotifierProvider<NewsStateNotifier, AsyncValue<List<NewsArticle>>>((ref) {
-  return NewsStateNotifier();
-});
+final newsStateProvider =
+    StateNotifierProvider<NewsStateNotifier, AsyncValue<List<NewsArticle>>>((
+      ref,
+    ) {
+      return NewsStateNotifier();
+    });
 
 class NewsStateNotifier extends StateNotifier<AsyncValue<List<NewsArticle>>> {
   final ErrorHandler _errorHandler = ErrorHandler();
-  
+
   NewsStateNotifier() : super(const AsyncValue.loading()) {
     _loadNews();
   }
@@ -81,13 +93,17 @@ class NewsStateNotifier extends StateNotifier<AsyncValue<List<NewsArticle>>> {
 }
 
 /// Provider for managing events state
-final eventsStateProvider = StateNotifierProvider<EventsStateNotifier, AsyncValue<List<FestivalEvent>>>((ref) {
-  return EventsStateNotifier();
-});
+final eventsStateProvider =
+    StateNotifierProvider<EventsStateNotifier, AsyncValue<List<FestivalEvent>>>(
+      (ref) {
+        return EventsStateNotifier();
+      },
+    );
 
-class EventsStateNotifier extends StateNotifier<AsyncValue<List<FestivalEvent>>> {
+class EventsStateNotifier
+    extends StateNotifier<AsyncValue<List<FestivalEvent>>> {
   final ErrorHandler _errorHandler = ErrorHandler();
-  
+
   EventsStateNotifier() : super(const AsyncValue.loading()) {
     _loadEvents();
   }
@@ -131,9 +147,9 @@ class EventsStateNotifier extends StateNotifier<AsyncValue<List<FestivalEvent>>>
     final events = state.value ?? [];
     final now = DateTime.now();
     return events.where((event) {
-      if (event.startDate == null) return false;
-      return event.startDate!.isAfter(now);
-    }).toList()
+        if (event.startDate == null) return false;
+        return event.startDate!.isAfter(now);
+      }).toList()
       ..sort((a, b) => (a.startDate ?? now).compareTo(b.startDate ?? now));
   }
 
@@ -143,8 +159,7 @@ class EventsStateNotifier extends StateNotifier<AsyncValue<List<FestivalEvent>>>
     return events.where((event) {
       if (event.endDate == null) return false;
       return event.endDate!.isBefore(now);
-    }).toList()
-      ..sort((a, b) => (b.endDate ?? now).compareTo(a.endDate ?? now));
+    }).toList()..sort((a, b) => (b.endDate ?? now).compareTo(a.endDate ?? now));
   }
 
   List<FestivalEvent> getCurrentEvents() {
@@ -158,13 +173,14 @@ class EventsStateNotifier extends StateNotifier<AsyncValue<List<FestivalEvent>>>
 }
 
 /// Provider for managing venues state
-final venuesStateProvider = StateNotifierProvider<VenuesStateNotifier, AsyncValue<List<Venue>>>((ref) {
-  return VenuesStateNotifier();
-});
+final venuesStateProvider =
+    StateNotifierProvider<VenuesStateNotifier, AsyncValue<List<Venue>>>((ref) {
+      return VenuesStateNotifier();
+    });
 
 class VenuesStateNotifier extends StateNotifier<AsyncValue<List<Venue>>> {
   final ErrorHandler _errorHandler = ErrorHandler();
-  
+
   VenuesStateNotifier() : super(const AsyncValue.loading()) {
     _loadVenues();
   }
@@ -197,30 +213,45 @@ class VenuesStateNotifier extends StateNotifier<AsyncValue<List<Venue>>> {
     return venues.where((venue) => venue.events.isNotEmpty).toList();
   }
 
-  List<Venue> getVenuesByLocation(double latitude, double longitude, double radiusKm) {
+  List<Venue> getVenuesByLocation(
+    double latitude,
+    double longitude,
+    double radiusKm,
+  ) {
     final venues = state.value ?? [];
     return venues.where((venue) {
       if (venue.latitude == null || venue.longitude == null) return false;
-      
+
       final distance = _calculateDistance(
-        latitude, longitude,
-        venue.latitude!, venue.longitude!
+        latitude,
+        longitude,
+        venue.latitude!,
+        venue.longitude!,
       );
-      
+
       return distance <= radiusKm;
     }).toList();
   }
 
-  double _calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+  double _calculateDistance(
+    double lat1,
+    double lon1,
+    double lat2,
+    double lon2,
+  ) {
     const double earthRadius = 6371; // Earth's radius in kilometers
-    
+
     final dLat = _degreesToRadians(lat2 - lat1);
     final dLon = _degreesToRadians(lon2 - lon1);
-    
-    final a = sin(dLat / 2) * sin(dLat / 2) +
-        sin(_degreesToRadians(lat1)) * sin(_degreesToRadians(lat2)) * sin(dLon / 2) * sin(dLon / 2);
+
+    final a =
+        sin(dLat / 2) * sin(dLat / 2) +
+        sin(_degreesToRadians(lat1)) *
+            sin(_degreesToRadians(lat2)) *
+            sin(dLon / 2) *
+            sin(dLon / 2);
     final c = 2 * atan2(sqrt(a), sqrt(1 - a));
-    
+
     return earthRadius * c;
   }
 
@@ -230,13 +261,16 @@ class VenuesStateNotifier extends StateNotifier<AsyncValue<List<Venue>>> {
 }
 
 /// Provider for search state
-final searchStateProvider = StateNotifierProvider<SearchStateNotifier, AsyncValue<SearchResults?>>((ref) {
-  return SearchStateNotifier();
-});
+final searchStateProvider =
+    StateNotifierProvider<SearchStateNotifier, AsyncValue<SearchResults?>>((
+      ref,
+    ) {
+      return SearchStateNotifier();
+    });
 
 class SearchStateNotifier extends StateNotifier<AsyncValue<SearchResults?>> {
   final ErrorHandler _errorHandler = ErrorHandler();
-  
+
   SearchStateNotifier() : super(const AsyncValue.data(null));
 
   Future<void> search(String query) async {
@@ -269,4 +303,4 @@ final apiConnectionProvider = FutureProvider<bool>((ref) async {
 /// Provider for cache statistics
 final cacheStatsProvider = Provider<Map<String, dynamic>>((ref) {
   return ApiService.getCacheStats();
-}); 
+});

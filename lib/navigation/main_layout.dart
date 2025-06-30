@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../widgets/navigation/index.dart';
+import '../widgets/common/index.dart';
 import '../widgets/buna_nav_bar.dart';
 import '../widgets/buna_drawer.dart';
 import '../widgets/language_toggle.dart';
@@ -11,7 +13,7 @@ import 'route_constants.dart';
 /// Main layout wrapper for protected routes
 class MainLayout extends ConsumerStatefulWidget {
   final Widget child;
-  
+
   const MainLayout({super.key, required this.child});
 
   @override
@@ -25,7 +27,7 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
   Widget build(BuildContext context) {
     // Update current index based on route
     _updateCurrentIndex();
-    
+
     return Scaffold(
       appBar: _buildAppBar(),
       body: widget.child,
@@ -99,14 +101,18 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
       builder: (context, ref, child) {
         final themeMode = ref.watch(themeProvider);
         final themeNotifier = ref.watch(themeProvider.notifier);
-        
+
         return IconButton(
-          icon: Icon(themeMode == ThemeMode.dark ? Icons.light_mode : Icons.dark_mode),
+          icon: Icon(
+            themeMode == ThemeMode.dark ? Icons.light_mode : Icons.dark_mode,
+          ),
           onPressed: () {
             themeNotifier.toggleTheme();
             AnalyticsService.logEvent(
               name: 'theme_toggle',
-              parameters: {'new_theme': themeMode == ThemeMode.dark ? 'light' : 'dark'},
+              parameters: {
+                'new_theme': themeMode == ThemeMode.dark ? 'light' : 'dark',
+              },
             );
           },
           tooltip: 'Toggle theme',
@@ -134,10 +140,7 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
   }
 
   Widget _buildBottomNavigation() {
-    return BunaNavBar(
-      currentIndex: _currentIndex,
-      onTap: _onNavBarTap,
-    );
+    return BunaNavBar(currentIndex: _currentIndex, onTap: _onNavBarTap);
   }
 
   Widget _buildFloatingActionButton() {
@@ -154,4 +157,4 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
       child: const Icon(Icons.add),
     );
   }
-} 
+}

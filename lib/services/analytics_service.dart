@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 
 class AnalyticsService {
   static final FirebaseAnalytics _analytics = FirebaseAnalytics.instance;
-  
+
   /// Track screen views
   static Future<void> logScreenView({
     required String screenName,
@@ -13,13 +13,13 @@ class AnalyticsService {
       print('📊 Screen View: $screenName');
       return;
     }
-    
+
     await _analytics.logScreenView(
       screenName: screenName,
       screenClass: screenClass,
     );
   }
-  
+
   /// Track user actions
   static Future<void> logEvent({
     required String name,
@@ -29,13 +29,10 @@ class AnalyticsService {
       print('📊 Event: $name ${parameters ?? {}}');
       return;
     }
-    
-    await _analytics.logEvent(
-      name: name,
-      parameters: parameters,
-    );
+
+    await _analytics.logEvent(name: name, parameters: parameters);
   }
-  
+
   /// Track custom events for festival app
   static Future<void> logFestivalEvent({
     required String eventName,
@@ -53,7 +50,7 @@ class AnalyticsService {
       },
     );
   }
-  
+
   /// Track news interactions
   static Future<void> logNewsInteraction({
     required String action,
@@ -69,7 +66,7 @@ class AnalyticsService {
       },
     );
   }
-  
+
   /// Track venue interactions
   static Future<void> logVenueInteraction({
     required String action,
@@ -85,7 +82,7 @@ class AnalyticsService {
       },
     );
   }
-  
+
   /// Track search queries
   static Future<void> logSearch({
     required String query,
@@ -101,7 +98,7 @@ class AnalyticsService {
       },
     );
   }
-  
+
   /// Track app performance
   static Future<void> logPerformance({
     required String metric,
@@ -110,14 +107,10 @@ class AnalyticsService {
   }) async {
     await logEvent(
       name: 'performance',
-      parameters: {
-        'metric': metric,
-        'value': value,
-        'screen': screen ?? '',
-      },
+      parameters: {'metric': metric, 'value': value, 'screen': screen ?? ''},
     );
   }
-  
+
   /// Track errors
   static Future<void> logError({
     required String error,
@@ -134,4 +127,4 @@ class AnalyticsService {
       },
     );
   }
-} 
+}

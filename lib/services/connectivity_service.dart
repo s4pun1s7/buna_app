@@ -8,8 +8,9 @@ class ConnectivityService {
   ConnectivityService._internal();
 
   final Connectivity _connectivity = Connectivity();
-  final StreamController<bool> _connectionStatusController = StreamController<bool>.broadcast();
-  
+  final StreamController<bool> _connectionStatusController =
+      StreamController<bool>.broadcast();
+
   Stream<bool> get connectionStatus => _connectionStatusController.stream;
   bool _isConnected = true;
 
@@ -17,9 +18,11 @@ class ConnectivityService {
   Future<void> initialize() async {
     // Check initial connection status
     await _checkConnectionStatus();
-    
+
     // Listen for connectivity changes
-    _connectivity.onConnectivityChanged.listen((List<ConnectivityResult> results) {
+    _connectivity.onConnectivityChanged.listen((
+      List<ConnectivityResult> results,
+    ) {
       _updateConnectionStatus(results);
     });
   }
@@ -40,13 +43,17 @@ class ConnectivityService {
   /// Update connection status and notify listeners
   void _updateConnectionStatus(List<ConnectivityResult> results) {
     final wasConnected = _isConnected;
-    _isConnected = results.isNotEmpty && results.any((result) => result != ConnectivityResult.none);
-    
+    _isConnected =
+        results.isNotEmpty &&
+        results.any((result) => result != ConnectivityResult.none);
+
     if (wasConnected != _isConnected) {
       _connectionStatusController.add(_isConnected);
-      
+
       if (kDebugMode) {
-        print('🌐 Connectivity changed: ${_isConnected ? 'Online' : 'Offline'}');
+        print(
+          '🌐 Connectivity changed: ${_isConnected ? 'Online' : 'Offline'}',
+        );
       }
     }
   }
@@ -62,7 +69,7 @@ class ConnectivityService {
     try {
       final results = await _connectivity.checkConnectivity();
       if (results.isEmpty) return 'None';
-      
+
       final result = results.first;
       switch (result) {
         case ConnectivityResult.wifi:
@@ -89,4 +96,4 @@ class ConnectivityService {
   void dispose() {
     _connectionStatusController.close();
   }
-} 
+}

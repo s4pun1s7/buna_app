@@ -12,7 +12,7 @@ class PerformanceService {
   /// Start timing an operation
   void startTimer(String operation) {
     _timers[operation] = Stopwatch()..start();
-    
+
     if (kDebugMode) {
       print('⏱️ Started timing: $operation');
     }
@@ -25,21 +25,21 @@ class PerformanceService {
 
     timer.stop();
     final duration = timer.elapsedMilliseconds.toDouble();
-    
+
     // Store metric
     _metrics.putIfAbsent(operation, () => []).add(duration);
-    
+
     // Track in analytics
     AnalyticsService.logPerformance(
       metric: operation,
       value: duration,
       screen: screen,
     );
-    
+
     if (kDebugMode) {
       print('⏱️ $operation took ${duration}ms');
     }
-    
+
     _timers.remove(operation);
   }
 
@@ -47,7 +47,7 @@ class PerformanceService {
   double getAverageDuration(String operation) {
     final durations = _metrics[operation];
     if (durations == null || durations.isEmpty) return 0.0;
-    
+
     return durations.reduce((a, b) => a + b) / durations.length;
   }
 
@@ -81,16 +81,16 @@ class PerformanceService {
   /// Generate performance report
   Map<String, dynamic> generateReport() {
     final report = <String, dynamic>{};
-    
+
     for (final entry in _metrics.entries) {
       final operation = entry.key;
       final durations = entry.value;
-      
+
       if (durations.isNotEmpty) {
         final average = durations.reduce((a, b) => a + b) / durations.length;
         final min = durations.reduce((a, b) => a < b ? a : b);
         final max = durations.reduce((a, b) => a > b ? a : b);
-        
+
         report[operation] = {
           'count': durations.length,
           'average_ms': average,
@@ -99,7 +99,7 @@ class PerformanceService {
         };
       }
     }
-    
+
     return report;
   }
-} 
+}

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../widgets/loading_indicator.dart';
+import '../../widgets/common/index.dart';
 
 /// AR experience model
 class ARExperience {
@@ -60,7 +60,8 @@ class _ARScreenState extends ConsumerState<ARScreen> {
         ARExperience(
           id: '1',
           title: 'Virtual Art Gallery',
-          description: 'Explore a virtual art gallery with 3D sculptures and interactive installations.',
+          description:
+              'Explore a virtual art gallery with 3D sculptures and interactive installations.',
           category: 'Art',
           isAvailable: true,
           features: [
@@ -69,12 +70,14 @@ class _ARScreenState extends ConsumerState<ARScreen> {
             'Artist information',
             'Virtual tours',
           ],
-          instructions: 'Point your camera at any flat surface to place the virtual gallery.',
+          instructions:
+              'Point your camera at any flat surface to place the virtual gallery.',
         ),
         ARExperience(
           id: '2',
           title: 'Festival Map Overlay',
-          description: 'See festival venues and events overlaid on the real world.',
+          description:
+              'See festival venues and events overlaid on the real world.',
           category: 'Navigation',
           isAvailable: true,
           features: [
@@ -83,7 +86,8 @@ class _ARScreenState extends ConsumerState<ARScreen> {
             'Distance indicators',
             'Route optimization',
           ],
-          instructions: 'Point your camera at the ground to see the festival map overlay.',
+          instructions:
+              'Point your camera at the ground to see the festival map overlay.',
         ),
         ARExperience(
           id: '3',
@@ -97,12 +101,14 @@ class _ARScreenState extends ConsumerState<ARScreen> {
             'Interactive Q&A',
             'Personal anecdotes',
           ],
-          instructions: 'Find artist markers around the festival to trigger holographic stories.',
+          instructions:
+              'Find artist markers around the festival to trigger holographic stories.',
         ),
         ARExperience(
           id: '4',
           title: 'Interactive Light Show',
-          description: 'Create your own light show using hand gestures and movements.',
+          description:
+              'Create your own light show using hand gestures and movements.',
           category: 'Interactive',
           isAvailable: true,
           features: [
@@ -125,12 +131,14 @@ class _ARScreenState extends ConsumerState<ARScreen> {
             'Educational content',
             'Cultural insights',
           ],
-          instructions: 'Point your camera at historical buildings to see past reconstructions.',
+          instructions:
+              'Point your camera at historical buildings to see past reconstructions.',
         ),
         ARExperience(
           id: '6',
           title: 'Environmental Art',
-          description: 'Experience environmental art installations that respond to your location.',
+          description:
+              'Experience environmental art installations that respond to your location.',
           category: 'Environmental',
           isAvailable: true,
           features: [
@@ -139,7 +147,8 @@ class _ARScreenState extends ConsumerState<ARScreen> {
             'Interactive elements',
             'Educational content',
           ],
-          instructions: 'Walk around the festival to discover location-based environmental art.',
+          instructions:
+              'Walk around the festival to discover location-based environmental art.',
         ),
         ARExperience(
           id: '7',
@@ -158,7 +167,8 @@ class _ARScreenState extends ConsumerState<ARScreen> {
         ARExperience(
           id: '8',
           title: 'Festival Selfie Studio',
-          description: 'Take AR-enhanced selfies with festival-themed filters and effects.',
+          description:
+              'Take AR-enhanced selfies with festival-themed filters and effects.',
           category: 'Social',
           isAvailable: true,
           features: [
@@ -167,7 +177,8 @@ class _ARScreenState extends ConsumerState<ARScreen> {
             'Social sharing',
             'Photo contests',
           ],
-          instructions: 'Point your camera at yourself to access festival selfie filters.',
+          instructions:
+              'Point your camera at yourself to access festival selfie filters.',
         ),
       ];
 
@@ -302,9 +313,7 @@ class _ARScreenState extends ConsumerState<ARScreen> {
       children: [
         _buildHeader(),
         _buildCategoryFilter(),
-        Expanded(
-          child: _buildExperiencesList(),
-        ),
+        Expanded(child: _buildExperiencesList()),
       ],
     );
   }
@@ -347,7 +356,7 @@ class _ARScreenState extends ConsumerState<ARScreen> {
 
   Widget _buildCategoryFilter() {
     final categories = _getCategories();
-    
+
     return Container(
       height: 50,
       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -357,7 +366,7 @@ class _ARScreenState extends ConsumerState<ARScreen> {
         itemBuilder: (context, index) {
           final category = categories[index];
           final isSelected = category == _selectedCategory;
-          
+
           return Padding(
             padding: const EdgeInsets.only(right: 8),
             child: ChoiceChip(
@@ -433,23 +442,28 @@ class _ARScreenState extends ConsumerState<ARScreen> {
                           children: [
                             Text(
                               experience.title,
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
+                              style: Theme.of(context).textTheme.titleMedium
+                                  ?.copyWith(fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(height: 4),
                             Text(
                               experience.category,
-                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                color: Theme.of(context).colorScheme.outline,
-                              ),
+                              style: Theme.of(context).textTheme.bodySmall
+                                  ?.copyWith(
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.outline,
+                                  ),
                             ),
                           ],
                         ),
                       ),
                       if (!experience.isAvailable)
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
                           decoration: BoxDecoration(
                             color: Colors.grey,
                             borderRadius: BorderRadius.circular(12),
@@ -471,21 +485,31 @@ class _ARScreenState extends ConsumerState<ARScreen> {
                   Wrap(
                     spacing: 8,
                     runSpacing: 4,
-                    children: experience.features.map((feature) => Chip(
-                      label: Text(
-                        feature,
-                        style: TextStyle(fontSize: 12 * scale),
-                      ),
-                      backgroundColor: Theme.of(context).primaryColor.withValues(alpha: 0.1),
-                    )).toList(),
+                    children: experience.features
+                        .map(
+                          (feature) => Chip(
+                            label: Text(
+                              feature,
+                              style: TextStyle(fontSize: 12 * scale),
+                            ),
+                            backgroundColor: Theme.of(
+                              context,
+                            ).primaryColor.withValues(alpha: 0.1),
+                          ),
+                        )
+                        .toList(),
                   ),
                   const SizedBox(height: 12),
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton.icon(
-                      onPressed: experience.isAvailable ? () => _launchExperience(experience) : null,
+                      onPressed: experience.isAvailable
+                          ? () => _launchExperience(experience)
+                          : null,
                       icon: const Icon(Icons.view_in_ar),
-                      label: Text(experience.isAvailable ? 'Launch AR' : 'Coming Soon'),
+                      label: Text(
+                        experience.isAvailable ? 'Launch AR' : 'Coming Soon',
+                      ),
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
@@ -591,9 +615,8 @@ class _ARScreenState extends ConsumerState<ARScreen> {
                       children: [
                         Text(
                           experience.title,
-                          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: Theme.of(context).textTheme.headlineSmall
+                              ?.copyWith(fontWeight: FontWeight.bold),
                         ),
                         Text(experience.category),
                       ],
@@ -610,27 +633,33 @@ class _ARScreenState extends ConsumerState<ARScreen> {
               const SizedBox(height: 16),
               Text(
                 'Features:',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
-              ...experience.features.map((feature) => Padding(
-                padding: const EdgeInsets.only(bottom: 4),
-                child: Row(
-                  children: [
-                    const Icon(Icons.check_circle, size: 16, color: Colors.green),
-                    const SizedBox(width: 8),
-                    Expanded(child: Text(feature)),
-                  ],
+              ...experience.features.map(
+                (feature) => Padding(
+                  padding: const EdgeInsets.only(bottom: 4),
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.check_circle,
+                        size: 16,
+                        color: Colors.green,
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(child: Text(feature)),
+                    ],
+                  ),
                 ),
-              )),
+              ),
               const SizedBox(height: 16),
               Text(
                 'Instructions:',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               Text(experience.instructions),
@@ -705,7 +734,9 @@ class _ARScreenState extends ConsumerState<ARScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('AR Settings'),
-        content: const Text('AR quality and performance settings coming soon...'),
+        content: const Text(
+          'AR quality and performance settings coming soon...',
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -737,4 +768,4 @@ class _ARScreenState extends ConsumerState<ARScreen> {
       ),
     );
   }
-} 
+}

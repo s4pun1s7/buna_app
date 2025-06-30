@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../navigation/route_guards.dart';
 import '../navigation/app_router.dart';
-import 'buna_logo.dart';
+import '../branding/index.dart';
 import '../providers/user_provider.dart';
 import '../services/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,9 +14,10 @@ class SplashScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Watch the userProvider for authentication state
     final userAsync = ref.watch(userProvider);
-    
+
     // Web: handle Google sign-in redirect result
-    if (identical(0, 0.0)) { // kIsWeb workaround for code edit
+    if (identical(0, 0.0)) {
+      // kIsWeb workaround for code edit
       return FutureBuilder(
         future: AuthService().getGoogleRedirectResult(),
         builder: (context, snapshot) {
@@ -43,10 +44,18 @@ class SplashScreen extends ConsumerWidget {
     return _buildUserProvider(context, ref, userAsync);
   }
 
-  Widget _buildUserProvider(BuildContext context, WidgetRef ref, AsyncValue<User?> userAsync) {
+  Widget _buildUserProvider(
+    BuildContext context,
+    WidgetRef ref,
+    AsyncValue<User?> userAsync,
+  ) {
     return userAsync.when(
       data: (user) {
-        debugPrint('SplashScreen: user = ' + (user?.uid ?? 'null') + ', isAnonymous = ${user?.isAnonymous}');
+        debugPrint(
+          'SplashScreen: user = ' +
+              (user?.uid ?? 'null') +
+              ', isAnonymous = ${user?.isAnonymous}',
+        );
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (user != null && !user.isAnonymous) {
             AppRouter.goToHome(context);
@@ -80,10 +89,7 @@ class SplashScreen extends ConsumerWidget {
             const SizedBox(height: 32),
             const CircularProgressIndicator(),
             const SizedBox(height: 16),
-            Text(
-              'Loading...',
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
+            Text('Loading...', style: Theme.of(context).textTheme.bodyLarge),
           ],
         ),
       ),
@@ -118,4 +124,4 @@ class SplashScreen extends ConsumerWidget {
       ),
     );
   }
-} 
+}
