@@ -30,18 +30,30 @@ class ScheduleScreen extends ConsumerWidget {
               children: [
                 Row(
                   children: [
-                    const Icon(Icons.location_on, size: 14, color: Colors.blueGrey),
+                    const Icon(
+                      Icons.location_on,
+                      size: 14,
+                      color: Colors.blueGrey,
+                    ),
                     const SizedBox(width: 2),
                     Flexible(child: Text(entry.venue.name)),
                   ],
                 ),
                 Row(
                   children: [
-                    const Icon(Icons.calendar_today, size: 14, color: Colors.teal),
+                    const Icon(
+                      Icons.calendar_today,
+                      size: 14,
+                      color: Colors.teal,
+                    ),
                     const SizedBox(width: 2),
                     Text(entry.event.date),
                     const SizedBox(width: 8),
-                    const Icon(Icons.access_time, size: 14, color: Colors.indigo),
+                    const Icon(
+                      Icons.access_time,
+                      size: 14,
+                      color: Colors.indigo,
+                    ),
                     const SizedBox(width: 2),
                     Text(entry.event.time),
                   ],

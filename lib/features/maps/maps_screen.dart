@@ -55,15 +55,17 @@ class _MapsScreenState extends State<MapsScreen> {
           }
           final markers = venues
               .where((v) => v.latitude != null && v.longitude != null)
-              .map((venue) => Marker(
-                    markerId: MarkerId(venue.name),
-                    position: LatLng(venue.latitude!, venue.longitude!),
-                    infoWindow: InfoWindow(
-                      title: venue.name,
-                      snippet: venue.address,
-                    ),
-                    onTap: () => _onMarkerTap(venue),
-                  ))
+              .map(
+                (venue) => Marker(
+                  markerId: MarkerId(venue.name),
+                  position: LatLng(venue.latitude!, venue.longitude!),
+                  infoWindow: InfoWindow(
+                    title: venue.name,
+                    snippet: venue.address,
+                  ),
+                  onTap: () => _onMarkerTap(venue),
+                ),
+              )
               .toSet();
           return GoogleMap(
             initialCameraPosition: const CameraPosition(

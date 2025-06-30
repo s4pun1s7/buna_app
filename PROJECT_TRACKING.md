@@ -22,6 +22,12 @@
 - ✅ Onboarding step extracted as reusable widget
 - ✅ Widget tests for onboarding, error, and loading widgets
 - ✅ Rationale dialogs before requesting sensitive permissions
+- ✅ Riverpod state management integrated for favorites, schedule, and locale
+- ✅ Schedule/favorites logic refactored into services/providers
+- ✅ Widget extraction for schedule card and other UI
+- ✅ Full localization audit, ARB update, and codegen
+- ✅ Code cleanup: removed unused files/folders (e.g., lib/common, empty features)
+- ✅ .gitignore reviewed and updated for generated, build, and sensitive files
 
 ---
 
@@ -47,6 +53,7 @@
 - [ ] Implement real festival data for venues, events, and news (static or from a simple backend)
 - [ ] Add a basic schedule/timetable screen
 - [x] Add a map view with venue markers (Google Maps or OpenStreetMap)
+- [x] Add a “favorites” feature for events/venues
 
 ### Platform Polish
 - [ ] Test and fix layout issues on web, Android, and iOS
@@ -54,11 +61,11 @@
 
 ### Code Quality & Maintenance
 - [x] Add more widget and integration tests
-- [ ] Refactor code for modularity and maintainability
-- [ ] Update documentation and screenshots
+- [x] Refactor code for modularity and maintainability (services, providers, widgets)
+- [x] Update documentation and screenshots
+- [x] Remove unused/empty feature folders and files
 
 ### Optional/Nice-to-have
-- [ ] Add a “favorites” feature for events/venues
 - [ ] Add push notification support for news/updates
 
 ---
@@ -90,7 +97,7 @@
 - [x] Implement onboarding page
 
 ### Personal Schedule & Notifications
-- [ ] Implement personal schedule, favorites, and event reminders
+- [x] Implement personal schedule, favorites, and event reminders (with Riverpod)
 - [ ] Implement festival news and notifications (with user preferences)
 
 ### Festival Content & Discovery
@@ -122,14 +129,14 @@
 - [x] Pin dependency versions in `pubspec.yaml` (avoid `any` for production)
 - [x] Remove unused dependencies
 - [x] Organize feature code in separate folders (modular structure)
-- [x] Move logic out of `main.dart` into services/providers (partially, more possible)
+- [x] Move logic out of `main.dart` into services/providers (fully modular)
 - [x] Add error handling for async operations (Firebase, permissions, etc.)
-- [x] Manage all state with Riverpod providers (partially, more possible)
+- [x] Manage all state with Riverpod providers
 - [x] Use named routes and route guards with `go_router`
 - [x] Implement localization and accessibility (semantic labels, contrast, screen reader support) (localization done, accessibility in progress)
 - [x] Request permissions only when needed, not all at app start (web excluded)
-- [x] Add rationale dialogs before requesting sensitive permissions (to do)
-- [ ] Add unit, widget, and integration tests for features and navigation
+- [x] Add rationale dialogs before requesting sensitive permissions
+- [x] Add unit, widget, and integration tests for features and navigation
 - [x] Expand `README.md` with setup, build, and contribution instructions
 - [x] Add code comments and docstrings for public classes/methods (partially)
 - [ ] Set up CI/CD (e.g., Actions) for tests and code analysis

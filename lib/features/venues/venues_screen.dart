@@ -86,7 +86,10 @@ class _VenuesScreenState extends State<VenuesScreen> {
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 8.0,
+                    horizontal: 4.0,
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -98,14 +101,21 @@ class _VenuesScreenState extends State<VenuesScreen> {
                         subtitle: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Icon(Icons.place, size: 18, color: Colors.blueGrey),
+                            const Icon(
+                              Icons.place,
+                              size: 18,
+                              color: Colors.blueGrey,
+                            ),
                             const SizedBox(width: 4),
                             Expanded(child: Text(venue.address)),
                           ],
                         ),
                         leading: CircleAvatar(
                           backgroundColor: Colors.blue.shade50,
-                          child: const Icon(Icons.location_on, color: Colors.blueAccent),
+                          child: const Icon(
+                            Icons.location_on,
+                            color: Colors.blueAccent,
+                          ),
                         ),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
@@ -126,9 +136,13 @@ class _VenuesScreenState extends State<VenuesScreen> {
                                 });
                               },
                             ),
-                            if (venue.latitude != null && venue.longitude != null)
+                            if (venue.latitude != null &&
+                                venue.longitude != null)
                               IconButton(
-                                icon: const Icon(Icons.map, color: Colors.green),
+                                icon: const Icon(
+                                  Icons.map,
+                                  color: Colors.green,
+                                ),
                                 tooltip: 'View on Map',
                                 onPressed: () => _openVenueOnMap(venue),
                               ),
@@ -137,64 +151,110 @@ class _VenuesScreenState extends State<VenuesScreen> {
                       ),
                       if (venue.events.isNotEmpty)
                         Padding(
-                          padding: const EdgeInsets.only(left: 24, right: 24, bottom: 12),
+                          padding: const EdgeInsets.only(
+                            left: 24,
+                            right: 24,
+                            bottom: 12,
+                          ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(
                                 children: [
-                                  const Icon(Icons.event, size: 18, color: Colors.deepPurple),
+                                  const Icon(
+                                    Icons.event,
+                                    size: 18,
+                                    color: Colors.deepPurple,
+                                  ),
                                   const SizedBox(width: 6),
-                                  Text('Events:', style: Theme.of(context).textTheme.labelLarge),
+                                  Text(
+                                    'Events:',
+                                    style: Theme.of(
+                                      context,
+                                    ).textTheme.labelLarge,
+                                  ),
                                 ],
                               ),
                               const SizedBox(height: 4),
-                              ...venue.events.map((e) => Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 4.0),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    IconButton(
-                                      icon: Icon(
-                                        favorites.isEventFavorite(venue, e)
-                                            ? Icons.star
-                                            : Icons.star_border,
-                                        color: Colors.orange,
-                                        size: 20,
+                              ...venue.events.map(
+                                (e) => Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 4.0,
+                                  ),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      IconButton(
+                                        icon: Icon(
+                                          favorites.isEventFavorite(venue, e)
+                                              ? Icons.star
+                                              : Icons.star_border,
+                                          color: Colors.orange,
+                                          size: 20,
+                                        ),
+                                        tooltip:
+                                            favorites.isEventFavorite(venue, e)
+                                            ? 'Remove event from favorites'
+                                            : 'Add event to favorites',
+                                        onPressed: () {
+                                          setState(() {
+                                            favorites.toggleEventFavorite(
+                                              venue,
+                                              e,
+                                            );
+                                          });
+                                        },
                                       ),
-                                      tooltip: favorites.isEventFavorite(venue, e)
-                                          ? 'Remove event from favorites'
-                                          : 'Add event to favorites',
-                                      onPressed: () {
-                                        setState(() {
-                                          favorites.toggleEventFavorite(venue, e);
-                                        });
-                                      },
-                                    ),
-                                    const SizedBox(width: 2),
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(e.name, style: Theme.of(context).textTheme.bodyMedium),
-                                          const SizedBox(height: 2),
-                                          Row(
-                                            children: [
-                                              const Icon(Icons.calendar_today, size: 14, color: Colors.teal),
-                                              const SizedBox(width: 4),
-                                              Text(e.date, style: Theme.of(context).textTheme.bodySmall),
-                                              const SizedBox(width: 12),
-                                              const Icon(Icons.access_time, size: 14, color: Colors.indigo),
-                                              const SizedBox(width: 4),
-                                              Text(e.time, style: Theme.of(context).textTheme.bodySmall),
-                                            ],
-                                          ),
-                                        ],
+                                      const SizedBox(width: 2),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              e.name,
+                                              style: Theme.of(
+                                                context,
+                                              ).textTheme.bodyMedium,
+                                            ),
+                                            const SizedBox(height: 2),
+                                            Row(
+                                              children: [
+                                                const Icon(
+                                                  Icons.calendar_today,
+                                                  size: 14,
+                                                  color: Colors.teal,
+                                                ),
+                                                const SizedBox(width: 4),
+                                                Text(
+                                                  e.date,
+                                                  style: Theme.of(
+                                                    context,
+                                                  ).textTheme.bodySmall,
+                                                ),
+                                                const SizedBox(width: 12),
+                                                const Icon(
+                                                  Icons.access_time,
+                                                  size: 14,
+                                                  color: Colors.indigo,
+                                                ),
+                                                const SizedBox(width: 4),
+                                                Text(
+                                                  e.time,
+                                                  style: Theme.of(
+                                                    context,
+                                                  ).textTheme.bodySmall,
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              )),
+                              ),
                             ],
                           ),
                         ),
