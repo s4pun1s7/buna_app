@@ -6,6 +6,7 @@ import '../../navigation/route_guards.dart';
 import '../../navigation/route_constants.dart';
 import '../../services/auth_service.dart';
 import '../../widgets/common/index.dart';
+import 'dart:math';
 
 class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
@@ -14,12 +15,35 @@ class OnboardingScreen extends ConsumerStatefulWidget {
   ConsumerState<OnboardingScreen> createState() => _OnboardingScreenState();
 }
 
-class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
+class _OnboardingScreenState extends ConsumerState<OnboardingScreen> with TickerProviderStateMixin {
   String _selectedLanguage = 'en';
   bool _isLoading = false;
   String? _authError;
   String _statusMessage = '';
   final AuthService _authService = AuthService();
+
+  late final AnimationController _logoController;
+  late final Animation<double> _logoScale;
+
+  @override
+  void initState() {
+    super.initState();
+    _logoController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 700),
+    );
+    _logoScale = CurvedAnimation(
+      parent: _logoController,
+      curve: Curves.elasticOut,
+    );
+    _logoController.forward();
+  }
+
+  @override
+  void dispose() {
+    _logoController.dispose();
+    super.dispose();
+  }
 
   void _selectLanguage(String lang) {
     setState(() {
@@ -164,75 +188,172 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Welcome')),
-      body: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Row(
+      body: Stack(
+        children: [
+          const AnimatedBackground(),
+          Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ChoiceChip(
-                  label: const Text('English'),
-                  selected: _selectedLanguage == 'en',
-                  onSelected: (_) => _selectLanguage('en'),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ChoiceChip(
+                      label: const Text('English'),
+                      selected: _selectedLanguage == 'en',
+                      onSelected: (_) => _selectLanguage('en'),
+                    ),
+                    const SizedBox(width: 12),
+                    ChoiceChip(
+                      label: const Text('Български'),
+                      selected: _selectedLanguage == 'bg',
+                      onSelected: (_) => _selectLanguage('bg'),
+                    ),
+                  ],
                 ),
-                const SizedBox(width: 12),
-                ChoiceChip(
-                  label: const Text('Български'),
-                  selected: _selectedLanguage == 'bg',
-                  onSelected: (_) => _selectLanguage('bg'),
+                const SizedBox(height: 32),
+                ScaleTransition(
+                  scale: _logoScale,
+                  child: Image.asset(
+                    'assets/Buna pink.png',
+                    width: 110,
+                    height: 110,
+                    fit: BoxFit.contain,
+                  ),
                 ),
+                const SizedBox(height: 32),
+                TweenAnimationBuilder<double>(
+                  tween: Tween(begin: 0, end: 1),
+                  duration: const Duration(milliseconds: 500),
+                  builder: (context, value, child) {
+                    return Opacity(
+                      opacity: value,
+                      child: Transform.translate(
+                        offset: Offset(0, (1 - value) * 16),
+                        child: child,
+                      ),
+                    );
+                  },
+                  child: Text(
+                    'Welcome to Buna Festival',
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                TweenAnimationBuilder<double>(
+                  tween: Tween(begin: 0, end: 1),
+                  duration: const Duration(milliseconds: 700),
+                  builder: (context, value, child) {
+                    return Opacity(
+                      opacity: value,
+                      child: Transform.translate(
+                        offset: Offset(0, (1 - value) * 16),
+                        child: child,
+                      ),
+                    );
+                  },
+                  child: const Text(
+                    'Explore the festival, artists, and venues. Find art pieces, events, and more on the map. Bookmark favorites, set reminders, and get news.',
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                const SizedBox(height: 32),
+                ElevatedButton(
+                  onPressed: _isLoading ? null : _signInWithGoogle,
+                  child: const Text('Continue with Google'),
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size.fromHeight(48),
+                    textStyle: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: _isLoading ? null : _signInAnonymously,
+                  child: _isLoading
+                      ? const Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SizedBox(
+                              width: 16,
+                              height: 16,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            ),
+                            SizedBox(width: 8),
+                            Text('Loading...'),
+                          ],
+                        )
+                      : const Text('Continue as Guest'),
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size.fromHeight(48),
+                    textStyle: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                if (_authError != null) ...[
+                  const SizedBox(height: 16),
+                  Text(_authError!, style: const TextStyle(color: Colors.red)),
+                ],
               ],
             ),
-            const SizedBox(height: 32),
-            Text(
-              'Welcome to Buna Festival',
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-            const SizedBox(height: 16),
-            const Text(
-              'Explore the festival, artists, and venues. Find art pieces, events, and more on the map. Bookmark favorites, set reminders, and get news.',
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 32),
-            ElevatedButton(
-              onPressed: _isLoading ? null : _signInWithGoogle,
-              child: const Text('Continue with Google'),
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size.fromHeight(48),
-                textStyle: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: _isLoading ? null : _signInAnonymously,
-              child: _isLoading
-                  ? const Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        SizedBox(
-                          width: 16,
-                          height: 16,
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        ),
-                        SizedBox(width: 8),
-                        Text('Loading...'),
-                      ],
-                    )
-                  : const Text('Continue as Guest'),
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size.fromHeight(48),
-                textStyle: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ),
-            if (_authError != null) ...[
-              const SizedBox(height: 16),
-              Text(_authError!, style: const TextStyle(color: Colors.red)),
-            ],
-          ],
-        ),
+          ),
+        ],
       ),
+    );
+  }
+}
+
+class AnimatedBackground extends StatefulWidget {
+  const AnimatedBackground({super.key});
+
+  @override
+  State<AnimatedBackground> createState() => _AnimatedBackgroundState();
+}
+
+class _AnimatedBackgroundState extends State<AnimatedBackground>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 16),
+    )..repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: (context, child) {
+        return Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Color.lerp(
+                  Colors.pink.shade50,
+                  Colors.purple.shade50,
+                  _controller.value,
+                )!,
+                Color.lerp(
+                  Colors.blue.shade50,
+                  Colors.pink.shade100,
+                  1 - _controller.value,
+                )!,
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

@@ -40,7 +40,7 @@ class HomeScreen extends StatelessWidget {
         children: [
           Positioned.fill(
             child: Image.asset(
-              'assets/OPEN CALL visuals/BUNA3_BlueStory.png',
+              'assets/BUNA3_BlueStory.png',
               fit: BoxFit.cover,
             ),
           ),

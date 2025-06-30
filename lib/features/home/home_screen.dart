@@ -10,6 +10,7 @@ import '../artists/artists_screen.dart';
 import '../venues/venues_data.dart' as venues_data;
 import '../../models/schedule.dart';
 import '../../models/festival_data.dart' as fest_data;
+import '../../widgets/branding/buna_logo.dart';
 
 /// Home screen with feature flag integration
 class HomeScreen extends ConsumerWidget {
@@ -64,6 +65,9 @@ class HomeScreen extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Add the BunaLogo at the top of the dashboard
+                  const Center(child: BunaLogo(width: 100, height: 100)),
+                  const SizedBox(height: 24),
                   if (artist != null) ...[
                     FeaturedArtistCard(
                       artist: artist,
