@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'route_constants.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 /// Provider for onboarding status
 final onboardingStatusProvider = FutureProvider<bool>((ref) async {
@@ -15,9 +16,8 @@ final onboardingStatusProvider = FutureProvider<bool>((ref) async {
 
 /// Provider for authentication status
 final authStatusProvider = FutureProvider<bool>((ref) async {
-  // For now, return true since we're using anonymous auth
-  // In the future, this would check Firebase Auth status
-  return true;
+  final user = FirebaseAuth.instance.currentUser;
+  return user != null && !user.isAnonymous;
 });
 
 /// Route guard service for handling redirects and access control
@@ -34,44 +34,39 @@ class RouteGuards {
     
     final container = ProviderScope.containerOf(context);
     
-    // Check onboarding status
+    // Check authentication status first
+    final authStatus = container.read(authStatusProvider);
+    if (authStatus.isLoading) {
+      debugPrint('RouteGuards: Auth status still loading, no redirect');
+      return null;
+    }
+    if (authStatus.hasValue && authStatus.value!) {
+      // If authenticated and on onboarding, go to home
+      if (state.uri.path == AppRoutes.onboarding) {
+        debugPrint('RouteGuards: Authenticated, redirecting to home');
+        return AppRoutes.home;
+      }
+      // If authenticated and not on onboarding, no redirect
+      debugPrint('RouteGuards: Authenticated, no redirect needed');
+      return null;
+    }
+    
+    // If not authenticated, check onboarding status
     final onboardingStatus = container.read(onboardingStatusProvider);
     debugPrint('RouteGuards: Onboarding status - loading: ${onboardingStatus.isLoading}, hasValue: ${onboardingStatus.hasValue}, value: ${onboardingStatus.valueOrNull}');
-    
-    // If onboarding status is still loading, don't redirect yet
     if (onboardingStatus.isLoading) {
       debugPrint('RouteGuards: Onboarding status still loading, no redirect');
       return null;
     }
-    
-    // If onboarding is not completed and we're not on onboarding page, redirect
     if (onboardingStatus.hasValue && !onboardingStatus.value!) {
       if (state.uri.path != AppRoutes.onboarding) {
         debugPrint('RouteGuards: Redirecting to onboarding');
         return AppRoutes.onboarding;
       }
     }
-    
-    // If onboarding is completed and we're on onboarding page, redirect to home
     if (onboardingStatus.hasValue && onboardingStatus.value! && state.uri.path == AppRoutes.onboarding) {
       debugPrint('RouteGuards: Onboarding completed, redirecting to home');
       return AppRoutes.home;
-    }
-    
-    // Check authentication status
-    final authStatus = container.read(authStatusProvider);
-    
-    // If auth status is still loading, don't redirect yet
-    if (authStatus.isLoading) {
-      debugPrint('RouteGuards: Auth status still loading, no redirect');
-      return null;
-    }
-    
-    if (authStatus.hasValue && !authStatus.value!) {
-      if (AppRoutes.requiresAuth(state.uri.path)) {
-        debugPrint('RouteGuards: Redirecting to onboarding due to auth');
-        return AppRoutes.onboarding; // or login route
-      }
     }
     
     // Check feature flags (future implementation)

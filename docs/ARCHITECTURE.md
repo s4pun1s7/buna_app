@@ -235,7 +235,7 @@ models/
 ├── festival_data.dart        # Core festival data models
 ├── schedule.dart             # Schedule and event models
 ├── favorites_manager.dart    # Favorites management
-└── event_notes_reminders_manager.dart # Notes and reminders
+└── event_notes_reminders_manager.dart # Reminders
 ```
 
 ### Model Relationships

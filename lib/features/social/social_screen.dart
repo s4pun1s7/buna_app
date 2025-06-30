@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../widgets/loading_indicator.dart';
 import '../../widgets/error_screen.dart';
 import '../../services/error_handler.dart';
+import '../../providers/user_provider.dart';
 
 /// Social media post model
 class SocialPost {
@@ -335,6 +336,8 @@ class _SocialScreenState extends ConsumerState<SocialScreen>
   }
 
   Widget _buildTimelineView() {
+    final userAsync = ref.watch(userProvider);
+    final isAnonymous = userAsync.value != null && userAsync.value!.isAnonymous;
     if (_filteredPosts.isEmpty) {
       return _buildNoResults();
     }
@@ -411,11 +414,29 @@ class _SocialScreenState extends ConsumerState<SocialScreen>
                     const Spacer(),
                     IconButton(
                       icon: const Icon(Icons.favorite_border),
-                      onPressed: () => _toggleFavorite(post),
+                      onPressed: isAnonymous
+                        ? () {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Please log in to use social features.'),
+                                duration: Duration(seconds: 2),
+                              ),
+                            );
+                          }
+                        : () => _toggleFavorite(post),
                     ),
                     IconButton(
                       icon: const Icon(Icons.share),
-                      onPressed: () => _sharePost(post),
+                      onPressed: isAnonymous
+                        ? () {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Please log in to use social features.'),
+                                duration: Duration(seconds: 2),
+                              ),
+                            );
+                          }
+                        : () => _sharePost(post),
                     ),
                   ],
                 ),
@@ -600,6 +621,8 @@ class _SocialScreenState extends ConsumerState<SocialScreen>
   }
 
   void _showPostOptions(SocialPost post) {
+    final userAsync = ref.read(userProvider);
+    final isAnonymous = userAsync != null && userAsync.value != null && userAsync.value!.isAnonymous;
     showModalBottomSheet(
       context: context,
       builder: (context) => Container(
@@ -610,26 +633,56 @@ class _SocialScreenState extends ConsumerState<SocialScreen>
             ListTile(
               leading: const Icon(Icons.share),
               title: const Text('Share Post'),
-              onTap: () {
-                Navigator.pop(context);
-                _sharePost(post);
-              },
+              onTap: isAnonymous
+                ? () {
+                    Navigator.pop(context);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Please log in to use social features.'),
+                        duration: Duration(seconds: 2),
+                      ),
+                    );
+                  }
+                : () {
+                    Navigator.pop(context);
+                    _sharePost(post);
+                  },
             ),
             ListTile(
               leading: const Icon(Icons.favorite_border),
               title: const Text('Add to Favorites'),
-              onTap: () {
-                Navigator.pop(context);
-                _toggleFavorite(post);
-              },
+              onTap: isAnonymous
+                ? () {
+                    Navigator.pop(context);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Please log in to use social features.'),
+                        duration: Duration(seconds: 2),
+                      ),
+                    );
+                  }
+                : () {
+                    Navigator.pop(context);
+                    _toggleFavorite(post);
+                  },
             ),
             ListTile(
               leading: const Icon(Icons.report),
               title: const Text('Report Post'),
-              onTap: () {
-                Navigator.pop(context);
-                _reportPost(post);
-              },
+              onTap: isAnonymous
+                ? () {
+                    Navigator.pop(context);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Please log in to use social features.'),
+                        duration: Duration(seconds: 2),
+                      ),
+                    );
+                  }
+                : () {
+                    Navigator.pop(context);
+                    _reportPost(post);
+                  },
             ),
           ],
         ),

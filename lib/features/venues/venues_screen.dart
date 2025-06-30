@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:buna_app/models/favorites_manager.dart';
 import 'package:buna_app/widgets/error_screen.dart';
 import 'venues_data.dart';
 import '../../services/error_handler.dart';
+import '../../providers/user_provider.dart';
 
-class VenuesScreen extends StatefulWidget {
+class VenuesScreen extends ConsumerStatefulWidget {
   const VenuesScreen({super.key});
 
   @override
-  State<VenuesScreen> createState() => _VenuesScreenState();
+  ConsumerState<VenuesScreen> createState() => _VenuesScreenState();
 }
 
-class _VenuesScreenState extends State<VenuesScreen> {
+class _VenuesScreenState extends ConsumerState<VenuesScreen> {
   late Future<void> _future;
 
   @override
@@ -64,6 +66,8 @@ class _VenuesScreenState extends State<VenuesScreen> {
 
   Widget _buildBody() {
     final favorites = FavoritesManager();
+    final userAsync = ref.watch(userProvider);
+    final isAnonymous = userAsync.value != null && userAsync.value!.isAnonymous;
     return FutureBuilder(
       future: _future,
       builder: (context, snapshot) {
@@ -133,14 +137,25 @@ class _VenuesScreenState extends State<VenuesScreen> {
                                   : Icons.favorite_border,
                               color: Colors.redAccent,
                             ),
-                            tooltip: favorites.isVenueFavorite(venue)
-                                ? 'Remove from favorites'
-                                : 'Add to favorites',
-                            onPressed: () {
-                              setState(() {
-                                favorites.toggleVenueFavorite(venue);
-                              });
-                            },
+                            tooltip: isAnonymous
+                                ? 'Login required to save favorites'
+                                : (favorites.isVenueFavorite(venue)
+                                    ? 'Remove from favorites'
+                                    : 'Add to favorites'),
+                            onPressed: isAnonymous
+                                ? () {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text('Please log in to save favorites.'),
+                                        duration: Duration(seconds: 2),
+                                      ),
+                                    );
+                                  }
+                                : () {
+                                    setState(() {
+                                      favorites.toggleVenueFavorite(venue);
+                                    });
+                                  },
                           ),
                           if (venue.latitude != null &&
                               venue.longitude != null)
@@ -199,18 +214,28 @@ class _VenuesScreenState extends State<VenuesScreen> {
                                         color: Colors.orange,
                                         size: 20,
                                       ),
-                                      tooltip:
-                                          favorites.isEventFavorite(venue, e)
-                                          ? 'Remove event from favorites'
-                                          : 'Add event to favorites',
-                                      onPressed: () {
-                                        setState(() {
-                                          favorites.toggleEventFavorite(
-                                            venue,
-                                            e,
-                                          );
-                                        });
-                                      },
+                                      tooltip: isAnonymous
+                                          ? 'Login required to save favorites'
+                                          : (favorites.isEventFavorite(venue, e)
+                                              ? 'Remove event from favorites'
+                                              : 'Add event to favorites'),
+                                      onPressed: isAnonymous
+                                          ? () {
+                                              ScaffoldMessenger.of(context).showSnackBar(
+                                                const SnackBar(
+                                                  content: Text('Please log in to save favorites.'),
+                                                  duration: Duration(seconds: 2),
+                                                ),
+                                              );
+                                            }
+                                          : () {
+                                              setState(() {
+                                                favorites.toggleEventFavorite(
+                                                  venue,
+                                                  e,
+                                                );
+                                              });
+                                            },
                                     ),
                                     const SizedBox(width: 2),
                                     Expanded(

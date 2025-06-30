@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../widgets/loading_indicator.dart';
 import '../../widgets/error_screen.dart';
 import '../../services/error_handler.dart';
+import '../../providers/user_provider.dart';
 
 /// Stream model for the festival
 class Stream {
@@ -633,10 +634,21 @@ class _StreamingScreenState extends ConsumerState<StreamingScreen>
   }
 
   void _watchStream(Stream stream) {
+    final userAsync = ref.read(userProvider);
+    final isAnonymous = userAsync != null && userAsync.value != null && userAsync.value!.isAnonymous;
     if (stream.isLive) {
       _showLiveStream(stream);
     } else if (stream.isUpcoming) {
-      _setReminder(stream);
+      if (isAnonymous) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Please log in to set reminders.'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      } else {
+        _setReminder(stream);
+      }
     } else {
       _showReplay(stream);
     }

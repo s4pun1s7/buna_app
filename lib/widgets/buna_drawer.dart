@@ -24,7 +24,6 @@ class BunaDrawer extends ConsumerWidget {
             child: ListView(
               padding: EdgeInsets.zero,
               children: [
-                if (FeatureFlags.allCoreFeaturesEnabled) _buildMainNavigation(context),
                 if (FeatureFlags.allCoreFeaturesEnabled && FeatureFlags.allFestivalFeaturesEnabled) const Divider(),
                 if (FeatureFlags.allFestivalFeaturesEnabled) _buildFestivalFeatures(context),
                 if (FeatureFlags.allFestivalFeaturesEnabled && FeatureFlags.allInteractiveFeaturesEnabled) const Divider(),
@@ -147,50 +146,6 @@ class BunaDrawer extends ConsumerWidget {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildMainNavigation(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _buildSectionTitle('Main Navigation'),
-        if (FeatureFlags.enableHome)
-          _buildDrawerItem(
-            context,
-            icon: Icons.home,
-            title: 'Home',
-            route: AppRoutes.home,
-          ),
-        if (FeatureFlags.enableVenues)
-          _buildDrawerItem(
-            context,
-            icon: Icons.location_on,
-            title: 'Venues',
-            route: AppRoutes.venues,
-          ),
-        if (FeatureFlags.enableMapGallery)
-          _buildDrawerItem(
-            context,
-            icon: Icons.map,
-            title: 'Map Gallery',
-            route: AppRoutes.mapGallery,
-          ),
-        if (FeatureFlags.enableNews)
-          _buildDrawerItem(
-            context,
-            icon: Icons.article,
-            title: 'News',
-            route: AppRoutes.news,
-          ),
-        if (FeatureFlags.enableInfo)
-          _buildDrawerItem(
-            context,
-            icon: Icons.info,
-            title: 'Info',
-            route: AppRoutes.info,
-          ),
-      ],
     );
   }
 

@@ -46,7 +46,7 @@ A cross-platform Flutter app for the Buna art festival, supporting Android, iOS,
 - **Event Scheduling**: Personal schedule with favorites and reminders
 - **News & Updates**: Real-time festival announcements and updates
 - **Interactive Maps**: Google Maps integration with venue markers
-- **User Preferences**: Favorites, notes, and personalized experience
+- **User Preferences**: Favorites and personalized experience
 - **Theme Support**: Light and dark mode with system preference detection
 - **Offline Mode**: Graceful handling when network is unavailable
 

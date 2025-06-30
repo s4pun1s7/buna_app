@@ -36,7 +36,7 @@ Future<void> main() async {
           apiKey: 'AIzaSyD2xqxPjbnA6t-TFsn2pNAuy1VHDOK4l-0',
           authDomain: 'buna-app-4e064.firebaseapp.com',
           projectId: 'buna-app-4e064',
-          storageBucket: 'buna-app-4e064.firebasestorage.app',
+          storageBucket: 'buna-app-4e064.appspot.com',
           messagingSenderId: '177152010877',
           appId: '1:177152010877:web:96f0625f1a29a0bc825f14',
           measurementId: 'G-3XR3FVMHZY',
@@ -48,9 +48,6 @@ Future<void> main() async {
     
     // Initialize services
     await ConnectivityService().initialize();
-    
-    // Anonymous sign-in for development
-    await FirebaseAuth.instance.signInAnonymously();
     
     // Track app launch
     AnalyticsService.logEvent(name: 'app_launch');

@@ -19,6 +19,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   String _selectedLanguage = 'en';
   bool _isLoading = false;
   String? _authError;
+  String _statusMessage = '';
   final AuthService _authService = AuthService();
 
   void _getStarted() async {
@@ -58,60 +59,74 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   }
 
   Future<void> _signInWithGoogle() async {
-    setState(() { _isLoading = true; _authError = null; });
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (_) => const AnimatedLoadingDialog(message: 'Signing in...'),
-    );
+    if (_isLoading) return;
+    setState(() { _isLoading = true; _authError = null; _statusMessage = 'Starting Google sign-in...'; });
     try {
-      await _authService.signInWithGoogle();
-      if (mounted) Navigator.of(context).pop();
-      _getStarted();
-    } catch (e) {
-      if (mounted) Navigator.of(context).pop();
-      setState(() { _isLoading = false; _authError = 'Google sign-in failed. Please try again.'; });
+      _showStatusBanner('Opening Google sign-in dialog...');
       showDialog(
         context: context,
-        builder: (_) => AnimatedErrorDialog(
-          title: 'Sign-In Error',
-          message: _authError!,
-          onCancel: () => Navigator.of(context).pop(),
-          onRetry: () {
-            Navigator.of(context).pop();
-            _signInWithGoogle();
-          },
+        barrierDismissible: false,
+        builder: (_) => const AnimatedLoadingDialog(message: 'Signing in...'),
+      );
+      _showStatusBanner('Waiting for Google authentication...');
+      await _authService.signInWithGoogle();
+      _showStatusBanner('Google sign-in successful!');
+      if (mounted) Navigator.of(context).pop();
+      // Mark onboarding as completed after successful Google sign-in
+      await RouteGuards.markOnboardingCompleted();
+      _hideStatusBanner();
+      _getStarted();
+    } catch (e) {
+      if (mounted) {
+        Navigator.of(context).maybePop();
+        setState(() {
+          _isLoading = false;
+          _authError = 'Google sign-in failed. Please try again.';
+          _statusMessage = 'Google sign-in failed.';
+        });
+        _showStatusBanner('Google sign-in failed.');
+        showDialog(
+          context: context,
+          builder: (_) => AnimatedErrorDialog(
+            title: 'Sign-In Error',
+            message: _authError!,
+            onCancel: () {
+              Navigator.of(context).pop();
+              _hideStatusBanner();
+            },
+            onRetry: () {
+              Navigator.of(context).pop();
+              _hideStatusBanner();
+              _signInWithGoogle();
+            },
+          ),
+        );
+      }
+    }
+  }
+
+  void _showStatusBanner(String message) {
+    _statusMessage = message;
+    if (mounted) {
+      ScaffoldMessenger.of(context).clearMaterialBanners();
+      ScaffoldMessenger.of(context).showMaterialBanner(
+        MaterialBanner(
+          content: Text(message),
+          backgroundColor: Colors.blue.shade50,
+          actions: [
+            TextButton(
+              onPressed: () => _hideStatusBanner(),
+              child: const Text('Dismiss'),
+            ),
+          ],
         ),
       );
     }
   }
 
-  Future<void> _signInAsGuest() async {
-    setState(() { _isLoading = true; _authError = null; });
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (_) => const AnimatedLoadingDialog(message: 'Signing in...'),
-    );
-    try {
-      await _authService.signInAnonymously();
-      if (mounted) Navigator.of(context).pop();
-      _getStarted();
-    } catch (e) {
-      if (mounted) Navigator.of(context).pop();
-      setState(() { _isLoading = false; _authError = 'Guest sign-in failed. Please try again.'; });
-      showDialog(
-        context: context,
-        builder: (_) => AnimatedErrorDialog(
-          title: 'Sign-In Error',
-          message: _authError!,
-          onCancel: () => Navigator.of(context).pop(),
-          onRetry: () {
-            Navigator.of(context).pop();
-            _signInAsGuest();
-          },
-        ),
-      );
+  void _hideStatusBanner() {
+    if (mounted) {
+      ScaffoldMessenger.of(context).clearMaterialBanners();
     }
   }
 
@@ -184,9 +199,20 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
               ),
             ),
             const SizedBox(height: 16),
+            // Placeholder for future login option 1
             OutlinedButton(
-              onPressed: _isLoading ? null : _signInAsGuest,
-              child: const Text('Continue as Guest'),
+              onPressed: null, // TODO: Implement login option 1
+              child: const Text('Login Option 1 (Coming Soon)'),
+              style: OutlinedButton.styleFrom(
+                minimumSize: const Size.fromHeight(48),
+                textStyle: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+            const SizedBox(height: 16),
+            // Placeholder for future login option 2
+            OutlinedButton(
+              onPressed: null, // TODO: Implement login option 2
+              child: const Text('Login Option 2 (Coming Soon)'),
               style: OutlinedButton.styleFrom(
                 minimumSize: const Size.fromHeight(48),
                 textStyle: const TextStyle(fontWeight: FontWeight.bold),
@@ -194,7 +220,37 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
             ),
             const SizedBox(height: 32),
             ElevatedButton(
-              onPressed: _isLoading ? null : _getStarted,
+              onPressed: _isLoading ? null : () async {
+                if (_isLoading) return;
+                setState(() { _isLoading = true; _authError = null; });
+                try {
+                  showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (_) => const AnimatedLoadingDialog(message: 'Signing in...'),
+                  );
+                  await _authService.signInAnonymously();
+                  if (mounted) Navigator.of(context).pop();
+                  _getStarted();
+                } catch (e) {
+                  if (mounted) {
+                    Navigator.of(context).maybePop();
+                    setState(() { _isLoading = false; _authError = 'Anonymous sign-in failed. Please try again.'; });
+                    showDialog(
+                      context: context,
+                      builder: (_) => AnimatedErrorDialog(
+                        title: 'Sign-In Error',
+                        message: _authError!,
+                        onCancel: () => Navigator.of(context).pop(),
+                        onRetry: () {
+                          Navigator.of(context).pop();
+                          // Retry anonymous sign-in
+                        },
+                      ),
+                    );
+                  }
+                }
+              },
               child: _isLoading 
                 ? const Row(
                     mainAxisSize: MainAxisSize.min,

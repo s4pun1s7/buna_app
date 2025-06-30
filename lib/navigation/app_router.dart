@@ -198,7 +198,13 @@ class AppRouter {
         path: AppRoutes.venueDetails,
         name: AppRoutes.venueDetailsName,
         builder: (context, state) {
-          final venueId = state.pathParameters['id']!;
+          final venueId = state.pathParameters['id'];
+          if (venueId == null || venueId.isEmpty) {
+            return ErrorScreen(
+              error: AppException('Venue ID is missing from the route.'),
+              onRetry: () => context.go(AppRoutes.venues),
+            );
+          }
           // TODO: Implement VenueDetailsScreen
           return Scaffold(
             appBar: AppBar(title: Text('Venue $venueId')),
@@ -210,7 +216,13 @@ class AppRouter {
         path: AppRoutes.eventDetails,
         name: AppRoutes.eventDetailsName,
         builder: (context, state) {
-          final eventId = state.pathParameters['id']!;
+          final eventId = state.pathParameters['id'];
+          if (eventId == null || eventId.isEmpty) {
+            return ErrorScreen(
+              error: AppException('Event ID is missing from the route.'),
+              onRetry: () => context.go(AppRoutes.schedule),
+            );
+          }
           // TODO: Implement EventDetailsScreen
           return Scaffold(
             appBar: AppBar(title: Text('Event $eventId')),
@@ -222,7 +234,13 @@ class AppRouter {
         path: AppRoutes.newsDetails,
         name: AppRoutes.newsDetailsName,
         builder: (context, state) {
-          final newsId = state.pathParameters['id']!;
+          final newsId = state.pathParameters['id'];
+          if (newsId == null || newsId.isEmpty) {
+            return ErrorScreen(
+              error: AppException('News ID is missing from the route.'),
+              onRetry: () => context.go(AppRoutes.news),
+            );
+          }
           // TODO: Implement NewsDetailsScreen
           return Scaffold(
             appBar: AppBar(title: Text('News $newsId')),
