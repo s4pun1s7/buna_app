@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:buna_app/l10n/app_localizations.dart';
-import 'package:go_router/go_router.dart';
-import 'features/onboarding/onboarding_screen.dart';
-import 'features/venues/venues_screen.dart';
-import 'features/maps/maps_screen.dart';
-import 'features/news/news_screen.dart';
-import 'features/info/info_screen.dart';
-import 'package:buna_app/theme/app_theme.dart';
-import 'widgets/buna_nav_bar.dart';
-import 'models/favorites_manager.dart';
-import '../features/venues/venues_data.dart';
-import '../models/schedule.dart';
-import '../../models/event_notes_reminders_manager.dart';
-import 'widgets/language_toggle.dart';
-import 'services/schedule_service.dart'; // Importing ScheduleService
-import 'widgets/schedule_card.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'providers/favorites_provider.dart';
-import 'providers/schedule_provider.dart';
+import 'package:go_router/go_router.dart';
+
+import 'package:buna_app/l10n/app_localizations.dart';
+import 'package:buna_app/theme/app_theme.dart';
+import 'package:buna_app/features/onboarding/onboarding_screen.dart';
+import 'package:buna_app/features/venues/venues_screen.dart';
+import 'package:buna_app/features/maps/maps_screen.dart';
+import 'package:buna_app/features/news/news_screen.dart';
+import 'package:buna_app/features/info/info_screen.dart';
+import 'package:buna_app/widgets/buna_nav_bar.dart';
+import 'package:buna_app/widgets/language_toggle.dart';
+import 'package:buna_app/widgets/schedule_card.dart';
+import 'package:buna_app/models/schedule.dart';
+import 'package:buna_app/models/event_notes_reminders_manager.dart';
+import 'package:buna_app/providers/favorites_provider.dart';
+import 'package:buna_app/providers/schedule_provider.dart';
+import 'package:buna_app/providers/locale_provider.dart';
+import 'package:buna_app/features/venues/venues_data.dart';
 
 final _router = GoRouter(
   initialLocation: '/onboarding',
@@ -70,25 +70,11 @@ class _HomeScreenState extends State<HomeScreen> {
             onTap: _onNavTap,
           ),
         ),
-        // Place the language toggle above the nav bar, not overlapping it
-        SafeArea(
-          child: Align(
-            alignment: Alignment.bottomLeft,
-            child: Padding(
-              padding: const EdgeInsets.only(
-                left: 16,
-                bottom: 32,
-              ), // was 72, now 32 to bring closer
-              child: LanguageToggle(
-                currentLocale: Localizations.localeOf(context),
-                onLocaleChanged: (locale) {
-                  final appState = context
-                      .findAncestorStateOfType<_BunaAppState>();
-                  appState?.setLocale(locale);
-                },
-              ),
-            ),
-          ),
+        // Language toggle positioned above navigation bar
+        Positioned(
+          left: 16,
+          bottom: 80, // Position above bottom nav bar
+          child: const LanguageToggle(),
         ),
       ],
     );
@@ -376,29 +362,18 @@ class _AnonymousHomeState extends ConsumerState<_AnonymousHome> {
   }
 }
 
-class BunaApp extends StatefulWidget {
+class BunaApp extends ConsumerWidget {
   const BunaApp({super.key});
 
   @override
-  State<BunaApp> createState() => _BunaAppState();
-}
-
-class _BunaAppState extends State<BunaApp> {
-  Locale? _locale;
-
-  void setLocale(Locale locale) {
-    setState(() {
-      _locale = locale;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final locale = ref.watch(localeProvider);
+    
     return MaterialApp.router(
       title: 'Buna Festival',
       debugShowCheckedModeBanner: false,
       routerConfig: _router,
-      locale: _locale,
+      locale: locale,
       supportedLocales: const [Locale('en'), Locale('bg')],
       localizationsDelegates: const [
         AppLocalizations.delegate,

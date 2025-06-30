@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import '../../widgets/error_screen.dart';
-import '../venues/venues_data.dart';
-import '../../widgets/venue_info_bottom_sheet.dart';
+
+import 'package:buna_app/widgets/error_screen.dart';
+import 'package:buna_app/widgets/venue_info_bottom_sheet.dart';
+import 'package:buna_app/features/venues/venues_data.dart';
+import 'package:buna_app/widgets/language_toggle.dart';
 
 class MapsScreen extends StatefulWidget {
   const MapsScreen({super.key});
@@ -36,7 +38,7 @@ class _MapsScreenState extends State<MapsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Festival Map')),
+      appBar: AppBar(title: const Text('Maps')),
       body: FutureBuilder(
         future: _future,
         builder: (context, snapshot) {

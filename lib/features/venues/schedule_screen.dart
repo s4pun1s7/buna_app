@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../providers/schedule_provider.dart';
-import '../../providers/favorites_provider.dart';
+
+import 'package:buna_app/providers/schedule_provider.dart';
+import 'package:buna_app/providers/favorites_provider.dart';
 
 class ScheduleScreen extends ConsumerWidget {
   const ScheduleScreen({super.key});

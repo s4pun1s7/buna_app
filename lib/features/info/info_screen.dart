@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:buna_app/widgets/language_toggle.dart';
 
 class InfoScreen extends StatelessWidget {
   const InfoScreen({super.key});
@@ -14,7 +15,7 @@ class InfoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('About us')),
+      appBar: AppBar(title: const Text('Info')),
       body: ListView(
         padding: const EdgeInsets.all(24),
         children: [

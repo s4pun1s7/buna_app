@@ -2,7 +2,19 @@
 
 ---
 
-## Recently Completed
+## 🎉 Recently Completed (Latest Sprint)
+- ✅ **Code Cleanup & Refactoring**: Organized imports, removed unused dependencies, improved code structure
+- ✅ **Global Language Toggle**: Implemented centralized locale management with Riverpod providers
+- ✅ **Enhanced News Section**: Added real-time festival updates including app development announcement
+- ✅ **Improved State Management**: Centralized locale provider for app-wide language changes
+- ✅ **UI/UX Improvements**: Consistent theming and responsive design across all platforms
+- ✅ **Import Organization**: Converted all relative imports to absolute imports for better maintainability
+- ✅ **Language Toggle Positioning**: Optimized placement to avoid bottom navigation bar overlap
+- ✅ **News Content**: Added structured news items with proper styling and categorization
+
+---
+
+## ✅ Previously Completed
 - ✅ Project structure and feature folders scaffolded
 - ✅ Onboarding screen scaffolded
 - ✅ Navigation and state management (go_router, Riverpod) set up
@@ -31,15 +43,17 @@
 
 ---
 
-## v0.0.2 Roadmap
+## 🚀 v0.0.3 Roadmap
 
-### User Experience (UX)
+### User Experience (UX) - In Progress
 - [x] Add loading indicators for network/content screens (e.g., news, venues, schedule)
 - [x] Add error messages and user-friendly error screens for failed network requests
 - [x] Add rationale dialogs before requesting sensitive permissions
 - [x] Add bottom navigation bar for main navigation
+- [x] Implement global language toggle with proper positioning
+- [x] Add structured news content with proper styling
 - [ ] Improve onboarding with festival info, visuals, and clear next steps
-- [ ] Implement “pull to refresh” for news and schedule screens
+- [ ] Implement "pull to refresh" for news and schedule screens
 - [ ] Ensure consistent button styles, padding, and spacing across the app
 - [ ] Improve accessibility: larger tap targets, color contrast, and screen reader labels
 - [ ] Test and fix layout issues on different devices and orientations
@@ -48,29 +62,65 @@
 ### Visual & Branding
 - [ ] Add custom app icon and splash/launch screens for Android and iOS
 - [ ] Add festival branding (logo, colors, fonts) throughout the app
+- [ ] Implement dark mode support
+- [ ] Add animations and micro-interactions
 
 ### Content & Features
-- [ ] Implement real festival data for venues, events, and news (static or from a simple backend)
+- [x] Implement real festival data for venues, events, and news (static or from a simple backend)
 - [ ] Add a basic schedule/timetable screen
 - [x] Add a map view with venue markers (Google Maps or OpenStreetMap)
-- [x] Add a “favorites” feature for events/venues
+- [x] Add a "favorites" feature for events/venues
+- [ ] Add event details and artist information
+- [ ] Implement search functionality for venues and events
+- [ ] Add offline mode for basic content
 
 ### Platform Polish
 - [ ] Test and fix layout issues on web, Android, and iOS
 - [ ] Improve accessibility (larger tap targets, color contrast, screen reader labels)
+- [ ] Optimize performance for older devices
+- [ ] Add platform-specific features (widgets, shortcuts)
 
 ### Code Quality & Maintenance
 - [x] Add more widget and integration tests
 - [x] Refactor code for modularity and maintainability (services, providers, widgets)
 - [x] Update documentation and screenshots
 - [x] Remove unused/empty feature folders and files
+- [x] Organize imports and improve code structure
+- [ ] Set up CI/CD pipeline for automated testing
+- [ ] Add code coverage reporting
+- [ ] Implement automated code formatting and linting
 
 ### Optional/Nice-to-have
 - [ ] Add push notification support for news/updates
+- [ ] Implement social sharing features
+- [ ] Add QR code scanning for venue/event information
+- [ ] Implement AR features for venue exploration
 
 ---
 
-## Platform-Specific Setup Checklist
+## 🔧 Technical Improvements Completed
+
+### State Management
+- [x] Centralized locale management with `LocaleNotifier`
+- [x] Global language toggle accessible from main interface
+- [x] Proper Riverpod integration for all state management
+- [x] Removed local state management in favor of providers
+
+### Code Organization
+- [x] Converted all relative imports to absolute imports
+- [x] Organized imports by package type (Flutter, third-party, local)
+- [x] Removed unused imports and dependencies
+- [x] Improved code structure and maintainability
+
+### UI/UX Enhancements
+- [x] Optimized language toggle positioning
+- [x] Added structured news content with proper styling
+- [x] Improved responsive design across platforms
+- [x] Enhanced visual hierarchy and typography
+
+---
+
+## 📱 Platform-Specific Setup Checklist
 
 ### Android
 - [x] Place `google-services.json` in `android/app/`
@@ -88,21 +138,21 @@
 
 ---
 
-## Features and Requirements
+## 🎯 Features and Requirements
 
 ### User Experience & Accessibility
 - [ ] Add user profiles/attendee registration (Firebase, anonymous only for now)
-- [x] Add multilingual support (BG/EN)
+- [x] Add multilingual support (BG/EN) with global toggle
 - [ ] Add accessibility features
 - [x] Implement onboarding page
 
 ### Personal Schedule & Notifications
 - [x] Implement personal schedule, favorites, and event reminders (with Riverpod)
-- [ ] Implement festival news and notifications (with user preferences)
+- [x] Implement festival news and notifications (with user preferences)
 
 ### Festival Content & Discovery
 - [ ] Add artist and artwork details
-- [ ] Implement maps and gallery for art pieces and venues
+- [x] Implement maps and gallery for art pieces and venues
 - [ ] Add augmented reality (AR) features
 - [ ] Add QR code support
 
@@ -124,7 +174,7 @@
 
 ---
 
-## Code Quality & Project Improvement Checklist
+## 🧪 Code Quality & Project Improvement Checklist
 
 - [x] Pin dependency versions in `pubspec.yaml` (avoid `any` for production)
 - [x] Remove unused dependencies
@@ -144,7 +194,33 @@
 
 ---
 
-## Useful Links
+## 📊 Current Status
+
+### Completed Features
+- **Core App Structure**: ✅ Complete
+- **Navigation**: ✅ Complete
+- **State Management**: ✅ Complete
+- **Localization**: ✅ Complete
+- **Firebase Integration**: ✅ Complete
+- **Basic UI Components**: ✅ Complete
+- **Venue Management**: ✅ Complete
+- **Maps Integration**: ✅ Complete
+- **News System**: ✅ Complete
+- **Language Toggle**: ✅ Complete
+
+### In Progress
+- **UI/UX Polish**: 🔄 Ongoing
+- **Testing**: 🔄 Ongoing
+- **Documentation**: 🔄 Ongoing
+
+### Next Priority
+- **App Icons & Branding**: 📋 Planned
+- **Accessibility Features**: 📋 Planned
+- **Performance Optimization**: 📋 Planned
+
+---
+
+## 🔗 Useful Links
 - Festival Website: [https://bunavarna.com/](https://bunavarna.com/)
 - Facebook: [https://www.facebook.com/BunaVarna/](https://www.facebook.com/BunaVarna/)
 - Instagram: [https://www.instagram.com/buna.varna/](https://www.instagram.com/buna.varna/)
@@ -167,3 +243,4 @@ Update this file as you progress with development and add more tasks as needed.
 - Configure and test permissions (camera, location, notifications, etc.)
 - Test on real Android and iOS devices
 - Continue implementing features and UI/UX
+- Set up CI/CD pipeline for automated testing and deployment

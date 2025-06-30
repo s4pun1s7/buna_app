@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import '../../widgets/error_screen.dart';
-import 'venues_data.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import '../../models/favorites_manager.dart';
+
+import 'package:buna_app/widgets/error_screen.dart';
+import 'package:buna_app/models/favorites_manager.dart';
+import 'venues_data.dart';
+import 'package:buna_app/widgets/language_toggle.dart';
 
 class VenuesScreen extends StatefulWidget {
   const VenuesScreen({super.key});

@@ -1,23 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class LanguageToggle extends StatelessWidget {
-  final Locale currentLocale;
-  final void Function(Locale) onLocaleChanged;
-  const LanguageToggle({
-    super.key,
-    required this.currentLocale,
-    required this.onLocaleChanged,
-  });
+import 'package:buna_app/providers/locale_provider.dart';
+
+class LanguageToggle extends ConsumerWidget {
+  const LanguageToggle({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final currentLocale = ref.watch(localeProvider);
+    
     return Material(
       color: Colors.transparent,
       child: Container(
-        margin: const EdgeInsets.only(
-          left: 16,
-          bottom: 32,
-        ), // was 80, now 32 to match new placement
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
         decoration: BoxDecoration(
           color: Colors.white.withOpacity(0.95),
@@ -49,7 +44,7 @@ class LanguageToggle extends StatelessWidget {
             Switch(
               value: currentLocale.languageCode == 'bg',
               onChanged: (val) {
-                onLocaleChanged(Locale(val ? 'bg' : 'en'));
+                ref.read(localeProvider.notifier).toggleLanguage();
               },
               activeColor: Colors.green,
               inactiveThumbColor: Colors.blue,
