@@ -30,6 +30,9 @@ This roadmap outlines the major milestones and tasks required to bring the Buna 
   - Interactive map with venues, custom markers, user location, and details modal
 - [x] **Navigation Drawer**
   - Expandable right-side drawer with all features, settings, and dev tools
+- Feedback screen: implemented
+- QR screen: implemented
+- Schedule screen: implemented
 
 ---
 
@@ -51,6 +54,8 @@ This roadmap outlines the major milestones and tasks required to bring the Buna 
 - [ ] Memory and battery usage profiling
 - [ ] Crash/error reporting integration
 - [ ] Offline support and graceful degradation
+- Dedicated offline screen: in progress
+- Cache clearing UI and image optimization: implemented
 
 ---
 

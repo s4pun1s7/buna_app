@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../widgets/loading_indicator.dart';
 import '../../widgets/error_screen.dart';
 import '../../services/error_handler.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 /// Artist model for the festival
 class Artist {
@@ -273,10 +274,11 @@ class _ArtistsScreenState extends ConsumerState<ArtistsScreen> {
                     backgroundColor: Theme.of(context).primaryColor,
                     child: Text(
                       artist.name.split(' ').map((n) => n[0]).join(''),
-                      style: const TextStyle(
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                       ),
+                      semanticsLabel: 'Artist initials',
                     ),
                   ),
                   const SizedBox(width: 16),
@@ -298,6 +300,7 @@ class _ArtistsScreenState extends ConsumerState<ArtistsScreen> {
                               Icons.location_on,
                               size: 16,
                               color: Theme.of(context).colorScheme.outline,
+                              semanticLabel: 'Country',
                             ),
                             const SizedBox(width: 4),
                             Text(

@@ -83,6 +83,40 @@ class HomeScreen extends ConsumerWidget {
   }
 
   Widget _buildQuickAccessSection(BuildContext context) {
+    final quickAccessItems = <Widget>[
+      if (FeatureFlags.enableSchedule)
+        _buildQuickAccessCard(
+          context,
+          icon: Icons.schedule,
+          title: 'Schedule',
+          subtitle: 'View events',
+          onTap: () => AppRouter.goToSchedule(context),
+        ),
+      if (FeatureFlags.enableVenues)
+        _buildQuickAccessCard(
+          context,
+          icon: Icons.location_on,
+          title: 'Venues',
+          subtitle: 'Find locations',
+          onTap: () => AppRouter.goToVenues(context),
+        ),
+      if (FeatureFlags.enableMaps)
+        _buildQuickAccessCard(
+          context,
+          icon: Icons.map,
+          title: 'Map',
+          subtitle: 'Navigate festival',
+          onTap: () => AppRouter.goToMaps(context),
+        ),
+      if (FeatureFlags.enableTicketing)
+        _buildQuickAccessCard(
+          context,
+          icon: Icons.confirmation_number,
+          title: 'Tickets',
+          subtitle: 'Get passes',
+          onTap: () => AppRouter.goToTicketing(context),
+        ),
+    ];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -93,47 +127,17 @@ class HomeScreen extends ConsumerWidget {
           ),
         ),
         const SizedBox(height: 12),
-        GridView.count(
+        GridView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          crossAxisCount: 2,
-          crossAxisSpacing: 12,
-          mainAxisSpacing: 12,
-          childAspectRatio: 1.5,
-          children: [
-            if (FeatureFlags.enableSchedule)
-              _buildQuickAccessCard(
-                context,
-                icon: Icons.schedule,
-                title: 'Schedule',
-                subtitle: 'View events',
-                onTap: () => AppRouter.goToSchedule(context),
-              ),
-            if (FeatureFlags.enableVenues)
-              _buildQuickAccessCard(
-                context,
-                icon: Icons.location_on,
-                title: 'Venues',
-                subtitle: 'Find locations',
-                onTap: () => AppRouter.goToVenues(context),
-              ),
-            if (FeatureFlags.enableMaps)
-              _buildQuickAccessCard(
-                context,
-                icon: Icons.map,
-                title: 'Map',
-                subtitle: 'Navigate festival',
-                onTap: () => AppRouter.goToMaps(context),
-              ),
-            if (FeatureFlags.enableTicketing)
-              _buildQuickAccessCard(
-                context,
-                icon: Icons.confirmation_number,
-                title: 'Tickets',
-                subtitle: 'Get passes',
-                onTap: () => AppRouter.goToTicketing(context),
-              ),
-          ],
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 12,
+            mainAxisSpacing: 12,
+            childAspectRatio: 1.5,
+          ),
+          itemCount: quickAccessItems.length,
+          itemBuilder: (context, index) => quickAccessItems[index],
         ),
       ],
     );

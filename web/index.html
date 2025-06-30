@@ -36,6 +36,25 @@
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD2xqxPjbnA6t-TFsn2pNAuy1VHDOK4l-0"></script>
   <meta name="google-signin-client_id"
     content="177152010877-vqkkuoidonfb2pbru5hleulb4ahorv2o.apps.googleusercontent.com">
+
+  <!-- Firebase JS SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script>
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+      apiKey: "AIzaSyD2xqxPjbnA6t-TFsn2pNAuy1VHDOK4l-0",
+      authDomain: "buna-app-4e064.firebaseapp.com",
+      projectId: "buna-app-4e064",
+      storageBucket: "buna-app-4e064.firebasestorage.app",
+      messagingSenderId: "177152010877",
+      appId: "1:177152010877:web:96f0625f1a29a0bc825f14",
+      measurementId: "G-3XR3FVMHZY"
+    };
+    firebase.initializeApp(firebaseConfig);
+    if (firebase.analytics) { firebase.analytics(); }
+  </script>
 </head>
 
 <body>

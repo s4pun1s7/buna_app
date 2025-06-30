@@ -24,6 +24,8 @@ class LogoTest extends StatelessWidget {
               'assets/Buna blue.png',
               width: 100,
               height: 100,
+              cacheWidth: 100,
+              cacheHeight: 100,
               errorBuilder: (context, error, stackTrace) {
                 return Container(
                   width: 100,
@@ -61,9 +63,9 @@ class LogoTest extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Image.asset('assets/Buna black.png', width: 50, height: 50),
-                Image.asset('assets/Buna blue.png', width: 50, height: 50),
-                Image.asset('assets/Buna pink.png', width: 50, height: 50),
+                Image.asset('assets/Buna black.png', width: 50, height: 50, cacheWidth: 50, cacheHeight: 50),
+                Image.asset('assets/Buna blue.png', width: 50, height: 50, cacheWidth: 50, cacheHeight: 50),
+                Image.asset('assets/Buna pink.png', width: 50, height: 50, cacheWidth: 50, cacheHeight: 50),
               ],
             ),
           ],

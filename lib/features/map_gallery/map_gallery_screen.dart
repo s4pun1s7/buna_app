@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../widgets/loading_indicator.dart';
 import '../../widgets/error_screen.dart';
 import '../../services/error_handler.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 /// Map gallery item model
 class MapGalleryItem {
@@ -332,7 +333,7 @@ class _MapGalleryScreenState extends ConsumerState<MapGalleryScreen>
       child: TextField(
         decoration: InputDecoration(
           hintText: 'Search locations...',
-          prefixIcon: const Icon(Icons.search),
+          prefixIcon: Icon(Icons.search, semanticLabel: 'Search'),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
           ),
@@ -365,7 +366,7 @@ class _MapGalleryScreenState extends ConsumerState<MapGalleryScreen>
           return Padding(
             padding: const EdgeInsets.only(right: 8),
             child: ChoiceChip(
-              label: Text(category),
+              label: Text(category, style: Theme.of(context).textTheme.bodyMedium),
               selected: isSelected,
               onSelected: (selected) {
                 if (selected) {
@@ -375,6 +376,7 @@ class _MapGalleryScreenState extends ConsumerState<MapGalleryScreen>
                   _filterItems();
                 }
               },
+              tooltip: 'Filter by $category',
             ),
           );
         },
@@ -469,6 +471,7 @@ class _MapGalleryScreenState extends ConsumerState<MapGalleryScreen>
                         _getCategoryIcon(item.category),
                         size: 48,
                         color: _getCategoryColor(item.category),
+                        semanticLabel: item.category,
                       ),
                     ),
                     if (item.isInteractive)
@@ -505,10 +508,7 @@ class _MapGalleryScreenState extends ConsumerState<MapGalleryScreen>
                   children: [
                     Text(
                       item.title,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                      ),
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -528,13 +528,13 @@ class _MapGalleryScreenState extends ConsumerState<MapGalleryScreen>
                           _getCategoryIcon(item.category),
                           size: 16,
                           color: _getCategoryColor(item.category),
+                          semanticLabel: item.category,
                         ),
                         const SizedBox(width: 4),
                         Expanded(
                           child: Text(
                             item.category,
-                            style: TextStyle(
-                              fontSize: 12,
+                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
                               color: _getCategoryColor(item.category),
                               fontWeight: FontWeight.w500,
                             ),
@@ -576,6 +576,7 @@ class _MapGalleryScreenState extends ConsumerState<MapGalleryScreen>
                   _getCategoryIcon(item.category),
                   color: Colors.white,
                   size: 30,
+                  semanticLabel: item.category,
                 ),
               ),
               const SizedBox(width: 16),
@@ -589,7 +590,7 @@ class _MapGalleryScreenState extends ConsumerState<MapGalleryScreen>
                         Expanded(
                           child: Text(
                             item.title,
-                            style: const TextStyle(fontWeight: FontWeight.bold),
+                            style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
                           ),
                         ),
                         if (item.isInteractive)
@@ -710,6 +711,7 @@ class _MapGalleryScreenState extends ConsumerState<MapGalleryScreen>
                       _getCategoryIcon(item.category),
                       color: Colors.white,
                       size: 30,
+                      semanticLabel: item.category,
                     ),
                   ),
                   const SizedBox(width: 16),

@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:google_sign_in_platform_interface/google_sign_in_platform_interface.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -16,15 +15,15 @@ class AuthService {
         debugPrint('Google sign-in: running on web');
         GoogleAuthProvider googleProvider = GoogleAuthProvider();
         googleProvider.setCustomParameters({'login_hint': 'user@example.com'});
-        await _auth.signInWithRedirect(googleProvider);
-        debugPrint('Google sign-in: signInWithRedirect initiated');
-        // On web, signInWithRedirect does not return a UserCredential immediately.
-        // The app will be reloaded and you should handle the result elsewhere if needed.
-        return null;
+        final result = await _auth.signInWithPopup(googleProvider);
+        debugPrint('Google sign-in: signInWithPopup complete');
+        final idToken = await result.user?.getIdToken();
+        final accessToken = result.credential is OAuthCredential ? (result.credential as OAuthCredential).accessToken : null;
+        await _saveCredentials(idToken, accessToken);
+        return result;
       } else {
         debugPrint('Google sign-in: running on mobile');
-        final GoogleSignIn googleSignIn = GoogleSignIn();
-        final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+        final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
         debugPrint('Google sign-in: googleUser = ' + (googleUser?.email ?? 'null'));
         if (googleUser == null) {
           debugPrint('Google sign-in: user cancelled');

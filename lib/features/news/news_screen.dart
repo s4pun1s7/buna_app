@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:intl/intl.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:buna_app/widgets/error_screen.dart';
 import 'package:buna_app/providers/festival_data_provider.dart';
@@ -168,16 +169,22 @@ class _NewsScreenState extends ConsumerState<NewsScreen> {
             if (article.featuredImageUrl != null)
               ClipRRect(
                 borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-                child: Image.network(
-                  article.featuredImageUrl!,
+                child: CachedNetworkImage(
+                  imageUrl: article.featuredImageUrl!,
                   height: 200,
                   width: double.infinity,
                   fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) => Container(
+                  placeholder: (context, url) => Container(
                     height: 200,
-                    color: Colors.grey[300],
-                    child: const Icon(Icons.image, size: 64, color: Colors.grey),
+                    color: Theme.of(context).colorScheme.surface,
+                    child: Center(child: CircularProgressIndicator()),
                   ),
+                  errorWidget: (context, url, error) => Container(
+                    height: 200,
+                    color: Theme.of(context).colorScheme.surface,
+                    child: Icon(Icons.image, size: 64, color: Theme.of(context).colorScheme.outline, semanticLabel: 'Image not available'),
+                  ),
+                  semanticLabel: article.title,
                 ),
               ),
             Padding(
@@ -187,24 +194,22 @@ class _NewsScreenState extends ConsumerState<NewsScreen> {
                 children: [
                   Row(
                     children: [
-                      Icon(Icons.access_time, size: 16, color: Colors.grey[600]),
+                      Icon(Icons.access_time, size: 16, color: Theme.of(context).colorScheme.outline, semanticLabel: 'Date'),
                       const SizedBox(width: 4),
                       Text(
                         _formatDate(article.date),
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.grey[600],
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Theme.of(context).colorScheme.outline,
                         ),
                       ),
                       const Spacer(),
-                      Icon(Icons.open_in_new, size: 16, color: Colors.grey[600]),
+                      Icon(Icons.open_in_new, size: 16, color: Theme.of(context).colorScheme.outline, semanticLabel: 'Open article'),
                     ],
                   ),
                   const SizedBox(height: 8),
                   Text(
                     article.title,
-                    style: const TextStyle(
-                      fontSize: 18,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
                     maxLines: 2,
@@ -213,11 +218,7 @@ class _NewsScreenState extends ConsumerState<NewsScreen> {
                   const SizedBox(height: 8),
                   Text(
                     article.excerpt,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey[700],
-                      height: 1.4,
-                    ),
+                    style: Theme.of(context).textTheme.bodySmall,
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,
                   ),

@@ -102,7 +102,7 @@ class AppRouter {
             GoRoute(
               path: AppRoutes.maps,
               name: AppRoutes.mapsName,
-              builder: (context, state) => const MapsScreen(),
+              builder: (context, state) => const MapGalleryScreen(),
             ),
           if (FeatureFlags.enableNews)
             GoRoute(

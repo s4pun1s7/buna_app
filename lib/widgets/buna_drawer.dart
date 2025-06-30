@@ -107,9 +107,9 @@ class BunaDrawer extends ConsumerWidget {
         children: [
           CircleAvatar(
             radius: 32,
-            backgroundColor: Colors.white,
+            backgroundColor: Theme.of(context).colorScheme.surface,
             backgroundImage: avatarUrl != null ? NetworkImage(avatarUrl) : null,
-            child: avatarUrl == null ? const Icon(Icons.person, size: 32) : null,
+            child: avatarUrl == null ? Icon(Icons.person, size: 32, semanticLabel: 'User avatar') : null,
           ),
           const SizedBox(width: 16),
           Expanded(
@@ -119,18 +119,16 @@ class BunaDrawer extends ConsumerWidget {
               children: [
                 Text(
                   displayName ?? 'Guest',
-                  style: const TextStyle(
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     color: Colors.white,
-                    fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 if (email != null)
                   Text(
                     email,
-                    style: const TextStyle(
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: Colors.white70,
-                      fontSize: 14,
                     ),
                   ),
                 if (!isGoogle)
@@ -140,6 +138,7 @@ class BunaDrawer extends ConsumerWidget {
                       color: Colors.white70,
                       fontSize: 14,
                     ),
+                    semanticsLabel: 'Guest user',
                   ),
               ],
             ),
@@ -212,11 +211,11 @@ class BunaDrawer extends ConsumerWidget {
             title: 'AR Experiences',
             route: AppRoutes.ar,
           ),
-        if (FeatureFlags.enableMaps)
+        if (FeatureFlags.enableMapGallery)
           _buildDrawerItem(
             context,
             icon: Icons.map,
-            title: 'Map',
+            title: 'Map Gallery',
             route: AppRoutes.maps,
           ),
         if (FeatureFlags.enableSocialFeed)
@@ -301,10 +300,11 @@ class BunaDrawer extends ConsumerWidget {
       leading: Icon(
         icon,
         color: isSelected ? Theme.of(context).primaryColor : null,
+        semanticLabel: title,
       ),
       title: Text(
         title,
-        style: TextStyle(
+        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
           fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
           color: isSelected ? Theme.of(context).primaryColor : null,
         ),
@@ -318,6 +318,7 @@ class BunaDrawer extends ConsumerWidget {
           onTap();
         }
       },
+      tooltip: title,
     );
   }
 

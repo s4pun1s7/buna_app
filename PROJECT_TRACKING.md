@@ -114,6 +114,13 @@
 - [ ] Add QR code scanning for venue/event information
 - [ ] Implement AR features for venue exploration
 
+### New Features
+- [x] Implement feedback screen
+- [x] Implement QR screen
+- [x] Implement schedule screen
+- [ ] Add dedicated offline screen (in progress)
+- [x] Add cache clearing UI and image optimization
+
 ---
 
 ## 🔧 Technical Improvements Completed

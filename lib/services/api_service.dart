@@ -355,4 +355,23 @@ class ApiService {
       'api_disabled': _apiDisabled,
     };
   }
+
+  /// Check current API configuration
+  static Map<String, dynamic> checkApiConfiguration({bool verbose = true}) {
+    final config = {
+      'baseUrl': _baseUrl,
+      'apiEndpoint': _apiEndpoint,
+      'timeout': _timeout.inSeconds,
+      'cacheExpiry': _cacheExpiry.inMinutes,
+      'apiDisabled': _apiDisabled,
+    };
+    if (verbose) {
+      print('--- API Configuration ---');
+      config.forEach((key, value) {
+        print('$key: $value');
+      });
+      print('-------------------------');
+    }
+    return config;
+  }
 } 

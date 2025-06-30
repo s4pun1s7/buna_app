@@ -57,6 +57,7 @@ class AppTheme {
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           foregroundColor: secondaryColor,
+          backgroundColor: Colors.white,
           side: const BorderSide(color: secondaryColor, width: 2),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
@@ -66,6 +67,7 @@ class AppTheme {
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           foregroundColor: secondaryColor,
+          backgroundColor: Colors.white,
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
         ),
@@ -74,6 +76,7 @@ class AppTheme {
         elevation: 4,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        color: Colors.white,
       ),
       progressIndicatorTheme: const ProgressIndicatorThemeData(
         color: secondaryColor,
@@ -98,7 +101,8 @@ class AppTheme {
       chipTheme: ChipThemeData(
         backgroundColor: Colors.grey.shade100,
         selectedColor: secondaryColor,
-        labelStyle: const TextStyle(fontWeight: FontWeight.w500),
+        labelStyle: const TextStyle(fontWeight: FontWeight.w500, color: Colors.black),
+        secondaryLabelStyle: const TextStyle(color: Colors.white),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       ),
       fontFamily: 'Roboto',
@@ -192,7 +196,8 @@ class AppTheme {
       chipTheme: ChipThemeData(
         backgroundColor: const Color(0xFF2A2A2A),
         selectedColor: secondaryColor,
-        labelStyle: const TextStyle(fontWeight: FontWeight.w500),
+        labelStyle: const TextStyle(fontWeight: FontWeight.w500, color: Colors.white),
+        secondaryLabelStyle: const TextStyle(color: Colors.black),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       ),
       fontFamily: 'Roboto',

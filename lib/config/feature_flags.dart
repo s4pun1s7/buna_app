@@ -47,10 +47,10 @@ class FeatureFlags {
   static const bool enableSponsors = true;
   
   /// Enable/disable ticketing screen
-  static const bool enableTicketing = true;
+  static const bool enableTicketing = false;
   
   /// Enable/disable streaming screen
-  static const bool enableStreaming = true;
+  static const bool enableStreaming = false;
 
   // ===== INTERACTIVE FEATURE FLAGS =====
   
@@ -58,13 +58,13 @@ class FeatureFlags {
   static const bool enableQRScanner = true;
   
   /// Enable/disable AR experiences
-  static const bool enableAR = true;
+  static const bool enableAR = false;
   
   /// Enable/disable map gallery
   static const bool enableMapGallery = true;
   
   /// Enable/disable social feed
-  static const bool enableSocialFeed = true;
+  static const bool enableSocialFeed = false;
 
   // ===== SUPPORT FEATURE FLAGS =====
   

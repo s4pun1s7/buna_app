@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../config/feature_flags.dart';
+import '../../services/api_service.dart';
+import '../../services/cache_service.dart';
 
 /// Feature flags management screen for development
 class FeatureFlagsScreen extends ConsumerStatefulWidget {
@@ -24,6 +26,19 @@ class _FeatureFlagsScreenState extends ConsumerState<FeatureFlagsScreen> {
             tooltip: 'Refresh',
           ),
           IconButton(
+            icon: const Icon(Icons.delete_outline),
+            onPressed: () async {
+              ApiService.clearCache();
+              await CacheService.clearAll();
+              if (mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Cache cleared'), duration: Duration(seconds: 2)),
+                );
+              }
+            },
+            tooltip: 'Clear Cache',
+          ),
+          IconButton(
             icon: const Icon(Icons.info_outline),
             onPressed: _showInfo,
             tooltip: 'Info',
@@ -35,9 +50,14 @@ class _FeatureFlagsScreenState extends ConsumerState<FeatureFlagsScreen> {
   }
 
   Widget _buildBody() {
+    final cacheStats = ApiService.getCacheStats();
     return Column(
       children: [
         _buildHeader(),
+        Padding(
+          padding: const EdgeInsets.all(8),
+          child: Text('API Cache: ${cacheStats['total_entries']} entries'),
+        ),
         Expanded(
           child: _buildFeatureFlagsList(),
         ),
