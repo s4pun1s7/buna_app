@@ -20,6 +20,7 @@ Welcome to the comprehensive documentation for the Buna Festival app. This docum
 - **[Testing](TESTING.md)** - Testing strategies and test coverage
 - **[Code Cleanup](CODE_CLEANUP.md)** - Recent code quality improvements
 - **[Improvements](IMPROVEMENTS.md)** - Performance and feature enhancements
+- **[Architecture](ARCHITECTURE.md)** - Technical architecture and design patterns
 
 ### 📊 Project Management
 - **[Changelog](CHANGELOG.md)** - Version history and release notes
