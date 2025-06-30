@@ -1,5 +1,8 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 # buna_app
+=======
+>>>>>>> d6432e1de732e79f0c39f66dd142f9d3cc1307e5
 =======
 >>>>>>> d6432e1de732e79f0c39f66dd142f9d3cc1307e5
 # Buna Festival App
@@ -51,6 +54,7 @@ A cross-platform Flutter app for the Buna art festival, supporting Android, iOS,
 ---
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 ## 📱 Platform Support
 
 ### iOS
@@ -78,6 +82,8 @@ A cross-platform Flutter app for the Buna art festival, supporting Android, iOS,
 ### Quick Start
 1. **Clone the repository**:
 =======
+=======
+>>>>>>> d6432e1de732e79f0c39f66dd142f9d3cc1307e5
 For license information, see [LICENSE](LICENSE).
 
 ### Setup
@@ -221,6 +227,7 @@ flutter build web
 
 This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 ---
 
@@ -233,5 +240,7 @@ This project is licensed under the MIT License. See [LICENSE](LICENSE) for detai
 ---
 
 **Note**: Sensitive files like Firebase configuration files are excluded by `.gitignore` and should not be committed to version control.
+=======
+>>>>>>> d6432e1de732e79f0c39f66dd142f9d3cc1307e5
 =======
 >>>>>>> d6432e1de732e79f0c39f66dd142f9d3cc1307e5
