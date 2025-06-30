@@ -12,8 +12,6 @@ Future<void> requestFestivalPermissions() async {
   if (!kIsWeb) {
     // Camera permission with rationale
     if (await Permission.camera.status.isDenied) {
-      // Note: In a real app, you'd need to handle this differently
-      // since we can't use BuildContext here
       await Permission.camera.request();
     }
     // Location permission with rationale
@@ -56,7 +54,7 @@ Future<void> main() async {
   // Track app launch
   AnalyticsService.logEvent(name: 'app_launch');
   
-  runApp(BunaAppWithPermissions());
+  runApp(const BunaAppWithPermissions());
 }
 
 class BunaAppWithPermissions extends StatelessWidget {
@@ -65,15 +63,7 @@ class BunaAppWithPermissions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RiverpodApp(
-      child: Builder(
-        builder: (context) {
-          // Request permissions after first build
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            requestFestivalPermissions();
-          });
-          return const BunaApp();
-        },
-      ),
+      child: const BunaApp(),
     );
   }
 }

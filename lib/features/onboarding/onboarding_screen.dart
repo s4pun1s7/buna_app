@@ -1,24 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../providers/locale_provider.dart';
+import '../../navigation/route_guards.dart';
+import '../../navigation/route_constants.dart';
 
-class OnboardingScreen extends StatefulWidget {
+class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
 
   @override
-  State<OnboardingScreen> createState() => _OnboardingScreenState();
+  ConsumerState<OnboardingScreen> createState() => _OnboardingScreenState();
 }
 
-class _OnboardingScreenState extends State<OnboardingScreen> {
+class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   String _selectedLanguage = 'en';
 
-  void _getStarted() {
-    context.go('/home');
+  void _getStarted() async {
+    // Mark onboarding as completed
+    await RouteGuards.markOnboardingCompleted();
+    
+    // Set the selected language
+    final localeNotifier = ref.read(localeProvider.notifier);
+    localeNotifier.setLocale(Locale(_selectedLanguage));
+    
+    // Navigate to home
+    if (mounted) {
+      context.go(AppRoutes.home);
+    }
   }
 
   void _selectLanguage(String lang) {
     setState(() {
       _selectedLanguage = lang;
-      // TODO: Set app locale globally
     });
   }
 
