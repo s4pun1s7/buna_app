@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:buna_app/providers/festival_data_provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:buna_app/widgets/error_screen.dart';
 import 'package:buna_app/widgets/loading_indicator.dart';
 import 'package:buna_app/services/error_handler.dart';
@@ -83,37 +83,28 @@ class _MapsScreenState extends ConsumerState<MapsScreen> {
   }
 
   Future<void> _loadVenues() async {
-    final venuesAsync = ref.read(venuesProvider);
-    await venuesAsync.when(
-      data: (venues) {
-        setState(() {
-          _markers.clear();
-          for (final venue in venues) {
-            if (venue.latitude != null && venue.longitude != null) {
-              _markers.add(
-                Marker(
-                  markerId: MarkerId(venue.id.toString()),
-                  position: LatLng(venue.latitude!, venue.longitude!),
-                  icon: BitmapDescriptor.defaultMarkerWithHue(
-                    _getMarkerColor(venue),
-                  ),
-                  infoWindow: InfoWindow(
-                    title: venue.name,
-                    snippet: venue.address,
-                    onTap: () => _showVenueDetails(venue),
-                  ),
-                  onTap: () => _onMarkerTapped(venue),
-                ),
-              );
-            }
-          }
-        });
-      },
-      loading: () {},
-      error: (error, stackTrace) {
-        // Error handling is done by the provider
-      },
-    );
+    setState(() {
+      _markers.clear();
+      for (final venue in venues) {
+        if (venue.latitude != null && venue.longitude != null) {
+          _markers.add(
+            Marker(
+              markerId: MarkerId(venue.name), // Use name as ID since local Venue doesn't have id
+              position: LatLng(venue.latitude!, venue.longitude!),
+              icon: BitmapDescriptor.defaultMarkerWithHue(
+                _getMarkerColor(venue),
+              ),
+              infoWindow: InfoWindow(
+                title: venue.name,
+                snippet: venue.address,
+                onTap: () => _showVenueDetails(venue),
+              ),
+              onTap: () => _onMarkerTapped(venue),
+            ),
+          );
+        }
+      }
+    });
   }
 
   double _getMarkerColor(Venue venue) {
@@ -170,85 +161,62 @@ class _MapsScreenState extends ConsumerState<MapsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final venuesAsync = ref.watch(venuesProvider);
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Venues Map'),
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
-            onPressed: () => ref.refresh(venuesProvider),
+            onPressed: () {
+              setState(() {});
+              _loadVenues();
+            },
             tooltip: 'Refresh',
           ),
         ],
       ),
-      body: venuesAsync.when(
-        data: (venues) {
-          if (venues.isEmpty) {
-            return _buildEmptyState();
-          }
-
-          final filteredVenues = _getFilteredVenues(venues);
-          final initialCameraPosition = _calculateInitialCameraPosition(venues);
-
-          return Stack(
-            children: [
-              GoogleMap(
-                initialCameraPosition: initialCameraPosition,
-                markers: _markers,
-                circles: _circles,
-                onMapCreated: (GoogleMapController controller) {
-                  _mapController = controller;
-                },
-                myLocationEnabled: true,
-                myLocationButtonEnabled: false,
-                zoomControlsEnabled: false,
-                mapToolbarEnabled: false,
-              ),
-              
-              // Search bar
-              Positioned(
-                top: 16,
-                left: 16,
-                right: 16,
-                child: _buildSearchBar(),
-              ),
-              
-              // User location button
-              Positioned(
-                bottom: 200,
-                right: 16,
-                child: _buildUserLocationButton(),
-              ),
-              
-              // Venue list bottom sheet
-              Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: _VenueListSheet(
-                  venues: filteredVenues,
-                  onVenueTap: _onMarkerTapped,
-                  selectedVenue: _selectedVenue,
-                ),
-              ),
-            ],
-          );
-        },
-        loading: () => const LoadingIndicator(),
-        error: (error, stackTrace) {
-          final appError = error is AppException ? error : AppException(
-            'Failed to load venues',
-            code: 'MAPS_ERROR',
-            originalError: error,
-            stackTrace: stackTrace,
-          );
-          return ErrorScreen(
-            error: appError,
-            onRetry: () => ref.refresh(venuesProvider),
-          );
-        },
+      body: Stack(
+        children: [
+          GoogleMap(
+            initialCameraPosition: _calculateInitialCameraPosition(venues),
+            markers: _markers,
+            circles: _circles,
+            onMapCreated: (GoogleMapController controller) {
+              _mapController = controller;
+            },
+            myLocationEnabled: true,
+            myLocationButtonEnabled: false,
+            zoomControlsEnabled: false,
+            mapToolbarEnabled: false,
+          ),
+          
+          // Search bar
+          Positioned(
+            top: 16,
+            left: 16,
+            right: 16,
+            child: _buildSearchBar(),
+          ),
+          
+          // User location button
+          Positioned(
+            bottom: 200,
+            right: 16,
+            child: _buildUserLocationButton(),
+          ),
+          
+          // Venue list bottom sheet
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: _VenueListSheet(
+              venues: _getFilteredVenues(venues),
+              onVenueTap: _onMarkerTapped,
+              selectedVenue: _selectedVenue,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -300,33 +268,6 @@ class _MapsScreenState extends ConsumerState<MapsScreen> {
               child: CircularProgressIndicator(strokeWidth: 2),
             )
           : const Icon(Icons.my_location),
-    );
-  }
-
-  Widget _buildEmptyState() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.location_off,
-            size: 64,
-            color: Colors.grey.withValues(alpha: 0.5),
-          ),
-          const SizedBox(height: 16),
-          Text(
-            'No venues available',
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'Check back later for venue updates',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: Colors.grey,
-            ),
-          ),
-        ],
-      ),
     );
   }
 
@@ -432,7 +373,7 @@ class _VenueListSheet extends StatelessWidget {
                     itemCount: venues.length,
                     itemBuilder: (context, index) {
                       final venue = venues[index];
-                      final isSelected = selectedVenue?.id == venue.id;
+                      final isSelected = selectedVenue?.name == venue.name;
                       
                       return Card(
                         margin: const EdgeInsets.only(bottom: 8),
@@ -585,10 +526,13 @@ class _VenueDetailsSheet extends StatelessWidget {
     );
   }
 
-  void _openDirections(Venue venue) {
+  void _openDirections(Venue venue) async {
     if (venue.latitude != null && venue.longitude != null) {
       final url = 'https://www.google.com/maps/dir/?api=1&destination=${venue.latitude},${venue.longitude}';
-      // You can use url_launcher here to open directions
+      final uri = Uri.parse(url);
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
+      }
     }
   }
 }

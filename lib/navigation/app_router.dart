@@ -11,6 +11,7 @@ import 'route_constants.dart';
 import 'route_guards.dart';
 import 'main_layout.dart';
 import 'route_observer.dart';
+import '../widgets/splash_screen.dart';
 
 /// Simple home screen placeholder
 class HomeScreen extends StatelessWidget {
@@ -48,7 +49,7 @@ class AppRouter {
 
   /// Main router configuration
   static final GoRouter router = GoRouter(
-    initialLocation: AppRoutes.onboarding,
+    initialLocation: '/splash',
     debugLogDiagnostics: true,
     
     // Route observers for analytics
@@ -56,6 +57,10 @@ class AppRouter {
     
     // Routes configuration
     routes: [
+      GoRoute(
+        path: '/splash',
+        builder: (context, state) => const SplashScreen(),
+      ),
       // Public routes (no authentication required)
       GoRoute(
         path: AppRoutes.onboarding,
