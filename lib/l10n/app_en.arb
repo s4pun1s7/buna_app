@@ -40,5 +40,20 @@
   "venuesLabel": "Venues:",
   "loading": "Loading...",
   "error": "Error",
-  "retry": "Retry"
+  "retry": "Retry",
+  "latest": "Latest",
+  "today": "Today",
+  "mobileApp": "Mobile App",
+  "festivalUpdates": "Festival Updates",
+  "moreUpdatesComing": "More festival news and updates will be posted here as they become available. Follow us on social media for the latest announcements.",
+  "appDevelopmentStarted": "Development of the Buna app has begun!",
+  "appDevelopmentDescription": "We are excited to announce that development of the official Buna Festival mobile app has started! This app will provide festival-goers with real-time updates, venue information, event schedules, and much more. Stay tuned for more updates as we build the ultimate festival companion app.",
+  "permissionCameraTitle": "Camera Permission",
+  "permissionCameraMessage": "We need camera access for AR and QR features at the festival.",
+  "permissionLocationTitle": "Location Permission",
+  "permissionLocationMessage": "We use your location to show you nearby venues and events.",
+  "permissionNotificationTitle": "Notification Permission",
+  "permissionNotificationMessage": "Enable notifications to receive festival news and updates.",
+  "allow": "Allow",
+  "deny": "Deny"
 }
