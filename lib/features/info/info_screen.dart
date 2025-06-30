@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:buna_app/widgets/language_toggle.dart';
 
 class InfoScreen extends StatelessWidget {
   const InfoScreen({super.key});

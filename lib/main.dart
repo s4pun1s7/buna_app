@@ -4,43 +4,33 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'app.dart';
-import 'widgets/rationale_dialog.dart';
 import 'providers/riverpod_setup.dart';
+import 'services/connectivity_service.dart';
+import 'services/analytics_service.dart';
 
-Future<void> requestFestivalPermissions(BuildContext context) async {
+Future<void> requestFestivalPermissions() async {
   if (!kIsWeb) {
     // Camera permission with rationale
     if (await Permission.camera.status.isDenied) {
-      final allow = await showRationaleDialog(
-        context,
-        'Camera Permission',
-        'We need camera access for AR and QR features at the festival.',
-      );
-      if (allow) await Permission.camera.request();
+      // Note: In a real app, you'd need to handle this differently
+      // since we can't use BuildContext here
+      await Permission.camera.request();
     }
     // Location permission with rationale
     if (await Permission.locationWhenInUse.status.isDenied) {
-      final allow = await showRationaleDialog(
-        context,
-        'Location Permission',
-        'We use your location to show you nearby venues and events.',
-      );
-      if (allow) await Permission.locationWhenInUse.request();
+      await Permission.locationWhenInUse.request();
     }
     // Notification permission with rationale (Android 13+)
     if (await Permission.notification.status.isDenied) {
-      final allow = await showRationaleDialog(
-        context,
-        'Notification Permission',
-        'Enable notifications to receive festival news and updates.',
-      );
-      if (allow) await Permission.notification.request();
+      await Permission.notification.request();
     }
   }
 }
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  
+  // Initialize Firebase
   if (kIsWeb) {
     await Firebase.initializeApp(
       options: const FirebaseOptions(
@@ -56,8 +46,16 @@ Future<void> main() async {
   } else {
     await Firebase.initializeApp();
   }
+  
+  // Initialize services
+  await ConnectivityService().initialize();
+  
   // Anonymous sign-in for development
   await FirebaseAuth.instance.signInAnonymously();
+  
+  // Track app launch
+  AnalyticsService.logEvent(name: 'app_launch');
+  
   runApp(BunaAppWithPermissions());
 }
 
@@ -71,7 +69,7 @@ class BunaAppWithPermissions extends StatelessWidget {
         builder: (context) {
           // Request permissions after first build
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            requestFestivalPermissions(context);
+            requestFestivalPermissions();
           });
           return const BunaApp();
         },

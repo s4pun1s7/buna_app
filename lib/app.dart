@@ -13,12 +13,13 @@ import 'package:buna_app/features/info/info_screen.dart';
 import 'package:buna_app/widgets/buna_nav_bar.dart';
 import 'package:buna_app/widgets/language_toggle.dart';
 import 'package:buna_app/widgets/schedule_card.dart';
-import 'package:buna_app/models/schedule.dart';
 import 'package:buna_app/models/event_notes_reminders_manager.dart';
 import 'package:buna_app/providers/favorites_provider.dart';
 import 'package:buna_app/providers/schedule_provider.dart';
 import 'package:buna_app/providers/locale_provider.dart';
+import 'package:buna_app/providers/theme_provider.dart';
 import 'package:buna_app/features/venues/venues_data.dart';
+import 'package:buna_app/services/analytics_service.dart';
 
 final _router = GoRouter(
   initialLocation: '/onboarding',
@@ -56,6 +57,10 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       _selectedIndex = index;
     });
+    
+    // Track navigation
+    final screenNames = ['home', 'venues', 'maps', 'news', 'info'];
+    AnalyticsService.logScreenView(screenName: screenNames[index]);
   }
 
   @override
@@ -63,7 +68,29 @@ class _HomeScreenState extends State<HomeScreen> {
     return Stack(
       children: [
         Scaffold(
-          appBar: AppBar(title: const Text('Buna Festival Home')),
+          appBar: AppBar(
+            title: const Text('Buna Festival Home'),
+            actions: [
+              Consumer(
+                builder: (context, ref, child) {
+                  final themeNotifier = ref.watch(themeProvider.notifier);
+                  final isDark = ref.watch(themeProvider.notifier).isDarkMode;
+                  
+                  return IconButton(
+                    icon: Icon(isDark ? Icons.light_mode : Icons.dark_mode),
+                    onPressed: () {
+                      themeNotifier.toggleTheme();
+                      AnalyticsService.logEvent(
+                        name: 'theme_toggle',
+                        parameters: {'new_theme': isDark ? 'light' : 'dark'},
+                      );
+                    },
+                    tooltip: 'Toggle theme',
+                  );
+                },
+              ),
+            ],
+          ),
           body: _pages[_selectedIndex],
           bottomNavigationBar: BunaNavBar(
             currentIndex: _selectedIndex,
@@ -368,12 +395,14 @@ class BunaApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final locale = ref.watch(localeProvider);
+    final themeMode = ref.watch(themeProvider);
     
     return MaterialApp.router(
       title: 'Buna Festival',
       debugShowCheckedModeBanner: false,
       routerConfig: _router,
       locale: locale,
+      themeMode: themeMode,
       supportedLocales: const [Locale('en'), Locale('bg')],
       localizationsDelegates: const [
         AppLocalizations.delegate,
@@ -382,6 +411,7 @@ class BunaApp extends ConsumerWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
     );
   }
 }
