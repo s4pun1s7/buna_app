@@ -92,13 +92,16 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         actions: [
           IconButton(
-            icon: const Icon(Icons.history),
-            onPressed: _showFeedbackHistory,
-            tooltip: 'Feedback history',
+            icon: const Icon(Icons.info_outline),
+            onPressed: () => _showInfoDialog(context),
+            tooltip: 'About Feedback',
           ),
         ],
       ),
-      body: _isSubmitted ? _buildSuccessView() : _buildFeedbackForm(),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: _isSubmitted ? _buildSuccessView() : _buildFeedbackForm(),
+      ),
     );
   }
 
@@ -139,6 +142,7 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
           Icons.feedback,
           size: 48,
           color: Theme.of(context).primaryColor,
+          semanticLabel: 'Feedback',
         ),
         const SizedBox(height: 16),
         Text(
@@ -394,72 +398,32 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
 
   Widget _buildSuccessView() {
     return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(32),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              width: 80,
-              height: 80,
-              decoration: BoxDecoration(
-                color: Colors.green,
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(
-                Icons.check,
-                color: Colors.white,
-                size: 40,
-              ),
-            ),
-            const SizedBox(height: 24),
-            Text(
-              'Thank You!',
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 16),
-            const Text(
-              'Your feedback has been submitted successfully. We appreciate your input and will use it to improve the festival experience.',
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 32),
-            Row(
-              children: [
-                Expanded(
-                  child: OutlinedButton(
-                    onPressed: () {
-                      setState(() {
-                        _isSubmitted = false;
-                      });
-                    },
-                    child: const Text('Submit Another'),
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Text('Done'),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.check_circle, color: Colors.green, size: 64, semanticLabel: 'Success'),
+          const SizedBox(height: 16),
+          Text(
+            'Thank you for your feedback!',
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'We appreciate your input and will use it to improve the festival experience.',
+            style: Theme.of(context).textTheme.bodyMedium,
+            textAlign: TextAlign.center,
+          ),
+        ],
       ),
     );
   }
 
-  void _showFeedbackHistory() {
+  void _showInfoDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Feedback History'),
-        content: const Text('Feedback history feature coming soon...'),
+        title: const Text('About Feedback'),
+        content: const Text('This feature is coming soon...'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),

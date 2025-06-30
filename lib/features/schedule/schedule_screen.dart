@@ -128,6 +128,17 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Festival Schedule'),
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.info_outline),
+            onPressed: () => _showInfoDialog(context),
+            tooltip: 'About Schedule',
+          ),
+        ],
+      ),
       body: _buildBody(),
     );
   }
@@ -328,22 +339,16 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen>
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.event_busy,
-            size: 64,
-            color: Theme.of(context).colorScheme.outline,
-          ),
+          Icon(Icons.event_busy, size: 64, color: Theme.of(context).colorScheme.outline, semanticLabel: 'No events'),
           const SizedBox(height: 16),
           Text(
-            'No Events Scheduled',
-            style: Theme.of(context).textTheme.headlineSmall,
+            'No events scheduled',
+            style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 8),
-          const Text('Check back later for upcoming events'),
-          const SizedBox(height: 16),
-          ElevatedButton(
-            onPressed: _loadEvents,
-            child: const Text('Refresh'),
+          Text(
+            'Check back later for updates.',
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
         ],
       ),
@@ -415,6 +420,22 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen>
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: const Text('Close'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showInfoDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('About the Schedule'),
+        content: const Text('This is a simple schedule viewer. It shows events in a timeline, list, and calendar view. You can filter events by date and view details about each event. The data is fetched from an API and may not be accurate or complete.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('OK'),
           ),
         ],
       ),

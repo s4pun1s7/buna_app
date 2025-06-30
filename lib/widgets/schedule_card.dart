@@ -55,10 +55,10 @@ class ScheduleCard extends StatelessWidget {
                     ),
                     child: Text(
                       event.category ?? 'Event',
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
-                        fontSize: 12,
+                        fontSize: 12 * MediaQuery.textScaleFactorOf(context),
                       ),
                     ),
                   ),

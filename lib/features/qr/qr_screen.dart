@@ -24,18 +24,16 @@ class _QRScreenState extends ConsumerState<QRScreen> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         actions: [
           IconButton(
-            icon: const Icon(Icons.history),
-            onPressed: _showScanHistory,
-            tooltip: 'Scan history',
-          ),
-          IconButton(
-            icon: const Icon(Icons.help_outline),
-            onPressed: _showHelp,
-            tooltip: 'Help',
+            icon: const Icon(Icons.info_outline),
+            onPressed: () => _showInfoDialog(context),
+            tooltip: 'About QR Scanner',
           ),
         ],
       ),
-      body: _buildBody(),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: _buildBody(),
+      ),
     );
   }
 
@@ -614,11 +612,11 @@ class _QRScreenState extends ConsumerState<QRScreen> {
     );
   }
 
-  void _showHelp() {
+  void _showInfoDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('QR Scanner Help'),
+        title: const Text('About QR Scanner'),
         content: const Text(
           '• Point your camera at any QR code around the festival\n'
           '• QR codes can unlock event information, artist details, and rewards\n'
