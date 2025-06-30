@@ -34,6 +34,7 @@ A cross-platform Flutter app for the Buna art festival, supporting Android, iOS,
 - [Code Cleanup](docs/CODE_CLEANUP.md)
 - [Architecture](docs/ARCHITECTURE.md)
 - [Final Summary](docs/FINAL_SUMMARY.md)
+- [Roadmap](docs/ROADMAP.md)
 
 ---
 

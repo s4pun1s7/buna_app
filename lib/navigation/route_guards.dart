@@ -6,8 +6,11 @@ import 'route_constants.dart';
 
 /// Provider for onboarding status
 final onboardingStatusProvider = FutureProvider<bool>((ref) async {
+  debugPrint('RouteGuards: Loading onboarding status...');
   final prefs = await SharedPreferences.getInstance();
-  return prefs.getBool('has_completed_onboarding') ?? false;
+  final status = prefs.getBool('has_completed_onboarding') ?? false;
+  debugPrint('RouteGuards: Onboarding status loaded: $status');
+  return status;
 });
 
 /// Provider for authentication status
@@ -21,29 +24,57 @@ final authStatusProvider = FutureProvider<bool>((ref) async {
 class RouteGuards {
   /// Handle route redirects based on app state
   static String? handleRedirect(BuildContext context, GoRouterState state) {
+    debugPrint('RouteGuards: Checking redirect for path: ${state.uri.path}');
+    
+    // Don't redirect if we're already on splash screen
+    if (state.uri.path == '/splash') {
+      debugPrint('RouteGuards: On splash screen, no redirect needed');
+      return null;
+    }
+    
     final container = ProviderScope.containerOf(context);
     
     // Check onboarding status
     final onboardingStatus = container.read(onboardingStatusProvider);
+    debugPrint('RouteGuards: Onboarding status - loading: ${onboardingStatus.isLoading}, hasValue: ${onboardingStatus.hasValue}, value: ${onboardingStatus.valueOrNull}');
+    
+    // If onboarding status is still loading, don't redirect yet
+    if (onboardingStatus.isLoading) {
+      debugPrint('RouteGuards: Onboarding status still loading, no redirect');
+      return null;
+    }
+    
+    // If onboarding is not completed and we're not on onboarding page, redirect
     if (onboardingStatus.hasValue && !onboardingStatus.value!) {
       if (state.uri.path != AppRoutes.onboarding) {
+        debugPrint('RouteGuards: Redirecting to onboarding');
         return AppRoutes.onboarding;
       }
     }
     
     // Check authentication status
     final authStatus = container.read(authStatusProvider);
+    
+    // If auth status is still loading, don't redirect yet
+    if (authStatus.isLoading) {
+      debugPrint('RouteGuards: Auth status still loading, no redirect');
+      return null;
+    }
+    
     if (authStatus.hasValue && !authStatus.value!) {
       if (AppRoutes.requiresAuth(state.uri.path)) {
+        debugPrint('RouteGuards: Redirecting to onboarding due to auth');
         return AppRoutes.onboarding; // or login route
       }
     }
     
     // Check feature flags (future implementation)
     if (_isFeatureDisabled(state.uri.path)) {
+      debugPrint('RouteGuards: Feature disabled, redirecting to home');
       return AppRoutes.home;
     }
     
+    debugPrint('RouteGuards: No redirect needed');
     return null; // No redirect needed
   }
   
@@ -56,19 +87,26 @@ class RouteGuards {
   
   /// Mark onboarding as completed
   static Future<void> markOnboardingCompleted() async {
+    debugPrint('RouteGuards: Marking onboarding as completed');
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('has_completed_onboarding', true);
+    debugPrint('RouteGuards: Onboarding marked as completed');
   }
   
   /// Check if user has completed onboarding
   static Future<bool> hasCompletedOnboarding() async {
+    debugPrint('RouteGuards: Checking if onboarding completed');
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getBool('has_completed_onboarding') ?? false;
+    final status = prefs.getBool('has_completed_onboarding') ?? false;
+    debugPrint('RouteGuards: Onboarding completed status: $status');
+    return status;
   }
   
   /// Reset onboarding status (for testing)
   static Future<void> resetOnboardingStatus() async {
+    debugPrint('RouteGuards: Resetting onboarding status');
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('has_completed_onboarding');
+    debugPrint('RouteGuards: Onboarding status reset');
   }
 } 

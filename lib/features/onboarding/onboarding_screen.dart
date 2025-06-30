@@ -14,18 +14,37 @@ class OnboardingScreen extends ConsumerStatefulWidget {
 
 class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   String _selectedLanguage = 'en';
+  bool _isLoading = false;
 
   void _getStarted() async {
-    // Mark onboarding as completed
-    await RouteGuards.markOnboardingCompleted();
+    if (_isLoading) return; // Prevent multiple calls
     
-    // Set the selected language
-    final localeNotifier = ref.read(localeProvider.notifier);
-    localeNotifier.setLocale(Locale(_selectedLanguage));
+    setState(() {
+      _isLoading = true;
+    });
     
-    // Navigate to home
-    if (mounted) {
-      context.go(AppRoutes.home);
+    try {
+      debugPrint('Onboarding: Starting get started process...');
+      
+      // Mark onboarding as completed
+      await RouteGuards.markOnboardingCompleted();
+      debugPrint('Onboarding: Marked as completed');
+      
+      // Set the selected language
+      final localeNotifier = ref.read(localeProvider.notifier);
+      localeNotifier.setLocale(Locale(_selectedLanguage));
+      debugPrint('Onboarding: Set locale to $_selectedLanguage');
+      
+      // Navigate to home
+      if (mounted) {
+        debugPrint('Onboarding: Navigating to home...');
+        context.go(AppRoutes.home);
+      }
+    } catch (e) {
+      debugPrint('Onboarding: Error during get started: $e');
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -42,8 +61,14 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
         title: const Text('Welcome'),
         actions: [
           TextButton(
-            onPressed: _getStarted, 
-            child: const Text('Skip')
+            onPressed: _isLoading ? null : _getStarted, 
+            child: _isLoading 
+              ? const SizedBox(
+                  width: 16,
+                  height: 16,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                )
+              : const Text('Skip')
           ),
         ],
       ),
@@ -81,8 +106,21 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
             ),
             const SizedBox(height: 32),
             ElevatedButton(
-              onPressed: _getStarted,
-              child: const Text('Get Started'),
+              onPressed: _isLoading ? null : _getStarted,
+              child: _isLoading 
+                ? const Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SizedBox(
+                        width: 16,
+                        height: 16,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      ),
+                      SizedBox(width: 8),
+                      Text('Loading...'),
+                    ],
+                  )
+                : const Text('Get Started'),
             ),
           ],
         ),
