@@ -392,12 +392,21 @@ class _ARScreenState extends ConsumerState<ARScreen> {
       itemCount: filteredExperiences.length,
       itemBuilder: (context, index) {
         final experience = filteredExperiences[index];
-        return Card(
-          margin: const EdgeInsets.only(bottom: 16),
-          child: InkWell(
-            onTap: () => _selectExperience(experience),
-            borderRadius: BorderRadius.circular(12),
-            child: Padding(
+        return _buildExperienceCard(experience);
+      },
+    );
+  }
+
+  Widget _buildExperienceCard(ARExperience experience) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 16),
+      child: InkWell(
+        onTap: () => _selectExperience(experience),
+        borderRadius: BorderRadius.circular(12),
+        child: Builder(
+          builder: (context) {
+            final scale = MediaQuery.textScaleFactorOf(context);
+            return Padding(
               padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -445,12 +454,12 @@ class _ARScreenState extends ConsumerState<ARScreen> {
                             color: Colors.grey,
                             borderRadius: BorderRadius.circular(12),
                           ),
-                          child: const Text(
+                          child: Text(
                             'Coming Soon',
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
-                              fontSize: 12,
+                              fontSize: 12 * scale,
                             ),
                           ),
                         ),
@@ -465,7 +474,7 @@ class _ARScreenState extends ConsumerState<ARScreen> {
                     children: experience.features.map((feature) => Chip(
                       label: Text(
                         feature,
-                        style: const TextStyle(fontSize: 12),
+                        style: TextStyle(fontSize: 12 * scale),
                       ),
                       backgroundColor: Theme.of(context).primaryColor.withValues(alpha: 0.1),
                     )).toList(),
@@ -486,10 +495,10 @@ class _ARScreenState extends ConsumerState<ARScreen> {
                   ),
                 ],
               ),
-            ),
-          ),
-        );
-      },
+            );
+          },
+        ),
+      ),
     );
   }
 

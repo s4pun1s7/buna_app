@@ -31,19 +31,20 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    final scale = MediaQuery.textScaleFactorOf(context);
+    return Scaffold(
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.home, size: 64),
-            SizedBox(height: 16),
+            const Icon(Icons.home, size: 64),
+            const SizedBox(height: 16),
             Text(
               'Welcome to Buna Festival',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 24 * scale, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 8),
-            Text('Use the navigation below to explore the festival'),
+            const SizedBox(height: 8),
+            const Text('Use the navigation below to explore the festival'),
           ],
         ),
       ),

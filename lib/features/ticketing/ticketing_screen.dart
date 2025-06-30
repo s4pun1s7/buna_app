@@ -267,23 +267,28 @@ class _TicketingScreenState extends ConsumerState<TicketingScreen> {
         final ticket = _tickets[index];
         final isSelected = ticket.id == _selectedTicketId;
         
-        return Card(
-          margin: const EdgeInsets.only(bottom: 16),
-          elevation: isSelected ? 4 : 2,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-            side: isSelected 
-                ? BorderSide(color: Theme.of(context).primaryColor, width: 2)
-                : BorderSide.none,
-          ),
-          child: InkWell(
-            onTap: () {
-              setState(() {
-                _selectedTicketId = ticket.id;
-              });
-            },
-            borderRadius: BorderRadius.circular(12),
-            child: Padding(
+        return _buildTicketCard(ticket, isSelected);
+      },
+    );
+  }
+
+  Widget _buildTicketCard(Ticket ticket, bool isSelected) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 16),
+      elevation: isSelected ? 4 : 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: isSelected 
+            ? BorderSide(color: Theme.of(context).primaryColor, width: 2)
+            : BorderSide.none,
+      ),
+      child: InkWell(
+        onTap: ticket.isAvailable ? () => _selectTicket(ticket) : null,
+        borderRadius: BorderRadius.circular(12),
+        child: Builder(
+          builder: (context) {
+            final scale = MediaQuery.textScaleFactorOf(context);
+            return Padding(
               padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -338,10 +343,10 @@ class _TicketingScreenState extends ConsumerState<TicketingScreen> {
                           ),
                           child: Text(
                             'Only ${ticket.remainingQuantity} left!',
-                            style: const TextStyle(
+                            style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
-                              fontSize: 12,
+                              fontSize: 12 * scale,
                             ),
                           ),
                         ),
@@ -386,10 +391,10 @@ class _TicketingScreenState extends ConsumerState<TicketingScreen> {
                   ),
                 ],
               ),
-            ),
-          ),
-        );
-      },
+            );
+          },
+        ),
+      ),
     );
   }
 
@@ -418,6 +423,12 @@ class _TicketingScreenState extends ConsumerState<TicketingScreen> {
         ],
       ),
     );
+  }
+
+  void _selectTicket(Ticket ticket) {
+    setState(() {
+      _selectedTicketId = ticket.id;
+    });
   }
 
   void _purchaseTicket(Ticket ticket) {
@@ -590,9 +601,14 @@ class _TicketingScreenState extends ConsumerState<TicketingScreen> {
             borderRadius: BorderRadius.circular(8),
           ),
         ),
-        child: const Text(
-          'Confirm Purchase',
-          style: TextStyle(fontSize: 16),
+        child: Builder(
+          builder: (context) {
+            final scale = MediaQuery.textScaleFactorOf(context);
+            return Text(
+              'Confirm Purchase',
+              style: TextStyle(fontSize: 16 * scale),
+            );
+          },
         ),
       ),
     );

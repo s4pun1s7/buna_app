@@ -347,103 +347,7 @@ class _SocialScreenState extends ConsumerState<SocialScreen>
       itemCount: _filteredPosts.length,
       itemBuilder: (context, index) {
         final post = _filteredPosts[index];
-        return Card(
-          margin: const EdgeInsets.only(bottom: 16),
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Header
-                Row(
-                  children: [
-                    CircleAvatar(
-                      backgroundColor: _getPlatformColor(post.platform),
-                      child: Icon(
-                        _getPlatformIcon(post.platform),
-                        color: Colors.white,
-                        size: 20,
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            post.username,
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            '${post.platform} • ${_formatTimestamp(post.timestamp)}',
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: Theme.of(context).colorScheme.outline,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.more_vert),
-                      onPressed: () => _showPostOptions(post),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 12),
-                // Content
-                Text(post.content),
-                if (post.hashtags != null) ...[
-                  const SizedBox(height: 8),
-                  Text(
-                    post.hashtags!,
-                    style: TextStyle(
-                      color: Theme.of(context).primaryColor,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
-                const SizedBox(height: 12),
-                // Engagement
-                Row(
-                  children: [
-                    _buildEngagementItem(Icons.favorite, post.likes.toString()),
-                    const SizedBox(width: 16),
-                    _buildEngagementItem(Icons.comment, post.comments.toString()),
-                    const SizedBox(width: 16),
-                    _buildEngagementItem(Icons.share, post.shares.toString()),
-                    const Spacer(),
-                    IconButton(
-                      icon: const Icon(Icons.favorite_border),
-                      onPressed: isAnonymous
-                        ? () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Please log in to use social features.'),
-                                duration: Duration(seconds: 2),
-                              ),
-                            );
-                          }
-                        : () => _toggleFavorite(post),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.share),
-                      onPressed: isAnonymous
-                        ? () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Please log in to use social features.'),
-                                duration: Duration(seconds: 2),
-                              ),
-                            );
-                          }
-                        : () => _sharePost(post),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        );
+        return _buildPostCard(post);
       },
     );
   }
@@ -462,74 +366,7 @@ class _SocialScreenState extends ConsumerState<SocialScreen>
         final post = trendingPosts[index];
         final engagement = post.likes + post.comments + post.shares;
         
-        return Card(
-          margin: const EdgeInsets.only(bottom: 16),
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    CircleAvatar(
-                      backgroundColor: _getPlatformColor(post.platform),
-                      child: Icon(
-                        _getPlatformIcon(post.platform),
-                        color: Colors.white,
-                        size: 20,
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            post.username,
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            '${post.platform} • ${_formatTimestamp(post.timestamp)}',
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: Theme.of(context).colorScheme.outline,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: Colors.orange,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Text(
-                        '🔥 $engagement',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 12,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 12),
-                Text(post.content),
-                const SizedBox(height: 12),
-                Row(
-                  children: [
-                    _buildEngagementItem(Icons.favorite, post.likes.toString()),
-                    const SizedBox(width: 16),
-                    _buildEngagementItem(Icons.comment, post.comments.toString()),
-                    const SizedBox(width: 16),
-                    _buildEngagementItem(Icons.share, post.shares.toString()),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        );
+        return _buildPostCard(post);
       },
     );
   }
@@ -552,6 +389,115 @@ class _SocialScreenState extends ConsumerState<SocialScreen>
           const SizedBox(height: 8),
           const Text('Like posts to see them here'),
         ],
+      ),
+    );
+  }
+
+  Widget _buildPostCard(SocialPost post) {
+    final scale = MediaQuery.textScaleFactorOf(context);
+    return Card(
+      margin: const EdgeInsets.only(bottom: 16),
+      child: InkWell(
+        onTap: () => _showPostOptions(post),
+        borderRadius: BorderRadius.circular(12),
+        child: Builder(
+          builder: (context) {
+            return Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Header
+                  Row(
+                    children: [
+                      CircleAvatar(
+                        backgroundColor: _getPlatformColor(post.platform),
+                        child: Icon(
+                          _getPlatformIcon(post.platform),
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              post.username,
+                              style: const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              '${post.platform} • ${_formatTimestamp(post.timestamp)}',
+                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                color: Theme.of(context).colorScheme.outline,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.more_vert),
+                        onPressed: () => _showPostOptions(post),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  // Content
+                  Text(post.content),
+                  if (post.hashtags != null) ...[
+                    const SizedBox(height: 8),
+                    Text(
+                      post.hashtags!,
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                  const SizedBox(height: 12),
+                  // Engagement
+                  Row(
+                    children: [
+                      _buildEngagementItem(Icons.favorite, post.likes.toString()),
+                      const SizedBox(width: 16),
+                      _buildEngagementItem(Icons.comment, post.comments.toString()),
+                      const SizedBox(width: 16),
+                      _buildEngagementItem(Icons.share, post.shares.toString()),
+                      const Spacer(),
+                      IconButton(
+                        icon: const Icon(Icons.favorite_border),
+                        onPressed: isAnonymous
+                          ? () {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Please log in to use social features.'),
+                                  duration: Duration(seconds: 2),
+                                ),
+                              );
+                            }
+                          : () => _toggleFavorite(post),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.share),
+                        onPressed: isAnonymous
+                          ? () {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Please log in to use social features.'),
+                                  duration: Duration(seconds: 2),
+                                ),
+                              );
+                            }
+                          : () => _sharePost(post),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }

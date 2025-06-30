@@ -115,23 +115,28 @@ class _NewsScreenState extends ConsumerState<NewsScreen> {
 
   Widget _buildNewsList(List<NewsArticle> news) {
     if (news.isEmpty) {
-      return const Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.article_outlined, size: 64, color: Colors.grey),
-            SizedBox(height: 16),
-            Text(
-              'No news available',
-              style: TextStyle(fontSize: 18, color: Colors.grey),
+      return Builder(
+        builder: (context) {
+          final scale = MediaQuery.textScaleFactorOf(context);
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.article_outlined, size: 64, color: Colors.grey),
+                SizedBox(height: 16),
+                Text(
+                  'No news available',
+                  style: TextStyle(fontSize: 18 * scale, color: Colors.grey),
+                ),
+                SizedBox(height: 8),
+                Text(
+                  'Check back later for updates',
+                  style: TextStyle(color: Colors.grey),
+                ),
+              ],
             ),
-            SizedBox(height: 8),
-            Text(
-              'Check back later for updates',
-              style: TextStyle(color: Colors.grey),
-            ),
-          ],
-        ),
+          );
+        },
       );
     }
 
@@ -184,7 +189,6 @@ class _NewsScreenState extends ConsumerState<NewsScreen> {
                     color: Theme.of(context).colorScheme.surface,
                     child: Icon(Icons.image, size: 64, color: Theme.of(context).colorScheme.outline, semanticLabel: 'Image not available'),
                   ),
-                  semanticLabel: article.title,
                 ),
               ),
             Padding(

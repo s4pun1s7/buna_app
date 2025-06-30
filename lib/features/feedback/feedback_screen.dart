@@ -305,27 +305,32 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
   }
 
   Widget _buildSubmitButton() {
-    return SizedBox(
-      width: double.infinity,
-      height: 50,
-      child: ElevatedButton(
-        onPressed: _isSubmitting ? null : _submitFeedback,
-        style: ElevatedButton.styleFrom(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-        ),
-        child: _isSubmitting
-            ? const SizedBox(
-                width: 20,
-                height: 20,
-                child: CircularProgressIndicator(strokeWidth: 2),
-              )
-            : const Text(
-                'Submit Feedback',
-                style: TextStyle(fontSize: 16),
+    return Builder(
+      builder: (context) {
+        final scale = MediaQuery.textScaleFactorOf(context);
+        return SizedBox(
+          width: double.infinity,
+          height: 50,
+          child: ElevatedButton(
+            onPressed: _isSubmitting ? null : _submitFeedback,
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
               ),
-      ),
+            ),
+            child: _isSubmitting
+                ? const SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
+                : Text(
+                    'Submit Feedback',
+                    style: TextStyle(fontSize: 16 * scale),
+                  ),
+          ),
+        );
+      },
     );
   }
 

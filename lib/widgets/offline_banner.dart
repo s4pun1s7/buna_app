@@ -36,7 +36,7 @@ class OfflineBanner extends ConsumerWidget {
                   'You\'re offline. Some features may be limited.',
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.onError,
-                    fontSize: 14,
+                    fontSize: 14 * MediaQuery.textScaleFactorOf(context),
                     fontWeight: FontWeight.w500,
                   ),
                 ),

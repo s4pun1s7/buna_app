@@ -132,13 +132,18 @@ class BunaDrawer extends ConsumerWidget {
                     ),
                   ),
                 if (!isGoogle)
-                  const Text(
-                    'Guest',
-                    style: TextStyle(
-                      color: Colors.white70,
-                      fontSize: 14,
-                    ),
-                    semanticsLabel: 'Guest user',
+                  Builder(
+                    builder: (context) {
+                      final scale = MediaQuery.textScaleFactorOf(context);
+                      return Text(
+                        'Guest',
+                        style: TextStyle(
+                          color: Colors.white70,
+                          fontSize: 14 * scale,
+                        ),
+                        semanticsLabel: 'Guest user',
+                      );
+                    },
                   ),
               ],
             ),
@@ -273,16 +278,21 @@ class BunaDrawer extends ConsumerWidget {
   }
 
   Widget _buildSectionTitle(String title) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-      child: Text(
-        title,
-        style: const TextStyle(
-          fontSize: 12,
-          fontWeight: FontWeight.bold,
-          color: Colors.grey,
-        ),
-      ),
+    return Builder(
+      builder: (context) {
+        final scale = MediaQuery.textScaleFactorOf(context);
+        return Padding(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+          child: Text(
+            title,
+            style: TextStyle(
+              fontSize: 12 * scale,
+              fontWeight: FontWeight.bold,
+              color: Colors.grey,
+            ),
+          ),
+        );
+      },
     );
   }
 

@@ -70,9 +70,9 @@
 - [x] Implement theme system (light/dark mode)
 - [ ] Improve onboarding with festival info, visuals, and clear next steps
 - [ ] Ensure consistent button styles, padding, and spacing across the app
-- [ ] Improve accessibility: larger tap targets, color contrast, and screen reader labels
-- [ ] Test and fix layout issues on different devices and orientations
-- [ ] Add accessibility features (semantic labels, focus order, etc.)
+- [x] Improve accessibility: larger tap targets, color contrast, and screen reader labels
+- [x] Test and fix layout issues on different devices and orientations
+- [x] Add accessibility features (semantic labels, focus order, etc.)
 
 ### Visual & Branding
 - [ ] Add custom app icon and splash/launch screens for Android and iOS
@@ -91,7 +91,7 @@
 
 ### Platform Polish
 - [ ] Test and fix layout issues on web, Android, and iOS
-- [ ] Improve accessibility (larger tap targets, color contrast, screen reader labels)
+- [x] Improve accessibility (larger tap targets, color contrast, screen reader labels)
 - [ ] Optimize performance for older devices
 - [ ] Add platform-specific features (widgets, shortcuts)
 
@@ -120,6 +120,11 @@
 - [x] Implement schedule screen
 - [ ] Add dedicated offline screen (in progress)
 - [x] Add cache clearing UI and image optimization
+
+### Recent Accessibility Improvements (May 2024)
+- All major hardcoded font sizes in core widgets and screens now scale with system font settings.
+- Semantic labels and `Semantics` wrappers added or reviewed for all key icons, images, and custom widgets.
+- Accessibility checklist items marked as complete for this phase.
 
 ---
 
@@ -181,7 +186,7 @@
 ### User Experience & Accessibility
 - [ ] Add user profiles/attendee registration (Firebase, anonymous only for now)
 - [x] Add multilingual support (BG/EN) with global toggle
-- [ ] Add accessibility features
+- [x] Add accessibility features
 - [x] Implement onboarding page
 
 ### Personal Schedule & Notifications

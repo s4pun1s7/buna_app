@@ -158,3 +158,5 @@ web/build/
 **/ephemeral/
 .flutter-plugins
 .flutter-plugins-dependencies
+
+goup.ps1

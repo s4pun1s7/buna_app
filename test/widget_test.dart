@@ -7,8 +7,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:buna_app/main.dart';
+import 'package:buna_app/widgets/featured_artist_card.dart';
+import 'package:buna_app/widgets/featured_venue_card.dart';
+import 'package:buna_app/widgets/next_event_card.dart';
+import 'package:buna_app/features/artists/artists_screen.dart';
+import 'package:buna_app/features/venues/venues_data.dart';
+import 'package:buna_app/models/schedule.dart';
 
 void main() {
   testWidgets('Buna app smoke test', (WidgetTester tester) async {
@@ -17,5 +21,64 @@ void main() {
 
     // Verify that the app loads without crashing
     expect(find.byType(MaterialApp), findsOneWidget);
+  });
+
+  testWidgets('FeaturedArtistCard displays artist info and details button', (WidgetTester tester) async {
+    final artist = Artist(
+      id: '1',
+      name: 'Test Artist',
+      country: 'Testland',
+      bio: 'A test artist bio.',
+      specialty: 'Test Art',
+      imageUrl: null,
+      website: null,
+      socialMedia: const [],
+    );
+    await tester.pumpWidget(MaterialApp(
+      home: FeaturedArtistCard(artist: artist, onDetails: () {}),
+    ));
+    expect(find.text('Test Artist'), findsOneWidget);
+    expect(find.text('Test Art'), findsOneWidget);
+    expect(find.text('A test artist bio.'), findsOneWidget);
+    expect(find.text('More Details'), findsOneWidget);
+  });
+
+  testWidgets('FeaturedVenueCard displays venue info and details button', (WidgetTester tester) async {
+    final venue = Venue(
+      name: 'Test Venue',
+      address: '123 Test St',
+      latitude: null,
+      longitude: null,
+      events: [],
+    );
+    await tester.pumpWidget(MaterialApp(
+      home: FeaturedVenueCard(venue: venue, onDetails: () {}),
+    ));
+    expect(find.text('Test Venue'), findsOneWidget);
+    expect(find.text('123 Test St'), findsOneWidget);
+    expect(find.text('More Details'), findsOneWidget);
+  });
+
+  testWidgets('NextEventCard displays event and venue info and details button', (WidgetTester tester) async {
+    final venue = Venue(
+      name: 'Event Venue',
+      address: '456 Event Ave',
+      latitude: null,
+      longitude: null,
+      events: [],
+    );
+    final event = Event(
+      name: 'Test Event',
+      date: '2024-05-30',
+      time: '18:00 - 20:00',
+    );
+    final entry = ScheduleEntry(venue: venue, event: event);
+    await tester.pumpWidget(MaterialApp(
+      home: NextEventCard(entry: entry, onDetails: () {}),
+    ));
+    expect(find.text('Test Event'), findsOneWidget);
+    expect(find.text('2024-05-30 • 18:00 - 20:00'), findsOneWidget);
+    expect(find.text('Venue: Event Venue'), findsOneWidget);
+    expect(find.text('Event Details'), findsOneWidget);
   });
 }

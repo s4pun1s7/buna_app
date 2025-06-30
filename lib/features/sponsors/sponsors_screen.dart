@@ -285,6 +285,7 @@ class _SponsorsScreenState extends ConsumerState<SponsorsScreen> {
       itemCount: _filteredSponsors.length,
       itemBuilder: (context, index) {
         final sponsor = _filteredSponsors[index];
+        final scale = MediaQuery.textScaleFactorOf(context);
         return Card(
           margin: const EdgeInsets.only(bottom: 16),
           child: InkWell(
@@ -308,9 +309,9 @@ class _SponsorsScreenState extends ConsumerState<SponsorsScreen> {
                         child: Center(
                           child: Text(
                             sponsor.name.split(' ').map((n) => n[0]).join(''),
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: 18,
+                              fontSize: 18 * scale,
                             ),
                           ),
                         ),
@@ -344,9 +345,9 @@ class _SponsorsScreenState extends ConsumerState<SponsorsScreen> {
                         ),
                         child: Text(
                           _getLevelName(sponsor.level),
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 12,
+                            fontSize: 12 * scale,
                           ),
                         ),
                       ),

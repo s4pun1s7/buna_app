@@ -100,6 +100,7 @@ class ErrorScreen extends StatelessWidget {
   }
 
   void _showErrorDetails(BuildContext context) {
+    final scale = MediaQuery.textScaleFactorOf(context);
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -132,7 +133,7 @@ class ErrorScreen extends StatelessWidget {
                   ),
                   child: Text(
                     error.stackTrace.toString(),
-                    style: const TextStyle(fontSize: 12, fontFamily: 'monospace'),
+                    style: TextStyle(fontSize: 12 * scale, fontFamily: 'monospace'),
                   ),
                 ),
               ],

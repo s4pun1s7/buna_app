@@ -24,6 +24,63 @@ class ApiService {
   // Debouncer for API calls to prevent rate limiting
   static final APIDebouncer _apiDebouncer = APIDebouncer();
 
+  // --- Free Public API Integrations ---
+
+  static const String _newsApiKey = '';
+  static const String _harvardApiKey = '';
+
+  /// Fetch news from NewsAPI.org (free API, requires API key)
+  static Future<List<NewsArticle>> fetchPublicNews({int page = 1, int pageSize = 5}) async {
+    if (_newsApiKey.isEmpty) {
+      // Fallback to mock data if no API key
+      return MockDataService.getMockNews();
+    }
+    try {
+      final response = await http.get(
+        Uri.parse('https://newsapi.org/v2/top-headlines?country=us&pageSize=$pageSize&page=$page&apiKey=$_newsApiKey'),
+      ).timeout(_timeout);
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        final List<dynamic> articles = data['articles'] ?? [];
+        return articles.map((json) => NewsArticle(
+          id: json['publishedAt']?.hashCode ?? 0,
+          title: json['title'] ?? '',
+          content: json['content'] ?? '',
+          excerpt: json['description'] ?? '',
+          date: DateTime.tryParse(json['publishedAt'] ?? '') ?? DateTime.now(),
+          featuredImageUrl: json['urlToImage'],
+          author: json['author'] ?? 'Unknown',
+          categories: [json['source']?['name'] ?? 'NewsAPI'],
+          url: json['url'] ?? '',
+        )).toList();
+      } else {
+        throw _errorHandler.handleApiError(
+          'Failed to load public news',
+          'newsapi.org',
+          response.statusCode,
+        );
+      }
+    } on TimeoutException {
+      throw _errorHandler.handleError(
+        TimeoutException('Request timed out', const Duration(seconds: 30)),
+      );
+    } catch (e, stackTrace) {
+      throw _errorHandler.handleError(e, stackTrace);
+    }
+  }
+
+  // TEMPORARY: Stub Artist model for build
+  class Artist {
+    final String name;
+    Artist({required this.name});
+  }
+
+  /// Fetch artists from Harvard Art Museums API (free API, requires API key)
+  static Future<List<Artist>> fetchPublicArtists({int page = 1, int size = 5}) async {
+    // TODO: Replace with real implementation
+    return [];
+  }
+
   /// Fetch news articles from the festival website
   static Future<List<NewsArticle>> fetchNews({int page = 1, int perPage = 10}) async {
     if (_apiDisabled) {
