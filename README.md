@@ -1,6 +1,20 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
+# buna_app
+=======
+>>>>>>> d6432e1de732e79f0c39f66dd142f9d3cc1307e5
+=======
+>>>>>>> d6432e1de732e79f0c39f66dd142f9d3cc1307e5
 # Buna Festival App
 
-A cross-platform Flutter app for the Buna art festival, supporting Android, iOS, and Web. Features onboarding, Firebase integration, multi-language support (English/Bulgarian), and more.
+A cross-platform Flutter app for the Buna art festival, supporting Android, iOS, and Web. Features onboarding, Firebase integration, multi-language support (English/Bulgarian), venue management, interactive maps, and real-time news updates.
+
+## ✨ Recent Updates
+- **Code Cleanup**: Organized imports, removed unused dependencies, and improved code structure
+- **Global Language Toggle**: Easy language switching (EN/BG) accessible from the main interface
+- **Enhanced News Section**: Real-time festival updates including app development announcements
+- **Improved State Management**: Centralized locale management with Riverpod providers
+- **Better UI/UX**: Consistent theming and responsive design across all platforms
 
 ---
 
@@ -14,87 +28,219 @@ A cross-platform Flutter app for the Buna art festival, supporting Android, iOS,
 - [Contributing](docs/CONTRIBUTING.md)
 - [Troubleshooting & FAQ](docs/TROUBLESHOOTING.md)
 - [Changelog](docs/CHANGELOG.md)
-- [Project Tracking](docs/PROJECT_TRACKING.md)
+- [Project Tracking](PROJECT_TRACKING.md)
 - [Dependency Issues](docs/DEPENDENCY_ISSUES.md)
 
 ---
 
-## iOS Minimum Version
+## 🚀 Key Features
 
-The minimum supported iOS version is **13.0**.  
-Make sure your environment and device meet this requirement.
+### Core Functionality
+- **Multi-language Support**: English and Bulgarian with real-time switching
+- **Venue Management**: Browse festival venues with interactive maps
+- **Event Scheduling**: Personal schedule with favorites and reminders
+- **News & Updates**: Real-time festival announcements and updates
+- **Interactive Maps**: Google Maps integration with venue markers
+- **User Preferences**: Favorites, notes, and personalized experience
+
+### Technical Features
+- **Cross-platform**: Android, iOS, and Web support
+- **Firebase Integration**: Authentication and backend services
+- **State Management**: Riverpod for reactive state management
+- **Navigation**: Go Router for type-safe navigation
+- **Responsive Design**: Optimized for all screen sizes
+- **Permission Handling**: Smart permission requests with rationale dialogs
 
 ---
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+## 📱 Platform Support
+
+### iOS
+- **Minimum Version**: 13.0
+- **Features**: Full native support with iOS-specific optimizations
+
+### Android
+- **Minimum Version**: API 21 (Android 5.0)
+- **Features**: Material Design 3 components and Android-specific features
+
+### Web
+- **Browser Support**: Modern browsers (Chrome, Firefox, Safari, Edge)
+- **Features**: Progressive Web App capabilities
+
+---
+
+## 🛠️ Setup & Installation
+
+### Prerequisites
+- Flutter SDK (>=3.8.0)
+- Dart SDK (>=3.0.0)
+- Android Studio / Xcode (for mobile development)
+- Firebase project setup
+
+### Quick Start
+1. **Clone the repository**:
+=======
+=======
+>>>>>>> d6432e1de732e79f0c39f66dd142f9d3cc1307e5
 For license information, see [LICENSE](LICENSE).
 
 ### Setup
 1. Clone the repo:
+>>>>>>> d6432e1de732e79f0c39f66dd142f9d3cc1307e5
    ```sh
-   git clone https://github.com/YOUR_USERNAME/buna_app.git
+   git clone <your-repo-url>
    cd buna_app
    ```
-2. Install dependencies:
+
+2. **Install dependencies**:
    ```sh
    flutter pub get
    ```
-3. Add Firebase config files:
-   - Android: `google-services.json` in `android/app/`
-   - iOS: `GoogleService-Info.plist` in `ios/Runner/`
-   - Web: Register app in Firebase Console and use config in `main.dart`
 
-## Firebase Setup
-- Register your app for Android, iOS, and Web in the Firebase Console.
-- For web, copy the config snippet and paste it into `main.dart` as shown in the code.
-- Enable anonymous authentication in the Firebase Console.
+3. **Configure Firebase**:
+   - Android: Place `google-services.json` in `android/app/`
+   - iOS: Place `GoogleService-Info.plist` in `ios/Runner/`
+   - Web: Configure in Firebase Console and update `main.dart`
 
-## Localization
-- ARB files for English and Bulgarian are in `lib/l10n/`.
-- To add more languages, create a new ARB file and update the onboarding screen and localization delegates.
+4. **Run the app**:
+   ```sh
+   flutter run
+   ```
 
-## Running & Building
-- **Android/iOS:**
-  ```sh
-  flutter run
-  ```
-- **Web:**
-  ```sh
-  flutter run -d chrome
-  ```
-- **Build for release:**
-  ```sh
-  flutter build apk   # Android
-  flutter build ios   # iOS (on Mac)
-  flutter build web   # Web
-  ```
+---
 
-## Testing
-- Run all tests:
-  ```sh
-  flutter test
-  ```
-- Add widget and integration tests in the `test/` directory.
+## 🔧 Development
 
-## Contributing
-- Fork the repo and create a feature branch.
-- Follow the code style and use meaningful commit messages.
-- Open a pull request with a clear description.
-- Use GitHub Issues for bug reports and feature requests.
+### Project Structure
+```
+lib/
+├── features/           # Feature modules
+│   ├── onboarding/     # Onboarding flow
+│   ├── venues/         # Venue management
+│   ├── maps/           # Interactive maps
+│   ├── news/           # News and updates
+│   └── info/           # Festival information
+├── models/             # Data models
+├── providers/          # Riverpod state management
+├── services/           # Business logic
+├── widgets/            # Reusable UI components
+├── theme/              # App theming
+└── l10n/               # Localization files
+```
 
-## Troubleshooting & FAQ
-- **Localization not working?**
-  - Ensure ARB files are valid and in `lib/l10n/`.
-  - Run `flutter gen-l10n` or `flutter run` to generate localization files.
-- **Firebase web error?**
-  - Make sure you registered the app in Firebase Console and copied the config to `main.dart`.
-- **Permission errors on web?**
-  - Some permissions are not supported on web and are skipped automatically.
-- **Other issues?**
-  - Run `flutter clean` and `flutter pub get`.
-  - Check the [Flutter documentation](https://docs.flutter.dev/).
+### State Management
+The app uses **Riverpod** for state management with the following providers:
+- `localeProvider`: Global language management
+- `favoritesProvider`: User favorites and preferences
+- `scheduleProvider`: Personal schedule management
 
-## Changelog
-See [PROJECT_TRACKING.md](PROJECT_TRACKING.md) for recent progress and completed features.
+### Localization
+- **Supported Languages**: English (EN) and Bulgarian (BG)
+- **Files**: ARB files in `lib/l10n/`
+- **Implementation**: Flutter's built-in localization with custom providers
 
-## License
+---
+
+## 🧪 Testing
+
+### Run Tests
+```sh
+# All tests
+flutter test
+
+# Specific test file
+flutter test test/widget_test.dart
+
+# With coverage
+flutter test --coverage
+```
+
+### Test Coverage
+- Widget tests for UI components
+- Unit tests for business logic
+- Integration tests for user flows
+
+---
+
+## 📦 Building & Deployment
+
+### Development
+```sh
+# Run on device/emulator
+flutter run
+
+# Run on web
+flutter run -d chrome
+```
+
+### Production Builds
+```sh
+# Android APK
+flutter build apk
+
+# Android App Bundle
+flutter build appbundle
+
+# iOS (requires Mac)
+flutter build ios
+
+# Web
+flutter build web
+```
+
+---
+
+## 🤝 Contributing
+
+1. **Fork** the repository
+2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
+3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
+4. **Push** to the branch (`git push origin feature/amazing-feature`)
+5. **Open** a Pull Request
+
+### Code Style
+- Follow Flutter's official style guide
+- Use meaningful commit messages
+- Add tests for new features
+- Update documentation as needed
+
+---
+
+## 🐛 Troubleshooting
+
+### Common Issues
+- **Localization not working?** Run `flutter gen-l10n` to regenerate files
+- **Firebase errors?** Verify configuration files are in correct locations
+- **Permission issues?** Check platform-specific permission configurations
+- **Build failures?** Run `flutter clean && flutter pub get`
+
+### Getting Help
+- Check the [Troubleshooting Guide](docs/TROUBLESHOOTING.md)
+- Review [Flutter Documentation](https://docs.flutter.dev/)
+- Open an issue with detailed error information
+
+---
+
+## 📄 License
+
 This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+---
+
+## 🔗 Links
+
+- **Festival Website**: [bunavarna.com](https://bunavarna.com/)
+- **Facebook**: [Buna Varna](https://www.facebook.com/BunaVarna/)
+- **Instagram**: [@buna.varna](https://www.instagram.com/buna.varna/)
+
+---
+
+**Note**: Sensitive files like Firebase configuration files are excluded by `.gitignore` and should not be committed to version control.
+=======
+>>>>>>> d6432e1de732e79f0c39f66dd142f9d3cc1307e5
+=======
+>>>>>>> d6432e1de732e79f0c39f66dd142f9d3cc1307e5

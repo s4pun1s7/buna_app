@@ -4,15 +4,38 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'app.dart';
+import 'widgets/rationale_dialog.dart';
+import 'providers/riverpod_setup.dart';
 
-Future<void> requestFestivalPermissions() async {
+Future<void> requestFestivalPermissions(BuildContext context) async {
   if (!kIsWeb) {
-    // Request camera permission
-    await Permission.camera.request();
-    // Request location permission
-    await Permission.locationWhenInUse.request();
-    // Request notification permission (Android 13+)
-    await Permission.notification.request();
+    // Camera permission with rationale
+    if (await Permission.camera.status.isDenied) {
+      final allow = await showRationaleDialog(
+        context,
+        'Camera Permission',
+        'We need camera access for AR and QR features at the festival.',
+      );
+      if (allow) await Permission.camera.request();
+    }
+    // Location permission with rationale
+    if (await Permission.locationWhenInUse.status.isDenied) {
+      final allow = await showRationaleDialog(
+        context,
+        'Location Permission',
+        'We use your location to show you nearby venues and events.',
+      );
+      if (allow) await Permission.locationWhenInUse.request();
+    }
+    // Notification permission with rationale (Android 13+)
+    if (await Permission.notification.status.isDenied) {
+      final allow = await showRationaleDialog(
+        context,
+        'Notification Permission',
+        'Enable notifications to receive festival news and updates.',
+      );
+      if (allow) await Permission.notification.request();
+    }
   }
 }
 
@@ -35,7 +58,24 @@ Future<void> main() async {
   }
   // Anonymous sign-in for development
   await FirebaseAuth.instance.signInAnonymously();
-  // Request permissions at app start (customize as needed)
-  await requestFestivalPermissions();
-  runApp(const BunaApp());
+  runApp(BunaAppWithPermissions());
+}
+
+class BunaAppWithPermissions extends StatelessWidget {
+  const BunaAppWithPermissions({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return RiverpodApp(
+      child: Builder(
+        builder: (context) {
+          // Request permissions after first build
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            requestFestivalPermissions(context);
+          });
+          return const BunaApp();
+        },
+      ),
+    );
+  }
 }

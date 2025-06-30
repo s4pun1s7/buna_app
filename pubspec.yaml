@@ -35,6 +35,25 @@ dependencies:
   cloud_firestore: 5.6.9
   flutter_localizations:
     sdk: flutter
+<<<<<<< HEAD
+<<<<<<< HEAD
+  intl: ^0.20.2
+  url_launcher: ^6.2.6
+  permission_handler: ^12.0.0+1
+  google_maps_flutter: ^2.12.3
+  shared_preferences: ^2.5.3
+  # Only include these if you use the features:
+  # qr_flutter: ^4.1.0
+  # mobile_scanner: ^3.5.0
+  # flutter_local_notifications: ^16.3.2
+  # shared_preferences: ^2.2.2
+  # cloud_firestore: ^4.15.8
+
+# ar_flutter_plugin is commented out due to frequent compatibility issues. Uncomment and set a version if needed.
+# ar_flutter_plugin: any
+=======
+=======
+>>>>>>> d6432e1de732e79f0c39f66dd142f9d3cc1307e5
   google_maps_flutter: 2.12.3
   qr_flutter: 4.1.0
   mobile_scanner: 7.0.1
@@ -45,11 +64,24 @@ dependencies:
   permission_handler: 12.0.0+1
   # ar_flutter_plugin is commented out due to frequent compatibility issues. Uncomment and set a version if needed.
   # ar_flutter_plugin: any
+<<<<<<< HEAD
+>>>>>>> d6432e1de732e79f0c39f66dd142f9d3cc1307e5
+=======
+>>>>>>> d6432e1de732e79f0c39f66dd142f9d3cc1307e5
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+<<<<<<< HEAD
+<<<<<<< HEAD
+  flutter_lints: ^6.0.0
+  intl_utils: ^2.8.5
+=======
   flutter_lints: 6.0.0
+>>>>>>> d6432e1de732e79f0c39f66dd142f9d3cc1307e5
+=======
+  flutter_lints: 6.0.0
+>>>>>>> d6432e1de732e79f0c39f66dd142f9d3cc1307e5
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
