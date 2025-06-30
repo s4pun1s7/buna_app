@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:async';
 import 'package:http/http.dart' as http;
 import '../models/festival_data.dart';
+import '../utils/debouncer.dart';
 import 'error_handler.dart';
 
 class ApiService {
@@ -14,87 +15,94 @@ class ApiService {
   static const Duration _cacheExpiry = Duration(minutes: 15);
 
   static final ErrorHandler _errorHandler = ErrorHandler();
+  
+  // Debouncer for API calls to prevent rate limiting
+  static final APIDebouncer _apiDebouncer = APIDebouncer();
 
   /// Fetch news articles from the festival website
   static Future<List<NewsArticle>> fetchNews({int page = 1, int perPage = 10}) async {
-    try {
-      final cacheKey = 'news_page_$page';
-      if (_isCacheValid(cacheKey)) {
-        return _cache[cacheKey]['data'];
-      }
+    return await _debouncedApiCall(() async {
+      try {
+        final cacheKey = 'news_page_$page';
+        if (_isCacheValid(cacheKey)) {
+          return _cache[cacheKey]['data'];
+        }
 
-      final response = await http.get(
-        Uri.parse('$_baseUrl$_apiEndpoint/posts?page=$page&per_page=$perPage&_embed'),
-        headers: {'Accept': 'application/json'},
-      ).timeout(_timeout);
+        final response = await http.get(
+          Uri.parse('$_baseUrl$_apiEndpoint/posts?page=$page&per_page=$perPage&_embed'),
+          headers: {'Accept': 'application/json'},
+        ).timeout(_timeout);
 
-      if (response.statusCode == 200) {
-        final List<dynamic> data = json.decode(response.body);
-        final articles = data.map((json) => NewsArticle.fromJson(json)).toList();
-        
-        _cache[cacheKey] = {
-          'data': articles,
-          'timestamp': DateTime.now(),
-        };
-        
-        return articles;
-      } else {
-        throw _errorHandler.handleApiError(
-          'Failed to load news',
-          '$_apiEndpoint/posts',
-          response.statusCode,
+        if (response.statusCode == 200) {
+          final List<dynamic> data = json.decode(response.body);
+          final articles = data.map((json) => NewsArticle.fromJson(json)).toList();
+          
+          _cache[cacheKey] = {
+            'data': articles,
+            'timestamp': DateTime.now(),
+          };
+          
+          return articles;
+        } else {
+          throw _errorHandler.handleApiError(
+            'Failed to load news',
+            '$_apiEndpoint/posts',
+            response.statusCode,
+          );
+        }
+      } on TimeoutException {
+        throw _errorHandler.handleError(
+          TimeoutException('Request timed out', const Duration(seconds: 30)),
         );
+      } catch (e, stackTrace) {
+        throw _errorHandler.handleError(e, stackTrace);
       }
-    } on TimeoutException {
-      throw _errorHandler.handleError(
-        TimeoutException('Request timed out', const Duration(seconds: 30)),
-      );
-    } catch (e, stackTrace) {
-      throw _errorHandler.handleError(e, stackTrace);
-    }
+    });
   }
 
   /// Fetch events from the festival website
   static Future<List<FestivalEvent>> fetchEvents({int page = 1, int perPage = 20}) async {
-    try {
-      final cacheKey = 'events_page_$page';
-      if (_isCacheValid(cacheKey)) {
-        return _cache[cacheKey]['data'];
-      }
+    return await _debouncedApiCall(() async {
+      try {
+        final cacheKey = 'events_page_$page';
+        if (_isCacheValid(cacheKey)) {
+          return _cache[cacheKey]['data'];
+        }
 
-      // Try to fetch from custom endpoint if available
-      final response = await http.get(
-        Uri.parse('$_baseUrl$_apiEndpoint/events?page=$page&per_page=$perPage&_embed'),
-        headers: {'Accept': 'application/json'},
-      ).timeout(_timeout);
+        // Try to fetch from custom endpoint if available
+        final response = await http.get(
+          Uri.parse('$_baseUrl$_apiEndpoint/events?page=$page&per_page=$perPage&_embed'),
+          headers: {'Accept': 'application/json'},
+        ).timeout(_timeout);
 
-      if (response.statusCode == 200) {
-        final List<dynamic> data = json.decode(response.body);
-        final events = data.map((json) => FestivalEvent.fromJson(json)).toList();
-        
-        _cache[cacheKey] = {
-          'data': events,
-          'timestamp': DateTime.now(),
-        };
-        
-        return events;
-      } else if (response.statusCode == 404) {
-        // Fallback to posts with event category
-        return await _fetchEventsFromPosts(page: page, perPage: perPage);
-      } else {
-        throw _errorHandler.handleApiError(
-          'Failed to load events',
-          '$_apiEndpoint/events',
-          response.statusCode,
+        if (response.statusCode == 200) {
+          final List<dynamic> data = json.decode(response.body);
+          final events = data.map((json) => FestivalEvent.fromJson(json)).toList();
+          
+          _cache[cacheKey] = {
+            'data': events,
+            'timestamp': DateTime.now(),
+          };
+          
+          return events;
+        } else if (response.statusCode == 404) {
+          // Fallback to posts with event category
+          return await _fetchEventsFromPosts(page: page, perPage: perPage);
+        } else {
+          throw _errorHandler.handleApiError(
+            'Failed to load events',
+            '$_apiEndpoint/events',
+            response.statusCode,
+          );
+        }
+      } on TimeoutException {
+        throw _errorHandler.handleError(
+          TimeoutException('Request timed out', const Duration(seconds: 30)),
         );
+      } catch (e, stackTrace) {
+        throw _errorHandler.handleError(e, stackTrace);
       }
-    } on TimeoutException {
-      throw _errorHandler.handleError(
-        TimeoutException('Request timed out', const Duration(seconds: 30)),
-      );
-    } catch (e, stackTrace) {
-      throw _errorHandler.handleError(e, stackTrace);
-    }
+    });
   }
 
   /// Fetch events from posts with event category
@@ -126,127 +134,153 @@ class ApiService {
 
   /// Fetch venue information
   static Future<List<Venue>> fetchVenues() async {
-    try {
-      const cacheKey = 'venues';
-      if (_isCacheValid(cacheKey)) {
-        return _cache[cacheKey]['data'];
-      }
+    return await _debouncedApiCall(() async {
+      try {
+        const cacheKey = 'venues';
+        if (_isCacheValid(cacheKey)) {
+          return _cache[cacheKey]['data'];
+        }
 
-      final response = await http.get(
-        Uri.parse('$_baseUrl$_apiEndpoint/venues?_embed'),
-        headers: {'Accept': 'application/json'},
-      ).timeout(_timeout);
+        final response = await http.get(
+          Uri.parse('$_baseUrl$_apiEndpoint/venues?_embed'),
+          headers: {'Accept': 'application/json'},
+        ).timeout(_timeout);
 
-      if (response.statusCode == 200) {
-        final List<dynamic> data = json.decode(response.body);
-        final venues = data.map((json) => Venue.fromJson(json)).toList();
-        
-        _cache[cacheKey] = {
-          'data': venues,
-          'timestamp': DateTime.now(),
-        };
-        
-        return venues;
-      } else if (response.statusCode == 404) {
-        // Return empty list if venues endpoint doesn't exist
-        return [];
-      } else {
-        throw _errorHandler.handleApiError(
-          'Failed to load venues',
-          '$_apiEndpoint/venues',
-          response.statusCode,
+        if (response.statusCode == 200) {
+          final List<dynamic> data = json.decode(response.body);
+          final venues = data.map((json) => Venue.fromJson(json)).toList();
+          
+          _cache[cacheKey] = {
+            'data': venues,
+            'timestamp': DateTime.now(),
+          };
+          
+          return venues;
+        } else if (response.statusCode == 404) {
+          // Return empty list if venues endpoint doesn't exist
+          return [];
+        } else {
+          throw _errorHandler.handleApiError(
+            'Failed to load venues',
+            '$_apiEndpoint/venues',
+            response.statusCode,
+          );
+        }
+      } on TimeoutException {
+        throw _errorHandler.handleError(
+          TimeoutException('Request timed out', const Duration(seconds: 30)),
         );
+      } catch (e, stackTrace) {
+        throw _errorHandler.handleError(e, stackTrace);
       }
-    } on TimeoutException {
-      throw _errorHandler.handleError(
-        TimeoutException('Request timed out', const Duration(seconds: 30)),
-      );
-    } catch (e, stackTrace) {
-      throw _errorHandler.handleError(e, stackTrace);
-    }
+    });
   }
 
   /// Fetch festival information
   static Future<FestivalInfo> fetchFestivalInfo() async {
-    try {
-      const cacheKey = 'festival_info';
-      if (_isCacheValid(cacheKey)) {
-        return _cache[cacheKey]['data'];
-      }
+    return await _debouncedApiCall(() async {
+      try {
+        const cacheKey = 'festival_info';
+        if (_isCacheValid(cacheKey)) {
+          return _cache[cacheKey]['data'];
+        }
 
-      final response = await http.get(
-        Uri.parse('$_baseUrl$_apiEndpoint/pages?slug=about&_embed'),
-        headers: {'Accept': 'application/json'},
-      ).timeout(_timeout);
+        final response = await http.get(
+          Uri.parse('$_baseUrl$_apiEndpoint/pages?slug=about&_embed'),
+          headers: {'Accept': 'application/json'},
+        ).timeout(_timeout);
 
-      if (response.statusCode == 200) {
-        final List<dynamic> data = json.decode(response.body);
-        if (data.isNotEmpty) {
-          final info = FestivalInfo.fromJson(data.first);
-          
-          _cache[cacheKey] = {
-            'data': info,
-            'timestamp': DateTime.now(),
-          };
-          
-          return info;
+        if (response.statusCode == 200) {
+          final List<dynamic> data = json.decode(response.body);
+          if (data.isNotEmpty) {
+            final info = FestivalInfo.fromJson(data.first);
+            
+            _cache[cacheKey] = {
+              'data': info,
+              'timestamp': DateTime.now(),
+            };
+            
+            return info;
+          } else {
+            throw _errorHandler.handleApiError(
+              'Festival information not found',
+              '$_apiEndpoint/pages?slug=about',
+              404,
+            );
+          }
         } else {
           throw _errorHandler.handleApiError(
-            'Festival information not found',
+            'Failed to load festival information',
             '$_apiEndpoint/pages?slug=about',
-            404,
+            response.statusCode,
           );
         }
-      } else {
-        throw _errorHandler.handleApiError(
-          'Failed to load festival information',
-          '$_apiEndpoint/pages?slug=about',
-          response.statusCode,
+      } on TimeoutException {
+        throw _errorHandler.handleError(
+          TimeoutException('Request timed out', const Duration(seconds: 30)),
         );
+      } catch (e, stackTrace) {
+        throw _errorHandler.handleError(e, stackTrace);
       }
-    } on TimeoutException {
-      throw _errorHandler.handleError(
-        TimeoutException('Request timed out', const Duration(seconds: 30)),
-      );
-    } catch (e, stackTrace) {
-      throw _errorHandler.handleError(e, stackTrace);
-    }
+    });
   }
 
   /// Search content across the website
   static Future<SearchResults> search(String query, {int page = 1}) async {
-    try {
-      if (query.trim().isEmpty) {
-        return SearchResults(
-          news: [],
-          events: [],
-          venues: [],
-          totalResults: 0,
-        );
-      }
+    return await _debouncedApiCall(() async {
+      try {
+        if (query.trim().isEmpty) {
+          return SearchResults(
+            news: [],
+            events: [],
+            venues: [],
+            totalResults: 0,
+          );
+        }
 
-      final response = await http.get(
-        Uri.parse('$_baseUrl$_apiEndpoint/search?search=${Uri.encodeComponent(query)}&page=$page&_embed'),
-        headers: {'Accept': 'application/json'},
-      ).timeout(_timeout);
+        final response = await http.get(
+          Uri.parse('$_baseUrl$_apiEndpoint/search?search=${Uri.encodeComponent(query)}&page=$page&_embed'),
+          headers: {'Accept': 'application/json'},
+        ).timeout(_timeout);
 
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        return SearchResults.fromJson(data);
-      } else {
-        throw _errorHandler.handleApiError(
-          'Search failed',
-          '$_apiEndpoint/search',
-          response.statusCode,
+        if (response.statusCode == 200) {
+          final data = json.decode(response.body);
+          return SearchResults.fromJson(data);
+        } else {
+          throw _errorHandler.handleApiError(
+            'Search failed',
+            '$_apiEndpoint/search',
+            response.statusCode,
+          );
+        }
+      } on TimeoutException {
+        throw _errorHandler.handleError(
+          TimeoutException('Search request timed out', const Duration(seconds: 30)),
         );
+      } catch (e, stackTrace) {
+        throw _errorHandler.handleError(e, stackTrace);
       }
-    } on TimeoutException {
-      throw _errorHandler.handleError(
-        TimeoutException('Search request timed out', const Duration(seconds: 30)),
-      );
-    } catch (e, stackTrace) {
-      throw _errorHandler.handleError(e, stackTrace);
-    }
+    });
+  }
+
+  /// Debounced API call wrapper
+  static Future<T> _debouncedApiCall<T>(Future<T> Function() apiCall) async {
+    Completer<T> completer = Completer<T>();
+    
+    _apiDebouncer.call(() async {
+      try {
+        final result = await apiCall();
+        if (!completer.isCompleted) {
+          completer.complete(result);
+        }
+      } catch (e) {
+        if (!completer.isCompleted) {
+          completer.completeError(e);
+        }
+      }
+    });
+    
+    return completer.future;
   }
 
   /// Test API connectivity
@@ -284,9 +318,9 @@ class ApiService {
   /// Get cache statistics for debugging
   static Map<String, dynamic> getCacheStats() {
     return {
-      'entries': _cache.length,
-      'keys': _cache.keys.toList(),
-      'expiry': _cacheExpiry.inMinutes,
+      'total_entries': _cache.length,
+      'entries': _cache.keys.toList(),
+      'is_debouncer_active': _apiDebouncer.isActive,
     };
   }
 } 

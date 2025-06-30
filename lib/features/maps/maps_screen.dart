@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -10,6 +11,7 @@ import 'package:buna_app/services/error_handler.dart';
 import 'package:buna_app/features/venues/venues_data.dart';
 import 'package:buna_app/navigation/app_router.dart';
 import 'package:buna_app/theme/app_theme.dart';
+import 'package:buna_app/utils/debouncer.dart';
 
 class MapsScreen extends ConsumerStatefulWidget {
   const MapsScreen({super.key});
@@ -25,6 +27,8 @@ class _MapsScreenState extends ConsumerState<MapsScreen> {
   Position? _userPosition;
   bool _isLoadingLocation = false;
   String _searchQuery = '';
+  String _debouncedSearchQuery = '';
+  final SearchDebouncer _searchDebouncer = SearchDebouncer();
   Venue? _selectedVenue;
 
   @override
@@ -32,6 +36,12 @@ class _MapsScreenState extends ConsumerState<MapsScreen> {
     super.initState();
     _loadVenues();
     _getUserLocation();
+  }
+
+  @override
+  void dispose() {
+    _searchDebouncer.dispose();
+    super.dispose();
   }
 
   Future<void> _getUserLocation() async {
@@ -151,11 +161,20 @@ class _MapsScreenState extends ConsumerState<MapsScreen> {
     }
   }
 
+  void _onSearchChanged(String query) {
+    setState(() => _searchQuery = query);
+    
+    // Use the debouncer for search filtering
+    _searchDebouncer.call(() {
+      setState(() => _debouncedSearchQuery = query);
+    });
+  }
+
   List<Venue> _getFilteredVenues(List<Venue> venues) {
-    if (_searchQuery.isEmpty) return venues;
+    if (_debouncedSearchQuery.isEmpty) return venues;
     return venues.where((venue) =>
-      venue.name.toLowerCase().contains(_searchQuery.toLowerCase()) ||
-      venue.address.toLowerCase().contains(_searchQuery.toLowerCase())
+      venue.name.toLowerCase().contains(_debouncedSearchQuery.toLowerCase()) ||
+      venue.address.toLowerCase().contains(_debouncedSearchQuery.toLowerCase())
     ).toList();
   }
 
@@ -238,13 +257,13 @@ class _MapsScreenState extends ConsumerState<MapsScreen> {
                   border: InputBorder.none,
                   isDense: true,
                 ),
-                onChanged: (value) => setState(() => _searchQuery = value),
+                onChanged: _onSearchChanged,
               ),
             ),
             if (_searchQuery.isNotEmpty)
               IconButton(
                 icon: const Icon(Icons.clear, size: 20),
-                onPressed: () => setState(() => _searchQuery = ''),
+                onPressed: () => _onSearchChanged(''),
                 padding: EdgeInsets.zero,
                 constraints: const BoxConstraints(),
               ),

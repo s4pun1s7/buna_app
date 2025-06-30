@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/festival_data_provider.dart';
 import '../services/analytics_service.dart';
+import '../utils/debouncer.dart';
 
 class SearchWidget extends ConsumerStatefulWidget {
   final String? initialQuery;
@@ -22,7 +23,7 @@ class SearchWidget extends ConsumerStatefulWidget {
 
 class _SearchWidgetState extends ConsumerState<SearchWidget> {
   late TextEditingController _controller;
-  Timer? _debounceTimer;
+  final SearchDebouncer _searchDebouncer = SearchDebouncer();
 
   @override
   void initState() {
@@ -36,7 +37,7 @@ class _SearchWidgetState extends ConsumerState<SearchWidget> {
   @override
   void dispose() {
     _controller.dispose();
-    _debounceTimer?.cancel();
+    _searchDebouncer.dispose();
     super.dispose();
   }
 
@@ -57,17 +58,13 @@ class _SearchWidgetState extends ConsumerState<SearchWidget> {
   }
 
   void _onSearchChanged(String query) {
-    // Cancel previous timer
-    _debounceTimer?.cancel();
-    
-    // Set new timer for debouncing
-    _debounceTimer = Timer(const Duration(milliseconds: 500), () {
-      _performSearch(query);
-    });
+    // Use the debouncer for search
+    _searchDebouncer.call(() => _performSearch(query));
   }
 
   void _clearSearch() {
     _controller.clear();
+    _searchDebouncer.cancel(); // Cancel any pending search
     ref.read(searchStateProvider.notifier).clearSearch();
     widget.onSearch?.call('');
   }
