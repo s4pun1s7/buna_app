@@ -6,8 +6,8 @@ import '../../config/feature_flags.dart';
 import '../../providers/user_provider.dart';
 import '../../services/auth_service.dart';
 import '../common/index.dart';
-import '../../widgets/loading_indicator.dart';
-import '../../widgets/error_screen.dart';
+import '../common/loading_indicator.dart';
+import '../common/error_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class BunaDrawer extends ConsumerWidget {
@@ -185,27 +185,6 @@ class BunaDrawer extends ConsumerWidget {
             icon: Icons.person,
             title: 'Artists',
             route: AppRoutes.artists,
-          ),
-        if (FeatureFlags.enableSponsors)
-          _buildDrawerItem(
-            context,
-            icon: Icons.business,
-            title: 'Sponsors',
-            route: AppRoutes.sponsors,
-          ),
-        if (FeatureFlags.enableTicketing)
-          _buildDrawerItem(
-            context,
-            icon: Icons.confirmation_number,
-            title: 'Tickets',
-            route: AppRoutes.ticketing,
-          ),
-        if (FeatureFlags.enableStreaming)
-          _buildDrawerItem(
-            context,
-            icon: Icons.live_tv,
-            title: 'Live Streams',
-            route: AppRoutes.streaming,
           ),
       ],
     );

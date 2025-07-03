@@ -60,7 +60,7 @@ class FeatureUtils {
   /// Get features by category
   static Map<String, List<String>> get featuresByCategory => {
     'Core': ['Home', 'Venues', 'Maps', 'News', 'Info'],
-    'Festival': ['Schedule', 'Artists', 'Sponsors', 'Ticketing', 'Streaming'],
+    'Festival': ['Schedule', 'Artists'],
     'Interactive': [
       'QR Scanner',
       'AR Experiences',

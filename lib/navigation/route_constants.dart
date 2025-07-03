@@ -17,9 +17,6 @@ class AppRoutes {
   // Festival feature routes
   static const String schedule = '/schedule';
   static const String artists = '/artists';
-  static const String sponsors = '/sponsors';
-  static const String ticketing = '/ticketing';
-  static const String streaming = '/streaming';
 
   // Interactive feature routes
   static const String qrScanner = '/qr';
@@ -50,9 +47,6 @@ class AppRoutes {
   static const String infoName = 'info';
   static const String scheduleName = 'schedule';
   static const String artistsName = 'artists';
-  static const String sponsorsName = 'sponsors';
-  static const String ticketingName = 'ticketing';
-  static const String streamingName = 'streaming';
   static const String qrScannerName = 'qr';
   static const String arName = 'ar';
   static const String mapGalleryName = 'map-gallery';
@@ -115,12 +109,6 @@ class AppRoutes {
         return 'Schedule';
       case artists:
         return 'Artists';
-      case sponsors:
-        return 'Sponsors';
-      case ticketing:
-        return 'Tickets';
-      case streaming:
-        return 'Live Streams';
       case qrScanner:
         return 'QR Scanner';
       case ar:

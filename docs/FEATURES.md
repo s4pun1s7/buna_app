@@ -87,6 +87,18 @@ A comprehensive overview of all features and capabilities in the Buna Festival a
 - **Error Reporting**: Analytics integration for error tracking
 - **Graceful Failures**: App continues working despite errors
 
+### 🧰 In-App Development Tools (Develop Branch Only)
+- **Dev Tools Panel**: Special in-app panel for development and debugging
+- **Feature Flags**: Toggle experimental features at runtime
+- **Debug Actions**: Access logs, simulate errors, or reset app state
+- **Branch-Specific**: Only available in builds with `--dart-define=DEV_TOOLS=true` (typically the `develop` branch)
+- **How to Enable**: Run or build the app with:
+  ```sh
+  flutter run --dart-define=DEV_TOOLS=true
+  flutter build apk --dart-define=DEV_TOOLS=true
+  ```
+- **Production Safety**: Not included in release builds unless explicitly enabled
+
 ## 🎨 User Experience Features
 
 ### 🚀 Onboarding
@@ -147,12 +159,9 @@ A comprehensive overview of all features and capabilities in the Buna Festival a
 - **Social Sharing**: Share content on social media
 - **QR Code Scanning**: Quick venue/event access
 - **AR Features**: Augmented reality venue exploration
-- **Live Streaming**: Real-time festival content
 
 ### Advanced Features
 - **User Profiles**: Personalized user accounts
-- **Event Ticketing**: Ticket purchase and management
-- **Social Features**: User interaction and networking
 - **Gamification**: Points, badges, and achievements
 - **Accessibility**: Enhanced accessibility features
 

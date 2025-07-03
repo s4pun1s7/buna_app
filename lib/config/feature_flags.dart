@@ -43,15 +43,6 @@ class FeatureFlags {
   /// Enable/disable artists screen
   static const bool enableArtists = true;
 
-  /// Enable/disable sponsors screen
-  static const bool enableSponsors = true;
-
-  /// Enable/disable ticketing screen
-  static const bool enableTicketing = false;
-
-  /// Enable/disable streaming screen
-  static const bool enableStreaming = false;
-
   // ===== INTERACTIVE FEATURE FLAGS =====
 
   /// Enable/disable QR scanner
@@ -142,10 +133,7 @@ class FeatureFlags {
   /// Check if all festival features are enabled
   static bool get allFestivalFeaturesEnabled =>
       enableSchedule &&
-      enableArtists &&
-      enableSponsors &&
-      enableTicketing &&
-      enableStreaming;
+      enableArtists;
 
   /// Check if all interactive features are enabled
   static bool get allInteractiveFeaturesEnabled =>
@@ -168,9 +156,6 @@ class FeatureFlags {
     if (enableInfo) features.add('Info');
     if (enableSchedule) features.add('Schedule');
     if (enableArtists) features.add('Artists');
-    if (enableSponsors) features.add('Sponsors');
-    if (enableTicketing) features.add('Ticketing');
-    if (enableStreaming) features.add('Streaming');
     if (enableQRScanner) features.add('QR Scanner');
     if (enableAR) features.add('AR Experiences');
     if (enableMapGallery) features.add('Map Gallery');
@@ -193,9 +178,6 @@ class FeatureFlags {
     if (!enableInfo) features.add('Info');
     if (!enableSchedule) features.add('Schedule');
     if (!enableArtists) features.add('Artists');
-    if (!enableSponsors) features.add('Sponsors');
-    if (!enableTicketing) features.add('Ticketing');
-    if (!enableStreaming) features.add('Streaming');
     if (!enableQRScanner) features.add('QR Scanner');
     if (!enableAR) features.add('AR Experiences');
     if (!enableMapGallery) features.add('Map Gallery');
@@ -224,12 +206,6 @@ class FeatureFlags {
         return enableSchedule;
       case 'artists':
         return enableArtists;
-      case 'sponsors':
-        return enableSponsors;
-      case 'ticketing':
-        return enableTicketing;
-      case 'streaming':
-        return enableStreaming;
       case 'qr scanner':
       case 'qr':
         return enableQRScanner;
@@ -262,9 +238,6 @@ class FeatureFlags {
       'Info': enableInfo,
       'Schedule': enableSchedule,
       'Artists': enableArtists,
-      'Sponsors': enableSponsors,
-      'Ticketing': enableTicketing,
-      'Streaming': enableStreaming,
       'QR Scanner': enableQRScanner,
       'AR Experiences': enableAR,
       'Map Gallery': enableMapGallery,

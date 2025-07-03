@@ -213,7 +213,6 @@
 ### Engagement & Interaction Tools
 - [x] Add social sharing (links to website content)
 - [ ] Add in-app feedback or surveys
-- [ ] Add ticketing or RSVP integration
 - [ ] Add live updates or streaming
 
 ### Technical & Support

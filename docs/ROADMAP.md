@@ -100,7 +100,6 @@ This roadmap outlines the major milestones and tasks required to bring the Buna 
 ## 8. Stretch Goals (Post-Launch)
 - [ ] User authentication and profiles
 - [ ] Push notifications
-- [ ] In-app ticketing or QR code scanning
 - [ ] Artist/venue social features
 - [ ] Advanced search and filtering
 - [ ] Customizable schedule and reminders

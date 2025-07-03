@@ -178,21 +178,6 @@ class _FeatureFlagsScreenState extends ConsumerState<FeatureFlagsScreen> {
             FeatureFlags.enableArtists,
             'Enable artists screen',
           ),
-          _buildFeatureFlag(
-            'Sponsors',
-            FeatureFlags.enableSponsors,
-            'Enable sponsors screen',
-          ),
-          _buildFeatureFlag(
-            'Ticketing',
-            FeatureFlags.enableTicketing,
-            'Enable ticketing screen',
-          ),
-          _buildFeatureFlag(
-            'Streaming',
-            FeatureFlags.enableStreaming,
-            'Enable streaming screen',
-          ),
         ]),
         const SizedBox(height: 16),
         _buildFeatureGroup('Interactive Features', [

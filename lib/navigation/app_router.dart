@@ -6,9 +6,6 @@ import '../features/news/news_screen.dart';
 import '../features/info/info_screen.dart';
 import '../features/schedule/schedule_screen.dart';
 import '../features/artists/artists_screen.dart';
-import '../features/sponsors/sponsors_screen.dart';
-import '../features/ticketing/ticketing_screen.dart';
-import '../features/streaming/streaming_screen.dart';
 import '../features/qr/qr_screen.dart';
 import '../features/ar/ar_screen.dart';
 import '../features/map_gallery/map_gallery_screen.dart';
@@ -200,24 +197,6 @@ class AppRouter {
               name: AppRoutes.artistsName,
               builder: (context, state) => const ArtistsScreen(),
             ),
-          if (FeatureFlags.enableSponsors)
-            GoRoute(
-              path: AppRoutes.sponsors,
-              name: AppRoutes.sponsorsName,
-              builder: (context, state) => const SponsorsScreen(),
-            ),
-          if (FeatureFlags.enableTicketing)
-            GoRoute(
-              path: AppRoutes.ticketing,
-              name: AppRoutes.ticketingName,
-              builder: (context, state) => const TicketingScreen(),
-            ),
-          if (FeatureFlags.enableStreaming)
-            GoRoute(
-              path: AppRoutes.streaming,
-              name: AppRoutes.streamingName,
-              builder: (context, state) => const StreamingScreen(),
-            ),
 
           // Interactive feature routes
           if (FeatureFlags.enableQRScanner)
@@ -378,24 +357,6 @@ class AppRouter {
   static void goToArtists(BuildContext context) {
     if (FeatureFlags.enableArtists) {
       context.go('/artists');
-    }
-  }
-
-  static void goToSponsors(BuildContext context) {
-    if (FeatureFlags.enableSponsors) {
-      context.go('/sponsors');
-    }
-  }
-
-  static void goToTicketing(BuildContext context) {
-    if (FeatureFlags.enableTicketing) {
-      context.go('/ticketing');
-    }
-  }
-
-  static void goToStreaming(BuildContext context) {
-    if (FeatureFlags.enableStreaming) {
-      context.go('/streaming');
     }
   }
 
