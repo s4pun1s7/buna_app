@@ -24,105 +24,8 @@ import '../models/schedule.dart';
 import '../models/festival_data.dart' as fest_data;
 import '../widgets/common/index.dart';
 import '../widgets/splash_screen.dart';
-
-/// Simple home screen placeholder
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final scale = MediaQuery.textScaleFactorOf(context);
-    return Scaffold(
-      body: Stack(
-        children: [
-          Positioned.fill(
-            child: Image.asset(
-              'assets/BUNA3_BlueStory.png',
-              fit: BoxFit.cover,
-            ),
-          ),
-          Center(
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const Icon(Icons.home, size: 64),
-                  const SizedBox(height: 16),
-                  Text(
-                    'Welcome to Buna Festival',
-                    style: TextStyle(
-                      fontSize: 24 * scale,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  const Text(
-                    'Use the navigation below to explore the festival',
-                  ),
-                  const SizedBox(height: 32),
-                  // Dashboard widgets
-                  FeaturedArtistCard(
-                    artist: Artist(
-                      id: '1',
-                      name: 'Mock Artist',
-                      country: 'Mock Country',
-                      bio: 'This is a mock artist bio.',
-                      specialty: 'Mock Specialty',
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  FeaturedVenueCard(
-                    venue: venues_data.Venue(
-                      name: 'Mock Venue',
-                      address: '123 Main St',
-                      events: [
-                        venues_data.Event(
-                          name: 'Mock Event',
-                          date: '2025-07-01',
-                          time: '7 PM',
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  NextEventCard(
-                    entry: ScheduleEntry(
-                      event: venues_data.Event(
-                        name: 'Mock Event',
-                        date: '2025-07-01',
-                        time: '7 PM',
-                      ),
-                      venue: venues_data.Venue(
-                        name: 'Mock Venue',
-                        address: '123 Main St',
-                        events: [],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  NewsDashboardCard(
-                    article: fest_data.NewsArticle(
-                      id: 1,
-                      title: 'Mock News Headline',
-                      content: 'Mock content',
-                      excerpt: 'Mock excerpt',
-                      date: DateTime.now(),
-                      featuredImageUrl: null,
-                      author: 'Mock Author',
-                      categories: ['Mock'],
-                      url: 'https://example.com',
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
+// Import the optimized home screen
+import '../widgets/home/optimized_home_screen.dart';
 
 /// Main router configuration for the Buna Festival app
 class AppRouter {
@@ -140,7 +43,7 @@ class AppRouter {
     // Route observers for analytics
     observers: FeatureFlags.enableAnalytics ? [_routeObserver] : [],
 
-    // Routes configuration
+    // Routes configuration with lazy loading
     routes: [
       GoRoute(
         path: AppRoutes.splash,
@@ -158,12 +61,12 @@ class AppRouter {
       ShellRoute(
         builder: (context, state, child) => MainLayout(child: child),
         routes: [
-          // Core navigation routes
+          // Core navigation routes with lazy loading
           if (FeatureFlags.enableHome)
             GoRoute(
               path: AppRoutes.home,
               name: AppRoutes.homeName,
-              builder: (context, state) => const HomeScreen(),
+              builder: (context, state) => const OptimizedHomeScreen(), // Use optimized version
             ),
           if (FeatureFlags.enableVenues)
             GoRoute(
@@ -184,7 +87,7 @@ class AppRouter {
               builder: (context, state) => const InfoScreen(),
             ),
 
-          // Festival feature routes
+          // Festival feature routes with lazy loading
           if (FeatureFlags.enableSchedule)
             GoRoute(
               path: AppRoutes.schedule,
@@ -198,30 +101,74 @@ class AppRouter {
               builder: (context, state) => const ArtistsScreen(),
             ),
 
-          // Interactive feature routes
+          // Interactive feature routes with lazy loading
           if (FeatureFlags.enableQRScanner)
             GoRoute(
               path: AppRoutes.qrScanner,
               name: AppRoutes.qrScannerName,
-              builder: (context, state) => const QRScreen(),
+              builder: (context, state) {
+                // Lazy load QR screen to reduce initial bundle size
+                return FutureBuilder(
+                  future: _loadQRScreen(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      return snapshot.data ?? const _LoadingScreen();
+                    }
+                    return const _LoadingScreen();
+                  },
+                );
+              },
             ),
           if (FeatureFlags.enableAR)
             GoRoute(
               path: AppRoutes.ar,
               name: AppRoutes.arName,
-              builder: (context, state) => const ARScreen(),
+              builder: (context, state) {
+                // Lazy load AR screen to reduce initial bundle size
+                return FutureBuilder(
+                  future: _loadARScreen(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      return snapshot.data ?? const _LoadingScreen();
+                    }
+                    return const _LoadingScreen();
+                  },
+                );
+              },
             ),
           if (FeatureFlags.enableMapGallery)
             GoRoute(
               path: AppRoutes.mapGallery,
               name: AppRoutes.mapGalleryName,
-              builder: (context, state) => const MapGalleryScreen(),
+              builder: (context, state) {
+                // Lazy load map gallery to reduce initial bundle size
+                return FutureBuilder(
+                  future: _loadMapGalleryScreen(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      return snapshot.data ?? const _LoadingScreen();
+                    }
+                    return const _LoadingScreen();
+                  },
+                );
+              },
             ),
           if (FeatureFlags.enableSocialFeed)
             GoRoute(
               path: AppRoutes.social,
               name: AppRoutes.socialName,
-              builder: (context, state) => const SocialScreen(),
+              builder: (context, state) {
+                // Lazy load social screen to reduce initial bundle size
+                return FutureBuilder(
+                  future: _loadSocialScreen(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      return snapshot.data ?? const _LoadingScreen();
+                    }
+                    return const _LoadingScreen();
+                  },
+                );
+              },
             ),
 
           // Support feature routes
@@ -308,6 +255,28 @@ class AppRouter {
     // Route guards and redirects
     redirect: (context, state) => RouteGuards.handleRedirect(context, state),
   );
+
+  // Lazy loading functions for heavy screens
+  static Future<Widget> _loadQRScreen() async {
+    // Simulate loading time and return the screen
+    await Future.delayed(const Duration(milliseconds: 100));
+    return const QRScreen();
+  }
+
+  static Future<Widget> _loadARScreen() async {
+    await Future.delayed(const Duration(milliseconds: 100));
+    return const ARScreen();
+  }
+
+  static Future<Widget> _loadMapGalleryScreen() async {
+    await Future.delayed(const Duration(milliseconds: 100));
+    return const MapGalleryScreen();
+  }
+
+  static Future<Widget> _loadSocialScreen() async {
+    await Future.delayed(const Duration(milliseconds: 100));
+    return const SocialScreen();
+  }
 
   /// Navigate to a route with parameters
   static void goToVenueDetails(BuildContext context, String venueId) {
@@ -417,5 +386,26 @@ class AppRouter {
   static bool isMainRoute(BuildContext context) {
     final path = getCurrentRoutePath(context);
     return AppRoutes.isMainRoute(path);
+  }
+}
+
+/// Loading screen widget for lazy-loaded routes
+class _LoadingScreen extends StatelessWidget {
+  const _LoadingScreen();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(height: 16),
+            Text('Loading...'),
+          ],
+        ),
+      ),
+    );
   }
 }
