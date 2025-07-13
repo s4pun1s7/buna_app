@@ -216,7 +216,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> with Ticker
                 ScaleTransition(
                   scale: _logoScale,
                   child: Image.asset(
-                    'assets/Buna pink.png',
+                    'assets/Buna blue.png',
                     width: 110,
                     height: 110,
                     fit: BoxFit.contain,

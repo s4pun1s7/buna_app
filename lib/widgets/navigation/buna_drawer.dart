@@ -195,6 +195,12 @@ class BunaDrawer extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildSectionTitle('Interactive Features'),
+        _buildDrawerItem(
+          context,
+          icon: Icons.map,
+          title: 'Map',
+          route: AppRoutes.maps,
+        ),
         if (FeatureFlags.enableQRScanner)
           _buildDrawerItem(
             context,
