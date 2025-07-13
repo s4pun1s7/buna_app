@@ -1,0 +1,30 @@
+
+# Asset Optimization Configuration
+# Use this guide to manually optimize assets using external tools
+
+## Large Images (>1MB) - Convert to WebP or Progressive JPEG
+BUNA3_BlueStory.png -> BUNA3_BlueStory.webp (recommended max: 1920x1080)
+BUNA3_PinkStory.png -> BUNA3_PinkStory.webp (recommended max: 1920x1080)
+
+## Medium Images (100KB-1MB) - Optimize compression
+8.jpeg -> Optimize with 80-85% quality
+
+## Small Images (<100KB) - Optimize PNG compression
+buna_black.png -> Optimize PNG compression
+buna_blue.png -> Optimize PNG compression  
+buna_pink.png -> Optimize PNG compression
+
+## Tools for manual optimization:
+1. Online: TinyPNG, Squoosh.app, Kraken.io
+2. CLI: imagemagick, cwebp, pngquant
+3. GUI: GIMP, Photoshop, XnConvert
+
+## Example commands (if tools available):
+# Convert to WebP:
+cwebp -q 85 BUNA3_BlueStory.png -o BUNA3_BlueStory.webp
+
+# Optimize PNG:
+pngquant --quality=75-90 --output buna_black_optimized.png buna_black.png
+
+# Progressive JPEG:
+convert BUNA3_BlueStory.png -quality 82 -interlace Plane BUNA3_BlueStory.jpg
