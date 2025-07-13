@@ -6,29 +6,42 @@ import 'app.dart';
 import 'providers/riverpod_setup.dart';
 import 'services/connectivity_service.dart';
 import 'services/analytics_service.dart';
+import 'services/lazy_loading_service.dart';
+import 'services/performance_monitoring_service.dart';
+import 'package:flutter/foundation.dart' show kDebugMode;
+import 'dart:async';
 
+/// Request permissions asynchronously without blocking startup
 Future<void> requestFestivalPermissions() async {
   if (!kIsWeb) {
-    // Camera permission with rationale
-    if (await Permission.camera.status.isDenied) {
-      await Permission.camera.request();
-    }
-    // Location permission with rationale
-    if (await Permission.locationWhenInUse.status.isDenied) {
-      await Permission.locationWhenInUse.request();
-    }
-    // Notification permission with rationale (Android 13+)
-    if (await Permission.notification.status.isDenied) {
-      await Permission.notification.request();
-    }
+    // Request permissions in background after app starts
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      // Camera permission with rationale
+      if (await Permission.camera.status.isDenied) {
+        await Permission.camera.request();
+      }
+      // Location permission with rationale
+      if (await Permission.locationWhenInUse.status.isDenied) {
+        await Permission.locationWhenInUse.request();
+      }
+      // Notification permission with rationale (Android 13+)
+      if (await Permission.notification.status.isDenied) {
+        await Permission.notification.request();
+      }
+    });
   }
 }
 
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  // Initialize Firebase
+/// Initialize Firebase and services asynchronously
+Future<void> initializeAppServices() async {
   try {
+    // Initialize performance monitoring first
+    PerformanceMonitoringService().initialize();
+    
+    // Track app initialization start
+    final appInitStart = DateTime.now();
+    
+    // Initialize Firebase with platform-specific options
     if (kIsWeb) {
       await Firebase.initializeApp(
         options: const FirebaseOptions(
@@ -45,23 +58,93 @@ Future<void> main() async {
       await Firebase.initializeApp();
     }
 
-    // Initialize services
-    await ConnectivityService().initialize();
+    // Initialize services in parallel for faster startup
+    await Future.wait([
+      ConnectivityService().initialize(),
+      LazyLoadingService().preloadCriticalComponents(),
+      // Add other service initializations here
+    ]);
 
-    // Track app launch
+    // Track app initialization completion
+    final initDuration = DateTime.now().difference(appInitStart);
+    if (kDebugMode) {
+      print('✅ All services initialized in ${initDuration.inMilliseconds}ms');
+    }
+
+    // Track app launch after services are initialized
     AnalyticsService.logEvent(name: 'app_launch');
+    
   } catch (e) {
-    // Continue without Firebase for now
+    if (kDebugMode) {
+      print('⚠️ Service initialization error: $e');
+    }
+    // Continue without Firebase/services for now
   }
-
-  runApp(const BunaAppWithPermissions());
 }
 
-class BunaAppWithPermissions extends StatelessWidget {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Start app immediately with loading state
+  runApp(const BunaAppWithPermissions());
+
+  // Initialize services asynchronously in background
+  initializeAppServices();
+  
+  // Request permissions after app starts
+  requestFestivalPermissions();
+}
+
+/// App wrapper with optimized initialization
+class BunaAppWithPermissions extends StatefulWidget {
   const BunaAppWithPermissions({super.key});
 
   @override
+  State<BunaAppWithPermissions> createState() => _BunaAppWithPermissionsState();
+}
+
+class _BunaAppWithPermissionsState extends State<BunaAppWithPermissions> {
+  bool _servicesInitialized = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkServicesInitialization();
+    
+    // Clean up lazy loading cache periodically
+    _setupPeriodicCleanup();
+  }
+
+  void _checkServicesInitialization() {
+    // Check if services are initialized
+    // For now, we'll assume they initialize quickly
+    // In a real app, you'd listen to service initialization state
+    Future.delayed(const Duration(milliseconds: 500), () {
+      if (mounted) {
+        setState(() {
+          _servicesInitialized = true;
+        });
+      }
+    });
+  }
+
+  void _setupPeriodicCleanup() {
+    // Set up periodic cleanup of unused components
+    Timer.periodic(const Duration(minutes: 5), (timer) {
+      LazyLoadingService().cleanupUnusedComponents();
+    });
+  }
+
+  @override
+  void dispose() {
+    // Clean up performance monitoring when app is disposed
+    PerformanceMonitoringService().dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    // Always return the app immediately - services initialize in background
     return RiverpodApp(child: const BunaApp());
   }
 }

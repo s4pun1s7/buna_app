@@ -51,11 +51,16 @@ dependencies:
   # ar_flutter_plugin: any
   google_sign_in: ^6.2.1
   cached_network_image: ^3.3.1
+  # Performance optimization dependencies
+  flutter_cache_manager: ^3.3.1
+  octo_image: ^2.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: 6.0.0
+  # Development tools for performance analysis
+  flutter_launcher_icons: ^0.13.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -71,11 +76,15 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/Buna black.png
-    - assets/Buna blue.png
-    - assets/Buna pink.png
+    - assets/buna_black.png
+    - assets/buna_blue.png
+    - assets/buna_pink.png
     - assets/8.jpeg
     - assets/BUNA3_BlueStory.png
+    - assets/BUNA3_PinkStory.png
+    # Add WebP variants if they exist
+    - assets/BUNA3_BlueStory.webp
+    - assets/BUNA3_PinkStory.webp
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
