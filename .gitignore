@@ -160,4 +160,6 @@ web/build/
 .flutter-plugins
 .flutter-plugins-dependencies
 
+
+.github/workflows/
 goup.ps1
