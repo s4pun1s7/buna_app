@@ -30,6 +30,13 @@ jobs:
           flutter-version: '3.24.0'
           channel: 'stable'
           cache: true
+      - name: Install Dart 3.8.0
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y wget unzip
+          wget https://storage.googleapis.com/dart-archive/channels/stable/release/3.8.0/linux_packages/dart_3.8.0-1_amd64.deb
+          sudo dpkg -i dart_3.8.0-1_amd64.deb
+          export PATH="$PATH:/usr/lib/dart/bin"
       - name: Print Flutter version
         run: flutter --version
       - name: Print Dart version
