@@ -23,8 +23,14 @@ jobs:
         run: flutter --version
       # Flutter is now globally available, no need to force PATH
       - name: Print Dart version (Flutter SDK)
-        run: flutter dart --version
+        run: flutter --version
       - name: Install dependencies
         run: flutter pub get
+      - name: Run Flutter Doctor
+        run: flutter doctor -v
+      - name: Analyze Dart code
+        run: flutter analyze
+      - name: Check Dart formatting
+        run: dart format --set-exit-if-changed .
       - name: Build web app
         run: flutter build web --release
