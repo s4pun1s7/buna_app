@@ -22,6 +22,9 @@ version: 0.0.1+1
 environment:
   sdk: ">=3.8.0 <4.0.0"
 
+# Ensure CI/CD uses a compatible Flutter version (3.22.0 or newer)
+  flutter: ">=3.22.0 <4.0.0"
+
 dependencies:
   flutter:
     sdk: flutter
