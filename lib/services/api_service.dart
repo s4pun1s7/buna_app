@@ -5,6 +5,7 @@ import '../models/festival_data.dart';
 import '../utils/debouncer.dart';
 import 'error_handler.dart';
 import 'mock_data_service.dart';
+import 'package:flutter/foundation.dart';
 
 // TODO: Move Artist model to its own file (lib/models/artist.dart)
 class Artist {
@@ -464,11 +465,11 @@ class ApiService {
       'apiDisabled': _apiDisabled,
     };
     if (verbose) {
-      print('--- API Configuration ---');
+      debugPrint('--- API Configuration ---');
       config.forEach((key, value) {
-        print('$key: $value');
+        debugPrint('$key: $value');
       });
-      print('-------------------------');
+      debugPrint('-------------------------');
     }
     return config;
   }

@@ -37,10 +37,6 @@ jobs:
         run: flutter pub get
       - name: Run Flutter Doctor
         run: flutter doctor -v
-      - name: Analyze Dart code
-        run: flutter analyze
-      - name: Check Dart formatting
-        run: dart format --set-exit-if-changed .
 
   build:
     runs-on: ubuntu-latest

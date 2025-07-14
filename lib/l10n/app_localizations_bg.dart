@@ -24,10 +24,12 @@ class AppLocalizationsBg extends AppLocalizations {
   String get onboardingDesc1 => 'Разгледайте фестивала, артистите и локациите.';
 
   @override
-  String get onboardingDesc2 => 'Намерете произведения на изкуството, събития и още на картата.';
+  String get onboardingDesc2 =>
+      'Намерете произведения на изкуството, събития и още на картата.';
 
   @override
-  String get onboardingDesc3 => 'Запазвайте любими, настройвайте напомняния и получавайте новини.';
+  String get onboardingDesc3 =>
+      'Запазвайте любими, настройвайте напомняния и получавайте новини.';
 
   @override
   String get onboardingSkip => 'Пропусни';
@@ -147,31 +149,37 @@ class AppLocalizationsBg extends AppLocalizations {
   String get festivalUpdates => 'Обновления на фестивала';
 
   @override
-  String get moreUpdatesComing => 'Още новини и обновления за фестивала ще бъдат публикувани тук, когато станат налични. Следвайте ни в социалните мрежи за най-новите съобщения.';
+  String get moreUpdatesComing =>
+      'Още новини и обновления за фестивала ще бъдат публикувани тук, когато станат налични. Следвайте ни в социалните мрежи за най-новите съобщения.';
 
   @override
-  String get appDevelopmentStarted => 'Започна разработката на приложението БУНА!';
+  String get appDevelopmentStarted =>
+      'Започна разработката на приложението БУНА!';
 
   @override
-  String get appDevelopmentDescription => 'Радваме се да обявим, че започна разработката на официалното мобилно приложение на Фестивал БУНА! Това приложение ще предостави на посетителите на фестивала обновления в реално време, информация за локациите, графици на събитията и много повече. Очаквайте още обновления, докато изграждаме най-доброто приложение-спътник на фестивала.';
+  String get appDevelopmentDescription =>
+      'Радваме се да обявим, че започна разработката на официалното мобилно приложение на Фестивал БУНА! Това приложение ще предостави на посетителите на фестивала обновления в реално време, информация за локациите, графици на събитията и много повече. Очаквайте още обновления, докато изграждаме най-доброто приложение-спътник на фестивала.';
 
   @override
   String get permissionCameraTitle => 'Разрешение за камера';
 
   @override
-  String get permissionCameraMessage => 'Нуждаем се от достъп до камерата за AR и QR функции на фестивала.';
+  String get permissionCameraMessage =>
+      'Нуждаем се от достъп до камерата за AR и QR функции на фестивала.';
 
   @override
   String get permissionLocationTitle => 'Разрешение за местоположение';
 
   @override
-  String get permissionLocationMessage => 'Използваме вашето местоположение, за да ви покажем близките локации и събития.';
+  String get permissionLocationMessage =>
+      'Използваме вашето местоположение, за да ви покажем близките локации и събития.';
 
   @override
   String get permissionNotificationTitle => 'Разрешение за известия';
 
   @override
-  String get permissionNotificationMessage => 'Активирайте известията, за да получавате новини и обновления за фестивала.';
+  String get permissionNotificationMessage =>
+      'Активирайте известията, за да получавате новини и обновления за фестивала.';
 
   @override
   String get allow => 'Разреши';
