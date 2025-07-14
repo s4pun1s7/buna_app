@@ -1,0 +1,24 @@
+# Global code owners
+* @s4pun1s7
+
+# Workflow configurations
+/.github/ @s4pun1s7
+
+# Flutter configuration
+/pubspec.yaml @s4pun1s7
+/analysis_options.yaml @s4pun1s7
+
+# Platform-specific configurations
+/android/ @s4pun1s7
+/ios/ @s4pun1s7
+/web/ @s4pun1s7
+/linux/ @s4pun1s7
+/macos/ @s4pun1s7
+/windows/ @s4pun1s7
+
+# Core app logic
+/lib/ @s4pun1s7
+
+# Tests
+/test/ @s4pun1s7
+/integration_test/ @s4pun1s7
