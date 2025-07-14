@@ -411,7 +411,7 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen>
           children: [
             Text('Venue: ${event.venue ?? 'Unknown'}'),
             Text('Time: ${event.startTime ?? 'Unknown'}'),
-            if (event.description != null) ...[
+            if (event.description.isNotEmpty) ...[
               const SizedBox(height: 8),
               Text('Description: ${event.description}'),
             ],

@@ -4,8 +4,6 @@ import 'package:go_router/go_router.dart';
 import '../widgets/navigation/index.dart';
 import '../widgets/devtools_menu_sheet.dart';
 import '../widgets/common/index.dart';
-import '../widgets/navigation/buna_nav_bar.dart';
-import '../widgets/navigation/buna_drawer.dart';
 import '../providers/theme_provider.dart';
 import '../services/analytics_service.dart';
 import 'route_constants.dart';
