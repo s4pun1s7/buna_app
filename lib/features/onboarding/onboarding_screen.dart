@@ -126,26 +126,12 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
             ),
             // Event details and interactive elements
             Positioned(
-              top: 240,
+              top: 220,
               left: 32,
               right: 32,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
-                    '3-8 Sept.2025',
-                    style: TextStyle(
-                      color: Color(0xFFFF8EB4),
-                      fontSize: 24,
-                      fontFamily: 'RobotoMono',
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.symmetric(vertical: 8),
-                    height: 2,
-                    color: Color(0xFFFF8EB4),
-                  ),
                   Text(
                     'BUNA | Vol.3',
                     style: TextStyle(
@@ -161,7 +147,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                     color: Color(0xFFFF8EB4),
                   ),
                   Text(
-                    'FORUM FOR\nCONTEMPORARY\nART',
+                    'FORUM FOR CONTEMPORARY ART',
                     style: TextStyle(
                       color: Color(0xFFFF8EB4),
                       fontSize: 22,
@@ -170,7 +156,21 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                       height: 1.2,
                     ),
                   ),
-                  const SizedBox(height: 32),
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: 8),
+                    height: 2,
+                    color: Color(0xFFFF8EB4),
+                  ),
+                  Text(
+                    '3-8 Sept.2025',
+                    style: TextStyle(
+                      color: Color(0xFFFF8EB4),
+                      fontSize: 20,
+                      fontFamily: 'RobotoMono',
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  const SizedBox(height: 24),
                   // Language toggle
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -203,43 +203,54 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 24),
                   // Sign-in buttons
-                  ElevatedButton(
-                    onPressed: _isLoading ? null : _signInWithGoogle,
-                    child: const Text('Continue with Google'),
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: const Size.fromHeight(48),
-                      textStyle: const TextStyle(fontWeight: FontWeight.bold),
-                      backgroundColor: Color(0xFFFF8EB4),
-                      foregroundColor: Color(0xFF0052CC),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: _isLoading ? null : _signInAnonymously,
-                    child: _isLoading
-                        ? Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              SizedBox(
-                                width: 16,
-                                height: 16,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              const Text('Loading...'),
-                            ],
-                          )
-                        : const Text('Continue as Guest'),
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: const Size.fromHeight(48),
-                      textStyle: const TextStyle(fontWeight: FontWeight.bold),
-                      backgroundColor: Color(0xFFFF8EB4),
-                      foregroundColor: Color(0xFF0052CC),
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton.icon(
+                        onPressed: _isLoading ? null : _signInWithGoogle,
+                        icon: const Icon(Icons.login, size: 18),
+                        label: const Text('Google'),
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: const Size(120, 40),
+                          textStyle: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                          backgroundColor: Color(0xFFFF8EB4),
+                          foregroundColor: Color(0xFF0052CC),
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      ElevatedButton.icon(
+                        onPressed: _isLoading ? null : _signInAnonymously,
+                        icon: const Icon(Icons.person_outline, size: 18),
+                        label: _isLoading
+                            ? Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  SizedBox(
+                                    width: 16,
+                                    height: 16,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  const Text('Loading...'),
+                                ],
+                              )
+                            : const Text('Guest'),
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: const Size(120, 40),
+                          textStyle: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                          backgroundColor: Color(0xFFFF8EB4),
+                          foregroundColor: Color(0xFF0052CC),
+                        ),
+                      ),
+                    ],
                   ),
                   if (_authError != null) ...[
                     const SizedBox(height: 16),
