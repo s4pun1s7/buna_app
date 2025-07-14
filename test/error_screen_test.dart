@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:buna_app/widgets/error_screen.dart';
+import 'package:buna_app/widgets/common/error_screen.dart';
 import 'package:buna_app/services/error_handler.dart';
 
 void main() {

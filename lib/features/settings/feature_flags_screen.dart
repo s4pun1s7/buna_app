@@ -444,7 +444,7 @@ class _FeatureFlagsScreenState extends ConsumerState<FeatureFlagsScreen> {
   Widget _buildSummaryItem(String label, int count, Color color) {
     return Builder(
       builder: (context) {
-        final scale = MediaQuery.textScaleFactorOf(context);
+        final scale = MediaQuery.textScalerOf(context).scale(1.0);
         return Row(
           children: [
             Container(

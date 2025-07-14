@@ -6,7 +6,6 @@ import '../../navigation/route_guards.dart';
 import '../../navigation/route_constants.dart';
 import '../../services/auth_service.dart';
 import '../../widgets/common/index.dart';
-import 'dart:math';
 
 class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
@@ -20,7 +19,6 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
   String _selectedLanguage = 'en';
   bool _isLoading = false;
   String? _authError;
-  String _statusMessage = '';
   final AuthService _authService = AuthService();
 
   late final AnimationController _logoController;
@@ -59,7 +57,6 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
     setState(() {
       _isLoading = true;
       _authError = null;
-      _statusMessage = 'Starting Google sign-in...';
     });
     try {
       _showStatusBanner('Opening Google sign-in dialog...');
@@ -79,7 +76,6 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
         setState(() {
           _isLoading = false;
           _authError = 'Google sign-in failed. Please try again.';
-          _statusMessage = 'Google sign-in failed.';
         });
         _showStatusBanner('Google sign-in failed.');
         showDialog(
@@ -141,7 +137,6 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
   }
 
   void _showStatusBanner(String message) {
-    _statusMessage = message;
     if (mounted) {
       ScaffoldMessenger.of(context).clearMaterialBanners();
       final isDark = Theme.of(context).brightness == Brightness.dark;

@@ -7,7 +7,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:buna_app/features/venues/venues_data.dart';
 import 'package:buna_app/navigation/app_router.dart';
-import 'package:buna_app/theme/app_theme.dart';
 import 'package:buna_app/utils/debouncer.dart';
 
 class MapsScreen extends ConsumerStatefulWidget {
@@ -60,7 +59,10 @@ class _MapsScreenState extends ConsumerState<MapsScreen> {
 
       // Get current position
       final position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
+        locationSettings: LocationSettings(
+          accuracy: LocationAccuracy.high,
+          distanceFilter: 10,
+        ),
       );
 
       setState(() {
@@ -81,8 +83,10 @@ class _MapsScreenState extends ConsumerState<MapsScreen> {
           circleId: const CircleId('user_location'),
           center: LatLng(_userPosition!.latitude, _userPosition!.longitude),
           radius: 100, // 100 meters radius
-          fillColor: AppTheme.primaryColor.withValues(alpha: 0.2),
-          strokeColor: AppTheme.primaryColor,
+          fillColor: Theme.of(
+            context,
+          ).colorScheme.primary.withValues(alpha: 0.2),
+          strokeColor: Theme.of(context).colorScheme.primary,
           strokeWidth: 2,
         ),
       );
@@ -266,7 +270,7 @@ class _MapsScreenState extends ConsumerState<MapsScreen> {
       heroTag: 'user_location',
       mini: true,
       backgroundColor: Colors.white,
-      foregroundColor: AppTheme.primaryColor,
+      foregroundColor: Theme.of(context).colorScheme.primary,
       onPressed: _isLoadingLocation ? null : _centerOnUserLocation,
       child: _isLoadingLocation
           ? const SizedBox(
@@ -394,7 +398,9 @@ class _VenueListSheet extends StatelessWidget {
                         margin: const EdgeInsets.only(bottom: 8),
                         elevation: isSelected ? 4 : 1,
                         color: isSelected
-                            ? AppTheme.primaryColor.withValues(alpha: 0.1)
+                            ? Theme.of(
+                                context,
+                              ).colorScheme.primary.withValues(alpha: 0.1)
                             : null,
                         child: ListTile(
                           leading: CircleAvatar(
@@ -505,12 +511,16 @@ class _VenueDetailsSheet extends StatelessWidget {
           // Events count
           Row(
             children: [
-              Icon(Icons.event, color: AppTheme.primaryColor, size: 16),
+              Icon(
+                Icons.event,
+                color: Theme.of(context).colorScheme.primary,
+                size: 16,
+              ),
               const SizedBox(width: 4),
               Text(
                 '${venue.events.length} events',
                 style: TextStyle(
-                  color: AppTheme.primaryColor,
+                  color: Theme.of(context).colorScheme.primary,
                   fontWeight: FontWeight.w600,
                 ),
               ),

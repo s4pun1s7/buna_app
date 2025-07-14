@@ -10,7 +10,7 @@ class ScheduleCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final scale = MediaQuery.textScaleFactorOf(context);
+    final scale = MediaQuery.textScalerOf(context).scale(1.0);
     return Card(
       margin: const EdgeInsets.only(bottom: 8),
       child: InkWell(

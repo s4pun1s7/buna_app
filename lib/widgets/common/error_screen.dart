@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../services/error_handler.dart' as error_handler;
-import '../../theme/app_theme.dart' as app_theme;
 
 class ErrorScreen extends StatelessWidget {
   final error_handler.AppException error;
@@ -26,7 +25,9 @@ class ErrorScreen extends StatelessWidget {
               Icon(
                 _getErrorIcon(),
                 size: 80,
-                color: app_theme.AppTheme.errorColor.withOpacity(0.6),
+                color: Theme.of(
+                  context,
+                ).colorScheme.error.withValues(alpha: 0.6),
               ),
               const SizedBox(height: 24),
               Text(
@@ -53,7 +54,7 @@ class ErrorScreen extends StatelessWidget {
                   icon: const Icon(Icons.refresh),
                   label: const Text('Try Again'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: app_theme.AppTheme.primaryColor,
+                    backgroundColor: Theme.of(context).colorScheme.primary,
                     foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(
                       horizontal: 24,
@@ -105,7 +106,7 @@ class ErrorScreen extends StatelessWidget {
   }
 
   void _showErrorDetails(BuildContext context) {
-    final scale = MediaQuery.textScaleFactorOf(context);
+    final scale = MediaQuery.textScalerOf(context).scale(1.0);
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -185,8 +186,6 @@ class ErrorCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final errorHandler = error_handler.ErrorHandler();
-
     return Card(
       child: Container(
         height: height ?? 120,
@@ -195,19 +194,19 @@ class ErrorCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
-              errorHandler.getErrorIcon(error),
-              color: errorHandler.getErrorColor(error),
+              _getErrorIcon(),
+              color: Theme.of(context).colorScheme.error,
               size: 32,
             ),
             const SizedBox(height: 8),
             Text(
-              errorHandler.getUserFriendlyMessage(error),
+              _getErrorMessage(error),
               style: Theme.of(context).textTheme.bodyMedium,
               textAlign: TextAlign.center,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
-            if (errorHandler.isRetryable(error) && onRetry != null) ...[
+            if (onRetry != null) ...[
               const SizedBox(height: 8),
               TextButton(onPressed: onRetry, child: const Text('Retry')),
             ],
@@ -215,6 +214,36 @@ class ErrorCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  IconData _getErrorIcon() {
+    switch (error.runtimeType) {
+      case error_handler.NetworkException _:
+        return Icons.wifi_off;
+      case error_handler.ApiException _:
+        return Icons.error_outline;
+      case error_handler.CacheException _:
+        return Icons.storage;
+      case error_handler.ValidationException _:
+        return Icons.warning;
+      default:
+        return Icons.error;
+    }
+  }
+
+  String _getErrorMessage(error_handler.AppException error) {
+    switch (error.runtimeType) {
+      case error_handler.NetworkException _:
+        return 'Please check your internet connection and try again.';
+      case error_handler.ApiException _:
+        return 'There was a problem connecting to the server. Please try again later.';
+      case error_handler.CacheException _:
+        return 'There was a problem loading cached data. Please refresh the page.';
+      case error_handler.ValidationException _:
+        return 'The data provided is invalid. Please check your input and try again.';
+      default:
+        return 'An unexpected error occurred. Please try again.';
+    }
   }
 }
 
@@ -247,7 +276,10 @@ class AnimatedErrorDialog extends StatelessWidget {
               color: Colors.white,
               borderRadius: BorderRadius.circular(16),
               boxShadow: [
-                BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 16),
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.1),
+                  blurRadius: 16,
+                ),
               ],
             ),
             child: Column(

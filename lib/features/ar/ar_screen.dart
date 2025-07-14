@@ -414,7 +414,7 @@ class _ARScreenState extends ConsumerState<ARScreen> {
         borderRadius: BorderRadius.circular(12),
         child: Builder(
           builder: (context) {
-            final scale = MediaQuery.textScaleFactorOf(context);
+            final scale = MediaQuery.textScalerOf(context).scale(1.0);
             return Padding(
               padding: const EdgeInsets.all(16),
               child: Column(

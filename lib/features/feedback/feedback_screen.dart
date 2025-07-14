@@ -296,7 +296,7 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
   Widget _buildSubmitButton() {
     return Builder(
       builder: (context) {
-        final scale = MediaQuery.textScaleFactorOf(context);
+        final scale = MediaQuery.textScalerOf(context).scale(1.0);
         return SizedBox(
           width: double.infinity,
           height: 50,

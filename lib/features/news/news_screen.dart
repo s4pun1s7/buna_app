@@ -115,7 +115,7 @@ class _NewsScreenState extends ConsumerState<NewsScreen> {
     if (news.isEmpty) {
       return Builder(
         builder: (context) {
-          final scale = MediaQuery.textScaleFactorOf(context);
+          final scale = MediaQuery.textScalerOf(context).scale(1.0);
           return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

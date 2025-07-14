@@ -121,8 +121,6 @@ class LazyLoadingService {
 
   /// Clean up unused components to free memory
   void cleanupUnusedComponents() {
-    final now = DateTime.now();
-
     // In a real implementation, you'd track last access times
     // For now, just limit cache size
     if (_componentCache.length > 50) {

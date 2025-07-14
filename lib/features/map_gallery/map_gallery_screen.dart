@@ -462,7 +462,7 @@ class _MapGalleryScreenState extends ConsumerState<MapGalleryScreen>
         borderRadius: BorderRadius.circular(12),
         child: Builder(
           builder: (context) {
-            final scale = MediaQuery.textScaleFactorOf(context);
+            final scale = MediaQuery.textScalerOf(context).scale(1.0);
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

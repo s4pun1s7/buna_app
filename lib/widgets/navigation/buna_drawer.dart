@@ -6,8 +6,6 @@ import '../../config/feature_flags.dart';
 import '../../providers/user_provider.dart';
 import '../../services/auth_service.dart';
 import '../common/index.dart';
-import '../common/loading_indicator.dart';
-import '../common/error_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class BunaDrawer extends ConsumerWidget {
@@ -148,7 +146,7 @@ class BunaDrawer extends ConsumerWidget {
                 if (!isGoogle)
                   Builder(
                     builder: (context) {
-                      final scale = MediaQuery.textScaleFactorOf(context);
+                      final scale = MediaQuery.textScalerOf(context).scale(1.0);
                       return Text(
                         'Guest',
                         style: TextStyle(

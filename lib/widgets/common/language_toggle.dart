@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:buna_app/providers/locale_provider.dart';
-import 'package:buna_app/theme/app_theme.dart';
 
 class LanguageToggle extends ConsumerWidget {
   const LanguageToggle({super.key});
@@ -28,7 +27,7 @@ class LanguageToggle extends ConsumerWidget {
               Icon(
                 Icons.check,
                 color: currentLocale.languageCode == 'en'
-                    ? AppTheme.primaryColor
+                    ? Theme.of(context).colorScheme.primary
                     : Colors.transparent,
                 size: 20,
               ),
@@ -44,7 +43,7 @@ class LanguageToggle extends ConsumerWidget {
               Icon(
                 Icons.check,
                 color: currentLocale.languageCode == 'bg'
-                    ? AppTheme.primaryColor
+                    ? Theme.of(context).colorScheme.primary
                     : Colors.transparent,
                 size: 20,
               ),

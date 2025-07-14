@@ -343,7 +343,6 @@ class _SocialScreenState extends ConsumerState<SocialScreen>
   }
 
   Widget _buildTimelineView() {
-    final userAsync = ref.watch(userProvider);
     if (_filteredPosts.isEmpty) {
       return _buildNoResults();
     }
