@@ -30,10 +30,14 @@ jobs:
           flutter-version: '3.24.0'
           channel: 'stable'
           cache: true
-      - name: Remove Dart 3.5.0 SDK
+      - name: Check current Dart location
+        run: which dart
+      - name: Remove system Dart SDK
         run: |
           sudo apt-get remove -y dart
+          sudo apt-get remove -y dart-sdk
           sudo rm -rf /usr/lib/dart
+          sudo rm -rf /usr/lib/dart-sdk
       - name: Install Dart 3.8.0
         run: |
           sudo apt-get update -y
