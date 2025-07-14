@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:buna_app/providers/locale_provider.dart';
+import 'package:buna_app/utils/restart_widget.dart';
 
 class LanguageToggle extends ConsumerWidget {
   const LanguageToggle({super.key});
@@ -17,7 +18,27 @@ class LanguageToggle extends ConsumerWidget {
       ),
       tooltip: 'Change language',
       onSelected: (locale) {
-        ref.read(localeProvider.notifier).setLocale(locale);
+        try {
+          debugPrint(
+            '[LanguageToggle] Selected locale: \\${locale.languageCode}',
+          );
+          debugPrint(
+            '[LanguageToggle] Previous locale: \\${currentLocale.languageCode}',
+          );
+          ref.read(localeProvider.notifier).setLocale(locale);
+          RestartWidget.restartApp(context);
+        } catch (e, stack) {
+          debugPrint(
+            '[LanguageToggle] Error switching language: \\${e.toString()}',
+          );
+          debugPrint('[LanguageToggle] Stack: \\${stack.toString()}');
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Error switching language: \\${e.toString()}'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
       },
       itemBuilder: (context) => [
         PopupMenuItem(

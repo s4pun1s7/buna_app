@@ -1,0 +1,10 @@
+{
+  "bg": [
+    "devToolsMenu",
+    "hotReload",
+    "showDebugInfo",
+    "iosSizeToggleOn",
+    "iosSizeToggleOff",
+    "appSettings"
+  ]
+}

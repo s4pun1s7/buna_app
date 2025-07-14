@@ -24,12 +24,10 @@ class AppLocalizationsBg extends AppLocalizations {
   String get onboardingDesc1 => 'Разгледайте фестивала, артистите и локациите.';
 
   @override
-  String get onboardingDesc2 =>
-      'Намерете произведения на изкуството, събития и още на картата.';
+  String get onboardingDesc2 => 'Намерете произведения на изкуството, събития и още на картата.';
 
   @override
-  String get onboardingDesc3 =>
-      'Запазвайте любими, настройвайте напомняния и получавайте новини.';
+  String get onboardingDesc3 => 'Запазвайте любими, настройвайте напомняния и получавайте новини.';
 
   @override
   String get onboardingSkip => 'Пропусни';
@@ -149,37 +147,31 @@ class AppLocalizationsBg extends AppLocalizations {
   String get festivalUpdates => 'Обновления на фестивала';
 
   @override
-  String get moreUpdatesComing =>
-      'Още новини и обновления за фестивала ще бъдат публикувани тук, когато станат налични. Следвайте ни в социалните мрежи за най-новите съобщения.';
+  String get moreUpdatesComing => 'Още новини и обновления за фестивала ще бъдат публикувани тук, когато станат налични. Следвайте ни в социалните мрежи за най-новите съобщения.';
 
   @override
-  String get appDevelopmentStarted =>
-      'Започна разработката на приложението БУНА!';
+  String get appDevelopmentStarted => 'Започна разработката на приложението БУНА!';
 
   @override
-  String get appDevelopmentDescription =>
-      'Радваме се да обявим, че започна разработката на официалното мобилно приложение на Фестивал БУНА! Това приложение ще предостави на посетителите на фестивала обновления в реално време, информация за локациите, графици на събитията и много повече. Очаквайте още обновления, докато изграждаме най-доброто приложение-спътник на фестивала.';
+  String get appDevelopmentDescription => 'Радваме се да обявим, че започна разработката на официалното мобилно приложение на Фестивал БУНА! Това приложение ще предостави на посетителите на фестивала обновления в реално време, информация за локациите, графици на събитията и много повече. Очаквайте още обновления, докато изграждаме най-доброто приложение-спътник на фестивала.';
 
   @override
   String get permissionCameraTitle => 'Разрешение за камера';
 
   @override
-  String get permissionCameraMessage =>
-      'Нуждаем се от достъп до камерата за AR и QR функции на фестивала.';
+  String get permissionCameraMessage => 'Нуждаем се от достъп до камерата за AR и QR функции на фестивала.';
 
   @override
   String get permissionLocationTitle => 'Разрешение за местоположение';
 
   @override
-  String get permissionLocationMessage =>
-      'Използваме вашето местоположение, за да ви покажем близките локации и събития.';
+  String get permissionLocationMessage => 'Използваме вашето местоположение, за да ви покажем близките локации и събития.';
 
   @override
   String get permissionNotificationTitle => 'Разрешение за известия';
 
   @override
-  String get permissionNotificationMessage =>
-      'Активирайте известията, за да получавате новини и обновления за фестивала.';
+  String get permissionNotificationMessage => 'Активирайте известията, за да получавате новини и обновления за фестивала.';
 
   @override
   String get allow => 'Разреши';
@@ -188,20 +180,89 @@ class AppLocalizationsBg extends AppLocalizations {
   String get deny => 'Откажи';
 
   @override
-  String get devToolsMenu => 'DevTools Menu';
+  String get devToolsMenu => 'Меню за разработчици';
 
   @override
-  String get hotReload => 'Hot Reload';
+  String get hotReload => 'Горещо презареждане';
 
   @override
-  String get showDebugInfo => 'Show Debug Info';
+  String get showDebugInfo => 'Покажи дебъг информация';
 
   @override
-  String get iosSizeToggleOn => 'iOS Size: ON';
+  String get iosSizeToggleOn => 'iOS размер: ВКЛЮЧЕН';
 
   @override
-  String get iosSizeToggleOff => 'iOS Size: OFF';
+  String get iosSizeToggleOff => 'iOS размер: ИЗКЛЮЧЕН';
 
   @override
-  String get appSettings => 'App Settings';
+  String get appSettings => 'Настройки на приложението';
+
+  @override
+  String get homeLocation => 'Варна | България';
+
+  @override
+  String get homeTitle => 'БУНА | Том 3';
+
+  @override
+  String get homeSubtitle => 'ФОРУМ ЗА СЪВРЕМЕННО ИЗКУСТВО';
+
+  @override
+  String get homeFeatured => 'Акценти';
+
+  @override
+  String get homeQuickActions => 'Бързи действия';
+
+  @override
+  String get homeMap => 'Карта';
+
+  @override
+  String get homeSchedule => 'График';
+
+  @override
+  String get homeArtists => 'Артисти';
+
+  @override
+  String get homeVenues => 'Локации';
+
+  @override
+  String get homeFeaturedArtist => 'Избран артист';
+
+  @override
+  String get homeFeaturedArtistBio => 'Открийте невероятни артисти на фестивал БУНА.';
+
+  @override
+  String get homeFeaturedArtistSpecialty => 'Съвременно изкуство';
+
+  @override
+  String get homeFeaturedVenue => 'Главна галерия';
+
+  @override
+  String get homeFeaturedVenueAddress => 'Централна Варна';
+
+  @override
+  String get homeFeaturedVenueEvent => 'Изложба на изкуство';
+
+  @override
+  String get homeNextEvent => 'Откриваща церемония';
+
+  @override
+  String get homeNextEventVenue => 'Главен площад';
+
+  @override
+  String get homeNextEventVenueAddress => 'Център Варна';
+
+  @override
+  String get homeNewsTitle => 'Обновления на фестивала';
+
+  @override
+  String get homeNewsContent => 'Последни новини и обновления от фестивал БУНА.';
+
+  @override
+  String get homeNewsExcerpt => 'Бъдете в крак с най-новите новини за фестивала.';
+
+  @override
+  String get homeNewsAuthor => 'Екипът на фестивала';
+
+  @override
+  String get homeNewsCategory => 'Новини';
 }

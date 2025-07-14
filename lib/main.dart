@@ -3,9 +3,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'app.dart';
+import 'utils/restart_widget.dart';
 import 'providers/riverpod_setup.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'providers/theme_provider.dart';
+import 'providers/locale_provider.dart';
 import 'services/connectivity_service.dart';
 import 'services/analytics_service.dart';
 import 'services/lazy_loading_service.dart';
@@ -90,7 +92,7 @@ Future<void> main() async {
   await initializeAppServices();
 
   // Start app immediately with loading state
-  runApp(const BunaAppWithPermissions());
+  runApp(RestartWidget(child: const BunaAppWithPermissions()));
 
   // Request permissions after app starts
   requestFestivalPermissions();
@@ -158,12 +160,13 @@ class _BunaAppWithPermissionsState extends State<BunaAppWithPermissions> {
       child: Consumer(
         builder: (context, ref, _) {
           final themeMode = ref.watch(themeProvider);
+          final locale = ref.watch(localeProvider);
           return BunaApp(
             iosSizeMode: _iosSizeMode,
             iosSize: _iosSize,
             toggleIosSizeMode: _toggleIosSizeMode,
             themeMode: themeMode,
-            locale: const Locale('en'),
+            locale: locale,
           );
         },
       ),

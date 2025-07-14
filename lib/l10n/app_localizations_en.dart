@@ -27,8 +27,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onboardingDesc2 => 'Find art pieces, events, and more on the map.';
 
   @override
-  String get onboardingDesc3 =>
-      'Bookmark favorites, set reminders, and get news.';
+  String get onboardingDesc3 => 'Bookmark favorites, set reminders, and get news.';
 
   @override
   String get onboardingSkip => 'Skip';
@@ -148,36 +147,31 @@ class AppLocalizationsEn extends AppLocalizations {
   String get festivalUpdates => 'Festival Updates';
 
   @override
-  String get moreUpdatesComing =>
-      'More festival news and updates will be posted here as they become available. Follow us on social media for the latest announcements.';
+  String get moreUpdatesComing => 'More festival news and updates will be posted here as they become available. Follow us on social media for the latest announcements.';
 
   @override
   String get appDevelopmentStarted => 'Development of the Buna app has begun!';
 
   @override
-  String get appDevelopmentDescription =>
-      'We are excited to announce that development of the official Buna Festival mobile app has started! This app will provide festival-goers with real-time updates, venue information, event schedules, and much more. Stay tuned for more updates as we build the ultimate festival companion app.';
+  String get appDevelopmentDescription => 'We are excited to announce that development of the official Buna Festival mobile app has started! This app will provide festival-goers with real-time updates, venue information, event schedules, and much more. Stay tuned for more updates as we build the ultimate festival companion app.';
 
   @override
   String get permissionCameraTitle => 'Camera Permission';
 
   @override
-  String get permissionCameraMessage =>
-      'We need camera access for AR and QR features at the festival.';
+  String get permissionCameraMessage => 'We need camera access for AR and QR features at the festival.';
 
   @override
   String get permissionLocationTitle => 'Location Permission';
 
   @override
-  String get permissionLocationMessage =>
-      'We use your location to show you nearby venues and events.';
+  String get permissionLocationMessage => 'We use your location to show you nearby venues and events.';
 
   @override
   String get permissionNotificationTitle => 'Notification Permission';
 
   @override
-  String get permissionNotificationMessage =>
-      'Enable notifications to receive festival news and updates.';
+  String get permissionNotificationMessage => 'Enable notifications to receive festival news and updates.';
 
   @override
   String get allow => 'Allow';
@@ -202,4 +196,73 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get appSettings => 'App Settings';
+
+  @override
+  String get homeLocation => 'Varna | Bulgaria';
+
+  @override
+  String get homeTitle => 'BUNA | Vol. 3';
+
+  @override
+  String get homeSubtitle => 'FORUM FOR CONTEMPORARY ART';
+
+  @override
+  String get homeFeatured => 'Featured';
+
+  @override
+  String get homeQuickActions => 'Quick Actions';
+
+  @override
+  String get homeMap => 'Map';
+
+  @override
+  String get homeSchedule => 'Schedule';
+
+  @override
+  String get homeArtists => 'Artists';
+
+  @override
+  String get homeVenues => 'Venues';
+
+  @override
+  String get homeFeaturedArtist => 'Featured Artist';
+
+  @override
+  String get homeFeaturedArtistBio => 'Discover amazing artists at Buna Festival.';
+
+  @override
+  String get homeFeaturedArtistSpecialty => 'Contemporary Art';
+
+  @override
+  String get homeFeaturedVenue => 'Main Gallery';
+
+  @override
+  String get homeFeaturedVenueAddress => 'Central Varna';
+
+  @override
+  String get homeFeaturedVenueEvent => 'Art Exhibition';
+
+  @override
+  String get homeNextEvent => 'Opening Ceremony';
+
+  @override
+  String get homeNextEventVenue => 'Main Square';
+
+  @override
+  String get homeNextEventVenueAddress => 'Varna Center';
+
+  @override
+  String get homeNewsTitle => 'Festival Updates';
+
+  @override
+  String get homeNewsContent => 'Latest news and updates from Buna Festival.';
+
+  @override
+  String get homeNewsExcerpt => 'Stay updated with the latest festival news.';
+
+  @override
+  String get homeNewsAuthor => 'Festival Team';
+
+  @override
+  String get homeNewsCategory => 'News';
 }

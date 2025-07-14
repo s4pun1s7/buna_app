@@ -20,32 +20,28 @@ class ConnectivityService {
     await _checkConnectionStatus();
 
     // Listen for connectivity changes
-    _connectivity.onConnectivityChanged.listen((
-      List<ConnectivityResult> results,
-    ) {
-      _updateConnectionStatus(results);
+    _connectivity.onConnectivityChanged.listen((ConnectivityResult result) {
+      _updateConnectionStatus(result);
     });
   }
 
   /// Check current connection status
   Future<void> _checkConnectionStatus() async {
     try {
-      final results = await _connectivity.checkConnectivity();
-      _updateConnectionStatus(results);
+      final result = await _connectivity.checkConnectivity();
+      _updateConnectionStatus(result);
     } catch (e) {
       if (kDebugMode) {
         print('Error checking connectivity: $e');
       }
-      _updateConnectionStatus([ConnectivityResult.none]);
+      _updateConnectionStatus(ConnectivityResult.none);
     }
   }
 
   /// Update connection status and notify listeners
-  void _updateConnectionStatus(List<ConnectivityResult> results) {
+  void _updateConnectionStatus(ConnectivityResult result) {
     final wasConnected = _isConnected;
-    _isConnected =
-        results.isNotEmpty &&
-        results.any((result) => result != ConnectivityResult.none);
+    _isConnected = result != ConnectivityResult.none;
 
     if (wasConnected != _isConnected) {
       _connectionStatusController.add(_isConnected);
@@ -67,10 +63,7 @@ class ConnectivityService {
   /// Get connection type
   Future<String> getConnectionType() async {
     try {
-      final results = await _connectivity.checkConnectivity();
-      if (results.isEmpty) return 'None';
-
-      final result = results.first;
+      final result = await _connectivity.checkConnectivity();
       switch (result) {
         case ConnectivityResult.wifi:
           return 'WiFi';

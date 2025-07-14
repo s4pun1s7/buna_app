@@ -45,15 +45,23 @@ class _SearchWidgetState extends ConsumerState<SearchWidget> {
       ref.read(searchStateProvider.notifier).clearSearch();
       return;
     }
-
-    // Track search analytics
-    AnalyticsService.logSearch(query: query);
-
-    // Perform search
-    ref.read(searchStateProvider.notifier).search(query);
-
-    // Call callback if provided
-    widget.onSearch?.call(query);
+    try {
+      // Track search analytics
+      AnalyticsService.logSearch(query: query);
+      // Perform search
+      ref.read(searchStateProvider.notifier).search(query);
+      // Call callback if provided
+      widget.onSearch?.call(query);
+    } catch (e, stack) {
+      debugPrint('[SearchWidget] Error during search: \\${e.toString()}');
+      debugPrint('[SearchWidget] Stack: \\${stack.toString()}');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error performing search: \\${e.toString()}'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 
   void _onSearchChanged(String query) {

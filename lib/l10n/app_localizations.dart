@@ -62,8 +62,7 @@ import 'app_localizations_en.dart';
 /// be consistent with the languages listed in the AppLocalizations.supportedLocales
 /// property.
 abstract class AppLocalizations {
-  AppLocalizations(String locale)
-    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+  AppLocalizations(String locale) : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
@@ -71,8 +70,7 @@ abstract class AppLocalizations {
     return Localizations.of<AppLocalizations>(context, AppLocalizations);
   }
 
-  static const LocalizationsDelegate<AppLocalizations> delegate =
-      _AppLocalizationsDelegate();
+  static const LocalizationsDelegate<AppLocalizations> delegate = _AppLocalizationsDelegate();
 
   /// A list of this localizations delegate along with the default localizations
   /// delegates.
@@ -84,18 +82,17 @@ abstract class AppLocalizations {
   /// Additional delegates can be added by appending to this list in
   /// MaterialApp. This list does not have to be used at all if a custom list
   /// of delegates is preferred or required.
-  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
-      <LocalizationsDelegate<dynamic>>[
-        delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ];
+  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates = <LocalizationsDelegate<dynamic>>[
+    delegate,
+    GlobalMaterialLocalizations.delegate,
+    GlobalCupertinoLocalizations.delegate,
+    GlobalWidgetsLocalizations.delegate,
+  ];
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('bg'),
-    Locale('en'),
+    Locale('en')
   ];
 
   /// No description provided for @appTitle.
@@ -475,10 +472,147 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'App Settings'**
   String get appSettings;
+
+  /// No description provided for @homeLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Varna | Bulgaria'**
+  String get homeLocation;
+
+  /// No description provided for @homeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'BUNA | Vol. 3'**
+  String get homeTitle;
+
+  /// No description provided for @homeSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'FORUM FOR CONTEMPORARY ART'**
+  String get homeSubtitle;
+
+  /// No description provided for @homeFeatured.
+  ///
+  /// In en, this message translates to:
+  /// **'Featured'**
+  String get homeFeatured;
+
+  /// No description provided for @homeQuickActions.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick Actions'**
+  String get homeQuickActions;
+
+  /// No description provided for @homeMap.
+  ///
+  /// In en, this message translates to:
+  /// **'Map'**
+  String get homeMap;
+
+  /// No description provided for @homeSchedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Schedule'**
+  String get homeSchedule;
+
+  /// No description provided for @homeArtists.
+  ///
+  /// In en, this message translates to:
+  /// **'Artists'**
+  String get homeArtists;
+
+  /// No description provided for @homeVenues.
+  ///
+  /// In en, this message translates to:
+  /// **'Venues'**
+  String get homeVenues;
+
+  /// No description provided for @homeFeaturedArtist.
+  ///
+  /// In en, this message translates to:
+  /// **'Featured Artist'**
+  String get homeFeaturedArtist;
+
+  /// No description provided for @homeFeaturedArtistBio.
+  ///
+  /// In en, this message translates to:
+  /// **'Discover amazing artists at Buna Festival.'**
+  String get homeFeaturedArtistBio;
+
+  /// No description provided for @homeFeaturedArtistSpecialty.
+  ///
+  /// In en, this message translates to:
+  /// **'Contemporary Art'**
+  String get homeFeaturedArtistSpecialty;
+
+  /// No description provided for @homeFeaturedVenue.
+  ///
+  /// In en, this message translates to:
+  /// **'Main Gallery'**
+  String get homeFeaturedVenue;
+
+  /// No description provided for @homeFeaturedVenueAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Central Varna'**
+  String get homeFeaturedVenueAddress;
+
+  /// No description provided for @homeFeaturedVenueEvent.
+  ///
+  /// In en, this message translates to:
+  /// **'Art Exhibition'**
+  String get homeFeaturedVenueEvent;
+
+  /// No description provided for @homeNextEvent.
+  ///
+  /// In en, this message translates to:
+  /// **'Opening Ceremony'**
+  String get homeNextEvent;
+
+  /// No description provided for @homeNextEventVenue.
+  ///
+  /// In en, this message translates to:
+  /// **'Main Square'**
+  String get homeNextEventVenue;
+
+  /// No description provided for @homeNextEventVenueAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Varna Center'**
+  String get homeNextEventVenueAddress;
+
+  /// No description provided for @homeNewsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Festival Updates'**
+  String get homeNewsTitle;
+
+  /// No description provided for @homeNewsContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Latest news and updates from Buna Festival.'**
+  String get homeNewsContent;
+
+  /// No description provided for @homeNewsExcerpt.
+  ///
+  /// In en, this message translates to:
+  /// **'Stay updated with the latest festival news.'**
+  String get homeNewsExcerpt;
+
+  /// No description provided for @homeNewsAuthor.
+  ///
+  /// In en, this message translates to:
+  /// **'Festival Team'**
+  String get homeNewsAuthor;
+
+  /// No description provided for @homeNewsCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'News'**
+  String get homeNewsCategory;
 }
 
-class _AppLocalizationsDelegate
-    extends LocalizationsDelegate<AppLocalizations> {
+class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
   const _AppLocalizationsDelegate();
 
   @override
@@ -487,26 +621,25 @@ class _AppLocalizationsDelegate
   }
 
   @override
-  bool isSupported(Locale locale) =>
-      <String>['bg', 'en'].contains(locale.languageCode);
+  bool isSupported(Locale locale) => <String>['bg', 'en'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
 }
 
 AppLocalizations lookupAppLocalizations(Locale locale) {
+
+
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
-    case 'bg':
-      return AppLocalizationsBg();
-    case 'en':
-      return AppLocalizationsEn();
+    case 'bg': return AppLocalizationsBg();
+    case 'en': return AppLocalizationsEn();
   }
 
   throw FlutterError(
     'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
     'an issue with the localizations generation tool. Please file an issue '
     'on GitHub with a reproducible sample app and the gen-l10n configuration '
-    'that was used.',
+    'that was used.'
   );
 }
