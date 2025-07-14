@@ -59,7 +59,7 @@ class LazyLoadingService {
         await Future.delayed(const Duration(milliseconds: 100));
         return 'home_widgets_loaded';
       }),
-      
+
       loadComponent('navigation_data', () async {
         // Simulate preloading navigation data
         await Future.delayed(const Duration(milliseconds: 50));
@@ -106,7 +106,9 @@ class LazyLoadingService {
   Map<String, dynamic> getCacheStats() {
     return {
       'cached_components': _componentCache.length,
-      'loading_components': _loadingStates.values.where((loading) => loading).length,
+      'loading_components': _loadingStates.values
+          .where((loading) => loading)
+          .length,
       'total_memory_usage': _estimateMemoryUsage(),
     };
   }
@@ -120,16 +122,17 @@ class LazyLoadingService {
   /// Clean up unused components to free memory
   void cleanupUnusedComponents() {
     final now = DateTime.now();
-    final cutoff = now.subtract(const Duration(minutes: 10));
-    
+
     // In a real implementation, you'd track last access times
     // For now, just limit cache size
     if (_componentCache.length > 50) {
-      final keysToRemove = _componentCache.keys.take(_componentCache.length - 40).toList();
+      final keysToRemove = _componentCache.keys
+          .take(_componentCache.length - 40)
+          .toList();
       for (final key in keysToRemove) {
         _componentCache.remove(key);
       }
-      
+
       if (kDebugMode) {
         print('🧹 Cleaned up ${keysToRemove.length} unused components');
       }

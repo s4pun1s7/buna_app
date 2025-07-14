@@ -12,4 +12,4 @@ void main() {
     // Look for the dashboard title
     expect(find.text('Buna Festival Dashboard'), findsOneWidget);
   });
-} 
+}

@@ -33,7 +33,6 @@ class ApiService {
   // --- Free Public API Integrations ---
 
   static const String _newsApiKey = '';
-  static const String _harvardApiKey = '';
 
   /// Fetch news from NewsAPI.org (free API, requires API key)
   static Future<List<NewsArticle>> fetchPublicNews({

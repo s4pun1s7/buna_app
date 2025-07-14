@@ -18,10 +18,6 @@ import 'route_constants.dart';
 import 'route_guards.dart';
 import 'main_layout.dart';
 import 'route_observer.dart';
-import '../widgets/featured/index.dart';
-import '../features/venues/venues_data.dart' as venues_data;
-import '../models/schedule.dart';
-import '../models/festival_data.dart' as fest_data;
 import '../widgets/common/index.dart';
 import '../widgets/splash_screen.dart';
 // Import the optimized home screen
@@ -66,7 +62,8 @@ class AppRouter {
             GoRoute(
               path: AppRoutes.home,
               name: AppRoutes.homeName,
-              builder: (context, state) => const OptimizedHomeScreen(), // Use optimized version
+              builder: (context, state) =>
+                  const OptimizedHomeScreen(), // Use optimized version
             ),
           if (FeatureFlags.enableVenues)
             GoRoute(

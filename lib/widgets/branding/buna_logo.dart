@@ -22,7 +22,7 @@ class BunaLogo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final logoAsset = isDark ? 'assets/Buna pink.png' : 'assets/Buna blue.png';
+    final logoAsset = isDark ? 'assets/buna_pink.png' : 'assets/buna_blue.png';
 
     return Container(
       width: width,

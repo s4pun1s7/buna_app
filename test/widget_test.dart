@@ -7,10 +7,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:buna_app/widgets/featured_artist_card.dart';
-import 'package:buna_app/widgets/featured_venue_card.dart';
-import 'package:buna_app/widgets/next_event_card.dart';
-import 'package:buna_app/features/artists/artists_screen.dart';
+import 'package:buna_app/models/artist.dart';
+import 'package:buna_app/widgets/featured/featured_artist_card.dart';
+import 'package:buna_app/widgets/featured/featured_venue_card.dart';
+import 'package:buna_app/widgets/featured/next_event_card.dart';
 import 'package:buna_app/features/venues/venues_data.dart';
 import 'package:buna_app/models/schedule.dart';
 import 'package:buna_app/main.dart';
@@ -34,7 +34,7 @@ void main() {
       bio: 'A test artist bio.',
       specialty: 'Test Art',
       imageUrl: null,
-      website: null,
+      website: '', // Provide empty string instead of null
       socialMedia: const [],
     );
     await tester.pumpWidget(

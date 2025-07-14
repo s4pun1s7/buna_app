@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import '../../features/venues/venues_data.dart' as venues_data;
 import '../../models/schedule.dart';
 import '../../models/festival_data.dart' as fest_data;
+import '../../models/artist.dart';
 import '../featured/index.dart';
-import '../common/index.dart';
 
 /// Optimized home screen with lazy loading and performance optimizations
 class OptimizedHomeScreen extends StatelessWidget {
@@ -19,14 +18,10 @@ class OptimizedHomeScreen extends StatelessWidget {
           SliverAppBar(
             expandedHeight: 300,
             pinned: false,
-            flexibleSpace: FlexibleSpaceBar(
-              background: _buildHeroSection(),
-            ),
+            flexibleSpace: FlexibleSpaceBar(background: _buildHeroSection()),
           ),
           // Content sections
-          SliverToBoxAdapter(
-            child: _buildContent(context),
-          ),
+          SliverToBoxAdapter(child: _buildContent(context)),
         ],
       ),
     );
@@ -44,11 +39,7 @@ class OptimizedHomeScreen extends StatelessWidget {
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [
-                Colors.transparent,
-                Colors.black26,
-                Colors.black54,
-              ],
+              colors: [Colors.transparent, Colors.black26, Colors.black54],
             ),
           ),
         ),
@@ -117,11 +108,7 @@ class OptimizedHomeScreen extends StatelessWidget {
         return Container(
           color: const Color(0xFF1976D2), // Fallback blue color
           child: const Center(
-            child: Icon(
-              Icons.image,
-              size: 64,
-              color: Colors.white54,
-            ),
+            child: Icon(Icons.image, size: 64, color: Colors.white54),
           ),
         );
       },
@@ -135,25 +122,22 @@ class OptimizedHomeScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 24),
-          
+
           // Quick actions section
           _buildQuickActions(context),
-          
+
           const SizedBox(height: 32),
-          
+
           // Featured content section with lazy loading
           const Text(
             'Featured',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-            ),
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 16),
-          
+
           // Lazy-loaded dashboard widgets
           ..._buildDashboardWidgets(),
-          
+
           const SizedBox(height: 32),
         ],
       ),
@@ -170,10 +154,7 @@ class OptimizedHomeScreen extends StatelessWidget {
           children: [
             const Text(
               'Quick Actions',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-              ),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
             ),
             const SizedBox(height: 16),
             Row(
@@ -229,10 +210,7 @@ class OptimizedHomeScreen extends StatelessWidget {
           children: [
             Icon(icon, size: 32, color: const Color(0xFF1976D2)),
             const SizedBox(height: 4),
-            Text(
-              label,
-              style: const TextStyle(fontSize: 12),
-            ),
+            Text(label, style: const TextStyle(fontSize: 12)),
           ],
         ),
       ),
@@ -253,8 +231,8 @@ class OptimizedHomeScreen extends StatelessWidget {
         },
       ),
       const SizedBox(height: 16),
-      
-      // Featured Venue Card - Lazy loaded  
+
+      // Featured Venue Card - Lazy loaded
       FutureBuilder<Widget>(
         future: _buildFeaturedVenueCard(),
         builder: (context, snapshot) {
@@ -265,7 +243,7 @@ class OptimizedHomeScreen extends StatelessWidget {
         },
       ),
       const SizedBox(height: 16),
-      
+
       // Next Event Card - Lazy loaded
       FutureBuilder<Widget>(
         future: _buildNextEventCard(),
@@ -277,7 +255,7 @@ class OptimizedHomeScreen extends StatelessWidget {
         },
       ),
       const SizedBox(height: 16),
-      
+
       // News Dashboard Card - Lazy loaded
       FutureBuilder<Widget>(
         future: _buildNewsDashboardCard(),
@@ -294,7 +272,7 @@ class OptimizedHomeScreen extends StatelessWidget {
   Future<Widget> _buildFeaturedArtistCard() async {
     // Simulate async data loading
     await Future.delayed(const Duration(milliseconds: 100));
-    
+
     return FeaturedArtistCard(
       artist: Artist(
         id: '1',
@@ -302,13 +280,15 @@ class OptimizedHomeScreen extends StatelessWidget {
         country: 'International',
         bio: 'Discover amazing artists at Buna Festival.',
         specialty: 'Contemporary Art',
+        website: 'https://featuredartist.com',
+        socialMedia: ['https://instagram.com/featuredartist'],
       ),
     );
   }
 
   Future<Widget> _buildFeaturedVenueCard() async {
     await Future.delayed(const Duration(milliseconds: 150));
-    
+
     return FeaturedVenueCard(
       venue: venues_data.Venue(
         name: 'Main Gallery',
@@ -326,7 +306,7 @@ class OptimizedHomeScreen extends StatelessWidget {
 
   Future<Widget> _buildNextEventCard() async {
     await Future.delayed(const Duration(milliseconds: 200));
-    
+
     return NextEventCard(
       entry: ScheduleEntry(
         event: venues_data.Event(
@@ -345,7 +325,7 @@ class OptimizedHomeScreen extends StatelessWidget {
 
   Future<Widget> _buildNewsDashboardCard() async {
     await Future.delayed(const Duration(milliseconds: 250));
-    
+
     return NewsDashboardCard(
       article: fest_data.NewsArticle(
         id: 1,
@@ -365,7 +345,7 @@ class OptimizedHomeScreen extends StatelessWidget {
 /// Placeholder widget for loading dashboard components
 class _DashboardPlaceholder extends StatelessWidget {
   final double height;
-  
+
   const _DashboardPlaceholder({required this.height});
 
   @override
@@ -376,9 +356,7 @@ class _DashboardPlaceholder extends StatelessWidget {
         color: Colors.grey[200],
         borderRadius: BorderRadius.circular(8),
       ),
-      child: const Center(
-        child: CircularProgressIndicator(),
-      ),
+      child: const Center(child: CircularProgressIndicator()),
     );
   }
 }

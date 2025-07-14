@@ -19,7 +19,7 @@ class LogoTest extends StatelessWidget {
             // Test direct asset loading
             const Text('Direct Asset Test:'),
             Image.asset(
-              'assets/Buna blue.png',
+              'assets/buna_blue.png',
               width: 100,
               height: 100,
               cacheWidth: 100,
@@ -61,21 +61,21 @@ class LogoTest extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Image.asset(
-                  'assets/Buna black.png',
+                  'assets/buna_black.png',
                   width: 50,
                   height: 50,
                   cacheWidth: 50,
                   cacheHeight: 50,
                 ),
                 Image.asset(
-                  'assets/Buna blue.png',
+                  'assets/buna_blue.png',
                   width: 50,
                   height: 50,
                   cacheWidth: 50,
                   cacheHeight: 50,
                 ),
                 Image.asset(
-                  'assets/Buna pink.png',
+                  'assets/buna_pink.png',
                   width: 50,
                   height: 50,
                   cacheWidth: 50,

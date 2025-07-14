@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../navigation/app_router.dart';
 import '../../widgets/featured/index.dart';
-import '../../widgets/featured_artist_card.dart';
-import '../../widgets/featured_venue_card.dart';
-import '../../widgets/next_event_card.dart';
-import '../../widgets/news_dashboard_card.dart';
-import '../artists/artists_screen.dart';
-import '../venues/venues_data.dart' as venues_data;
-import '../../models/schedule.dart';
-import '../../models/festival_data.dart' as fest_data;
 import '../../widgets/branding/buna_logo.dart';
+import '../../models/artist.dart';
+import '../../models/schedule.dart';
+import '../../models/festival_data.dart';
+import '../../features/venues/venues_data.dart' as venues_data;
 
 /// Home screen with feature flag integration
 class HomeScreen extends ConsumerWidget {
@@ -40,7 +35,7 @@ class HomeScreen extends ConsumerWidget {
                   width: double.infinity,
                   height: 350,
                   child: Image.asset(
-                    'assets/Buna blue.png', // Replace with your preferred asset
+                    'assets/buna_blue.png', // Replace with your preferred asset
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -141,7 +136,6 @@ final featuredVenueProvider = Provider<venues_data.Venue?>((ref) {
   final venues = ref.watch(venuesProvider);
   return venues.isNotEmpty ? venues.first : null;
 });
-
 final scheduleProvider = Provider<List<ScheduleEntry>>((ref) {
   final venues = ref.watch(venuesProvider);
   final entries = <ScheduleEntry>[];
@@ -158,9 +152,9 @@ final nextEventProvider = Provider<ScheduleEntry?>((ref) {
   return schedule.isNotEmpty ? schedule.first : null;
 });
 
-final newsProvider = Provider<List<fest_data.NewsArticle>>(
+final newsProvider = Provider<List<NewsArticle>>(
   (ref) => [
-    fest_data.NewsArticle(
+    NewsArticle(
       id: 1,
       title: 'Festival Opening',
       content: 'Join us for the grand opening!',
@@ -173,7 +167,7 @@ final newsProvider = Provider<List<fest_data.NewsArticle>>(
     ),
   ],
 );
-final featuredNewsProvider = Provider<fest_data.NewsArticle?>((ref) {
+final featuredNewsProvider = Provider<NewsArticle?>((ref) {
   final news = ref.watch(newsProvider);
   return news.isNotEmpty ? news.first : null;
 });

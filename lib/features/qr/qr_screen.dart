@@ -611,35 +611,6 @@ class _QRScreenState extends ConsumerState<QRScreen> {
     );
   }
 
-  void _showScanHistory() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Scan History'),
-        content: SizedBox(
-          width: double.maxFinite,
-          child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: _scanHistory.length,
-            itemBuilder: (context, index) {
-              return ListTile(
-                leading: const Icon(Icons.qr_code),
-                title: Text(_scanHistory[index]),
-                subtitle: Text('Scanned ${index + 1} times ago'),
-              );
-            },
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Close'),
-          ),
-        ],
-      ),
-    );
-  }
-
   void _showInfoDialog(BuildContext context) {
     showDialog(
       context: context,

@@ -2,29 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../widgets/common/index.dart';
 import '../../services/error_handler.dart';
-
-/// Artist model for the festival
-class Artist {
-  final String id;
-  final String name;
-  final String country;
-  final String bio;
-  final String specialty;
-  final String? imageUrl;
-  final String? website;
-  final List<String> socialMedia;
-
-  const Artist({
-    required this.id,
-    required this.name,
-    required this.country,
-    required this.bio,
-    required this.specialty,
-    this.imageUrl,
-    this.website,
-    this.socialMedia = const [],
-  });
-}
+import '../../models/artist.dart';
 
 /// Artists screen showing all participating artists
 class ArtistsScreen extends ConsumerStatefulWidget {
@@ -102,7 +80,7 @@ class _ArtistsScreenState extends ConsumerState<ArtistsScreen> {
           specialty: 'Performance Art',
           imageUrl: null,
           website: 'https://marcusweber.art',
-          socialMedia: ['@marcusweber', '@performancemarcus'],
+          socialMedia: ['@marcusweber', '@performanceweber'],
         ),
         Artist(
           id: '5',

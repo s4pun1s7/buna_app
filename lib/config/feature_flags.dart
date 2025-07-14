@@ -131,9 +131,7 @@ class FeatureFlags {
       enableHome && enableVenues && enableMaps && enableNews && enableInfo;
 
   /// Check if all festival features are enabled
-  static bool get allFestivalFeaturesEnabled =>
-      enableSchedule &&
-      enableArtists;
+  static bool get allFestivalFeaturesEnabled => enableSchedule && enableArtists;
 
   /// Check if all interactive features are enabled
   static bool get allInteractiveFeaturesEnabled =>

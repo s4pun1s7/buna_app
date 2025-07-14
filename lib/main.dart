@@ -37,10 +37,10 @@ Future<void> initializeAppServices() async {
   try {
     // Initialize performance monitoring first
     PerformanceMonitoringService().initialize();
-    
+
     // Track app initialization start
     final appInitStart = DateTime.now();
-    
+
     // Initialize Firebase with platform-specific options
     if (kIsWeb) {
       await Firebase.initializeApp(
@@ -73,7 +73,6 @@ Future<void> initializeAppServices() async {
 
     // Track app launch after services are initialized
     AnalyticsService.logEvent(name: 'app_launch');
-    
   } catch (e) {
     if (kDebugMode) {
       print('⚠️ Service initialization error: $e');
@@ -85,12 +84,12 @@ Future<void> initializeAppServices() async {
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Initialize services asynchronously in background
+  await initializeAppServices();
+
   // Start app immediately with loading state
   runApp(const BunaAppWithPermissions());
 
-  // Initialize services asynchronously in background
-  initializeAppServices();
-  
   // Request permissions after app starts
   requestFestivalPermissions();
 }
@@ -104,13 +103,11 @@ class BunaAppWithPermissions extends StatefulWidget {
 }
 
 class _BunaAppWithPermissionsState extends State<BunaAppWithPermissions> {
-  bool _servicesInitialized = false;
-
   @override
   void initState() {
     super.initState();
     _checkServicesInitialization();
-    
+
     // Clean up lazy loading cache periodically
     _setupPeriodicCleanup();
   }
@@ -122,7 +119,7 @@ class _BunaAppWithPermissionsState extends State<BunaAppWithPermissions> {
     Future.delayed(const Duration(milliseconds: 500), () {
       if (mounted) {
         setState(() {
-          _servicesInitialized = true;
+          // Services initialized
         });
       }
     });

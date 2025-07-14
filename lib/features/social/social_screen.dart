@@ -344,7 +344,6 @@ class _SocialScreenState extends ConsumerState<SocialScreen>
 
   Widget _buildTimelineView() {
     final userAsync = ref.watch(userProvider);
-    final isAnonymous = userAsync.value != null && userAsync.value!.isAnonymous;
     if (_filteredPosts.isEmpty) {
       return _buildNoResults();
     }
@@ -373,7 +372,6 @@ class _SocialScreenState extends ConsumerState<SocialScreen>
       itemCount: trendingPosts.length,
       itemBuilder: (context, index) {
         final post = trendingPosts[index];
-        final engagement = post.likes + post.comments + post.shares;
 
         return _buildPostCard(post);
       },
@@ -410,12 +408,6 @@ class _SocialScreenState extends ConsumerState<SocialScreen>
         borderRadius: BorderRadius.circular(12),
         child: Builder(
           builder: (context) {
-            final scale = MediaQuery.textScaleFactorOf(context);
-            final userAsync = ref.read(userProvider);
-            final isAnonymous =
-                userAsync != null &&
-                userAsync.value != null &&
-                userAsync.value!.isAnonymous;
             return Padding(
               padding: const EdgeInsets.all(16),
               child: Column(
@@ -492,33 +484,11 @@ class _SocialScreenState extends ConsumerState<SocialScreen>
                       const Spacer(),
                       IconButton(
                         icon: const Icon(Icons.favorite_border),
-                        onPressed: isAnonymous
-                            ? () {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text(
-                                      'Please log in to use social features.',
-                                    ),
-                                    duration: Duration(seconds: 2),
-                                  ),
-                                );
-                              }
-                            : () => _toggleFavorite(post),
+                        onPressed: () => _toggleFavorite(post),
                       ),
                       IconButton(
                         icon: const Icon(Icons.share),
-                        onPressed: isAnonymous
-                            ? () {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text(
-                                      'Please log in to use social features.',
-                                    ),
-                                    duration: Duration(seconds: 2),
-                                  ),
-                                );
-                              }
-                            : () => _sharePost(post),
+                        onPressed: () => _sharePost(post),
                       ),
                     ],
                   ),
@@ -597,10 +567,7 @@ class _SocialScreenState extends ConsumerState<SocialScreen>
 
   void _showPostOptions(SocialPost post) {
     final userAsync = ref.read(userProvider);
-    final isAnonymous =
-        userAsync != null &&
-        userAsync.value != null &&
-        userAsync.value!.isAnonymous;
+    final isAnonymous = userAsync.value != null && userAsync.value!.isAnonymous;
     showModalBottomSheet(
       context: context,
       builder: (context) => Container(

@@ -79,12 +79,10 @@ flutter:
     - assets/buna_black.png
     - assets/buna_blue.png
     - assets/buna_pink.png
-    - assets/8.jpeg
+    - assets/8.jpeg       
     - assets/BUNA3_BlueStory.png
     - assets/BUNA3_PinkStory.png
     # Add WebP variants if they exist
-    - assets/BUNA3_BlueStory.webp
-    - assets/BUNA3_PinkStory.webp
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
