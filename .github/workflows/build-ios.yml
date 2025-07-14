@@ -4,7 +4,7 @@ name: Build Flutter iOS IPA
 'on':
   workflow_dispatch:
   push:
-    branches: [main]
+    branches: [ios]
 
 jobs:
   build-ios:
