@@ -84,7 +84,13 @@ flutter:
     - assets/8.jpeg       
     - assets/BUNA3_BlueStory.png
     - assets/BUNA3_PinkStory.png
-    # Add WebP variants if they exist
+    # WebP variants for optimized images
+    - assets/BUNA3_BlueStory_1200x1200.webp
+    - assets/BUNA3_BlueStory_600x600.webp
+    - assets/BUNA3_BlueStory_300x300.webp
+    - assets/BUNA3_PinkStory_1200x1200.webp
+    - assets/BUNA3_PinkStory_600x600.webp
+    - assets/BUNA3_PinkStory_300x300.webp
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

@@ -5,7 +5,6 @@ import '../../providers/locale_provider.dart';
 import '../../navigation/route_guards.dart';
 import '../../navigation/route_constants.dart';
 import '../../services/auth_service.dart';
-import '../../widgets/common/index.dart';
 
 class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
@@ -14,35 +13,11 @@ class OnboardingScreen extends ConsumerStatefulWidget {
   ConsumerState<OnboardingScreen> createState() => _OnboardingScreenState();
 }
 
-class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
-    with TickerProviderStateMixin {
+class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   String _selectedLanguage = 'en';
   bool _isLoading = false;
   String? _authError;
   final AuthService _authService = AuthService();
-
-  late final AnimationController _logoController;
-  late final Animation<double> _logoScale;
-
-  @override
-  void initState() {
-    super.initState();
-    _logoController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 700),
-    );
-    _logoScale = CurvedAnimation(
-      parent: _logoController,
-      curve: Curves.elasticOut,
-    );
-    _logoController.forward();
-  }
-
-  @override
-  void dispose() {
-    _logoController.dispose();
-    super.dispose();
-  }
 
   void _selectLanguage(String lang) {
     setState(() {
@@ -59,42 +34,13 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
       _authError = null;
     });
     try {
-      _showStatusBanner('Opening Google sign-in dialog...');
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (_) => const AnimatedLoadingDialog(message: 'Signing in...'),
-      );
-      _showStatusBanner('Waiting for Google authentication...');
       await _authService.signInWithGoogle();
-      _showStatusBanner('Google sign-in successful!');
-      if (mounted) Navigator.of(context).pop();
       await _completeOnboarding();
     } catch (e) {
-      if (mounted) {
-        Navigator.of(context).maybePop();
-        setState(() {
-          _isLoading = false;
-          _authError = 'Google sign-in failed. Please try again.';
-        });
-        _showStatusBanner('Google sign-in failed.');
-        showDialog(
-          context: context,
-          builder: (_) => AnimatedErrorDialog(
-            title: 'Sign-In Error',
-            message: _authError!,
-            onCancel: () {
-              Navigator.of(context).pop();
-              _hideStatusBanner();
-            },
-            onRetry: () {
-              Navigator.of(context).pop();
-              _hideStatusBanner();
-              _signInWithGoogle();
-            },
-          ),
-        );
-      }
+      setState(() {
+        _isLoading = false;
+        _authError = 'Google sign-in failed. Please try again.';
+      });
     }
   }
 
@@ -105,70 +51,13 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
       _authError = null;
     });
     try {
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (_) => const AnimatedLoadingDialog(message: 'Signing in...'),
-      );
       await _authService.signInAnonymously();
-      if (mounted) Navigator.of(context).pop();
       await _completeOnboarding();
     } catch (e) {
-      if (mounted) {
-        Navigator.of(context).maybePop();
-        setState(() {
-          _isLoading = false;
-          _authError = 'Anonymous sign-in failed. Please try again.';
-        });
-        showDialog(
-          context: context,
-          builder: (_) => AnimatedErrorDialog(
-            title: 'Sign-In Error',
-            message: _authError!,
-            onCancel: () => Navigator.of(context).pop(),
-            onRetry: () {
-              Navigator.of(context).pop();
-              _signInAnonymously();
-            },
-          ),
-        );
-      }
-    }
-  }
-
-  void _showStatusBanner(String message) {
-    if (mounted) {
-      ScaffoldMessenger.of(context).clearMaterialBanners();
-      final isDark = Theme.of(context).brightness == Brightness.dark;
-      ScaffoldMessenger.of(context).showMaterialBanner(
-        MaterialBanner(
-          content: Text(
-            message,
-            style: TextStyle(
-              color: isDark ? Colors.white : Colors.black,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          backgroundColor: isDark
-              ? const Color(0xFF333333)
-              : const Color(0xFFD6ECFF),
-          actions: [
-            TextButton(
-              onPressed: () => _hideStatusBanner(),
-              child: const Text('Dismiss'),
-              style: TextButton.styleFrom(
-                foregroundColor: isDark ? Colors.white : Colors.black,
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-  }
-
-  void _hideStatusBanner() {
-    if (mounted) {
-      ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
+      setState(() {
+        _isLoading = false;
+        _authError = 'Anonymous sign-in failed. Please try again.';
+      });
     }
   }
 
@@ -183,174 +72,188 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Welcome')),
-      body: Stack(
-        children: [
-          const AnimatedBackground(),
-          Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
+      appBar: null,
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        color: const Color(0xFF0052CC),
+        child: Stack(
+          children: [
+            // Blue logo in the top left corner
+            Positioned(
+              top: 24,
+              left: 24,
+              child: Image.asset(
+                'assets/buna_blue.png',
+                width: 64,
+                height: 64,
+                fit: BoxFit.contain,
+              ),
+            ),
+            // Pink geometric shape and number "3"
+            Positioned(
+              top: -40,
+              left: -30,
+              child: SizedBox(
+                width: 220,
+                height: 220,
+                child: Stack(
                   children: [
-                    ChoiceChip(
-                      label: const Text('English'),
-                      selected: _selectedLanguage == 'en',
-                      onSelected: (_) => _selectLanguage('en'),
+                    Container(
+                      width: 220,
+                      height: 220,
+                      decoration: BoxDecoration(
+                        color: Color(0xFFFF8EB4),
+                        shape: BoxShape.rectangle,
+                      ),
                     ),
-                    const SizedBox(width: 12),
-                    ChoiceChip(
-                      label: const Text('Български'),
-                      selected: _selectedLanguage == 'bg',
-                      onSelected: (_) => _selectLanguage('bg'),
+                    Positioned(
+                      top: 40,
+                      left: 40,
+                      child: Text(
+                        '3',
+                        style: TextStyle(
+                          fontSize: 100,
+                          color: Color(0xFFFF8EB4),
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'RobotoMono',
+                        ),
+                      ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 32),
-                ScaleTransition(
-                  scale: _logoScale,
-                  child: Image.asset(
-                    'assets/buna_blue.png',
-                    width: 110,
-                    height: 110,
-                    fit: BoxFit.contain,
+              ),
+            ),
+            // Event details and interactive elements
+            Positioned(
+              top: 240,
+              left: 32,
+              right: 32,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '3-8 Sept.2025',
+                    style: TextStyle(
+                      color: Color(0xFFFF8EB4),
+                      fontSize: 24,
+                      fontFamily: 'RobotoMono',
+                      fontWeight: FontWeight.w400,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 32),
-                TweenAnimationBuilder<double>(
-                  tween: Tween(begin: 0, end: 1),
-                  duration: const Duration(milliseconds: 500),
-                  builder: (context, value, child) {
-                    return Opacity(
-                      opacity: value,
-                      child: Transform.translate(
-                        offset: Offset(0, (1 - value) * 16),
-                        child: child,
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: 8),
+                    height: 2,
+                    color: Color(0xFFFF8EB4),
+                  ),
+                  Text(
+                    'BUNA | Vol.3',
+                    style: TextStyle(
+                      color: Color(0xFFFF8EB4),
+                      fontSize: 28,
+                      fontFamily: 'RobotoMono',
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: 8),
+                    height: 2,
+                    color: Color(0xFFFF8EB4),
+                  ),
+                  Text(
+                    'FORUM FOR\nCONTEMPORARY\nART',
+                    style: TextStyle(
+                      color: Color(0xFFFF8EB4),
+                      fontSize: 22,
+                      fontFamily: 'RobotoMono',
+                      fontWeight: FontWeight.w400,
+                      height: 1.2,
+                    ),
+                  ),
+                  const SizedBox(height: 32),
+                  // Language toggle
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ChoiceChip(
+                        label: const Text('English'),
+                        selected: _selectedLanguage == 'en',
+                        onSelected: (_) => _selectLanguage('en'),
+                        selectedColor: Color(0xFFFF8EB4),
+                        labelStyle: TextStyle(
+                          color: _selectedLanguage == 'en'
+                              ? Color(0xFF0052CC)
+                              : Color(0xFFFF8EB4),
+                          fontFamily: 'RobotoMono',
+                        ),
                       ),
-                    );
-                  },
-                  child: Text(
-                    'Welcome to Buna Festival',
-                    style: Theme.of(context).textTheme.headlineSmall,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                TweenAnimationBuilder<double>(
-                  tween: Tween(begin: 0, end: 1),
-                  duration: const Duration(milliseconds: 700),
-                  builder: (context, value, child) {
-                    return Opacity(
-                      opacity: value,
-                      child: Transform.translate(
-                        offset: Offset(0, (1 - value) * 16),
-                        child: child,
+                      const SizedBox(width: 12),
+                      ChoiceChip(
+                        label: const Text('Български'),
+                        selected: _selectedLanguage == 'bg',
+                        onSelected: (_) => _selectLanguage('bg'),
+                        selectedColor: Color(0xFFFF8EB4),
+                        labelStyle: TextStyle(
+                          color: _selectedLanguage == 'bg'
+                              ? Color(0xFF0052CC)
+                              : Color(0xFFFF8EB4),
+                          fontFamily: 'RobotoMono',
+                        ),
                       ),
-                    );
-                  },
-                  child: const Text(
-                    'Explore the festival, artists, and venues. Find art pieces, events, and more on the map. Bookmark favorites, set reminders, and get news.',
-                    textAlign: TextAlign.center,
+                    ],
                   ),
-                ),
-                const SizedBox(height: 32),
-                ElevatedButton(
-                  onPressed: _isLoading ? null : _signInWithGoogle,
-                  child: const Text('Continue with Google'),
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size.fromHeight(48),
-                    textStyle: const TextStyle(fontWeight: FontWeight.bold),
+                  const SizedBox(height: 32),
+                  // Sign-in buttons
+                  ElevatedButton(
+                    onPressed: _isLoading ? null : _signInWithGoogle,
+                    child: const Text('Continue with Google'),
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size.fromHeight(48),
+                      textStyle: const TextStyle(fontWeight: FontWeight.bold),
+                      backgroundColor: Color(0xFFFF8EB4),
+                      foregroundColor: Color(0xFF0052CC),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: _isLoading ? null : _signInAnonymously,
-                  child: _isLoading
-                      ? const Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            SizedBox(
-                              width: 16,
-                              height: 16,
-                              child: CircularProgressIndicator(strokeWidth: 2),
-                            ),
-                            SizedBox(width: 8),
-                            Text('Loading...'),
-                          ],
-                        )
-                      : const Text('Continue as Guest'),
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size.fromHeight(48),
-                    textStyle: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ),
-                if (_authError != null) ...[
                   const SizedBox(height: 16),
-                  Text(_authError!, style: const TextStyle(color: Colors.red)),
+                  ElevatedButton(
+                    onPressed: _isLoading ? null : _signInAnonymously,
+                    child: _isLoading
+                        ? Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              SizedBox(
+                                width: 16,
+                                height: 16,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              const Text('Loading...'),
+                            ],
+                          )
+                        : const Text('Continue as Guest'),
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size.fromHeight(48),
+                      textStyle: const TextStyle(fontWeight: FontWeight.bold),
+                      backgroundColor: Color(0xFFFF8EB4),
+                      foregroundColor: Color(0xFF0052CC),
+                    ),
+                  ),
+                  if (_authError != null) ...[
+                    const SizedBox(height: 16),
+                    Text(
+                      _authError!,
+                      style: const TextStyle(color: Colors.red),
+                    ),
+                  ],
                 ],
-              ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    );
-  }
-}
-
-class AnimatedBackground extends StatefulWidget {
-  const AnimatedBackground({super.key});
-
-  @override
-  State<AnimatedBackground> createState() => _AnimatedBackgroundState();
-}
-
-class _AnimatedBackgroundState extends State<AnimatedBackground>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 16),
-    )..repeat(reverse: true);
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _controller,
-      builder: (context, child) {
-        return Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                Color.lerp(
-                  Colors.pink.shade50,
-                  Colors.purple.shade50,
-                  _controller.value,
-                )!,
-                Color.lerp(
-                  Colors.blue.shade50,
-                  Colors.pink.shade100,
-                  1 - _controller.value,
-                )!,
-              ],
-            ),
-          ),
-        );
-      },
     );
   }
 }

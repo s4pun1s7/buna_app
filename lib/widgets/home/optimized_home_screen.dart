@@ -52,7 +52,7 @@ class OptimizedHomeScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Welcome to',
+                'Varna | Bulgaria',
                 style: TextStyle(
                   color: Colors.white70,
                   fontSize: 16,
@@ -60,7 +60,7 @@ class OptimizedHomeScreen extends StatelessWidget {
                 ),
               ),
               Text(
-                'Buna Festival',
+                'BUNA | Vol. 3',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 32,
@@ -76,7 +76,7 @@ class OptimizedHomeScreen extends StatelessWidget {
               ),
               SizedBox(height: 8),
               Text(
-                'Experience art, culture, and creativity in Varna',
+                'FORUM FOR CONTEMPORARY ART',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 16,
@@ -91,27 +91,33 @@ class OptimizedHomeScreen extends StatelessWidget {
   }
 
   Widget _buildBackgroundImage() {
-    return Image.asset(
-      'assets/BUNA3_BlueStory.png',
-      fit: BoxFit.cover,
-      // Use a loading placeholder to improve perceived performance
-      frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
-        if (wasSynchronouslyLoaded) return child;
-        return AnimatedOpacity(
-          opacity: frame == null ? 0 : 1,
-          duration: const Duration(milliseconds: 300),
-          child: child,
-        );
-      },
-      // Error fallback
-      errorBuilder: (context, error, stackTrace) {
-        return Container(
-          color: const Color(0xFF1976D2), // Fallback blue color
-          child: const Center(
-            child: Icon(Icons.image, size: 64, color: Colors.white54),
-          ),
-        );
-      },
+    // Use 8.jpeg as the home screen background, larger and aligned to the right
+    return Align(
+      alignment: Alignment.centerRight,
+      child: SizedBox(
+        height: 340, // Even larger height
+        width: 300, // Wider for more impact
+        child: Image.asset(
+          'assets/8.jpeg',
+          fit: BoxFit.cover,
+          frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+            if (wasSynchronouslyLoaded) return child;
+            return AnimatedOpacity(
+              opacity: frame == null ? 0 : 1,
+              duration: const Duration(milliseconds: 300),
+              child: child,
+            );
+          },
+          errorBuilder: (context, error, stackTrace) {
+            return Container(
+              color: const Color(0xFF1976D2),
+              child: const Center(
+                child: Icon(Icons.image, size: 64, color: Colors.white54),
+              ),
+            );
+          },
+        ),
+      ),
     );
   }
 

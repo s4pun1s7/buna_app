@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 class ThemeDark {
-  static const Color primaryColor = Color(0xFFFF8BA2);
-  static const Color secondaryColor = Color(0xFF0144BF);
-  static const Color accentColor = Color(0xFFFF6B9D);
-  static const Color surfaceColor = Color(0xFF1E1E1E);
+  static const Color primaryColor = Color(0xFF0052CC); // Blue
+  static const Color secondaryColor = Color(0xFF0052CC); // Blue
+  static const Color accentColor = Color(0xFF0144BF); // Blue
+  static const Color surfaceColor = Color(0xFF0052CC); // Blue
   static const Color errorColor = Color(0xFFE74C3C);
   static const Color successColor = Color(0xFF27AE60);
   static const Color warningColor = Color(0xFFF39C12);
@@ -23,9 +23,9 @@ class ThemeDark {
         onSecondary: Colors.white,
         onSurface: Colors.white,
       ),
-      scaffoldBackgroundColor: const Color(0xFF121212),
+      scaffoldBackgroundColor: surfaceColor,
       appBarTheme: const AppBarTheme(
-        backgroundColor: surfaceColor,
+        backgroundColor: Color(0xFF0052CC),
         foregroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
@@ -42,8 +42,8 @@ class ThemeDark {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: secondaryColor,
-          foregroundColor: Colors.white,
+          backgroundColor: Color(0xFF0052CC),
+          foregroundColor: Color(0xFFFF8EB4),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
           shape: RoundedRectangleBorder(
@@ -54,8 +54,8 @@ class ThemeDark {
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
-          foregroundColor: secondaryColor,
-          side: const BorderSide(color: secondaryColor, width: 2),
+          foregroundColor: Color(0xFFFF8EB4),
+          side: const BorderSide(color: Color(0xFF0052CC), width: 2),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
           shape: RoundedRectangleBorder(
@@ -65,7 +65,7 @@ class ThemeDark {
       ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
-          foregroundColor: secondaryColor,
+          foregroundColor: Color(0xFFFF8EB4),
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
         ),
@@ -101,7 +101,7 @@ class ThemeDark {
       ),
       chipTheme: ChipThemeData(
         backgroundColor: const Color(0xFF2A2A2A),
-        selectedColor: secondaryColor,
+        selectedColor: Color(0xFF0052CC),
         labelStyle: const TextStyle(
           fontWeight: FontWeight.w500,
           color: Colors.white,
@@ -109,6 +109,8 @@ class ThemeDark {
         secondaryLabelStyle: const TextStyle(color: Colors.black),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       ),
+      iconTheme: const IconThemeData(color: Color(0xFFFF8EB4)),
+      primaryIconTheme: const IconThemeData(color: Color(0xFFFF8EB4)),
       fontFamily: 'Roboto',
       useMaterial3: true,
     );

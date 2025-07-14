@@ -169,7 +169,8 @@ class ImageOptimizationService {
   /// Preload critical images for better performance
   static Future<void> preloadCriticalImages(BuildContext context) async {
     final imagesToPreload = [
-      'assets/BUNA3_BlueStory.png',
+      'assets/BUNA3_BlueStory_600x600.webp',
+      'assets/BUNA3_PinkStory_600x600.webp',
       'assets/buna_blue.png',
       'assets/buna_black.png',
     ];
@@ -186,18 +187,25 @@ class ImageOptimizationService {
   /// Get optimized asset path based on device pixel ratio
   static String getOptimizedAssetPath(String basePath, BuildContext context) {
     final devicePixelRatio = MediaQuery.of(context).devicePixelRatio;
-
-    // Use appropriate resolution variant
-    if (devicePixelRatio >= 3.0) {
-      final path3x = basePath.replaceAll('.', '_3x.');
-      // Check if 3x variant exists (in a real app, you'd check the asset bundle)
-      return path3x;
-    } else if (devicePixelRatio >= 2.0) {
-      final path2x = basePath.replaceAll('.', '_2x.');
-      // Check if 2x variant exists
-      return path2x;
+    // Use WebP variants for BUNA3 images
+    if (basePath.contains('BUNA3_BlueStory')) {
+      if (devicePixelRatio >= 3.0) {
+        return 'assets/BUNA3_BlueStory_1200x1200.webp';
+      } else if (devicePixelRatio >= 2.0) {
+        return 'assets/BUNA3_BlueStory_600x600.webp';
+      } else {
+        return 'assets/BUNA3_BlueStory_300x300.webp';
+      }
     }
-
+    if (basePath.contains('BUNA3_PinkStory')) {
+      if (devicePixelRatio >= 3.0) {
+        return 'assets/BUNA3_PinkStory_1200x1200.webp';
+      } else if (devicePixelRatio >= 2.0) {
+        return 'assets/BUNA3_PinkStory_600x600.webp';
+      } else {
+        return 'assets/BUNA3_PinkStory_300x300.webp';
+      }
+    }
     return basePath;
   }
 

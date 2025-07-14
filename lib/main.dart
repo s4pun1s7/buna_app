@@ -4,6 +4,8 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'app.dart';
 import 'providers/riverpod_setup.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'providers/theme_provider.dart';
 import 'services/connectivity_service.dart';
 import 'services/analytics_service.dart';
 import 'services/lazy_loading_service.dart';
@@ -151,14 +153,19 @@ class _BunaAppWithPermissionsState extends State<BunaAppWithPermissions> {
 
   @override
   Widget build(BuildContext context) {
-    // Build MaterialApp.router and use builder for overlay
+    // Use Consumer to watch themeProvider and pass to BunaApp
     return RiverpodApp(
-      child: BunaApp(
-        iosSizeMode: _iosSizeMode,
-        iosSize: _iosSize,
-        toggleIosSizeMode: _toggleIosSizeMode,
-        themeMode: ThemeMode.system, // Provide a default ThemeMode
-        locale: const Locale('en'), // Provide a default Locale
+      child: Consumer(
+        builder: (context, ref, _) {
+          final themeMode = ref.watch(themeProvider);
+          return BunaApp(
+            iosSizeMode: _iosSizeMode,
+            iosSize: _iosSize,
+            toggleIosSizeMode: _toggleIosSizeMode,
+            themeMode: themeMode,
+            locale: const Locale('en'),
+          );
+        },
       ),
     );
   }

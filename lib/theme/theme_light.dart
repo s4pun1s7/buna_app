@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 class ThemeLight {
-  static const Color primaryColor = Color(0xFFFF8BA2);
-  static const Color secondaryColor = Color(0xFF0144BF);
-  static const Color accentColor = Color(0xFFFF6B9D);
-  static const Color surfaceColor = Color.fromARGB(255, 255, 107, 157);
+  static const Color primaryColor = Color(0xFFFF8EB4); // Pink
+  static const Color secondaryColor = Color(0xFFFF8EB4); // Pink
+  static const Color accentColor = Color(0xFFFF8EB4); // Pink
+  static const Color surfaceColor = Color(0xFFFF8EB4); // Pink
   static const Color errorColor = Color(0xFFE74C3C);
   static const Color successColor = Color(0xFF27AE60);
   static const Color warningColor = Color(0xFFF39C12);
@@ -16,7 +16,7 @@ class ThemeLight {
         primary: primaryColor,
         secondary: secondaryColor,
         tertiary: accentColor,
-        surface: Colors.white,
+        surface: surfaceColor,
         error: errorColor,
         onPrimary: Colors.white,
         onSecondary: Colors.white,
@@ -25,7 +25,7 @@ class ThemeLight {
       ),
       scaffoldBackgroundColor: surfaceColor,
       appBarTheme: const AppBarTheme(
-        backgroundColor: secondaryColor,
+        backgroundColor: Color(0xFFFF8EB4),
         foregroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
@@ -42,8 +42,8 @@ class ThemeLight {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: secondaryColor,
-          foregroundColor: Colors.white,
+          backgroundColor: Color(0xFFFF8EB4),
+          foregroundColor: Color(0xFF0052CC),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
           shape: RoundedRectangleBorder(
@@ -54,9 +54,9 @@ class ThemeLight {
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
-          foregroundColor: secondaryColor,
+          foregroundColor: Color(0xFF0052CC),
           backgroundColor: Colors.white,
-          side: const BorderSide(color: secondaryColor, width: 2),
+          side: const BorderSide(color: Color(0xFFFF8EB4), width: 2),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
           shape: RoundedRectangleBorder(
@@ -66,7 +66,7 @@ class ThemeLight {
       ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
-          foregroundColor: secondaryColor,
+          foregroundColor: Color(0xFF0052CC),
           backgroundColor: Colors.white,
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
@@ -103,7 +103,7 @@ class ThemeLight {
       ),
       chipTheme: ChipThemeData(
         backgroundColor: Colors.grey.shade100,
-        selectedColor: secondaryColor,
+        selectedColor: Color(0xFFFF8EB4),
         labelStyle: const TextStyle(
           fontWeight: FontWeight.w500,
           color: Colors.black,

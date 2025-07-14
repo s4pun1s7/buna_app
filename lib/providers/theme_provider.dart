@@ -45,9 +45,15 @@ class ThemeNotifier extends StateNotifier<ThemeMode> {
 
   /// Toggle between light and dark mode
   Future<void> toggleTheme() async {
-    final newTheme = state == ThemeMode.light
-        ? ThemeMode.dark
-        : ThemeMode.light;
+    ThemeMode newTheme;
+    if (state == ThemeMode.light) {
+      newTheme = ThemeMode.dark;
+    } else if (state == ThemeMode.dark) {
+      newTheme = ThemeMode.light;
+    } else {
+      // If system, default to dark on first toggle
+      newTheme = ThemeMode.dark;
+    }
     await setTheme(newTheme);
   }
 
