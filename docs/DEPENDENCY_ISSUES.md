@@ -1,3 +1,4 @@
+Moved to docs/DEPENDENCY_ISSUES.md
 # Dependency Issue Notes
 
 The following dependencies are causing version conflicts in your Flutter project:

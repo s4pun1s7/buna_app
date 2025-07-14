@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:buna_app/widgets/loading_indicator.dart';
+import 'package:buna_app/widgets/common/index.dart';
 
 void main() {
   group('LoadingIndicator Widget', () {

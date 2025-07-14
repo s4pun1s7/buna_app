@@ -62,28 +62,6 @@ const venues = [
     ],
   ),
   Venue(
-    name: 'Behemoth',
-    address:
-        'Varna CenterOdesos, 37 Knyaginya Maria Luiza Blvd., 9000 Varna, Bulgaria',
-    latitude: 43.2072,
-    longitude: 27.9176,
-    events: [
-      Event(
-        name: 'ACOUSTIC SOULS & RAJA',
-        date: '2024-05-23',
-        time: '22:00 - 01:00',
-      ),
-      Event(
-        name: 'EDITION OF THE ARTIST AT PLAY IN VARNA',
-        date: '2024-05-26',
-        time: '19:30 - 23:00',
-      ),
-      Event(name: 'VOIN DE VOIN', date: '2024-05-26', time: '20:30 - 21:00'),
-      Event(name: 'PARTICLES', date: '2024-05-26', time: '21:30 - 22:00'),
-      Event(name: 'Dummy Event', date: '2024-06-01', time: '12:00 - 13:00'),
-    ],
-  ),
-  Venue(
     name: 'Largo Art Gallery',
     address: 'Varna CenterOdesos, ul. "Han Krum" 8, 9000 Varna, Bulgaria',
     latitude: 43.2076,

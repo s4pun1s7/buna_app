@@ -1,0 +1,32 @@
+---
+name: Build Flutter iOS IPA
+
+'on':
+  workflow_dispatch:
+  push:
+    branches: [ios]
+
+jobs:
+  build-ios:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Download Flutter SDK
+        run: |
+          wget https://storage.googleapis.com/flutter_infra_release/releases/stable/macos/flutter_macos_3.22.0-stable.zip
+          unzip flutter_macos_3.22.0-stable.zip
+          echo "$PWD/flutter/bin" >> $GITHUB_PATH
+      - name: Print Flutter version
+        run: flutter --version
+      - name: Print Dart version
+        run: flutter/bin/dart --version
+      - name: Install dependencies
+        run: flutter/bin/dart pub get
+      - name: Build iOS IPA
+        run: flutter build ipa --release
+      - name: Upload IPA artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: app-release.ipa
+          path: build/ios/ipa/*.ipa

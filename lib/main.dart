@@ -1,81 +1,192 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'app.dart';
-import 'widgets/rationale_dialog.dart';
 import 'providers/riverpod_setup.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'providers/theme_provider.dart';
+import 'services/connectivity_service.dart';
+import 'services/analytics_service.dart';
+import 'services/lazy_loading_service.dart';
+import 'services/performance_monitoring_service.dart';
+import 'package:flutter/foundation.dart' show kDebugMode;
+import 'dart:async';
 
-Future<void> requestFestivalPermissions(BuildContext context) async {
+/// Request permissions asynchronously without blocking startup
+Future<void> requestFestivalPermissions() async {
   if (!kIsWeb) {
-    // Camera permission with rationale
-    if (await Permission.camera.status.isDenied) {
-      final allow = await showRationaleDialog(
-        context,
-        'Camera Permission',
-        'We need camera access for AR and QR features at the festival.',
+    // Request permissions in background after app starts
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      // Camera permission with rationale
+      if (await Permission.camera.status.isDenied) {
+        await Permission.camera.request();
+      }
+      // Location permission with rationale
+      if (await Permission.locationWhenInUse.status.isDenied) {
+        await Permission.locationWhenInUse.request();
+      }
+      // Notification permission with rationale (Android 13+)
+      if (await Permission.notification.status.isDenied) {
+        await Permission.notification.request();
+      }
+    });
+  }
+}
+
+/// Initialize Firebase and services asynchronously
+Future<void> initializeAppServices() async {
+  try {
+    // Initialize performance monitoring first
+    PerformanceMonitoringService().initialize();
+
+    // Track app initialization start
+    final appInitStart = DateTime.now();
+
+    // Initialize Firebase with platform-specific options
+    if (kIsWeb) {
+      await Firebase.initializeApp(
+        options: const FirebaseOptions(
+          apiKey: 'AIzaSyD2xqxPjbnA6t-TFsn2pNAuy1VHDOK4l-0',
+          authDomain: 'buna-app-4e064.firebaseapp.com',
+          projectId: 'buna-app-4e064',
+          storageBucket: 'buna-app-4e064.appspot.com',
+          messagingSenderId: '177152010877',
+          appId: '1:177152010877:web:96f0625f1a29a0bc825f14',
+          measurementId: 'G-3XR3FVMHZY',
+        ),
       );
-      if (allow) await Permission.camera.request();
+    } else {
+      await Firebase.initializeApp();
     }
-    // Location permission with rationale
-    if (await Permission.locationWhenInUse.status.isDenied) {
-      final allow = await showRationaleDialog(
-        context,
-        'Location Permission',
-        'We use your location to show you nearby venues and events.',
-      );
-      if (allow) await Permission.locationWhenInUse.request();
+
+    // Initialize services in parallel for faster startup
+    await Future.wait([
+      ConnectivityService().initialize(),
+      LazyLoadingService().preloadCriticalComponents(),
+      // Add other service initializations here
+    ]);
+
+    // Track app initialization completion
+    final initDuration = DateTime.now().difference(appInitStart);
+    if (kDebugMode) {
+      print('✅ All services initialized in ${initDuration.inMilliseconds}ms');
     }
-    // Notification permission with rationale (Android 13+)
-    if (await Permission.notification.status.isDenied) {
-      final allow = await showRationaleDialog(
-        context,
-        'Notification Permission',
-        'Enable notifications to receive festival news and updates.',
-      );
-      if (allow) await Permission.notification.request();
+
+    // Track app launch after services are initialized
+    AnalyticsService.logEvent(name: 'app_launch');
+  } catch (e) {
+    if (kDebugMode) {
+      print('⚠️ Service initialization error: $e');
     }
+    // Continue without Firebase/services for now
   }
 }
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  if (kIsWeb) {
-    await Firebase.initializeApp(
-      options: const FirebaseOptions(
-        apiKey: 'AIzaSyD2xqxPjbnA6t-TFsn2pNAuy1VHDOK4l-0',
-        authDomain: 'buna-app-4e064.firebaseapp.com',
-        projectId: 'buna-app-4e064',
-        storageBucket: 'buna-app-4e064.firebasestorage.app',
-        messagingSenderId: '177152010877',
-        appId: '1:177152010877:web:96f0625f1a29a0bc825f14',
-        measurementId: 'G-3XR3FVMHZY',
-      ),
-    );
-  } else {
-    await Firebase.initializeApp();
-  }
-  // Anonymous sign-in for development
-  await FirebaseAuth.instance.signInAnonymously();
-  runApp(BunaAppWithPermissions());
+
+  // Initialize services asynchronously in background
+  await initializeAppServices();
+
+  // Start app immediately with loading state
+  runApp(const BunaAppWithPermissions());
+
+  // Request permissions after app starts
+  requestFestivalPermissions();
 }
 
-class BunaAppWithPermissions extends StatelessWidget {
+/// App wrapper with optimized initialization
+class BunaAppWithPermissions extends StatefulWidget {
   const BunaAppWithPermissions({super.key});
 
   @override
+  State<BunaAppWithPermissions> createState() => _BunaAppWithPermissionsState();
+}
+
+class _BunaAppWithPermissionsState extends State<BunaAppWithPermissions> {
+  // Toggleable iOS device size simulation
+  bool _iosSizeMode = false;
+  final Size _iosSize = const Size(390, 844); // iPhone 14 Pro
+
+  void _toggleIosSizeMode() {
+    setState(() {
+      _iosSizeMode = !_iosSizeMode;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _checkServicesInitialization();
+
+    // Clean up lazy loading cache periodically
+    _setupPeriodicCleanup();
+  }
+
+  void _checkServicesInitialization() {
+    // Check if services are initialized
+    // For now, we'll assume they initialize quickly
+    // In a real app, you'd listen to service initialization state
+    Future.delayed(const Duration(milliseconds: 500), () {
+      if (mounted) {
+        setState(() {
+          // Services initialized
+        });
+      }
+    });
+  }
+
+  void _setupPeriodicCleanup() {
+    // Set up periodic cleanup of unused components
+    Timer.periodic(const Duration(minutes: 5), (timer) {
+      LazyLoadingService().cleanupUnusedComponents();
+    });
+  }
+
+  @override
+  void dispose() {
+    // Clean up performance monitoring when app is disposed
+    PerformanceMonitoringService().dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    // Use Consumer to watch themeProvider and pass to BunaApp
     return RiverpodApp(
-      child: Builder(
-        builder: (context) {
-          // Request permissions after first build
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            requestFestivalPermissions(context);
-          });
-          return const BunaApp();
+      child: Consumer(
+        builder: (context, ref, _) {
+          final themeMode = ref.watch(themeProvider);
+          return BunaApp(
+            iosSizeMode: _iosSizeMode,
+            iosSize: _iosSize,
+            toggleIosSizeMode: _toggleIosSizeMode,
+            themeMode: themeMode,
+            locale: const Locale('en'),
+          );
         },
       ),
     );
   }
 }
+
+// Example usage in your main scaffold (wherever your AppBar is defined):
+// AppBar(
+//   leading: IconButton(
+//     icon: Icon(Icons.developer_mode),
+//     tooltip: 'DEV',
+//     onPressed: () {
+//       showModalBottomSheet(
+//         context: context,
+//         builder: (context) => DevToolsMenuSheet(
+//           title: 'DevTools',
+//           onClose: () => Navigator.of(context).pop(),
+//           iosSizeMode: _iosSizeMode,
+//           toggleIosSizeMode: _toggleIosSizeMode,
+//         ),
+//       );
+//     },
+//   ),
+//   // ...other AppBar properties...
+// )

@@ -7,6 +7,7 @@
 .buildlog/
 .history
 
+
 # Flutter repo-specific
 /bin/cache/
 /bin/internal/bootstrap.bat
@@ -150,3 +151,13 @@ pubspec.lock
 # Web
 web/.dart_tool/
 web/build/
+
+# --- Flutter Plugin Dependency Ignores ---
+# Ignore all generated plugin registrant files and ephemeral plugin files for all platforms
+**/generated_plugin_registrant.dart
+**/generated_plugin_registrant.*
+**/ephemeral/
+.flutter-plugins
+.flutter-plugins-dependencies
+
+goup.ps1

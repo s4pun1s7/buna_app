@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="360" height="640" viewBox="0 0 360 640" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="360" height="640" fill="#0052CC"/>
+  <polygon points="60,120 300,120 340,220 180,380 20,220" fill="#FF97B0"/>
+  <text x="110" y="250" font-family="'Space Mono', 'IBM Plex Mono', monospace" font-size="120" fill="#0052CC" font-weight="bold">3</text>
+  <text x="40" y="320" font-family="'Space Mono', 'IBM Plex Mono', monospace" font-size="28" fill="#FF97B0">3-8 Sept.2025</text>
+  <line x1="40" y1="330" x2="320" y2="330" stroke="#FF97B0" stroke-width="2"/>
+  <text x="40" y="370" font-family="'Space Mono', 'IBM Plex Mono', monospace" font-size="28" fill="#FF97B0">BUNA | Vol.3</text>
+  <line x1="40" y1="380" x2="320" y2="380" stroke="#FF97B0" stroke-width="2"/>
+  <text x="40" y="420" font-family="'Space Mono', 'IBM Plex Mono', monospace" font-size="28" fill="#FF97B0">FORUM FOR</text>
+  <text x="40" y="455" font-family="'Space Mono', 'IBM Plex Mono', monospace" font-size="28" fill="#FF97B0">CONTEMPORARY</text>
+  <text x="40" y="490" font-family="'Space Mono', 'IBM Plex Mono', monospace" font-size="28" fill="#FF97B0">ART</text>
+</svg>
