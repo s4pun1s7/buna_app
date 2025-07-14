@@ -18,6 +18,6 @@ jobs:
           flutter-version: '3.24.0'
           channel: 'stable'
       - name: Install dependencies
-        run: flutter pub get
+        run: $(dirname $(which flutter))/dart pub get
       - name: Build web app
         run: flutter build web --release
