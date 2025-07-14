@@ -39,8 +39,8 @@ jobs:
           export PATH="$PATH:/usr/lib/dart/bin"
       - name: Print Flutter version
         run: flutter --version
-      - name: Print Dart version
-        run: dart --version
+      - name: Print Dart version (Flutter SDK)
+        run: ${{ runner.tool_cache }}/flutter/3.24.0/x64/bin/dart --version
       - name: Clean cache
         run: flutter clean
       - name: Install dependencies
