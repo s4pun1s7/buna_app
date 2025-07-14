@@ -1,3 +1,4 @@
+Moved to docs/performance_optimization_report.md
 # Buna Festival App - Performance Optimization Report
 
 ## Executive Summary

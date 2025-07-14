@@ -1,3 +1,4 @@
+Moved to docs/AUDIT_UI_UX_REPORT.md
 # Buna App UI/UX Audit Report
 
 ## 1. Feature Screens

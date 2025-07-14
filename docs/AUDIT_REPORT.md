@@ -1,3 +1,4 @@
+Moved to docs/AUDIT_REPORT.md
 # Buna App Full Codebase Audit Report
 
 ## 1. Dead Code, TODOs, and Cleanup

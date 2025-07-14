@@ -27,8 +27,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onboardingDesc2 => 'Find art pieces, events, and more on the map.';
 
   @override
-  String get onboardingDesc3 =>
-      'Bookmark favorites, set reminders, and get news.';
+  String get onboardingDesc3 => 'Bookmark favorites, set reminders, and get news.';
 
   @override
   String get onboardingSkip => 'Skip';
@@ -148,40 +147,53 @@ class AppLocalizationsEn extends AppLocalizations {
   String get festivalUpdates => 'Festival Updates';
 
   @override
-  String get moreUpdatesComing =>
-      'More festival news and updates will be posted here as they become available. Follow us on social media for the latest announcements.';
+  String get moreUpdatesComing => 'More festival news and updates will be posted here as they become available. Follow us on social media for the latest announcements.';
 
   @override
   String get appDevelopmentStarted => 'Development of the Buna app has begun!';
 
   @override
-  String get appDevelopmentDescription =>
-      'We are excited to announce that development of the official Buna Festival mobile app has started! This app will provide festival-goers with real-time updates, venue information, event schedules, and much more. Stay tuned for more updates as we build the ultimate festival companion app.';
+  String get appDevelopmentDescription => 'We are excited to announce that development of the official Buna Festival mobile app has started! This app will provide festival-goers with real-time updates, venue information, event schedules, and much more. Stay tuned for more updates as we build the ultimate festival companion app.';
 
   @override
   String get permissionCameraTitle => 'Camera Permission';
 
   @override
-  String get permissionCameraMessage =>
-      'We need camera access for AR and QR features at the festival.';
+  String get permissionCameraMessage => 'We need camera access for AR and QR features at the festival.';
 
   @override
   String get permissionLocationTitle => 'Location Permission';
 
   @override
-  String get permissionLocationMessage =>
-      'We use your location to show you nearby venues and events.';
+  String get permissionLocationMessage => 'We use your location to show you nearby venues and events.';
 
   @override
   String get permissionNotificationTitle => 'Notification Permission';
 
   @override
-  String get permissionNotificationMessage =>
-      'Enable notifications to receive festival news and updates.';
+  String get permissionNotificationMessage => 'Enable notifications to receive festival news and updates.';
 
   @override
   String get allow => 'Allow';
 
   @override
   String get deny => 'Deny';
+
+  @override
+  String get devToolsMenu => 'DevTools Menu';
+
+  @override
+  String get hotReload => 'Hot Reload';
+
+  @override
+  String get showDebugInfo => 'Show Debug Info';
+
+  @override
+  String get iosSizeToggleOn => 'iOS Size: ON';
+
+  @override
+  String get iosSizeToggleOff => 'iOS Size: OFF';
+
+  @override
+  String get appSettings => 'App Settings';
 }

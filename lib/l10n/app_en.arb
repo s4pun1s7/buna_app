@@ -55,5 +55,11 @@
   "permissionNotificationTitle": "Notification Permission",
   "permissionNotificationMessage": "Enable notifications to receive festival news and updates.",
   "allow": "Allow",
-  "deny": "Deny"
+  "deny": "Deny",
+  "devToolsMenu": "DevTools Menu",
+  "hotReload": "Hot Reload",
+  "showDebugInfo": "Show Debug Info",
+  "iosSizeToggleOn": "iOS Size: ON",
+  "iosSizeToggleOff": "iOS Size: OFF",
+  "appSettings": "App Settings"
 }

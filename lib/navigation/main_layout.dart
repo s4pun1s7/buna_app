@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../widgets/navigation/index.dart';
+import '../widgets/devtools_menu_sheet.dart';
 import '../widgets/common/index.dart';
 import '../widgets/navigation/buna_nav_bar.dart';
 import '../widgets/navigation/buna_drawer.dart';
@@ -79,10 +80,29 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
     }
   }
 
+  Widget _buildDevToolsButton() {
+    return IconButton(
+      icon: const Icon(Icons.build), // Wrench-like icon
+      tooltip: 'DEV',
+      onPressed: () {
+        showModalBottomSheet(
+          context: context,
+          builder: (context) => DevToolsMenuSheet(
+            title: 'DevTools',
+            onClose: () => Navigator.of(context).pop(),
+            iosSizeMode: false, // Replace with actual state if needed
+            toggleIosSizeMode: () {}, // Replace with actual callback if needed
+          ),
+        );
+      },
+    );
+  }
+
   PreferredSizeWidget _buildAppBar() {
     return AppBar(
       title: _getTitle(),
       actions: [
+        _buildDevToolsButton(),
         _buildThemeToggle(),
         _buildLanguageToggle(),
         _buildMenuButton(),

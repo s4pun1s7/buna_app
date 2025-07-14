@@ -1,3 +1,4 @@
+Moved to docs/README_PERFORMANCE_OPTIMIZATIONS.md
 # Performance Optimizations for Buna Festival App
 
 This document outlines the comprehensive performance optimizations implemented to improve bundle size, load times, and runtime performance.

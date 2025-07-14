@@ -49,13 +49,13 @@ class FeatureFlags {
   static const bool enableQRScanner = true;
 
   /// Enable/disable AR experiences
-  static const bool enableAR = false;
+  static const bool enableAR = true;
 
   /// Enable/disable map gallery
   static const bool enableMapGallery = true;
 
   /// Enable/disable social feed
-  static const bool enableSocialFeed = false;
+  static const bool enableSocialFeed = true;
 
   // ===== SUPPORT FEATURE FLAGS =====
 

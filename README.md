@@ -1,3 +1,4 @@
+Moved to docs/README.md
 # Buna Festival App
 
 A cross-platform Flutter app for the Buna art festival, supporting Android, iOS, and Web. Features onboarding, Firebase integration, multi-language support (English/Bulgarian), venue management, interactive maps, and real-time news updates.

@@ -199,6 +199,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     ChoiceChip(
                       label: const Text('English'),
@@ -217,7 +218,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
                 ScaleTransition(
                   scale: _logoScale,
                   child: Image.asset(
-                    'assets/Buna blue.png',
+                    'assets/buna_blue.png',
                     width: 110,
                     height: 110,
                     fit: BoxFit.contain,

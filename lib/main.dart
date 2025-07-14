@@ -8,6 +8,7 @@ import 'services/connectivity_service.dart';
 import 'services/analytics_service.dart';
 import 'services/lazy_loading_service.dart';
 import 'services/performance_monitoring_service.dart';
+import 'widgets/buna_app_menus_overlay.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'dart:async';
 
@@ -103,6 +104,16 @@ class BunaAppWithPermissions extends StatefulWidget {
 }
 
 class _BunaAppWithPermissionsState extends State<BunaAppWithPermissions> {
+  // Toggleable iOS device size simulation
+  bool _iosSizeMode = false;
+  final Size _iosSize = const Size(390, 844); // iPhone 14 Pro
+
+  void _toggleIosSizeMode() {
+    setState(() {
+      _iosSizeMode = !_iosSizeMode;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -141,7 +152,35 @@ class _BunaAppWithPermissionsState extends State<BunaAppWithPermissions> {
 
   @override
   Widget build(BuildContext context) {
-    // Always return the app immediately - services initialize in background
-    return RiverpodApp(child: const BunaApp());
+    // Build MaterialApp.router and use builder for overlay
+    return RiverpodApp(
+      child: BunaApp(
+        iosSizeMode: _iosSizeMode,
+        iosSize: _iosSize,
+        toggleIosSizeMode: _toggleIosSizeMode,
+        themeMode: ThemeMode.system, // Provide a default ThemeMode
+        locale: const Locale('en'), // Provide a default Locale
+      ),
+    );
   }
 }
+
+// Example usage in your main scaffold (wherever your AppBar is defined):
+// AppBar(
+//   leading: IconButton(
+//     icon: Icon(Icons.developer_mode),
+//     tooltip: 'DEV',
+//     onPressed: () {
+//       showModalBottomSheet(
+//         context: context,
+//         builder: (context) => DevToolsMenuSheet(
+//           title: 'DevTools',
+//           onClose: () => Navigator.of(context).pop(),
+//           iosSizeMode: _iosSizeMode,
+//           toggleIosSizeMode: _toggleIosSizeMode,
+//         ),
+//       );
+//     },
+//   ),
+//   // ...other AppBar properties...
+// )

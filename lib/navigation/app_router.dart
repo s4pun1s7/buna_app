@@ -193,16 +193,32 @@ class AppRouter {
         builder: (context, state) {
           final venueId = state.pathParameters['id'];
           if (venueId == null || venueId.isEmpty) {
+            debugPrint(
+              '[ROUTE ERROR] VenueDetails: Missing venueId for uri: \'${state.uri}\'',
+            );
             return ErrorScreen(
               error: AppException('Venue ID is missing from the route.'),
               onRetry: () => context.go(AppRoutes.venues),
             );
           }
-          // TODO: Implement VenueDetailsScreen
-          return Scaffold(
-            appBar: AppBar(title: Text('Venue $venueId')),
-            body: Center(child: Text('Venue details for $venueId')),
-          );
+          try {
+            // TODO: Implement VenueDetailsScreen
+            debugPrint('[ROUTE] VenueDetails: Loaded venueId=$venueId');
+            return Scaffold(
+              appBar: AppBar(title: Text('Venue $venueId')),
+              body: Center(child: Text('Venue details for $venueId')),
+            );
+          } catch (e, st) {
+            debugPrint('[ROUTE ERROR] VenueDetails: $e\n$st');
+            return ErrorScreen(
+              error: AppException(
+                'Failed to load venue details.',
+                originalError: e,
+                stackTrace: st,
+              ),
+              onRetry: () => context.go(AppRoutes.venues),
+            );
+          }
         },
       ),
       GoRoute(
@@ -211,16 +227,32 @@ class AppRouter {
         builder: (context, state) {
           final eventId = state.pathParameters['id'];
           if (eventId == null || eventId.isEmpty) {
+            debugPrint(
+              '[ROUTE ERROR] EventDetails: Missing eventId for uri: \'${state.uri}\'',
+            );
             return ErrorScreen(
               error: AppException('Event ID is missing from the route.'),
               onRetry: () => context.go(AppRoutes.schedule),
             );
           }
-          // TODO: Implement EventDetailsScreen
-          return Scaffold(
-            appBar: AppBar(title: Text('Event $eventId')),
-            body: Center(child: Text('Event details for $eventId')),
-          );
+          try {
+            // TODO: Implement EventDetailsScreen
+            debugPrint('[ROUTE] EventDetails: Loaded eventId=$eventId');
+            return Scaffold(
+              appBar: AppBar(title: Text('Event $eventId')),
+              body: Center(child: Text('Event details for $eventId')),
+            );
+          } catch (e, st) {
+            debugPrint('[ROUTE ERROR] EventDetails: $e\n$st');
+            return ErrorScreen(
+              error: AppException(
+                'Failed to load event details.',
+                originalError: e,
+                stackTrace: st,
+              ),
+              onRetry: () => context.go(AppRoutes.schedule),
+            );
+          }
         },
       ),
       GoRoute(
@@ -229,25 +261,44 @@ class AppRouter {
         builder: (context, state) {
           final newsId = state.pathParameters['id'];
           if (newsId == null || newsId.isEmpty) {
+            debugPrint(
+              '[ROUTE ERROR] NewsDetails: Missing newsId for uri: \'${state.uri}\'',
+            );
             return ErrorScreen(
               error: AppException('News ID is missing from the route.'),
               onRetry: () => context.go(AppRoutes.news),
             );
           }
-          // TODO: Implement NewsDetailsScreen
-          return Scaffold(
-            appBar: AppBar(title: Text('News $newsId')),
-            body: Center(child: Text('News details for $newsId')),
-          );
+          try {
+            // TODO: Implement NewsDetailsScreen
+            debugPrint('[ROUTE] NewsDetails: Loaded newsId=$newsId');
+            return Scaffold(
+              appBar: AppBar(title: Text('News $newsId')),
+              body: Center(child: Text('News details for $newsId')),
+            );
+          } catch (e, st) {
+            debugPrint('[ROUTE ERROR] NewsDetails: $e\n$st');
+            return ErrorScreen(
+              error: AppException(
+                'Failed to load news details.',
+                originalError: e,
+                stackTrace: st,
+              ),
+              onRetry: () => context.go(AppRoutes.news),
+            );
+          }
         },
       ),
     ],
 
     // Global error handling
-    errorBuilder: (context, state) => ErrorScreen(
-      error: AppException('Route not found: ${state.uri}'),
-      onRetry: () => context.go(AppRoutes.home),
-    ),
+    errorBuilder: (context, state) {
+      debugPrint('[ROUTE ERROR] Route not found: ${state.uri}');
+      return ErrorScreen(
+        error: AppException('Route not found: ${state.uri}'),
+        onRetry: () => context.go(AppRoutes.home),
+      );
+    },
 
     // Route guards and redirects
     redirect: (context, state) => RouteGuards.handleRedirect(context, state),
