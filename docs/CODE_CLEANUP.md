@@ -162,23 +162,13 @@ This document outlines the comprehensive code cleanup performed on the Buna Fest
 
 ## 📋 Recommendations
 
-### Immediate Actions
-1. **Address remaining warnings** - Fix unused field in maps screen
-2. **Update deprecated calls** - Replace `withOpacity` with `withValues`
-3. **Add missing tests** - Improve test coverage
-
-### Future Improvements
-1. **Code documentation** - Add comprehensive comments
-2. **Performance optimization** - Profile and optimize slow areas
-3. **Accessibility** - Improve app accessibility features
-
-### Maintenance
-1. **Regular analysis** - Run `flutter analyze` regularly
-2. **Code reviews** - Implement code review process
-3. **Automated checks** - Set up CI/CD with linting
+All actionable items, best practices, and future improvements are now consolidated in [CLEANING_GUIDE.md](CLEANING_GUIDE.md). Please refer to that guide for:
+- Immediate actions and remaining warnings
+- Future improvements and code documentation
+- Maintenance, CI/CD, and code review processes
 
 ## 🎉 Conclusion
 
 The code cleanup successfully resolved all critical errors and significantly improved code quality. The app now compiles successfully and follows Flutter best practices. The remaining 37 issues are mostly informational suggestions that can be addressed incrementally without affecting functionality.
 
-The cleanup provides a solid foundation for future development and makes the codebase more maintainable and reliable. 
+For ongoing updates, checklists, and recommendations, see [CLEANING_GUIDE.md](CLEANING_GUIDE.md). The cleanup provides a solid foundation for future development and makes the codebase more maintainable and reliable.
