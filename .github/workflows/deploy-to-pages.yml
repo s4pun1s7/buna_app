@@ -12,6 +12,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Cache Flutter SDK
+        uses: actions/cache@v4
+        with:
+          path: |
+            /home/runner/.pub-cache
+            /home/runner/.cache/flutter
+          key: flutter-sdk-${{ runner.os }}-${{ hashFiles('**/pubspec.yaml') }}
+          restore-keys: |
+            flutter-sdk-${{ runner.os }}-
       - name: Remove system Dart from PATH
         run: |
           export PATH=$(echo $PATH | tr ':' '\n' | grep -v '/usr/lib/dart/bin' | paste -sd ':' -)
@@ -39,6 +48,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Cache Flutter SDK
+        uses: actions/cache@v4
+        with:
+          path: |
+            /home/runner/.pub-cache
+            /home/runner/.cache/flutter
+          key: flutter-sdk-${{ runner.os }}-${{ hashFiles('**/pubspec.yaml') }}
+          restore-keys: |
+            flutter-sdk-${{ runner.os }}-
       - name: Remove system Dart from PATH
         run: |
           export PATH=$(echo $PATH | tr ':' '\n' | grep -v '/usr/lib/dart/bin' | paste -sd ':' -)
