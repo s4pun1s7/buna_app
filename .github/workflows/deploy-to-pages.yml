@@ -15,21 +15,16 @@ jobs:
       - name: Remove system Dart from PATH
         run: |
           export PATH=$(echo $PATH | tr ':' '\n' | grep -v '/usr/lib/dart/bin' | paste -sd ':' -)
-      - name: Download Flutter SDK
+      - name: Upgrade Flutter SDK globally
         run: |
-          wget https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.22.0-stable.tar.xz
-          tar xf flutter_linux_3.22.0-stable.tar.xz
-          echo "$PWD/flutter/bin" >> $GITHUB_PATH
-          export PATH="$PWD/flutter/bin:$PATH"
+          sudo snap install flutter --classic
+          flutter upgrade
       - name: Print Flutter version
         run: flutter --version
-      - name: Force Flutter Dart in PATH
-        run: |
-          echo "$PWD/flutter/bin" > $GITHUB_PATH
-          export PATH="$PWD/flutter/bin:$PATH"
+      # Flutter is now globally available, no need to force PATH
       - name: Print Dart version (Flutter SDK)
-        run: flutter/bin/dart --version
+        run: flutter dart --version
       - name: Install dependencies
-        run: flutter/bin/dart pub get
+        run: flutter pub get
       - name: Build web app
         run: flutter build web --release
