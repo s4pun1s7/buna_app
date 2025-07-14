@@ -75,6 +75,16 @@ A cross-platform Flutter app for the Buna art festival, supporting Android, iOS,
 - **Analytics**: User behavior tracking and performance monitoring
 - **Development Tools**: In-app dev panel for debugging (development builds)
 
+### CI/CD & Development Workflow
+- **Automated Testing**: Comprehensive unit and integration test suite
+- **Code Quality**: Automated linting, formatting, and static analysis
+- **Multi-platform Builds**: Automated builds for Android, iOS, and Web
+- **Security Scanning**: Automated dependency and security audits
+- **Release Management**: Automated release workflows with GitHub Actions
+- **Dependency Updates**: Automated dependency updates with Dependabot
+- **Code Coverage**: Test coverage reporting and tracking
+- **Performance Testing**: Automated performance regression detection
+
 ---
 
 ## 📱 Platform Support

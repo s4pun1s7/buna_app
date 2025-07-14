@@ -163,3 +163,11 @@ web/build/
 
 .github/workflows/
 goup.ps1
+
+# CI/CD related
+test_results.json
+*.lcov
+.coverage/
+coverage/
+test/coverage/
+build/reports/

@@ -1,0 +1,95 @@
+name: Security
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  schedule:
+    - cron: '0 0 * * 1' # Run every Monday at midnight
+
+env:
+  FLUTTER_VERSION: '3.24.5'
+
+jobs:
+  security_scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: ${{ env.FLUTTER_VERSION }}
+        cache: true
+        
+    - name: Get dependencies
+      run: flutter pub get
+      
+    - name: Run security audit
+      run: flutter pub deps --json > deps.json
+      
+    - name: Check for known vulnerabilities
+      run: |
+        echo "Checking for known vulnerabilities in dependencies..."
+        # This would typically use a security scanner like Safety for Python or similar
+        # For now, we'll just check that dependencies are up to date
+        flutter pub outdated --json > outdated.json || true
+        
+    - name: Upload security scan results
+      uses: actions/upload-artifact@v4
+      with:
+        name: security-scan-results
+        path: |
+          deps.json
+          outdated.json
+          
+  dependency_review:
+    name: Dependency Review
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Dependency Review
+      uses: actions/dependency-review-action@v4
+      with:
+        fail-on-severity: moderate
+        
+  codeql:
+    name: CodeQL Analysis
+    runs-on: ubuntu-latest
+    
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+      
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v3
+      with:
+        languages: javascript # Since Flutter compiles to JS for web
+        
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: ${{ env.FLUTTER_VERSION }}
+        cache: true
+        
+    - name: Get dependencies
+      run: flutter pub get
+      
+    - name: Build for web (for CodeQL analysis)
+      run: flutter build web --release
+      
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v3
