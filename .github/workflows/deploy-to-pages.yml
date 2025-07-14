@@ -34,7 +34,6 @@ jobs:
         run: which dart
       - name: Remove system Dart SDK
         run: |
-          sudo apt-get remove -y dart
           sudo apt-get remove -y dart-sdk
           sudo rm -rf /usr/lib/dart
           sudo rm -rf /usr/lib/dart-sdk
