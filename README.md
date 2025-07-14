@@ -241,6 +241,32 @@ flutter build ios
 flutter build web
 ```
 
+### 🌐 GitHub Pages Deployment
+
+The app is configured for automatic deployment to GitHub Pages.
+
+#### Quick Start
+1. **Enable GitHub Pages** in repository settings (Settings → Pages → GitHub Actions)
+2. **Push to main branch** to trigger automatic deployment
+3. **Access the app** at: https://s4pun1s7.github.io/buna_app/
+
+#### Manual Deployment
+```sh
+# Build and check configuration
+./check-pages-config.sh
+
+# Build for GitHub Pages
+./deploy.sh
+```
+
+#### Configuration Files
+- `.github/workflows/deploy-to-pages.yml` - GitHub Actions workflow
+- `deploy.sh` - Manual deployment script
+- `check-pages-config.sh` - Configuration verification
+- `GITHUB_PAGES_DEPLOYMENT.md` - Detailed deployment guide
+
+For complete deployment instructions, see [GITHUB_PAGES_DEPLOYMENT.md](GITHUB_PAGES_DEPLOYMENT.md)
+
 ---
 
 ## 🤝 Contributing
