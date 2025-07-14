@@ -17,8 +17,8 @@ jobs:
           export PATH=$(echo $PATH | tr ':' '\n' | grep -v '/usr/lib/dart/bin' | paste -sd ':' -)
       - name: Download Flutter SDK
         run: |
-          wget https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.24.0-stable.tar.xz
-          tar xf flutter_linux_3.24.0-stable.tar.xz
+          wget https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.22.0-stable.tar.xz
+          tar xf flutter_linux_3.22.0-stable.tar.xz
           echo "$PWD/flutter/bin" >> $GITHUB_PATH
           export PATH="$PWD/flutter/bin:$PATH"
       - name: Print Flutter version

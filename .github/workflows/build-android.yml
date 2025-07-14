@@ -14,8 +14,8 @@ jobs:
         uses: actions/checkout@v4
       - name: Download Flutter SDK
         run: |
-          wget https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.24.0-stable.tar.xz
-          tar xf flutter_linux_3.24.0-stable.tar.xz
+          wget https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.22.0-stable.tar.xz
+          tar xf flutter_linux_3.22.0-stable.tar.xz
           echo "$PWD/flutter/bin" >> $GITHUB_PATH
       - name: Print Flutter version
         run: flutter --version
