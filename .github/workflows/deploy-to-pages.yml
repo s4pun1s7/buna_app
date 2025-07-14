@@ -12,12 +12,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Setup Flutter
-        uses: actions/setup-flutter@v2
-        with:
-          flutter-version: '3.24.0'
-          channel: 'stable'
+      - name: Download Flutter SDK
+        run: |
+          wget https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.24.0-stable.tar.xz
+          tar xf flutter_linux_3.24.0-stable.tar.xz
+          echo "$PWD/flutter/bin" >> $GITHUB_PATH
+      - name: Print Flutter version
+        run: flutter --version
+      - name: Print Dart version
+        run: flutter/bin/dart --version
       - name: Install dependencies
-        run: $(dirname $(which flutter))/dart pub get
+        run: flutter/bin/dart pub get
       - name: Build web app
         run: flutter build web --release
