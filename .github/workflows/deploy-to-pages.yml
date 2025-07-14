@@ -38,6 +38,8 @@ jobs:
             echo "Web build directory not found!"
             exit 1
           fi
+      - name: Add .nojekyll file
+        run: echo > build/web/.nojekyll
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
