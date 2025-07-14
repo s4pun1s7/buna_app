@@ -277,13 +277,13 @@ class BunaDrawer extends ConsumerWidget {
   Widget _buildSectionTitle(String title) {
     return Builder(
       builder: (context) {
-        final scale = MediaQuery.textScaleFactorOf(context);
+        final textScaler = MediaQuery.textScalerOf(context);
         return Padding(
           padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
           child: Text(
             title,
             style: TextStyle(
-              fontSize: 12 * scale,
+              fontSize: textScaler.scale(12),
               fontWeight: FontWeight.bold,
               color: Colors.grey,
             ),
