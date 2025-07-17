@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../config/app_config.dart';
 import 'package:buna_app/l10n/app_localizations.dart';
+import '../../widgets/navigation/buna_app_bar.dart';
 
 /// Feedback screen for collecting user feedback
 class FeedbackScreen extends ConsumerStatefulWidget {
@@ -81,9 +82,8 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.feedback),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+      appBar: BunaAppBar(
+        title: AppLocalizations.of(context)!.feedback,
         actions: [
           IconButton(
             icon: const Icon(Icons.info_outline),

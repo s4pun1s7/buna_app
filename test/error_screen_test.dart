@@ -8,7 +8,7 @@ void main() {
     testWidgets('displays default error message', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
-          home: Scaffold(body: ErrorScreen(error: AppException('Test error'))),
+          home: Scaffold(body: AppErrorWidget(message: 'Test error')),
         ),
       );
       expect(find.text('Test error'), findsOneWidget);
@@ -19,14 +19,14 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: ErrorScreen(
-              error: AppException('Custom error'),
+            body: AppErrorWidget(
+              message: 'Custom error',
               onRetry: () => retried = true,
             ),
           ),
         ),
       );
-      await tester.tap(find.text('Try Again'));
+      await tester.tap(find.text('Retry'));
       expect(retried, isTrue);
     });
   });

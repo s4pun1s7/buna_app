@@ -5,6 +5,7 @@ import '../../services/api_service.dart';
 import '../../widgets/common/index.dart';
 import '../../widgets/venue_event/index.dart';
 import '../../services/error_handler.dart';
+import '../../widgets/navigation/buna_app_bar.dart';
 
 /// Schedule screen showing all festival events in a timeline
 class ScheduleScreen extends ConsumerStatefulWidget {
@@ -130,9 +131,8 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Festival Schedule'),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+      appBar: BunaAppBar(
+        title: 'Festival Schedule',
         actions: [
           IconButton(
             icon: const Icon(Icons.info_outline),
@@ -151,7 +151,7 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen>
     }
 
     if (_error != null) {
-      return ErrorScreen(error: AppException(_error!), onRetry: _loadEvents);
+      return AppErrorWidget(message: _error, onRetry: _loadEvents);
     }
 
     if (_allEvents.isEmpty) {

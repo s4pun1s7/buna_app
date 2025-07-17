@@ -73,14 +73,11 @@ class _VenuesScreenState extends ConsumerState<VenuesScreen> {
           return const Center(child: CircularProgressIndicator());
         }
         if (snapshot.hasError) {
-          return ErrorScreen(
-            error: AppException('Failed to load venues.'),
-            onRetry: () {
-              setState(() {
-                _future = _simulateLoad();
-              });
-            },
-          );
+          return AppErrorWidget(message: 'Failed to load venues.', onRetry: () {
+            setState(() {
+              _future = _simulateLoad();
+            });
+          });
         }
         return ListView.separated(
           padding: const EdgeInsets.all(24),

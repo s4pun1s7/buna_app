@@ -102,10 +102,7 @@ class _NewsScreenState extends ConsumerState<NewsScreen> {
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stackTrace) {
           final appError = error as AppException;
-          return ErrorScreen(
-            error: appError,
-            onRetry: () => ref.read(newsStateProvider.notifier).refresh(),
-          );
+          return AppErrorWidget(message: appError.message, onRetry: () => ref.read(newsStateProvider.notifier).refresh());
         },
       ),
     );

@@ -217,16 +217,22 @@ class _MapsScreenState extends ConsumerState<MapsScreen> {
         // User location button
         Positioned(bottom: 200, right: 16, child: _buildUserLocationButton()),
 
-        // Venue list bottom sheet
-        Positioned(
-          bottom: 0,
-          left: 0,
-          right: 0,
-          child: _VenueListSheet(
-            venues: _getFilteredVenues(venues),
-            onVenueTap: _onMarkerTapped,
-            selectedVenue: _selectedVenue,
-          ),
+        // Venue list bottom sheet as DraggableScrollableSheet
+        DraggableScrollableSheet(
+          initialChildSize: 0.25,
+          minChildSize: 0.15,
+          maxChildSize: 0.6,
+          builder: (context, scrollController) {
+            return GestureDetector(
+              onVerticalDragUpdate: (_) {}, // Absorb drag events to prevent map scroll
+              child: _VenueListSheet(
+                venues: _getFilteredVenues(venues),
+                onVenueTap: _onMarkerTapped,
+                selectedVenue: _selectedVenue,
+                scrollController: scrollController,
+              ),
+            );
+          },
         ),
       ],
     );
@@ -319,17 +325,18 @@ class _VenueListSheet extends StatelessWidget {
   final List<Venue> venues;
   final Function(Venue) onVenueTap;
   final Venue? selectedVenue;
+  final ScrollController? scrollController;
 
   const _VenueListSheet({
     required this.venues,
     required this.onVenueTap,
     this.selectedVenue,
+    this.scrollController,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 200,
       decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
@@ -343,14 +350,24 @@ class _VenueListSheet extends StatelessWidget {
       ),
       child: Column(
         children: [
-          // Handle
-          Container(
-            margin: const EdgeInsets.only(top: 8),
-            width: 40,
-            height: 4,
-            decoration: BoxDecoration(
-              color: Colors.grey.withValues(alpha: 0.3),
-              borderRadius: BorderRadius.circular(2),
+          // Improved Handle
+          Padding(
+            padding: const EdgeInsets.only(top: 12, bottom: 8),
+            child: Center(
+              child: Container(
+                width: 48,
+                height: 6,
+                decoration: BoxDecoration(
+                  color: Colors.grey.withOpacity(0.4),
+                  borderRadius: BorderRadius.circular(3),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.08),
+                      blurRadius: 2,
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
 
@@ -388,6 +405,7 @@ class _VenueListSheet extends StatelessWidget {
                     ),
                   )
                 : ListView.builder(
+                    controller: scrollController,
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     itemCount: venues.length,
                     itemBuilder: (context, index) {

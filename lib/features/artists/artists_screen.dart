@@ -93,7 +93,7 @@ class _ArtistsScreenState extends ConsumerState<ArtistsScreen> {
     }
 
     if (_error != null) {
-      return ErrorScreen(error: AppException(_error!), onRetry: _loadArtists);
+      return AppErrorWidget(message: _error, onRetry: _loadArtists);
     }
 
     if (_artists.isEmpty) {

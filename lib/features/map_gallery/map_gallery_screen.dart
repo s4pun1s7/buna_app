@@ -5,6 +5,7 @@ import '../../services/error_handler.dart';
 import '../../providers/user_provider.dart';
 import 'map_gallery_service.dart';
 import 'package:buna_app/l10n/app_localizations.dart';
+import '../../widgets/navigation/buna_app_bar.dart';
 
 /// Map gallery item model
 class MapGalleryItem {
@@ -175,9 +176,8 @@ class _MapGalleryScreenState extends ConsumerState<MapGalleryScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.mapGallery),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+      appBar: BunaAppBar(
+        title: AppLocalizations.of(context)!.mapGallery,
         actions: [
           IconButton(
             icon: const Icon(Icons.map),
@@ -190,14 +190,7 @@ class _MapGalleryScreenState extends ConsumerState<MapGalleryScreen>
             tooltip: AppLocalizations.of(context)!.filterOptions,
           ),
         ],
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: [
-            Tab(icon: const Icon(Icons.grid_view), text: AppLocalizations.of(context)!.tabGrid),
-            Tab(icon: const Icon(Icons.list), text: AppLocalizations.of(context)!.tabList),
-            Tab(icon: const Icon(Icons.map), text: AppLocalizations.of(context)!.tabMap),
-          ],
-        ),
+        // bottom: TabBar(...)
       ),
       body: _buildBody(),
     );
@@ -209,10 +202,7 @@ class _MapGalleryScreenState extends ConsumerState<MapGalleryScreen>
     }
 
     if (_error != null) {
-      return ErrorScreen(
-        error: AppException(_error!),
-        onRetry: _loadMapGallery,
-      );
+      return AppErrorWidget(message: _error, onRetry: _loadMapGallery);
     }
 
     if (_allItems.isEmpty) {

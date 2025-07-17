@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../widgets/common/index.dart';
+import '../../widgets/navigation/buna_app_bar.dart';
 
 /// AR experience model
 class ARExperience {
@@ -253,9 +254,8 @@ class _ARScreenState extends ConsumerState<ARScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('AR Experiences'),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+      appBar: BunaAppBar(
+        title: 'AR Experiences',
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),

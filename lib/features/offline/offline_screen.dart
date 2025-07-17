@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../widgets/navigation/buna_app_bar.dart';
 
 class OfflineScreen extends StatelessWidget {
   final VoidCallback? onRetry;
@@ -7,9 +8,8 @@ class OfflineScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Offline'),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+      appBar: BunaAppBar(
+        title: 'Offline',
       ),
       body: Center(
         child: Padding(

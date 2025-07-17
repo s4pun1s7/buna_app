@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../widgets/common/index.dart';
 import '../../config/mock_data.dart';
 import 'package:buna_app/l10n/app_localizations.dart';
+import '../../widgets/navigation/buna_app_bar.dart';
 
 /// QR code scanner screen for festival interactions
 class QRScreen extends ConsumerStatefulWidget {
@@ -21,9 +22,8 @@ class _QRScreenState extends ConsumerState<QRScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.qrScanner),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+      appBar: BunaAppBar(
+        title: AppLocalizations.of(context)!.qrScanner,
         actions: [
           IconButton(
             icon: const Icon(Icons.info_outline),

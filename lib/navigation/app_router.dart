@@ -22,6 +22,7 @@ import '../widgets/common/index.dart';
 import '../widgets/splash_screen.dart';
 // Import the optimized home screen
 import '../widgets/home/optimized_home_screen.dart';
+import '../features/maps/maps_screen.dart';
 
 /// Main router configuration for the Buna Festival app
 class AppRouter {
@@ -183,6 +184,25 @@ class AppRouter {
               name: AppRoutes.featureFlagsName,
               builder: (context, state) => const FeatureFlagsScreen(),
             ),
+
+          // New feature routes
+          if (FeatureFlags.enableMaps)
+            GoRoute(
+              path: AppRoutes.maps,
+              name: AppRoutes.mapsName,
+              builder: (context, state) {
+                // Lazy load MapsScreen to reduce initial bundle size
+                return FutureBuilder(
+                  future: Future.value(const MapsScreen()),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      return snapshot.data ?? const _LoadingScreen();
+                    }
+                    return const _LoadingScreen();
+                  },
+                );
+              },
+            ),
         ],
       ),
 
@@ -196,10 +216,7 @@ class AppRouter {
             debugPrint(
               '[ROUTE ERROR] VenueDetails: Missing venueId for uri: \'${state.uri}\'',
             );
-            return ErrorScreen(
-              error: AppException('Venue ID is missing from the route.'),
-              onRetry: () => context.go(AppRoutes.venues),
-            );
+            return AppErrorWidget(message: 'Venue ID is missing from the route.', onRetry: () => context.go(AppRoutes.venues));
           }
           try {
             debugPrint('[ROUTE] VenueDetails: Loaded venueId=$venueId');
@@ -209,14 +226,7 @@ class AppRouter {
             );
           } catch (e, st) {
             debugPrint('[ROUTE ERROR] VenueDetails: $e\n$st');
-            return ErrorScreen(
-              error: AppException(
-                'Failed to load venue details.',
-                originalError: e,
-                stackTrace: st,
-              ),
-              onRetry: () => context.go(AppRoutes.venues),
-            );
+            return AppErrorWidget(message: 'Failed to load venue details.', onRetry: () => context.go(AppRoutes.venues));
           }
         },
       ),
@@ -229,10 +239,7 @@ class AppRouter {
             debugPrint(
               '[ROUTE ERROR] EventDetails: Missing eventId for uri: \'${state.uri}\'',
             );
-            return ErrorScreen(
-              error: AppException('Event ID is missing from the route.'),
-              onRetry: () => context.go(AppRoutes.schedule),
-            );
+            return AppErrorWidget(message: 'Event ID is missing from the route.', onRetry: () => context.go(AppRoutes.schedule));
           }
           try {
             debugPrint('[ROUTE] EventDetails: Loaded eventId=$eventId');
@@ -242,14 +249,7 @@ class AppRouter {
             );
           } catch (e, st) {
             debugPrint('[ROUTE ERROR] EventDetails: $e\n$st');
-            return ErrorScreen(
-              error: AppException(
-                'Failed to load event details.',
-                originalError: e,
-                stackTrace: st,
-              ),
-              onRetry: () => context.go(AppRoutes.schedule),
-            );
+            return AppErrorWidget(message: 'Failed to load event details.', onRetry: () => context.go(AppRoutes.schedule));
           }
         },
       ),
@@ -262,10 +262,7 @@ class AppRouter {
             debugPrint(
               '[ROUTE ERROR] NewsDetails: Missing newsId for uri: \'${state.uri}\'',
             );
-            return ErrorScreen(
-              error: AppException('News ID is missing from the route.'),
-              onRetry: () => context.go(AppRoutes.news),
-            );
+            return AppErrorWidget(message: 'News ID is missing from the route.', onRetry: () => context.go(AppRoutes.news));
           }
           try {
             debugPrint('[ROUTE] NewsDetails: Loaded newsId=$newsId');
@@ -275,14 +272,7 @@ class AppRouter {
             );
           } catch (e, st) {
             debugPrint('[ROUTE ERROR] NewsDetails: $e\n$st');
-            return ErrorScreen(
-              error: AppException(
-                'Failed to load news details.',
-                originalError: e,
-                stackTrace: st,
-              ),
-              onRetry: () => context.go(AppRoutes.news),
-            );
+            return AppErrorWidget(message: 'Failed to load news details.', onRetry: () => context.go(AppRoutes.news));
           }
         },
       ),
@@ -291,10 +281,7 @@ class AppRouter {
     // Global error handling
     errorBuilder: (context, state) {
       debugPrint('[ROUTE ERROR] Route not found: ${state.uri}');
-      return ErrorScreen(
-        error: AppException('Route not found: ${state.uri}'),
-        onRetry: () => context.go(AppRoutes.home),
-      );
+      return AppErrorWidget(message: 'Route not found: ${state.uri}', onRetry: () => context.go(AppRoutes.home));
     },
 
     // Route guards and redirects

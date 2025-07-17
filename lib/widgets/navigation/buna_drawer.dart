@@ -218,7 +218,7 @@ class BunaDrawer extends ConsumerWidget {
             context,
             icon: Icons.map,
             title: 'Map Gallery',
-            route: AppRoutes.maps,
+            route: AppRoutes.mapGallery,
           ),
         if (FeatureFlags.enableSocialFeed)
           _buildDrawerItem(
