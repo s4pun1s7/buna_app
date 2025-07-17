@@ -173,23 +173,3 @@ class _BunaAppWithPermissionsState extends State<BunaAppWithPermissions> {
     );
   }
 }
-
-// Example usage in your main scaffold (wherever your AppBar is defined):
-// AppBar(
-//   leading: IconButton(
-//     icon: Icon(Icons.developer_mode),
-//     tooltip: 'DEV',
-//     onPressed: () {
-//       showModalBottomSheet(
-//         context: context,
-//         builder: (context) => DevToolsMenuSheet(
-//           title: 'DevTools',
-//           onClose: () => Navigator.of(context).pop(),
-//           iosSizeMode: _iosSizeMode,
-//           toggleIosSizeMode: _toggleIosSizeMode,
-//         ),
-//       );
-//     },
-//   ),
-//   // ...other AppBar properties...
-// )

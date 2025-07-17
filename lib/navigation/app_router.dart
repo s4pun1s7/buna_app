@@ -202,7 +202,6 @@ class AppRouter {
             );
           }
           try {
-            // TODO: Implement VenueDetailsScreen
             debugPrint('[ROUTE] VenueDetails: Loaded venueId=$venueId');
             return Scaffold(
               appBar: AppBar(title: Text('Venue $venueId')),
@@ -236,7 +235,6 @@ class AppRouter {
             );
           }
           try {
-            // TODO: Implement EventDetailsScreen
             debugPrint('[ROUTE] EventDetails: Loaded eventId=$eventId');
             return Scaffold(
               appBar: AppBar(title: Text('Event $eventId')),
@@ -270,7 +268,6 @@ class AppRouter {
             );
           }
           try {
-            // TODO: Implement NewsDetailsScreen
             debugPrint('[ROUTE] NewsDetails: Loaded newsId=$newsId');
             return Scaffold(
               appBar: AppBar(title: Text('News $newsId')),

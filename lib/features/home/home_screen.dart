@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../widgets/featured/index.dart';
-import '../../widgets/branding/buna_logo.dart';
+import '../../widgets/branding/index.dart';
 import '../../models/artist.dart';
 import '../../models/schedule.dart';
 import '../../models/festival_data.dart';
@@ -60,8 +60,8 @@ class HomeScreen extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Add the BunaLogo at the top of the dashboard
-                  const Center(child: BunaLogo(width: 100, height: 100)),
+                  // Festival logo and branding
+                  const Center(child: BunaLogoWithText(logoSize: 80, textSize: 24)),
                   const SizedBox(height: 24),
                   if (artist != null) ...[
                     FeaturedArtistCard(
