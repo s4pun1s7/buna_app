@@ -7,7 +7,7 @@ class FeatureFlags {
   // ===== CORE FEATURES =====
 
   /// Enable/disable API integration
-  static const bool enableApi = false;
+  static const bool enableApi = true;
 
   /// Enable/disable Firebase integration
   static const bool enableFirebase = true;
