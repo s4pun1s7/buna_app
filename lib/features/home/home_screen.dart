@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../widgets/featured/index.dart';
+import '../../widgets/branding/index.dart';
 import '../../models/artist.dart';
 import '../../models/schedule.dart';
 import '../../models/festival_data.dart';
@@ -59,78 +61,41 @@ class HomeScreen extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Festival logo and branding
-                  Center(
-                    child: Column(
-                      children: [
-                        Icon(
-                          Icons.festival,
-                          size: 100,
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                        Text(
-                          'BUNA',
-                          style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  const Center(child: BunaLogoWithText(logoSize: 80, textSize: 24)),
                   const SizedBox(height: 24),
                   if (artist != null) ...[
-                    Card(
-                      child: ListTile(
-                        leading: Icon(Icons.person),
-                        title: Text('Featured Artist: ${artist.name}'),
-                        subtitle: Text(artist.specialty),
-                        trailing: Icon(Icons.arrow_forward),
-                        onTap: () {
-                          /* navigate to artist */
-                        },
-                      ),
+                    FeaturedArtistCard(
+                      artist: artist,
+                      onDetails: () {
+                        /* navigate to artist */
+                      },
                     ),
                     const SizedBox(height: 16),
                   ],
                   if (venue != null) ...[
-                    Card(
-                      child: ListTile(
-                        leading: Icon(Icons.location_on),
-                        title: Text('Featured Venue: ${venue.name}'),
-                        subtitle: Text(venue.address),
-                        trailing: Icon(Icons.arrow_forward),
-                        onTap: () {
-                          /* navigate to venue */
-                        },
-                      ),
+                    FeaturedVenueCard(
+                      venue: venue,
+                      onDetails: () {
+                        /* navigate to venue */
+                      },
                     ),
                     const SizedBox(height: 16),
                   ],
                   if (event != null) ...[
-                    Card(
-                      child: ListTile(
-                        leading: Icon(Icons.event),
-                        title: Text('Next Event: ${event.event.name}'),
-                        subtitle: Text('${event.event.date} • ${event.event.time}'),
-                        trailing: Icon(Icons.arrow_forward),
-                        onTap: () {
-                          /* navigate to event */
-                        },
-                      ),
+                    NextEventCard(
+                      entry: event,
+                      onDetails: () {
+                        /* navigate to event */
+                      },
                     ),
                     const SizedBox(height: 16),
                   ],
                   if (news != null) ...[
-                    Card(
-                      child: ListTile(
-                        leading: Icon(Icons.article),
-                        title: Text('Latest News: ${news.title}'),
-                        subtitle: Text(news.excerpt),
-                        trailing: Icon(Icons.arrow_forward),
-                        onTap: () {
-                          /* navigate to news */
-                        },
-                      ),
+                    NewsDashboardCard(
+                      article: news,
+                      onDetails: () {
+                        /* navigate to news */
+                      },
                     ),
                     const SizedBox(height: 16),
                   ],
