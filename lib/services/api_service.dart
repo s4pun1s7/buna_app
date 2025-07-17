@@ -2,16 +2,11 @@ import 'dart:convert';
 import 'dart:async';
 import 'package:http/http.dart' as http;
 import '../models/festival_data.dart';
+import '../models/artist.dart';
 import '../utils/debouncer.dart';
 import 'error_handler.dart';
 import 'mock_data_service.dart';
 import 'package:flutter/foundation.dart';
-
-// TODO: Move Artist model to its own file (lib/models/artist.dart)
-class Artist {
-  final String name;
-  Artist({required this.name});
-}
 
 /// API service for communicating with the Buna Festival website
 class ApiService {
@@ -86,15 +81,6 @@ class ApiService {
     } catch (e, stackTrace) {
       throw _errorHandler.handleError(e, stackTrace);
     }
-  }
-
-  /// Fetch artists from Harvard Art Museums API (free API, requires API key)
-  static Future<List<Artist>> fetchPublicArtists({
-    int page = 1,
-    int size = 5,
-  }) async {
-    // TODO: Replace with real implementation
-    return [];
   }
 
   /// Fetch news articles from the festival website

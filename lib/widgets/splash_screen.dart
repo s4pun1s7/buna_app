@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../navigation/app_router.dart';
-// TODO: Remove unused import if not needed
-import 'branding/index.dart';
 import '../providers/user_provider.dart';
 import '../services/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -79,8 +77,19 @@ class SplashScreen extends ConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // TODO: Remove or replace BunaLogoWithText with a valid widget or fallback
-            const BunaLogoWithText(logoSize: 80, textSize: 24),
+            Icon(
+              Icons.festival,
+              size: 80,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'BUNA',
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            ),
             const SizedBox(height: 16),
             Text('Loading...', style: Theme.of(context).textTheme.bodyLarge),
           ],
@@ -95,7 +104,6 @@ class SplashScreen extends ConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // TODO: Remove or replace BunaLogoWithText with a valid widget or fallback
             const SizedBox(height: 32),
             const Icon(Icons.error_outline, size: 64, color: Colors.red),
             const SizedBox(height: 16),

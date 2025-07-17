@@ -571,6 +571,3 @@ class _VenueDetailsSheet extends StatelessWidget {
     }
   }
 }
-
-// TODO: When google_maps_flutter_web supports AdvancedMarkerElement, migrate marker code to use it for web compatibility and future-proofing.
-// See: https://developers.google.com/maps/documentation/javascript/reference/advanced-markers

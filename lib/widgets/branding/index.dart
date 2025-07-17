@@ -1,1 +1,1 @@
-export 'buna_logo.dart';
+// Branding widgets will be implemented here in the future
