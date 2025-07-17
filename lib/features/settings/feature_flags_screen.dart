@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../config/feature_flags.dart';
 import '../../services/api_service.dart';
 import '../../services/cache_service.dart';
+import '../../widgets/navigation/buna_app_bar.dart';
 
 /// Feature flags management screen for development
 class FeatureFlagsScreen extends ConsumerStatefulWidget {
@@ -16,9 +17,8 @@ class _FeatureFlagsScreenState extends ConsumerState<FeatureFlagsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Feature Flags'),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+      appBar: BunaAppBar(
+        title: 'Feature Flags',
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
@@ -39,12 +39,7 @@ class _FeatureFlagsScreenState extends ConsumerState<FeatureFlagsScreen> {
                 );
               }
             },
-            tooltip: 'Clear Cache',
-          ),
-          IconButton(
-            icon: const Icon(Icons.info_outline),
-            onPressed: _showInfo,
-            tooltip: 'Info',
+            tooltip: 'Clear cache',
           ),
         ],
       ),
@@ -56,52 +51,15 @@ class _FeatureFlagsScreenState extends ConsumerState<FeatureFlagsScreen> {
     final cacheStats = ApiService.getCacheStats();
     return Column(
       children: [
-        _buildHeader(),
         Padding(
           padding: const EdgeInsets.all(8),
           child: Text('API Cache: ${cacheStats['total_entries']} entries'),
         ),
+        const SizedBox(height: 16),
+        _buildQuickActions(),
         Expanded(child: _buildFeatureFlagsList()),
         _buildSummary(),
       ],
-    );
-  }
-
-  Widget _buildHeader() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(
-                Icons.toggle_on,
-                size: 32,
-                color: Theme.of(context).primaryColor,
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Text(
-                  'Feature Flags',
-                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'Configure which features are enabled in the app. Changes require a restart to take effect.',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: Theme.of(context).colorScheme.outline,
-            ),
-          ),
-          const SizedBox(height: 16),
-          _buildQuickActions(),
-        ],
-      ),
     );
   }
 

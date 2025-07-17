@@ -6,6 +6,7 @@ import '../../models/artist.dart';
 import '../../models/schedule.dart';
 import '../../models/festival_data.dart';
 import '../../features/venues/venues_data.dart' as venues_data;
+import '../../widgets/navigation/buna_app_bar.dart';
 
 /// Home screen with feature flag integration
 class HomeScreen extends ConsumerWidget {
@@ -22,7 +23,7 @@ class HomeScreen extends ConsumerWidget {
     final ValueNotifier<double> offsetNotifier = ValueNotifier<double>(0);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Buna Festival Dashboard')),
+      appBar: const BunaAppBar(title: 'Buna Festival Dashboard'),
       body: Stack(
         children: [
           // Parallax background image
@@ -61,7 +62,9 @@ class HomeScreen extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Festival logo and branding
-                  const Center(child: BunaLogoWithText(logoSize: 80, textSize: 24)),
+                  const Center(
+                    child: BunaLogoWithText(logoSize: 80, textSize: 24),
+                  ),
                   const SizedBox(height: 24),
                   if (artist != null) ...[
                     FeaturedArtistCard(

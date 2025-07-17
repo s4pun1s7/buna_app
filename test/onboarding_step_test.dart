@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:buna_app/widgets/onboarding/onboarding_step.dart';
 
+import 'firebase_test_mocks.dart';
+
 void main() {
+  setUpAll(() async {
+    await setupFirebaseTestMocks();
+  });
   group('OnboardingStep Widget', () {
     testWidgets('displays title, description, and next button', (tester) async {
       bool pressed = false;

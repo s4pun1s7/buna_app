@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:buna_app/models/favorites_manager.dart';
+import '../../providers/favorites_provider.dart';
 import 'package:buna_app/widgets/common/index.dart';
 import 'venues_data.dart';
 import '../../services/error_handler.dart';
+import '../../widgets/navigation/buna_app_bar.dart';
 import '../../providers/user_provider.dart';
 
 class VenuesScreen extends ConsumerStatefulWidget {
@@ -34,7 +35,7 @@ class _VenuesScreenState extends ConsumerState<VenuesScreen> {
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (_) => Scaffold(
-            appBar: AppBar(title: Text(venue.name)),
+            appBar: const BunaAppBar(title: ''),
             body: GoogleMap(
               initialCameraPosition: CameraPosition(
                 target: LatLng(venue.latitude!, venue.longitude!),
@@ -63,7 +64,7 @@ class _VenuesScreenState extends ConsumerState<VenuesScreen> {
   }
 
   Widget _buildBody() {
-    final favorites = FavoritesManager();
+    final favorites = ref.watch(favoritesProvider);
     final userAsync = ref.watch(userProvider);
     final isAnonymous = userAsync.value != null && userAsync.value!.isAnonymous;
     return FutureBuilder(
@@ -73,11 +74,14 @@ class _VenuesScreenState extends ConsumerState<VenuesScreen> {
           return const Center(child: CircularProgressIndicator());
         }
         if (snapshot.hasError) {
-          return AppErrorWidget(message: 'Failed to load venues.', onRetry: () {
-            setState(() {
-              _future = _simulateLoad();
-            });
-          });
+          return AppErrorWidget(
+            message: 'Failed to load venues.',
+            onRetry: () {
+              setState(() {
+                _future = _simulateLoad();
+              });
+            },
+          );
         }
         return ListView.separated(
           padding: const EdgeInsets.all(24),
@@ -149,9 +153,7 @@ class _VenuesScreenState extends ConsumerState<VenuesScreen> {
                                     );
                                   }
                                 : () {
-                                    setState(() {
-                                      favorites.toggleVenueFavorite(venue);
-                                    });
+                                    favorites.toggleVenueFavorite(venue);
                                   },
                           ),
                           if (venue.latitude != null && venue.longitude != null)
@@ -225,12 +227,10 @@ class _VenuesScreenState extends ConsumerState<VenuesScreen> {
                                               );
                                             }
                                           : () {
-                                              setState(() {
-                                                favorites.toggleEventFavorite(
-                                                  venue,
-                                                  e,
-                                                );
-                                              });
+                                              favorites.toggleEventFavorite(
+                                                venue,
+                                                e,
+                                              );
                                             },
                                     ),
                                     const SizedBox(width: 2),

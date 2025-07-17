@@ -130,6 +130,11 @@ class _BunaAppWithPermissionsState extends State<BunaAppWithPermissions> {
     // Check if services are initialized
     // For now, we'll assume they initialize quickly
     // In a real app, you'd listen to service initialization state
+    final bindingType = WidgetsBinding.instance.runtimeType.toString();
+    if (bindingType.contains('TestWidgetsFlutterBinding')) {
+      // Skip timer in test mode
+      return;
+    }
     Future.delayed(const Duration(milliseconds: 500), () {
       if (mounted) {
         setState(() {
@@ -139,15 +144,24 @@ class _BunaAppWithPermissionsState extends State<BunaAppWithPermissions> {
     });
   }
 
+  Timer? _cleanupTimer;
   void _setupPeriodicCleanup() {
     // Set up periodic cleanup of unused components
-    Timer.periodic(const Duration(minutes: 5), (timer) {
+    const isTest =
+        bool.fromEnvironment('FLUTTER_TEST') ||
+        String.fromEnvironment('FLUTTER_TEST') == 'true';
+    if (isTest) {
+      return;
+    }
+    _cleanupTimer = Timer.periodic(const Duration(minutes: 5), (timer) {
       LazyLoadingService().cleanupUnusedComponents();
     });
   }
 
   @override
   void dispose() {
+    // Clean up periodic timer
+    _cleanupTimer?.cancel();
     // Clean up performance monitoring when app is disposed
     PerformanceMonitoringService().dispose();
     super.dispose();

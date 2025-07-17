@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:buna_app/providers/schedule_provider.dart';
 import 'package:buna_app/providers/favorites_provider.dart';
+import 'package:buna_app/widgets/navigation/buna_app_bar.dart';
 
 class ScheduleScreen extends ConsumerWidget {
   const ScheduleScreen({super.key});
@@ -13,7 +14,7 @@ class ScheduleScreen extends ConsumerWidget {
     final favMgr = ref.watch(favoritesProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Festival Schedule')),
+      appBar: const BunaAppBar(title: 'Festival Schedule'),
       body: scheduleAsync.when(
         data: (schedule) => ListView.separated(
           padding: const EdgeInsets.all(24),
