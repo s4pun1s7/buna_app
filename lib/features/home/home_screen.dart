@@ -35,7 +35,7 @@ class HomeScreen extends ConsumerWidget {
                   width: double.infinity,
                   height: 350,
                   child: Image.asset(
-                    'assets/buna_pink.png', // Replace with your preferred asset
+                    'assets/images/buna_pink.png', // Replace with your preferred asset
                     fit: BoxFit.cover,
                   ),
                 ),

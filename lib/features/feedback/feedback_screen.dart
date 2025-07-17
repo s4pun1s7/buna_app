@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../config/app_config.dart';
+import 'package:buna_app/l10n/app_localizations.dart';
 
 /// Feedback screen for collecting user feedback
 class FeedbackScreen extends ConsumerStatefulWidget {
@@ -15,20 +17,12 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
   final _emailController = TextEditingController();
   final _messageController = TextEditingController();
 
-  String _selectedCategory = 'General';
+  String _selectedCategory = AppConfig.feedbackCategories.first;
   int _rating = 0;
   bool _isSubmitting = false;
   bool _isSubmitted = false;
 
-  final List<String> _categories = [
-    'General',
-    'Event Feedback',
-    'Venue Feedback',
-    'App Feedback',
-    'Technical Issue',
-    'Suggestion',
-    'Complaint',
-  ];
+  final List<String> _categories = AppConfig.feedbackCategories;
 
   @override
   void dispose() {
@@ -66,7 +60,7 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error submitting feedback: $e'),
+            content: Text(AppLocalizations.of(context)!.errorSubmittingFeedback(e.toString())),
             backgroundColor: Colors.red,
           ),
         );
@@ -79,7 +73,7 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
     _emailController.clear();
     _messageController.clear();
     setState(() {
-      _selectedCategory = 'General';
+      _selectedCategory = AppConfig.feedbackCategories.first;
       _rating = 0;
     });
   }
@@ -88,7 +82,7 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Feedback'),
+        title: Text(AppLocalizations.of(context)!.feedback),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         actions: [
           IconButton(
@@ -142,18 +136,18 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
           Icons.feedback,
           size: 48,
           color: Theme.of(context).primaryColor,
-          semanticLabel: 'Feedback',
+          semanticLabel: AppLocalizations.of(context)!.feedback,
         ),
         const SizedBox(height: 16),
         Text(
-          'Share Your Feedback',
+          AppLocalizations.of(context)!.shareYourFeedback,
           style: Theme.of(
             context,
           ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 8),
         Text(
-          'Help us improve the Buna Festival experience by sharing your thoughts, suggestions, or reporting any issues.',
+          AppLocalizations.of(context)!.feedbackHelpText,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             color: Theme.of(context).colorScheme.outline,
           ),
@@ -167,7 +161,7 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Category',
+          AppLocalizations.of(context)!.category,
           style: Theme.of(
             context,
           ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
@@ -251,7 +245,7 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
     return TextFormField(
       controller: _emailController,
       decoration: InputDecoration(
-        labelText: 'Email (Optional)',
+        labelText: AppLocalizations.of(context)!.emailOptional,
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
         filled: true,
         fillColor: Theme.of(context).colorScheme.surface,
@@ -261,7 +255,7 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
       validator: (value) {
         if (value != null && value.isNotEmpty) {
           if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
-            return 'Please enter a valid email address';
+            return AppLocalizations.of(context)!.invalidEmail;
           }
         }
         return null;
@@ -273,7 +267,7 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
     return TextFormField(
       controller: _messageController,
       decoration: InputDecoration(
-        labelText: 'Message *',
+        labelText: AppLocalizations.of(context)!.messageRequired,
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
         filled: true,
         fillColor: Theme.of(context).colorScheme.surface,
@@ -283,10 +277,10 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
       maxLines: 5,
       validator: (value) {
         if (value == null || value.trim().isEmpty) {
-          return 'Please enter your message';
+          return AppLocalizations.of(context)!.enterMessage;
         }
         if (value.trim().length < 10) {
-          return 'Message must be at least 10 characters long';
+          return AppLocalizations.of(context)!.messageTooShort;
         }
         return null;
       },
@@ -331,28 +325,26 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Need Immediate Help?',
+              AppLocalizations.of(context)!.needImmediateHelp,
               style: Theme.of(
                 context,
               ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
-            const Text(
-              'For urgent issues during the festival, please contact our support team:',
-            ),
+            Text(AppLocalizations.of(context)!.urgentSupportText),
             const SizedBox(height: 12),
-            _buildContactItem(Icons.phone, '+359 52 123 456', 'Call Support'),
+            _buildContactItem(Icons.phone, AppConfig.supportPhone, AppLocalizations.of(context)!.callSupport),
             const SizedBox(height: 8),
             _buildContactItem(
               Icons.email,
-              'support@bunafestival.com',
-              'Email Support',
+              AppConfig.supportEmail,
+              AppLocalizations.of(context)!.emailSupport,
             ),
             const SizedBox(height: 8),
             _buildContactItem(
               Icons.location_on,
-              'Festival Info Desk',
-              'Visit in person',
+              AppConfig.supportLocation,
+              AppLocalizations.of(context)!.visitInPerson,
             ),
           ],
         ),
@@ -392,18 +384,18 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
             Icons.check_circle,
             color: Colors.green,
             size: 64,
-            semanticLabel: 'Success',
+            semanticLabel: AppLocalizations.of(context)!.success,
           ),
           const SizedBox(height: 16),
           Text(
-            'Thank you for your feedback!',
+            AppLocalizations.of(context)!.thankYouFeedback,
             style: Theme.of(
               context,
             ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
           Text(
-            'We appreciate your input and will use it to improve the festival experience.',
+            AppLocalizations.of(context)!.feedbackAppreciation,
             style: Theme.of(context).textTheme.bodyMedium,
             textAlign: TextAlign.center,
           ),
@@ -416,12 +408,12 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('About Feedback'),
-        content: const Text('This feature is coming soon...'),
+        title: Text(AppLocalizations.of(context)!.aboutFeedback),
+        content: Text(AppLocalizations.of(context)!.featureComingSoon),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Close'),
+            child: Text(AppLocalizations.of(context)!.close),
           ),
         ],
       ),

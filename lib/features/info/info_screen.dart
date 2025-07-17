@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../config/assets.dart';
+import '../../config/app_config.dart';
+import 'package:buna_app/l10n/app_localizations.dart';
 
 class InfoScreen extends StatelessWidget {
   const InfoScreen({super.key});
@@ -28,7 +31,7 @@ class InfoScreen extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(16),
                 child: Image.asset(
-                  'assets/images/buna_logo.png',
+                  AppAssets.bunaBlack,
                   height: 100,
                   cacheWidth: 200,
                   fit: BoxFit.contain,
@@ -38,7 +41,7 @@ class InfoScreen extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               Text(
-                'Buna Forum',
+                AppLocalizations.of(context)!.bunaForum,
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.bold,
                   color: colorScheme.primary,
@@ -147,13 +150,15 @@ class InfoScreen extends StatelessWidget {
                 const SizedBox(height: 12),
                 ListTile(
                   leading: const Icon(Icons.email),
-                  title: const Text('forum@bunavarna.com'),
-                  onTap: () => _launchUrl('mailto:forum@bunavarna.com'),
+                  title: Text(AppConfig.supportEmail),
+                  subtitle: Text(AppLocalizations.of(context)!.emailSupport),
+                  onTap: () => _launchUrl('mailto:${AppConfig.supportEmail}'),
                 ),
                 ListTile(
                   leading: const Icon(Icons.phone),
-                  title: const Text('088 9044007 (Ralitsa)'),
-                  onTap: () => _launchUrl('tel:+3590889044007'),
+                  title: Text(AppConfig.supportPhone),
+                  subtitle: Text(AppLocalizations.of(context)!.callSupport),
+                  onTap: () => _launchUrl('tel:${AppConfig.supportPhone}'),
                 ),
               ],
             ),

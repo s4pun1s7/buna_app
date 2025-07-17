@@ -265,4 +265,211 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get homeNewsCategory => 'News';
+
+  @override
+  String get artistCountryInternational => 'International';
+
+  @override
+  String get bunaVol3 => 'BUNA | Vol.3';
+
+  @override
+  String get forumForContemporaryArt => 'FORUM FOR CONTEMPORARY ART';
+
+  @override
+  String get festivalDates => '3-8 Sept.2025';
+
+  @override
+  String get english => 'English';
+
+  @override
+  String get bulgarian => 'Български';
+
+  @override
+  String get signInGoogle => 'Google';
+
+  @override
+  String get signInGuest => 'Guest';
+
+  @override
+  String get feedback => 'Feedback';
+
+  @override
+  String get shareYourFeedback => 'Share Your Feedback';
+
+  @override
+  String get feedbackHelpText => 'Help us improve the Buna Festival experience by sharing your thoughts, suggestions, or reporting any issues.';
+
+  @override
+  String get category => 'Category';
+
+  @override
+  String get emailOptional => 'Email (Optional)';
+
+  @override
+  String get invalidEmail => 'Please enter a valid email address';
+
+  @override
+  String get messageRequired => 'Message *';
+
+  @override
+  String get enterMessage => 'Please enter your message';
+
+  @override
+  String get messageTooShort => 'Message must be at least 10 characters long';
+
+  @override
+  String get needImmediateHelp => 'Need Immediate Help?';
+
+  @override
+  String get urgentSupportText => 'For urgent issues during the festival, please contact our support team:';
+
+  @override
+  String get callSupport => 'Call Support';
+
+  @override
+  String get emailSupport => 'Email Support';
+
+  @override
+  String get visitInPerson => 'Visit in person';
+
+  @override
+  String get success => 'Success';
+
+  @override
+  String get thankYouFeedback => 'Thank you for your feedback!';
+
+  @override
+  String get feedbackAppreciation => 'We appreciate your input and will use it to improve the festival experience.';
+
+  @override
+  String get aboutFeedback => 'About Feedback';
+
+  @override
+  String get featureComingSoon => 'This feature is coming soon...';
+
+  @override
+  String get close => 'Close';
+
+  @override
+  String errorSubmittingFeedback(Object error) {
+    return 'Error submitting feedback: $error';
+  }
+
+  @override
+  String get bunaForum => 'Buna Forum';
+
+  @override
+  String get qrScanner => 'QR Scanner';
+
+  @override
+  String get aboutQRScanner => 'About QR Scanner';
+
+  @override
+  String get scanFestivalQRCodes => 'Scan Festival QR Codes';
+
+  @override
+  String get scanQRCodesDescription => 'Scan QR codes around the festival to unlock exclusive content, get event information, and earn rewards.';
+
+  @override
+  String get eventInformation => 'Event Information';
+
+  @override
+  String get eventInfoContent => 'Opening Ceremony\n\nTime: 7:00 PM\nVenue: Main Square\n\nJoin us for the spectacular opening of Buna Festival 2024!';
+
+  @override
+  String get venueInformation => 'Venue Information';
+
+  @override
+  String get venueInfoContent => 'Main Square\n\nAddress: Central Square, Varna\n\nPrimary venue for major festival events.';
+
+  @override
+  String get artistInformation => 'Artist Information';
+
+  @override
+  String get artistInfoContent => 'Elena Rodriguez\n\nLight artist from Spain.\n\nKnown for large-scale installations.';
+
+  @override
+  String get workshopInformation => 'Workshop Information';
+
+  @override
+  String get workshopInfoContent => 'Digital Art Workshop\n\nLearn about digital art techniques and tools.\n\nOpen to all ages.';
+
+  @override
+  String get rewardUnlocked => 'Reward Unlocked!';
+
+  @override
+  String get rewardInfoContent => 'Free Coffee\n\nShow this code at any festival café to claim your free coffee!';
+
+  @override
+  String get claim => 'Claim';
+
+  @override
+  String get qrCodeInformation => 'QR Code Information';
+
+  @override
+  String qrCodeInfoContent(Object code) {
+    return 'Code: $code\n\nThis QR code contains festival information.';
+  }
+
+  @override
+  String sharingQRCode(Object code) {
+    return 'Sharing QR code: $code';
+  }
+
+  @override
+  String get generateQRCode => 'Generate QR Code';
+
+  @override
+  String get qrCodeGenerationComingSoon => 'QR code generation feature coming soon...';
+
+  @override
+  String get scanFromGallery => 'Scan from Gallery';
+
+  @override
+  String get galleryScanningComingSoon => 'Gallery scanning feature coming soon...';
+
+  @override
+  String get mapGallery => 'Map Gallery';
+
+  @override
+  String get openFullMap => 'Open full map';
+
+  @override
+  String get filterOptions => 'Filter options';
+
+  @override
+  String get tabGrid => 'Grid';
+
+  @override
+  String get tabList => 'List';
+
+  @override
+  String get tabMap => 'Map';
+
+  @override
+  String get fullMap => 'Full Map';
+
+  @override
+  String get fullMapComingSoon => 'Full interactive map coming soon!';
+
+  @override
+  String locationLabel(Object location) {
+    return 'Location: $location';
+  }
+
+  @override
+  String categoryLabel(Object category) {
+    return 'Category: $category';
+  }
+
+  @override
+  String tagsLabel(Object tags) {
+    return 'Tags: $tags';
+  }
+
+  @override
+  String get loginRequired => 'Login Required';
+
+  @override
+  String get loginToAccess => 'Please log in to access this feature.';
 }

@@ -15,7 +15,7 @@ class ImageOptimizationService {
     bool enableHeroAnimation = false,
   }) {
     // For local assets, use optimized asset loading
-    if (assetPath.startsWith('assets/')) {
+    if (assetPath.startsWith('assets/images/')) {
       return _buildOptimizedAssetImage(
         assetPath: assetPath,
         fit: fit,
@@ -169,10 +169,10 @@ class ImageOptimizationService {
   /// Preload critical images for better performance
   static Future<void> preloadCriticalImages(BuildContext context) async {
     final imagesToPreload = [
-      'assets/BUNA3_BlueStory_600x600.webp',
-      'assets/BUNA3_PinkStory_600x600.webp',
-      'assets/buna_blue.png',
-      'assets/buna_black.png',
+      'assets/images/BUNA3_BlueStory_600x600.webp',
+      'assets/images/BUNA3_PinkStory_600x600.webp',
+      'assets/images/buna_blue.png',
+      'assets/images/buna_black.png',
     ];
 
     for (final imagePath in imagesToPreload) {
@@ -190,20 +190,20 @@ class ImageOptimizationService {
     // Use WebP variants for BUNA3 images
     if (basePath.contains('BUNA3_BlueStory')) {
       if (devicePixelRatio >= 3.0) {
-        return 'assets/BUNA3_BlueStory_1200x1200.webp';
+        return 'assets/images/BUNA3_BlueStory_1200x1200.webp';
       } else if (devicePixelRatio >= 2.0) {
-        return 'assets/BUNA3_BlueStory_600x600.webp';
+        return 'assets/images/BUNA3_BlueStory_600x600.webp';
       } else {
-        return 'assets/BUNA3_BlueStory_300x300.webp';
+        return 'assets/images/BUNA3_BlueStory_300x300.webp';
       }
     }
     if (basePath.contains('BUNA3_PinkStory')) {
       if (devicePixelRatio >= 3.0) {
-        return 'assets/BUNA3_PinkStory_1200x1200.webp';
+        return 'assets/images/BUNA3_PinkStory_1200x1200.webp';
       } else if (devicePixelRatio >= 2.0) {
-        return 'assets/BUNA3_PinkStory_600x600.webp';
+        return 'assets/images/BUNA3_PinkStory_600x600.webp';
       } else {
-        return 'assets/BUNA3_PinkStory_300x300.webp';
+        return 'assets/images/BUNA3_PinkStory_300x300.webp';
       }
     }
     return basePath;

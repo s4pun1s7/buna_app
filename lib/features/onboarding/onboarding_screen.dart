@@ -5,6 +5,7 @@ import '../../providers/locale_provider.dart';
 import '../../navigation/route_guards.dart';
 import '../../navigation/route_constants.dart';
 import '../../services/auth_service.dart';
+import 'package:buna_app/l10n/app_localizations.dart';
 
 class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
@@ -19,12 +20,12 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   String? _authError;
   final AuthService _authService = AuthService();
 
-  void _selectLanguage(String lang) {
+  void _selectLanguage(String lang) async {
     setState(() {
       _selectedLanguage = lang;
     });
     final localeNotifier = ref.read(localeProvider.notifier);
-    localeNotifier.setLocale(Locale(lang));
+    await localeNotifier.setLocale(Locale(lang));
   }
 
   Future<void> _signInWithGoogle() async {
@@ -84,7 +85,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
               top: 24,
               left: 24,
               child: Image.asset(
-                'assets/buna_blue.png',
+                'assets/images/buna_blue.png',
                 width: 64,
                 height: 64,
                 fit: BoxFit.contain,
@@ -133,7 +134,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    'BUNA | Vol.3',
+                    AppLocalizations.of(context)!.bunaVol3,
                     style: TextStyle(
                       color: Color(0xFFFF8EB4),
                       fontSize: 28,
@@ -147,7 +148,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                     color: Color(0xFFFF8EB4),
                   ),
                   Text(
-                    'FORUM FOR CONTEMPORARY ART',
+                    AppLocalizations.of(context)!.forumForContemporaryArt,
                     style: TextStyle(
                       color: Color(0xFFFF8EB4),
                       fontSize: 22,
@@ -162,7 +163,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                     color: Color(0xFFFF8EB4),
                   ),
                   Text(
-                    '3-8 Sept.2025',
+                    AppLocalizations.of(context)!.festivalDates,
                     style: TextStyle(
                       color: Color(0xFFFF8EB4),
                       fontSize: 20,
@@ -177,7 +178,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       ChoiceChip(
-                        label: const Text('English'),
+                        label: Text(AppLocalizations.of(context)!.english),
                         selected: _selectedLanguage == 'en',
                         onSelected: (_) => _selectLanguage('en'),
                         selectedColor: Color(0xFFFF8EB4),
@@ -190,7 +191,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                       ),
                       const SizedBox(width: 12),
                       ChoiceChip(
-                        label: const Text('Български'),
+                        label: Text(AppLocalizations.of(context)!.bulgarian),
                         selected: _selectedLanguage == 'bg',
                         onSelected: (_) => _selectLanguage('bg'),
                         selectedColor: Color(0xFFFF8EB4),
@@ -211,7 +212,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                       ElevatedButton.icon(
                         onPressed: _isLoading ? null : _signInWithGoogle,
                         icon: const Icon(Icons.login, size: 18),
-                        label: const Text('Google'),
+                        label: Text(AppLocalizations.of(context)!.signInGoogle),
                         style: ElevatedButton.styleFrom(
                           minimumSize: const Size(120, 40),
                           textStyle: const TextStyle(
@@ -237,10 +238,10 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                                     ),
                                   ),
                                   const SizedBox(width: 8),
-                                  const Text('Loading...'),
+                                  Text(AppLocalizations.of(context)!.loading),
                                 ],
                               )
-                            : const Text('Guest'),
+                            : Text(AppLocalizations.of(context)!.signInGuest),
                         style: ElevatedButton.styleFrom(
                           minimumSize: const Size(120, 40),
                           textStyle: const TextStyle(

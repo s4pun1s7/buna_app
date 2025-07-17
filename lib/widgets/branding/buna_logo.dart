@@ -22,7 +22,7 @@ class BunaLogo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final logoAsset = isDark ? 'assets/buna_pink.png' : 'assets/buna_blue.png';
+    final logoAsset = isDark ? 'assets/images/buna_pink.png' : 'assets/images/buna_blue.png';
 
     return Container(
       width: width,
@@ -31,8 +31,8 @@ class BunaLogo extends StatelessWidget {
       child: Image.asset(
         logoAsset,
         fit: fit,
-        cacheWidth: width != null ? width!.toInt() : null,
-        cacheHeight: height != null ? height!.toInt() : null,
+        cacheWidth: width?.toInt(),
+        cacheHeight: height?.toInt(),
         errorBuilder: (context, error, stackTrace) {
           // Fallback to icon if image fails to load
           return Icon(

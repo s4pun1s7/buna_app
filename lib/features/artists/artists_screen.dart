@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../widgets/common/index.dart';
 import '../../services/error_handler.dart';
 import '../../models/artist.dart';
+import 'artist_service.dart';
 
 /// Artists screen showing all participating artists
 class ArtistsScreen extends ConsumerStatefulWidget {
@@ -11,6 +12,12 @@ class ArtistsScreen extends ConsumerStatefulWidget {
   @override
   ConsumerState<ArtistsScreen> createState() => _ArtistsScreenState();
 }
+
+// Provider for the artist data source (switchable for mock/API)
+final artistDataSourceProvider = Provider<ArtistDataSource>((ref) {
+  // Swap to ApiArtistDataSource() for real API
+  return MockArtistDataSource();
+});
 
 class _ArtistsScreenState extends ConsumerState<ArtistsScreen> {
   List<Artist> _artists = [];
@@ -33,78 +40,9 @@ class _ArtistsScreenState extends ConsumerState<ArtistsScreen> {
         _error = null;
       });
 
-      // Simulate API call delay
-      await Future.delayed(const Duration(seconds: 1));
-
-      // Mock data - in real app this would come from API
-      final artists = [
-        Artist(
-          id: '1',
-          name: 'Elena Rodriguez',
-          country: 'Spain',
-          bio:
-              'Elena Rodriguez is a renowned light artist known for her large-scale environmental installations that transform urban spaces into magical landscapes. Her work explores the relationship between light, space, and human perception.',
-          specialty: 'Light Art & Environmental Installations',
-          imageUrl: null,
-          website: 'https://elenarodriguez.com',
-          socialMedia: ['@elenarodriguez', '@elenalightart'],
-        ),
-        Artist(
-          id: '2',
-          name: 'Hiroshi Tanaka',
-          country: 'Japan',
-          bio:
-              'Hiroshi Tanaka is a digital art pioneer specializing in AI-generated artwork and virtual reality experiences that challenge our understanding of creativity and consciousness.',
-          specialty: 'Digital Art & AI',
-          imageUrl: null,
-          website: 'https://hiroshitanaka.art',
-          socialMedia: ['@hiroshitanaka', '@digitalhiroshi'],
-        ),
-        Artist(
-          id: '3',
-          name: 'Sarah Johnson',
-          country: 'USA',
-          bio:
-              'Sarah Johnson is a contemporary sculptor who creates thought-provoking works using recycled materials and sustainable practices. Her installations address environmental issues and human impact on nature.',
-          specialty: 'Sustainable Sculpture',
-          imageUrl: null,
-          website: 'https://sarahjohnson.art',
-          socialMedia: ['@sarahjohnson', '@sustainablesarah'],
-        ),
-        Artist(
-          id: '4',
-          name: 'Marcus Weber',
-          country: 'Germany',
-          bio:
-              'Marcus Weber is a performance artist whose work explores themes of identity, migration, and social justice through powerful theatrical experiences that challenge societal norms.',
-          specialty: 'Performance Art',
-          imageUrl: null,
-          website: 'https://marcusweber.art',
-          socialMedia: ['@marcusweber', '@performanceweber'],
-        ),
-        Artist(
-          id: '5',
-          name: 'Ana Popovic',
-          country: 'Serbia',
-          bio:
-              'Ana Popovic is a multimedia artist who combines traditional techniques with digital technology to create innovative works that bridge past and present cultural expressions.',
-          specialty: 'Multimedia Art',
-          imageUrl: null,
-          website: 'https://anapopovic.art',
-          socialMedia: ['@anapopovic', '@multimediaana'],
-        ),
-        Artist(
-          id: '6',
-          name: 'Dimitar Georgiev',
-          country: 'Bulgaria',
-          bio:
-              'Dimitar Georgiev is a local artist specializing in traditional Bulgarian crafts and contemporary interpretations of cultural heritage.',
-          specialty: 'Traditional Crafts',
-          imageUrl: null,
-          website: 'https://dimitargeorgiev.art',
-          socialMedia: ['@dimitargeorgiev', '@bulgariancrafts'],
-        ),
-      ];
+      // Use the data source provider
+      final dataSource = ref.read(artistDataSourceProvider);
+      final artists = await dataSource.fetchArtists();
 
       setState(() {
         _artists = artists;
