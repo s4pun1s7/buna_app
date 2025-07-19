@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -22,21 +23,18 @@ class BunaDrawer extends ConsumerWidget {
             child: ListView(
               padding: EdgeInsets.zero,
               children: [
-                if (FeatureFlags.allCoreFeaturesEnabled &&
-                    FeatureFlags.allFestivalFeaturesEnabled)
-                  const Divider(),
-                if (FeatureFlags.allFestivalFeaturesEnabled)
-                  _buildFestivalFeatures(context),
-                if (FeatureFlags.allFestivalFeaturesEnabled &&
-                    FeatureFlags.allInteractiveFeaturesEnabled)
-                  const Divider(),
-                if (FeatureFlags.allInteractiveFeaturesEnabled)
-                  _buildInteractiveFeatures(context),
-                if (FeatureFlags.allInteractiveFeaturesEnabled &&
-                    FeatureFlags.allSupportFeaturesEnabled)
-                  const Divider(),
-                if (FeatureFlags.allSupportFeaturesEnabled)
-                  _buildSupportFeatures(context),
+                _buildSectionTitle('Festival Features'),
+                ...AppRoutes.drawerRoutes
+                    .where((r) => r.isEnabled() && (r.name == AppRoutes.scheduleName || r.name == AppRoutes.artistsName))
+                    .map((route) => _buildDrawerItem(context, icon: route.icon, title: route.title, route: route.path)),
+                _buildSectionTitle('Interactive Features'),
+                ...AppRoutes.drawerRoutes
+                    .where((r) => r.isEnabled() && (r.name == AppRoutes.qrScannerName || r.name == AppRoutes.arName || r.name == AppRoutes.mapGalleryName || r.name == AppRoutes.socialName))
+                    .map((route) => _buildDrawerItem(context, icon: route.icon, title: route.title, route: route.path)),
+                _buildSectionTitle('Support Features'),
+                ...AppRoutes.drawerRoutes
+                    .where((r) => r.isEnabled() && r.name == AppRoutes.feedbackName)
+                    .map((route) => _buildDrawerItem(context, icon: route.icon, title: route.title, route: route.path)),
               ],
             ),
           ),
@@ -118,10 +116,23 @@ class BunaDrawer extends ConsumerWidget {
           CircleAvatar(
             radius: 32,
             backgroundColor: Theme.of(context).colorScheme.surface,
-            backgroundImage: avatarUrl != null ? NetworkImage(avatarUrl) : null,
             child: avatarUrl == null
                 ? Icon(Icons.person, size: 32, semanticLabel: 'User avatar')
-                : null,
+                : ClipOval(
+                    child: CachedNetworkImage(
+                      imageUrl: avatarUrl,
+                      width: 64,
+                      height: 64,
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) =>
+                          const CircularProgressIndicator(strokeWidth: 2),
+                      errorWidget: (context, url, error) => Icon(
+                        Icons.person,
+                        size: 32,
+                        semanticLabel: 'User avatar',
+                      ),
+                    ),
+                  ),
           ),
           const SizedBox(width: 16),
           Expanded(

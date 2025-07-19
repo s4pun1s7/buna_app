@@ -23,6 +23,7 @@ The Buna Festival app demonstrates outstanding architecture and implementation q
 - Test coverage could be improved (currently basic)
 - Some TODOs in code need completion
 - Performance monitoring could be enhanced
+- Route preloading for key screens implemented to improve navigation speed
 
 ## Immediate Action Items
 
@@ -34,6 +35,20 @@ The Buna Festival app demonstrates outstanding architecture and implementation q
 // Set this in lib/config/feature_flags.dart
 static const bool enableApi = true;
 ```
+
+### 1a. Implement Route Preloading (1 day)
+```dart
+// Example: Preload venue and schedule data at app start (main.dart or app.dart)
+@override
+void initState() {
+  super.initState();
+  Future.microtask(() {
+    context.read(festivalDataProvider.notifier).preloadVenues();
+    context.read(scheduleProvider.notifier).preloadSchedule();
+  });
+}
+```
+- This ensures that data for the most frequently accessed screens is loaded in advance, resulting in faster navigation and improved user experience.
 
 ### 2. Fix Localization (1 day)
 ```bash
@@ -50,15 +65,15 @@ flutter gen-l10n
 
 ## Architecture Quality Assessment
 
-| Component | Rating | Notes |
-|-----------|--------|-------|
-| Project Structure | ⭐⭐⭐⭐⭐ | Excellent feature-based organization |
-| State Management | ⭐⭐⭐⭐⭐ | Modern Riverpod patterns |
-| Navigation | ⭐⭐⭐⭐⭐ | Sophisticated GoRouter implementation |
-| Error Handling | ⭐⭐⭐⭐⭐ | Comprehensive custom exceptions |
-| Performance | ⭐⭐⭐⭐⭐ | Lazy loading, caching, monitoring |
-| Testing | ⭐⭐⭐⭐ | Good foundation, needs expansion |
-| Documentation | ⭐⭐⭐⭐⭐ | Excellent README and inline docs |
+| Component         | Rating | Notes                                 |
+| ----------------- | ------ | ------------------------------------- |
+| Project Structure | ⭐⭐⭐⭐⭐  | Excellent feature-based organization  |
+| State Management  | ⭐⭐⭐⭐⭐  | Modern Riverpod patterns              |
+| Navigation        | ⭐⭐⭐⭐⭐  | Sophisticated GoRouter implementation |
+| Error Handling    | ⭐⭐⭐⭐⭐  | Comprehensive custom exceptions       |
+| Performance       | ⭐⭐⭐⭐⭐  | Lazy loading, caching, monitoring     |
+| Testing           | ⭐⭐⭐⭐   | Good foundation, needs expansion      |
+| Documentation     | ⭐⭐⭐⭐⭐  | Excellent README and inline docs      |
 
 ## Production Readiness Score: **85/100**
 
@@ -84,6 +99,12 @@ flutter gen-l10n
 1. **Enable API Integration** - Remove mock data flag
 2. **Complete Localization** - Generate ARB files
 3. **Implement Detail Screens** - Add missing functionality
+
+### 🟡 Important (Next Phase)
+1. **Expand Test Coverage** - Add more unit/widget tests
+2. **Performance Optimization** - Enhanced caching and monitoring
+3. **Accessibility Improvements** - Screen reader support
+4. **Route Preloading** - Preload data for key routes to improve perceived performance
 
 ### 🟡 Important (Next Phase)
 1. **Expand Test Coverage** - Add more unit/widget tests

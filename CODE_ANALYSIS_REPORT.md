@@ -164,16 +164,19 @@ Comprehensive feature flag system for development and deployment:
 - Performance monitoring
 - Memory management
 
-### 4. Testing ✅ **GOOD**
+### 4. Testing ✅ **IMPROVED**
 - Unit tests for core components
 - Widget tests for UI components
 - Integration tests for user flows
 - Mock data for testing
+- **Firebase initialization and localization setup stabilized in all widget and onboarding tests**
+- **All tests currently pass after recent fixes**
 
 **Areas for Improvement:**
 1. Test coverage could be increased
 2. More integration tests needed
 3. Performance testing suite
+4. Add tests for Google Maps integration and marker interactions
 
 ## Technical Debt Analysis
 
@@ -186,6 +189,13 @@ Comprehensive feature flag system for development and deployment:
 
 **Navigation:**
 - Some route detail screens are placeholder implementations
+- Missing deep linking validation
+
+**Google Maps Integration:**
+- Using `google_maps_flutter` for all map and marker functionality in Flutter
+- No direct usage of Google Maps JavaScript API in Dart code
+- Recent deprecation warning for `google.maps.Marker` (JS API) does **not** affect current Flutter code
+- No migration needed for markers in Flutter; safe from JS API deprecation
 - Missing deep linking validation
 
 **Localization:**
@@ -217,6 +227,10 @@ Comprehensive feature flag system for development and deployment:
    - Run `flutter gen-l10n` to generate localization files
    - Complete Bulgarian translations
    - Add localization testing
+
+4. **Google Maps Maintenance**
+   - Monitor for future changes in `google_maps_flutter` regarding marker APIs
+   - If web/JS code is added, ensure migration to `AdvancedMarkerElement` if using Google Maps JS API
 
 ### 2. Performance Optimizations (Priority: MEDIUM)
 

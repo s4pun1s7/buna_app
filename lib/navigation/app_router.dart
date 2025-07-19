@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:go_router/go_router.dart' show GoRouteData, TypedGoRoute, CustomTransitionPage;
 import '../features/onboarding/onboarding_screen.dart';
 import '../features/venues/venues_screen.dart';
 import '../features/news/news_screen.dart';
@@ -210,70 +211,73 @@ class AppRouter {
       GoRoute(
         path: AppRoutes.venueDetails,
         name: AppRoutes.venueDetailsName,
-        builder: (context, state) {
-          final venueId = state.pathParameters['id'];
-          if (venueId == null || venueId.isEmpty) {
-            debugPrint(
-              '[ROUTE ERROR] VenueDetails: Missing venueId for uri: \'${state.uri}\'',
-            );
-            return AppErrorWidget(message: 'Venue ID is missing from the route.', onRetry: () => context.go(AppRoutes.venues));
-          }
-          try {
-            debugPrint('[ROUTE] VenueDetails: Loaded venueId=$venueId');
-            return Scaffold(
-              appBar: AppBar(title: Text('Venue $venueId')),
-              body: Center(child: Text('Venue details for $venueId')),
-            );
-          } catch (e, st) {
-            debugPrint('[ROUTE ERROR] VenueDetails: $e\n$st');
-            return AppErrorWidget(message: 'Failed to load venue details.', onRetry: () => context.go(AppRoutes.venues));
-          }
+        pageBuilder: (context, state) {
+          final id = state.pathParameters['id'] ?? '';
+          return CustomTransitionPage(
+            key: state.pageKey,
+            child: Scaffold(
+              appBar: AppBar(title: Text('Venue $id')),
+              body: Center(child: Text('Venue details for $id')),
+            ),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+              const begin = Offset(1.0, 0.0);
+              const end = Offset.zero;
+              const curve = Curves.ease;
+              final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+              return SlideTransition(
+                position: animation.drive(tween),
+                child: child,
+              );
+            },
+          );
         },
       ),
       GoRoute(
         path: AppRoutes.eventDetails,
         name: AppRoutes.eventDetailsName,
-        builder: (context, state) {
-          final eventId = state.pathParameters['id'];
-          if (eventId == null || eventId.isEmpty) {
-            debugPrint(
-              '[ROUTE ERROR] EventDetails: Missing eventId for uri: \'${state.uri}\'',
-            );
-            return AppErrorWidget(message: 'Event ID is missing from the route.', onRetry: () => context.go(AppRoutes.schedule));
-          }
-          try {
-            debugPrint('[ROUTE] EventDetails: Loaded eventId=$eventId');
-            return Scaffold(
-              appBar: AppBar(title: Text('Event $eventId')),
-              body: Center(child: Text('Event details for $eventId')),
-            );
-          } catch (e, st) {
-            debugPrint('[ROUTE ERROR] EventDetails: $e\n$st');
-            return AppErrorWidget(message: 'Failed to load event details.', onRetry: () => context.go(AppRoutes.schedule));
-          }
+        pageBuilder: (context, state) {
+          final id = state.pathParameters['id'] ?? '';
+          return CustomTransitionPage(
+            key: state.pageKey,
+            child: Scaffold(
+              appBar: AppBar(title: Text('Event $id')),
+              body: Center(child: Text('Event details for $id')),
+            ),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+              const begin = Offset(1.0, 0.0);
+              const end = Offset.zero;
+              const curve = Curves.ease;
+              final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+              return SlideTransition(
+                position: animation.drive(tween),
+                child: child,
+              );
+            },
+          );
         },
       ),
       GoRoute(
         path: AppRoutes.newsDetails,
         name: AppRoutes.newsDetailsName,
-        builder: (context, state) {
-          final newsId = state.pathParameters['id'];
-          if (newsId == null || newsId.isEmpty) {
-            debugPrint(
-              '[ROUTE ERROR] NewsDetails: Missing newsId for uri: \'${state.uri}\'',
-            );
-            return AppErrorWidget(message: 'News ID is missing from the route.', onRetry: () => context.go(AppRoutes.news));
-          }
-          try {
-            debugPrint('[ROUTE] NewsDetails: Loaded newsId=$newsId');
-            return Scaffold(
-              appBar: AppBar(title: Text('News $newsId')),
-              body: Center(child: Text('News details for $newsId')),
-            );
-          } catch (e, st) {
-            debugPrint('[ROUTE ERROR] NewsDetails: $e\n$st');
-            return AppErrorWidget(message: 'Failed to load news details.', onRetry: () => context.go(AppRoutes.news));
-          }
+        pageBuilder: (context, state) {
+          final id = state.pathParameters['id'] ?? '';
+          return CustomTransitionPage(
+            key: state.pageKey,
+            child: Scaffold(
+              appBar: AppBar(title: Text('News $id')),
+              body: Center(child: Text('News details for $id')),
+            ),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+              const begin = Offset(1.0, 0.0);
+              const end = Offset.zero;
+              const curve = Curves.ease;
+              final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+              return SlideTransition(
+                position: animation.drive(tween),
+                child: child,
+              );
+            },
+          );
         },
       ),
     ],

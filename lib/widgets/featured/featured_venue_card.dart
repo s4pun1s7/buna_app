@@ -3,7 +3,7 @@ import '../../features/venues/venues_data.dart' as venues_data;
 
 class FeaturedVenueCard extends StatelessWidget {
   final venues_data.Venue venue;
-  final VoidCallback? onDetails;
+  final VoidCallback? onDetails; // Should use AppRoutes.venueDetailsRoute(venue.id).go(context)
 
   const FeaturedVenueCard({super.key, required this.venue, this.onDetails});
 

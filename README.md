@@ -17,22 +17,16 @@ A cross-platform Flutter app for the Buna art festival, supporting Android, iOS,
 ---
 
 ## Documentation
-- [Documentation Index](docs/README.md)
+
+## Documentation
 - [Features](docs/FEATURES.md)
 - [Getting Started](docs/GETTING_STARTED.md)
 - [Firebase Setup](docs/FIREBASE_SETUP.md)
 - [Localization](docs/LOCALIZATION.md)
-- [Running & Building](docs/RUNNING_BUILDING.md)
 - [Testing](docs/TESTING.md)
 - [Contributing](docs/CONTRIBUTING.md)
-- [Troubleshooting & FAQ](docs/TROUBLESHOOTING.md)
 - [Changelog](docs/CHANGELOG.md)
-- [Project Tracking](PROJECT_TRACKING.md)
-- [Dependency Issues](docs/DEPENDENCY_ISSUES.md)
-- [Website Integration](docs/WEBSITE_INTEGRATION.md)
 - [Error Handling](docs/ERROR_HANDLING.md)
-- [Improvements](docs/IMPROVEMENTS.md)
-- [Code Cleanup](docs/CODE_CLEANUP.md)
 - [Architecture](docs/ARCHITECTURE.md)
 - [Final Summary](docs/FINAL_SUMMARY.md)
 - [Roadmap](docs/ROADMAP.md)

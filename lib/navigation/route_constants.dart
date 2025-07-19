@@ -1,4 +1,22 @@
 /// Centralized route constants for the Buna Festival app
+import 'package:flutter/material.dart';
+import '../config/feature_flags.dart';
+
+class RouteMeta {
+  final String path;
+  final String name;
+  final String title;
+  final IconData icon;
+  final bool Function() isEnabled;
+  const RouteMeta({
+    required this.path,
+    required this.name,
+    required this.title,
+    required this.icon,
+    required this.isEnabled,
+  });
+}
+
 class AppRoutes {
   // Private constructor to prevent instantiation
   AppRoutes._();
@@ -32,6 +50,8 @@ class AppRoutes {
   static const String venueDetails = '/venue/:id';
   static const String eventDetails = '/event/:id';
   static const String newsDetails = '/news/:id';
+
+  // --- Typed route helpers for GoRouteData ---
 
   // Utility routes
   static const String error = '/error';
@@ -129,4 +149,100 @@ class AppRoutes {
         return 'Buna Festival';
     }
   }
+
+  /// Centralized navigation metadata for main navigation
+  static List<RouteMeta> mainNavRoutes = [
+    RouteMeta(
+      path: home,
+      name: homeName,
+      title: 'Home',
+      icon: Icons.home,
+      isEnabled: () => true,
+    ),
+    RouteMeta(
+      path: venues,
+      name: venuesName,
+      title: 'Venues',
+      icon: Icons.location_city,
+      isEnabled: () => FeatureFlags.enableVenues,
+    ),
+    RouteMeta(
+      path: maps,
+      name: mapsName,
+      title: 'Map',
+      icon: Icons.map,
+      isEnabled: () => FeatureFlags.enableMaps,
+    ),
+    RouteMeta(
+      path: news,
+      name: newsName,
+      title: 'News',
+      icon: Icons.article,
+      isEnabled: () => FeatureFlags.enableNews,
+    ),
+    RouteMeta(
+      path: info,
+      name: infoName,
+      title: 'Info',
+      icon: Icons.info_outline,
+      isEnabled: () => FeatureFlags.enableInfo,
+    ),
+  ];
+
+  /// Centralized navigation metadata for drawer (add more as needed)
+  static List<RouteMeta> drawerRoutes = [
+    // Add festival features
+    RouteMeta(
+      path: schedule,
+      name: scheduleName,
+      title: 'Schedule',
+      icon: Icons.schedule,
+      isEnabled: () => FeatureFlags.enableSchedule,
+    ),
+    RouteMeta(
+      path: artists,
+      name: artistsName,
+      title: 'Artists',
+      icon: Icons.person,
+      isEnabled: () => FeatureFlags.enableArtists,
+    ),
+    // Add interactive features
+    RouteMeta(
+      path: qrScanner,
+      name: qrScannerName,
+      title: 'QR Scanner',
+      icon: Icons.qr_code_scanner,
+      isEnabled: () => FeatureFlags.enableQRScanner,
+    ),
+    RouteMeta(
+      path: ar,
+      name: arName,
+      title: 'AR Experiences',
+      icon: Icons.view_in_ar,
+      isEnabled: () => FeatureFlags.enableAR,
+    ),
+    RouteMeta(
+      path: mapGallery,
+      name: mapGalleryName,
+      title: 'Map Gallery',
+      icon: Icons.map,
+      isEnabled: () => FeatureFlags.enableMapGallery,
+    ),
+    RouteMeta(
+      path: social,
+      name: socialName,
+      title: 'Social Feed',
+      icon: Icons.share,
+      isEnabled: () => FeatureFlags.enableSocialFeed,
+    ),
+    // Support features
+    RouteMeta(
+      path: feedback,
+      name: feedbackName,
+      title: 'Feedback',
+      icon: Icons.feedback,
+      isEnabled: () => FeatureFlags.enableFeedback,
+    ),
+    // Add more as needed
+  ];
 }

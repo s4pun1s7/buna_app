@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 
 class NewsDashboardCard extends StatelessWidget {
   final fest_data.NewsArticle article;
-  final VoidCallback? onDetails;
+  final VoidCallback? onDetails; // Should use AppRoutes.newsDetailsRoute(article.id.toString()).go(context)
 
   const NewsDashboardCard({super.key, required this.article, this.onDetails});
 

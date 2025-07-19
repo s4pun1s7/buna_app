@@ -15,6 +15,8 @@ import 'package:buna_app/widgets/featured/next_event_card.dart';
 import 'package:buna_app/features/venues/venues_data.dart';
 import 'package:buna_app/models/schedule.dart';
 import 'package:buna_app/main.dart';
+import 'package:buna_app/navigation/app_router.dart';
+import 'package:go_router/go_router.dart';
 
 void main() {
   setUpAll(() async {
@@ -99,4 +101,154 @@ void main() {
       expect(find.text('Event Details'), findsOneWidget);
     },
   );
+
+  testWidgets('Deep link to venue details opens correct page', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      MaterialApp.router(
+        routerConfig: AppRouter.router,
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('Venue details for 123'), findsOneWidget);
+  });
+
+  testWidgets('Deep link to event details opens correct page', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      MaterialApp.router(
+        routerConfig: AppRouter.router,
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('Event details for 456'), findsOneWidget);
+  });
+
+  testWidgets('Deep link to news details opens correct page', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      MaterialApp.router(
+        routerConfig: AppRouter.router,
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('News details for 789'), findsOneWidget);
+  });
+
+  testWidgets('Deep link to home opens correct page', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      MaterialApp.router(
+        routerConfig: AppRouter.router,
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.textContaining('Buna Festival'), findsWidgets);
+  });
+
+  testWidgets('Deep link to venues opens correct page', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      MaterialApp.router(
+        routerConfig: AppRouter.router,
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.textContaining('Venues'), findsWidgets);
+  });
+
+  testWidgets('Deep link to maps opens correct page', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      MaterialApp.router(
+        routerConfig: AppRouter.router,
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.textContaining('Map'), findsWidgets);
+  });
+
+  testWidgets('Deep link to news opens correct page', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      MaterialApp.router(
+        routerConfig: AppRouter.router,
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.textContaining('News'), findsWidgets);
+  });
+
+  testWidgets('Deep link to info opens correct page', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      MaterialApp.router(
+        routerConfig: AppRouter.router,
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.textContaining('Info'), findsWidgets);
+  });
+
+  testWidgets('Deep link to schedule opens correct page', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      MaterialApp.router(
+        routerConfig: AppRouter.router,
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.textContaining('Schedule'), findsWidgets);
+  });
+
+  testWidgets('Deep link to artists opens correct page', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      MaterialApp.router(
+        routerConfig: AppRouter.router,
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.textContaining('Artists'), findsWidgets);
+  });
+
+  testWidgets('Deep link to QR Scanner opens correct page', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      MaterialApp.router(
+        routerConfig: AppRouter.router,
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.textContaining('QR'), findsWidgets);
+  });
+
+  testWidgets('Deep link to AR opens correct page', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      MaterialApp.router(
+        routerConfig: AppRouter.router,
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.textContaining('AR'), findsWidgets);
+  });
+
+  testWidgets('Deep link to Map Gallery opens correct page', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      MaterialApp.router(
+        routerConfig: AppRouter.router,
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.textContaining('Map Gallery'), findsWidgets);
+  });
+
+  testWidgets('Deep link to Social Feed opens correct page', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      MaterialApp.router(
+        routerConfig: AppRouter.router,
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.textContaining('Social'), findsWidgets);
+  });
+
+  testWidgets('Deep link to Feedback opens correct page', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      MaterialApp.router(
+        routerConfig: AppRouter.router,
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.textContaining('Feedback'), findsWidgets);
+  });
 }

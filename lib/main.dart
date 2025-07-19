@@ -12,6 +12,7 @@ import 'services/connectivity_service.dart';
 import 'services/analytics_service.dart';
 import 'services/lazy_loading_service.dart';
 import 'services/performance_monitoring_service.dart';
+import 'services/api_service.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'dart:async';
 
@@ -93,6 +94,9 @@ Future<void> main() async {
 
   // Start app immediately with loading state
   runApp(RestartWidget(child: const BunaAppWithPermissions()));
+
+  // Start background sync for offline-first caching
+  ApiService.startBackgroundSync();
 
   // Request permissions after app starts
   requestFestivalPermissions();

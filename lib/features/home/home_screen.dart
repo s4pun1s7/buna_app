@@ -7,6 +7,8 @@ import '../../models/schedule.dart';
 import '../../models/festival_data.dart';
 import '../../features/venues/venues_data.dart' as venues_data;
 import '../../widgets/navigation/buna_app_bar.dart';
+import 'package:go_router/go_router.dart';
+import '../../navigation/route_constants.dart';
 
 /// Home screen with feature flag integration
 class HomeScreen extends ConsumerWidget {
@@ -79,7 +81,7 @@ class HomeScreen extends ConsumerWidget {
                     FeaturedVenueCard(
                       venue: venue,
                       onDetails: () {
-                        /* navigate to venue */
+                        context.go(AppRoutes.venueDetailsPath(venue.name));
                       },
                     ),
                     const SizedBox(height: 16),
@@ -88,7 +90,7 @@ class HomeScreen extends ConsumerWidget {
                     NextEventCard(
                       entry: event,
                       onDetails: () {
-                        /* navigate to event */
+                        context.go(AppRoutes.eventDetailsPath(event.event.name));
                       },
                     ),
                     const SizedBox(height: 16),
@@ -97,7 +99,7 @@ class HomeScreen extends ConsumerWidget {
                     NewsDashboardCard(
                       article: news,
                       onDetails: () {
-                        /* navigate to news */
+                        context.go(AppRoutes.newsDetailsPath(news.id.toString()));
                       },
                     ),
                     const SizedBox(height: 16),

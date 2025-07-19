@@ -6,6 +6,8 @@ import '../../widgets/common/index.dart';
 import '../../widgets/venue_event/index.dart';
 import '../../services/error_handler.dart';
 import '../../widgets/navigation/buna_app_bar.dart';
+import 'package:go_router/go_router.dart';
+import '../../navigation/route_constants.dart';
 
 /// Schedule screen showing all festival events in a timeline
 class ScheduleScreen extends ConsumerStatefulWidget {
@@ -421,6 +423,13 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen>
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: const Text('Close'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              context.go(AppRoutes.eventDetailsPath(event.name));
+            },
+            child: const Text('Full Details'),
           ),
         ],
       ),

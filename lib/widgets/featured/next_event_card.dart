@@ -4,7 +4,7 @@ import '../../models/schedule.dart' as schedule_model;
 
 class NextEventCard extends StatelessWidget {
   final schedule_model.ScheduleEntry entry;
-  final VoidCallback? onDetails;
+  final VoidCallback? onDetails; // Should use AppRoutes.eventDetailsRoute(entry.event.id).go(context)
 
   const NextEventCard({super.key, required this.entry, this.onDetails});
 
