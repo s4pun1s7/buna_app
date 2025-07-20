@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:async';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'log_service.dart';
 
 /// Custom exception types for better error handling
 class AppException implements Exception {
@@ -214,13 +214,13 @@ class ErrorHandler {
   /// Get user-friendly error message
   String getUserFriendlyMessage(AppException error) {
     switch (error.runtimeType) {
-      case NetworkException:
+      case NetworkException _:
         return error.message;
-      case ApiException:
+      case ApiException _:
         return error.message;
-      case CacheException:
+      case CacheException _:
         return 'Unable to load cached data. Please refresh.';
-      case ValidationException:
+      case ValidationException _:
         return error.message;
       default:
         return 'Something went wrong. Please try again.';
@@ -230,13 +230,13 @@ class ErrorHandler {
   /// Get error icon for UI
   IconData getErrorIcon(AppException error) {
     switch (error.runtimeType) {
-      case NetworkException:
+      case NetworkException _:
         return Icons.wifi_off;
-      case ApiException:
+      case ApiException _:
         return Icons.error_outline;
-      case CacheException:
+      case CacheException _:
         return Icons.cached;
-      case ValidationException:
+      case ValidationException _:
         return Icons.warning_amber;
       default:
         return Icons.error;
@@ -246,13 +246,13 @@ class ErrorHandler {
   /// Get error color for UI
   Color getErrorColor(AppException error) {
     switch (error.runtimeType) {
-      case NetworkException:
+      case NetworkException _:
         return Colors.orange;
-      case ApiException:
+      case ApiException _:
         return Colors.red;
-      case CacheException:
+      case CacheException _:
         return Colors.blue;
-      case ValidationException:
+      case ValidationException _:
         return Colors.amber;
       default:
         return Colors.red;
@@ -262,16 +262,16 @@ class ErrorHandler {
   /// Check if error is retryable
   bool isRetryable(AppException error) {
     switch (error.runtimeType) {
-      case NetworkException:
+      case NetworkException _:
         return true;
-      case ApiException:
+      case ApiException _:
         final apiError = error as ApiException;
         return apiError.statusCode == null ||
             apiError.statusCode! >= 500 ||
             apiError.statusCode == 429;
-      case CacheException:
+      case CacheException _:
         return true;
-      case ValidationException:
+      case ValidationException _:
         return false;
       default:
         return false;
@@ -280,23 +280,14 @@ class ErrorHandler {
 
   /// Log error for debugging
   void _logError(dynamic error, [StackTrace? stackTrace]) {
-    if (kDebugMode) {
-      print('Error: $error');
-      if (stackTrace != null) {
-        print('StackTrace: $stackTrace');
-      }
-    }
-    // In production, you might want to send this to a logging service
-    // like Firebase Crashlytics, Sentry, etc.
+    LogService.error('Error occurred', error, stackTrace);
   }
 
   /// Report error to analytics/crash reporting service
   void reportError(AppException error) {
-    // Implement error reporting to your preferred service
-    // Example: Firebase Crashlytics, Sentry, etc.
-    if (kDebugMode) {
-      print('Reporting error: ${error.message}');
-    }
+    LogService.error('Error reported', error);
+    // In production, you might want to send this to a logging service
+    // like Firebase Crashlytics, Sentry, etc.
   }
 }
 
@@ -308,6 +299,38 @@ extension FutureErrorHandling<T> on Future<T> {
     } catch (error, stackTrace) {
       throw errorHandler.handleError(error, stackTrace);
     }
+  }
+
+  /// Retry operation with exponential backoff
+  Future<T> retryWithBackoff(
+    ErrorHandler errorHandler, {
+    int maxRetries = 3,
+    Duration initialDelay = const Duration(seconds: 1),
+  }) async {
+    int attempts = 0;
+    Duration delay = initialDelay;
+
+    while (attempts < maxRetries) {
+      try {
+        return await this;
+      } catch (error, stackTrace) {
+        attempts++;
+        final appError = errorHandler.handleError(error, stackTrace);
+        
+        if (!errorHandler.isRetryable(appError) || attempts >= maxRetries) {
+          throw appError;
+        }
+
+        LogService.warning('Retry attempt $attempts after error', appError);
+        await Future.delayed(delay);
+        delay *= 2; // Exponential backoff
+      }
+    }
+
+    throw errorHandler.handleError(
+      Exception('Max retries exceeded'),
+      StackTrace.current,
+    );
   }
 }
 

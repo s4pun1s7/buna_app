@@ -27,19 +27,19 @@ void main() {
     });
 
     test('should add and remove favorite venue', () async {
-      expect(await favoritesManager.isVenueFavorite(testVenue), isFalse);
+      expect(favoritesManager.isVenueFavorite(testVenue), isFalse);
       await favoritesManager.toggleVenueFavorite(testVenue);
-      expect(await favoritesManager.isVenueFavorite(testVenue), isTrue);
+      expect(favoritesManager.isVenueFavorite(testVenue), isTrue);
       await favoritesManager.toggleVenueFavorite(testVenue);
-      expect(await favoritesManager.isVenueFavorite(testVenue), isFalse);
+      expect(favoritesManager.isVenueFavorite(testVenue), isFalse);
     });
 
     test('should add and remove favorite event', () async {
-      expect(await favoritesManager.isEventFavorite(testVenue, testEvent), isFalse);
+      expect(favoritesManager.isEventFavorite(testVenue, testEvent), isFalse);
       await favoritesManager.toggleEventFavorite(testVenue, testEvent);
-      expect(await favoritesManager.isEventFavorite(testVenue, testEvent), isTrue);
+      expect(favoritesManager.isEventFavorite(testVenue, testEvent), isTrue);
       await favoritesManager.toggleEventFavorite(testVenue, testEvent);
-      expect(await favoritesManager.isEventFavorite(testVenue, testEvent), isFalse);
+      expect(favoritesManager.isEventFavorite(testVenue, testEvent), isFalse);
     });
   });
 } 

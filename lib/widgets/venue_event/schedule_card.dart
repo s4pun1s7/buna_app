@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/festival_data.dart' as fest_data;
 
 /// Card widget for displaying festival events in the schedule
-class ScheduleCard extends StatelessWidget {
+class ScheduleCard extends ConsumerWidget {
   final fest_data.FestivalEvent event;
   final VoidCallback? onTap;
 
   const ScheduleCard({super.key, required this.event, this.onTap});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final scale = MediaQuery.textScalerOf(context).scale(1.0);
     return Card(
       margin: const EdgeInsets.only(bottom: 8),

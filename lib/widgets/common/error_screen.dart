@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../../services/error_handler.dart' as error_handler;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:buna_app/l10n/app_localizations.dart';
 
 /// Flexible error widget for full screen, card, or dialog usage
-class AppErrorWidget extends StatelessWidget {
+class AppErrorWidget extends ConsumerWidget {
   final String? message;
   final VoidCallback? onRetry;
   final String? details;
@@ -22,7 +22,7 @@ class AppErrorWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
     final content = Column(
       mainAxisAlignment: MainAxisAlignment.center,

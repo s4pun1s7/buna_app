@@ -7,12 +7,12 @@ class BunaAppMenusOverlay extends StatefulWidget {
   final VoidCallback toggleIosSizeMode;
 
   const BunaAppMenusOverlay({
-    Key? key,
+    super.key,
     required this.child,
     required this.iosSizeMode,
     required this.iosSize,
     required this.toggleIosSizeMode,
-  }) : super(key: key);
+  });
 
   @override
   State<BunaAppMenusOverlay> createState() => _BunaAppMenusOverlayState();
@@ -87,11 +87,11 @@ class DevToolsMenuSheet extends StatelessWidget {
   final bool iosSizeMode;
   final VoidCallback toggleIosSizeMode;
   const DevToolsMenuSheet({
-    Key? key,
+    super.key,
     required this.onClose,
     required this.iosSizeMode,
     required this.toggleIosSizeMode,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

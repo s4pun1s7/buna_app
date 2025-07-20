@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../features/venues/venues_data.dart' as venues_data;
 
-class FeaturedVenueCard extends StatelessWidget {
+class FeaturedVenueCard extends ConsumerWidget {
   final venues_data.Venue venue;
   final VoidCallback? onDetails; // Should use AppRoutes.venueDetailsRoute(venue.id).go(context)
 
   const FeaturedVenueCard({super.key, required this.venue, this.onDetails});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       elevation: 4,

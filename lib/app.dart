@@ -13,13 +13,13 @@ class BunaApp extends ConsumerWidget {
   final VoidCallback toggleIosSizeMode;
 
   const BunaApp({
-    Key? key,
+    super.key,
     required this.themeMode,
     required this.locale,
     required this.iosSizeMode,
     required this.iosSize,
     required this.toggleIosSizeMode,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

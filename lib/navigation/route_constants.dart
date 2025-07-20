@@ -1,6 +1,9 @@
-/// Centralized route constants for the Buna Festival app
+
+
 import 'package:flutter/material.dart';
 import '../config/feature_flags.dart';
+
+/// Centralized route constants for the Buna Festival app
 
 class RouteMeta {
   final String path;

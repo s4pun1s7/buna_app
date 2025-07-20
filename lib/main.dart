@@ -13,6 +13,7 @@ import 'services/analytics_service.dart';
 import 'services/lazy_loading_service.dart';
 import 'services/performance_monitoring_service.dart';
 import 'services/api_service.dart';
+import 'services/log_service.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'dart:async';
 
@@ -73,14 +74,14 @@ Future<void> initializeAppServices() async {
     // Track app initialization completion
     final initDuration = DateTime.now().difference(appInitStart);
     if (kDebugMode) {
-      print('✅ All services initialized in ${initDuration.inMilliseconds}ms');
+      LogService.performance('App initialization', initDuration);
     }
 
     // Track app launch after services are initialized
     AnalyticsService.logEvent(name: 'app_launch');
   } catch (e) {
     if (kDebugMode) {
-      print('⚠️ Service initialization error: $e');
+      LogService.error('Service initialization error', e);
     }
     // Continue without Firebase/services for now
   }

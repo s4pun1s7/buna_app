@@ -4,7 +4,6 @@ import '../../models/festival_data.dart';
 import '../../services/api_service.dart';
 import '../../widgets/common/index.dart';
 import '../../widgets/venue_event/index.dart';
-import '../../services/error_handler.dart';
 import '../../widgets/navigation/buna_app_bar.dart';
 import 'package:go_router/go_router.dart';
 import '../../navigation/route_constants.dart';
@@ -427,7 +426,7 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen>
           TextButton(
             onPressed: () {
               Navigator.pop(context);
-              context.go(AppRoutes.eventDetailsPath(event.name));
+              context.go(AppRoutes.eventDetailsPath(event.title));
             },
             child: const Text('Full Details'),
           ),

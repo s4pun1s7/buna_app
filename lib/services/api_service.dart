@@ -6,6 +6,7 @@ import '../utils/debouncer.dart';
 import 'error_handler.dart';
 import 'mock_data_service.dart';
 import 'cache_service.dart';
+import 'log_service.dart';
 import 'package:flutter/foundation.dart';
 
 /// API service for communicating with the Buna Festival website
@@ -75,6 +76,31 @@ class ApiService {
 
   // Debouncer for API calls to prevent rate limiting
   static final APIDebouncer _apiDebouncer = APIDebouncer();
+
+  /// Helper method to make API requests with proper error handling
+  static Future<T> _makeApiRequest<T>(
+    String url,
+    String endpoint,
+    T Function(List<dynamic>) fromJson,
+  ) async {
+    final response = await http
+        .get(
+          Uri.parse(url),
+          headers: {'Accept': 'application/json'},
+        )
+        .timeout(_timeout);
+
+    if (response.statusCode == 200) {
+      final List<dynamic> data = json.decode(response.body);
+      return fromJson(data);
+    } else {
+      throw _errorHandler.handleApiError(
+        'Failed to load data',
+        endpoint,
+        response.statusCode,
+      );
+    }
+  }
 
   // --- Free Public API Integrations ---
 
@@ -147,32 +173,12 @@ class ApiService {
       fromJson: (data) =>
           (data as List<dynamic>).map((e) => NewsArticle.fromJson(e)).toList(),
       fetchFunction: () async {
-        try {
-          final response = await http
-              .get(
-                Uri.parse(
-                  '$_baseUrl$_apiEndpoint/posts?page=$page&per_page=$perPage&_embed',
-                ),
-                headers: {'Accept': 'application/json'},
-              )
-              .timeout(_timeout);
-          if (response.statusCode == 200) {
-            final List<dynamic> data = json.decode(response.body);
-            return data.map((json) => NewsArticle.fromJson(json)).toList();
-          } else {
-            throw _errorHandler.handleApiError(
-              'Failed to load news',
-              '$_apiEndpoint/posts',
-              response.statusCode,
-            );
-          }
-        } on TimeoutException {
-          throw _errorHandler.handleError(
-            TimeoutException('Request timed out', const Duration(seconds: 30)),
-          );
-        } catch (e, stackTrace) {
-          throw _errorHandler.handleError(e, stackTrace);
-        }
+        LogService.info('Fetching news page $page');
+        return await _makeApiRequest<List<NewsArticle>>(
+          '$_baseUrl$_apiEndpoint/posts?page=$page&per_page=$perPage&_embed',
+          '$_apiEndpoint/posts',
+          (data) => data.map((json) => NewsArticle.fromJson(json)).toList(),
+        ).retryWithBackoff(_errorHandler);
       },
     );
   }

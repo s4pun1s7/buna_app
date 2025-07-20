@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../features/venues/venues_data.dart' as venues_data;
 
-class VenueInfoBottomSheet extends StatelessWidget {
+class VenueInfoBottomSheet extends ConsumerWidget {
   final venues_data.Venue venue;
   const VenueInfoBottomSheet({super.key, required this.venue});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
       padding: const EdgeInsets.all(24.0),
       child: Column(

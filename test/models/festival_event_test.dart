@@ -13,8 +13,8 @@ void main() {
         venue: 'Test Venue',
         url: '',
       );
-      // final json = event.toJson(); // Commented out if toJson does not exist
-      final fromJson = FestivalEvent.fromJson(event.toJson());
+      final json = event.toJson();
+      final fromJson = FestivalEvent.fromJson(json);
       expect(fromJson.title, event.title);
       expect(fromJson.venue, event.venue);
       expect(fromJson.startDate, event.startDate);

@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 import '../../models/artist.dart';
 
-class FeaturedArtistCard extends StatelessWidget {
+class FeaturedArtistCard extends ConsumerWidget {
   final Artist artist;
   final VoidCallback? onDetails;
 
   const FeaturedArtistCard({super.key, required this.artist, this.onDetails});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       elevation: 4,

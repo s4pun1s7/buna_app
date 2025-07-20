@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/festival_data.dart' as fest_data;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:intl/intl.dart';
 
-class NewsDashboardCard extends StatelessWidget {
+class NewsDashboardCard extends ConsumerWidget {
   final fest_data.NewsArticle article;
   final VoidCallback? onDetails; // Should use AppRoutes.newsDetailsRoute(article.id.toString()).go(context)
 
   const NewsDashboardCard({super.key, required this.article, this.onDetails});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       elevation: 4,

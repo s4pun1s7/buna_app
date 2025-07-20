@@ -179,7 +179,7 @@ class ImageOptimizationService {
       try {
         await precacheImage(AssetImage(imagePath), context);
       } catch (e) {
-        print('Failed to preload image $imagePath: $e');
+        debugPrint('Failed to preload image $imagePath: $e');
       }
     }
   }

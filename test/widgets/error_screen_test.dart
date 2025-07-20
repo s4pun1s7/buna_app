@@ -8,7 +8,7 @@ void main() {
     bool retried = false;
     await tester.pumpWidget(
       MaterialApp(
-        // home: ErrorScreen(
+        home: AppErrorWidget(
           message: 'Something went wrong',
           onRetry: () => retried = true,
         ),

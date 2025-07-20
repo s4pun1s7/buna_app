@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../config/assets.dart';
 import '../../config/app_config.dart';
 import 'package:buna_app/l10n/app_localizations.dart';
 
-class InfoScreen extends StatelessWidget {
+class InfoScreen extends ConsumerWidget {
   const InfoScreen({super.key});
 
   void _launchUrl(String url) async {
@@ -15,7 +16,7 @@ class InfoScreen extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(body: _buildBody(context));
   }
 

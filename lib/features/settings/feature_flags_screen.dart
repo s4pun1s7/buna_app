@@ -28,10 +28,11 @@ class _FeatureFlagsScreenState extends ConsumerState<FeatureFlagsScreen> {
           IconButton(
             icon: const Icon(Icons.delete_outline),
             onPressed: () async {
+              final scaffoldMessenger = ScaffoldMessenger.of(context);
               ApiService.clearCache();
               await CacheService.clearAll();
               if (mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
+                scaffoldMessenger.showSnackBar(
                   const SnackBar(
                     content: Text('Cache cleared'),
                     duration: Duration(seconds: 2),
@@ -523,25 +524,4 @@ class _FeatureFlagsScreenState extends ConsumerState<FeatureFlagsScreen> {
     );
   }
 
-  void _showInfo() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Feature Flags Info'),
-        content: const Text(
-          'Feature flags allow you to enable or disable specific features in the app.\n\n'
-          '• Changes require a restart to take effect\n'
-          '• Disabled features will not appear in navigation\n'
-          '• This is useful for development and testing\n\n'
-          'Note: This screen is only available in debug mode.',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Close'),
-          ),
-        ],
-      ),
-    );
-  }
 }

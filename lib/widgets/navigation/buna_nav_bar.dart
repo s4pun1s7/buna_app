@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../navigation/route_constants.dart';
 
-class BunaNavBar extends StatelessWidget {
+class BunaNavBar extends ConsumerWidget {
   final int currentIndex;
   final ValueChanged<int> onTap;
 
@@ -12,7 +13,7 @@ class BunaNavBar extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final iconColor = Theme.of(context).iconTheme.color;
     final navRoutes = AppRoutes.mainNavRoutes.where((r) => r.isEnabled()).toList();
     return BottomNavigationBar(

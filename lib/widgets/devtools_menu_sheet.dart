@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class DevToolsMenuSheet extends StatelessWidget {
+class DevToolsMenuSheet extends ConsumerWidget {
   final String title;
   final VoidCallback onClose;
   final bool iosSizeMode;
   final VoidCallback toggleIosSizeMode;
 
   const DevToolsMenuSheet({
-    Key? key,
+    super.key,
     required this.title,
     required this.onClose,
     required this.iosSizeMode,
     required this.toggleIosSizeMode,
-  }) : super(key: key);
+  });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [

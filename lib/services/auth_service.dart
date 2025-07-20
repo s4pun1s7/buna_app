@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'log_service.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -10,13 +11,13 @@ class AuthService {
   /// Sign in with Google
   Future<UserCredential?> signInWithGoogle() async {
     try {
-      debugPrint('Google sign-in: started');
+      LogService.auth('Google sign-in: started');
       if (kIsWeb) {
-        debugPrint('Google sign-in: running on web');
+        LogService.auth('Google sign-in: running on web');
         GoogleAuthProvider googleProvider = GoogleAuthProvider();
         googleProvider.setCustomParameters({'login_hint': 'user@example.com'});
         final result = await _auth.signInWithPopup(googleProvider);
-        debugPrint('Google sign-in: signInWithPopup complete');
+        LogService.auth('Google sign-in: signInWithPopup complete');
         final idToken = await result.user?.getIdToken();
         final accessToken = result.credential is OAuthCredential
             ? (result.credential as OAuthCredential).accessToken
@@ -24,31 +25,29 @@ class AuthService {
         await _saveCredentials(idToken, accessToken);
         return result;
       } else {
-        debugPrint('Google sign-in: running on mobile');
+        LogService.auth('Google sign-in: running on mobile');
         final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-        debugPrint(
-          'Google sign-in: googleUser = ' + (googleUser?.email ?? 'null'),
-        );
+        LogService.auth('Google sign-in: googleUser = ${googleUser?.email ?? 'null'}');
         if (googleUser == null) {
-          debugPrint('Google sign-in: user cancelled');
+          LogService.auth('Google sign-in: user cancelled');
           return null;
         }
         final GoogleSignInAuthentication googleAuth =
             await googleUser.authentication;
-        debugPrint('Google sign-in: got authentication');
+        LogService.auth('Google sign-in: got authentication');
         final credential = GoogleAuthProvider.credential(
           accessToken: googleAuth.accessToken,
           idToken: googleAuth.idToken,
         );
-        debugPrint('Google sign-in: credential created');
+        LogService.auth('Google sign-in: credential created');
         final result = await _auth.signInWithCredential(credential);
-        debugPrint('Google sign-in: signInWithCredential complete');
+        LogService.auth('Google sign-in: signInWithCredential complete');
         // Save credentials
         await _saveCredentials(googleAuth.idToken, googleAuth.accessToken);
         return result;
       }
     } catch (e) {
-      debugPrint('Google sign-in error: $e');
+      LogService.error('Google sign-in error', e);
       rethrow;
     }
   }
@@ -104,13 +103,13 @@ class AuthService {
       try {
         final result = await _auth.getRedirectResult();
         if (result.user != null) {
-          debugPrint(
-            'Google sign-in: redirect result user = \\${result.user!.email}',
-          );
+                  LogService.auth(
+          'Google sign-in: redirect result user = ${result.user!.email}',
+        );
           return result;
         }
       } catch (e) {
-        debugPrint('Google sign-in redirect error: \\${e.toString()}');
+        LogService.error('Google sign-in redirect error', e);
         rethrow;
       }
     }

@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/favorites_provider.dart';
 import 'package:buna_app/widgets/common/index.dart';
 import 'venues_data.dart';
-import '../../services/error_handler.dart';
 import '../../widgets/navigation/buna_app_bar.dart';
 import '../../providers/user_provider.dart';
 

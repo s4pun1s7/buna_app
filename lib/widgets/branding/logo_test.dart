@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'buna_logo.dart';
 
 /// Test widget to verify logo loading
-class LogoTest extends StatelessWidget {
+class LogoTest extends ConsumerWidget {
   const LogoTest({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(title: const Text('Logo Test')),
       body: Center(

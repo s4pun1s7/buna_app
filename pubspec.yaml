@@ -65,6 +65,7 @@ dependencies:
   # ar_flutter_plugin: any
 
   firebase_crashlytics: ^4.3.9
+  logger: ^2.0.0
 
 dev_dependencies:
   flutter_lints: ^6.0.0

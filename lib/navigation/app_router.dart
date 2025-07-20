@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:go_router/go_router.dart' show GoRouteData, TypedGoRoute, CustomTransitionPage;
 import '../features/onboarding/onboarding_screen.dart';
 import '../features/venues/venues_screen.dart';
 import '../features/news/news_screen.dart';
@@ -13,7 +12,6 @@ import '../features/map_gallery/map_gallery_screen.dart';
 import '../features/social/social_screen.dart';
 import '../features/feedback/feedback_screen.dart';
 import '../features/settings/feature_flags_screen.dart';
-import '../services/error_handler.dart';
 import '../config/feature_flags.dart';
 import 'route_constants.dart';
 import 'route_guards.dart';

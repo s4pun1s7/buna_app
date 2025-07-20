@@ -6,10 +6,6 @@ import 'package:buna_app/features/onboarding/onboarding_screen.dart';
 import 'package:buna_app/navigation/route_guards.dart';
 import 'package:buna_app/l10n/app_localizations.dart';
 
-setUpAll(() async {
-  // If the test setup is broken, comment out the test for now.
-});
-
 void main() {
   group('Onboarding Flow Tests', () {
     setUpAll(() async {

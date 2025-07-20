@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class BunaFAB extends StatelessWidget {
+class BunaFAB extends ConsumerWidget {
   final VoidCallback onPressed;
   final IconData icon;
   final String? tooltip;
@@ -13,7 +14,7 @@ class BunaFAB extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return FloatingActionButton(
       onPressed: onPressed,
       tooltip: tooltip,

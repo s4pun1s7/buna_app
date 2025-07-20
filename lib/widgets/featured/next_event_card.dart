@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/schedule.dart' as schedule_model;
 
-class NextEventCard extends StatelessWidget {
+class NextEventCard extends ConsumerWidget {
   final schedule_model.ScheduleEntry entry;
   final VoidCallback? onDetails; // Should use AppRoutes.eventDetailsRoute(entry.event.id).go(context)
 
   const NextEventCard({super.key, required this.entry, this.onDetails});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     try {
       final event = entry.event;
       final venue = entry.venue;

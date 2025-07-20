@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../widgets/navigation/buna_app_bar.dart';
 
-class OfflineScreen extends StatelessWidget {
+class OfflineScreen extends ConsumerWidget {
   final VoidCallback? onRetry;
   const OfflineScreen({super.key, this.onRetry});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: BunaAppBar(
         title: 'Offline',

@@ -16,7 +16,6 @@ import 'package:buna_app/features/venues/venues_data.dart';
 import 'package:buna_app/models/schedule.dart';
 import 'package:buna_app/main.dart';
 import 'package:buna_app/navigation/app_router.dart';
-import 'package:go_router/go_router.dart';
 
 void main() {
   setUpAll(() async {

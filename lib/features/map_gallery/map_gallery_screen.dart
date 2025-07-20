@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../widgets/common/index.dart';
-import '../../services/error_handler.dart';
 import '../../providers/user_provider.dart';
 import 'map_gallery_service.dart';
 import 'package:buna_app/l10n/app_localizations.dart';

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../widgets/common/index.dart';
-import '../../services/error_handler.dart';
 import '../../models/artist.dart';
 import 'artist_service.dart';
 
