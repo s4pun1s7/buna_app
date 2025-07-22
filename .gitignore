@@ -165,3 +165,10 @@ goup.ps1
 # Temporary files
 flutter.tar.xz
 *.tar.xz
+
+# Environment configuration files
+.env
+.env.local
+.env.production
+.env.development
+*.env

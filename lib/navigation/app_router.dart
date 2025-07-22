@@ -14,6 +14,7 @@ import '../features/feedback/feedback_screen.dart';
 import '../features/settings/feature_flags_screen.dart';
 import '../services/error_handler.dart';
 import '../config/feature_flags.dart';
+import '../utils/input_validator.dart';
 import 'route_constants.dart';
 import 'route_guards.dart';
 import 'main_layout.dart';
@@ -192,21 +193,43 @@ class AppRouter {
         name: AppRoutes.venueDetailsName,
         builder: (context, state) {
           final venueId = state.pathParameters['id'];
-          if (venueId == null || venueId.isEmpty) {
+          
+          // Validate input with security checks
+          if (!InputValidator.validateRouteParam('venueId', venueId)) {
             debugPrint(
-              '[ROUTE ERROR] VenueDetails: Missing venueId for uri: \'${state.uri}\'',
+              '[ROUTE ERROR] VenueDetails: Invalid venueId format for uri: \'${state.uri}\'',
             );
             return ErrorScreen(
-              error: AppException('Venue ID is missing from the route.'),
+              error: AppException('Invalid venue ID format. Please check the URL.'),
               onRetry: () => context.go(AppRoutes.venues),
             );
           }
+          
           try {
-            // TODO: Implement VenueDetailsScreen
+            // TODO: Implement VenueDetailsScreen with proper venue service
             debugPrint('[ROUTE] VenueDetails: Loaded venueId=$venueId');
             return Scaffold(
               appBar: AppBar(title: Text('Venue $venueId')),
-              body: Center(child: Text('Venue details for $venueId')),
+              body: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.place, size: 64, color: Colors.grey),
+                    const SizedBox(height: 16),
+                    Text('Venue Details for: $venueId'),
+                    const SizedBox(height: 8),
+                    const Text(
+                      'Implementation in progress',
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                    const SizedBox(height: 24),
+                    ElevatedButton(
+                      onPressed: () => context.go(AppRoutes.venues),
+                      child: const Text('Back to Venues'),
+                    ),
+                  ],
+                ),
+              ),
             );
           } catch (e, st) {
             debugPrint('[ROUTE ERROR] VenueDetails: $e\n$st');
@@ -226,21 +249,43 @@ class AppRouter {
         name: AppRoutes.eventDetailsName,
         builder: (context, state) {
           final eventId = state.pathParameters['id'];
-          if (eventId == null || eventId.isEmpty) {
+          
+          // Validate input with security checks
+          if (!InputValidator.validateRouteParam('eventId', eventId)) {
             debugPrint(
-              '[ROUTE ERROR] EventDetails: Missing eventId for uri: \'${state.uri}\'',
+              '[ROUTE ERROR] EventDetails: Invalid eventId format for uri: \'${state.uri}\'',
             );
             return ErrorScreen(
-              error: AppException('Event ID is missing from the route.'),
+              error: AppException('Invalid event ID format. Please check the URL.'),
               onRetry: () => context.go(AppRoutes.schedule),
             );
           }
+          
           try {
-            // TODO: Implement EventDetailsScreen
+            // TODO: Implement EventDetailsScreen with proper event service
             debugPrint('[ROUTE] EventDetails: Loaded eventId=$eventId');
             return Scaffold(
               appBar: AppBar(title: Text('Event $eventId')),
-              body: Center(child: Text('Event details for $eventId')),
+              body: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.event, size: 64, color: Colors.grey),
+                    const SizedBox(height: 16),
+                    Text('Event Details for: $eventId'),
+                    const SizedBox(height: 8),
+                    const Text(
+                      'Implementation in progress',
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                    const SizedBox(height: 24),
+                    ElevatedButton(
+                      onPressed: () => context.go(AppRoutes.schedule),
+                      child: const Text('Back to Schedule'),
+                    ),
+                  ],
+                ),
+              ),
             );
           } catch (e, st) {
             debugPrint('[ROUTE ERROR] EventDetails: $e\n$st');
@@ -260,21 +305,43 @@ class AppRouter {
         name: AppRoutes.newsDetailsName,
         builder: (context, state) {
           final newsId = state.pathParameters['id'];
-          if (newsId == null || newsId.isEmpty) {
+          
+          // Validate input with security checks
+          if (!InputValidator.validateRouteParam('newsId', newsId)) {
             debugPrint(
-              '[ROUTE ERROR] NewsDetails: Missing newsId for uri: \'${state.uri}\'',
+              '[ROUTE ERROR] NewsDetails: Invalid newsId format for uri: \'${state.uri}\'',
             );
             return ErrorScreen(
-              error: AppException('News ID is missing from the route.'),
+              error: AppException('Invalid news ID format. Please check the URL.'),
               onRetry: () => context.go(AppRoutes.news),
             );
           }
+          
           try {
-            // TODO: Implement NewsDetailsScreen
+            // TODO: Implement NewsDetailsScreen with proper news service
             debugPrint('[ROUTE] NewsDetails: Loaded newsId=$newsId');
             return Scaffold(
               appBar: AppBar(title: Text('News $newsId')),
-              body: Center(child: Text('News details for $newsId')),
+              body: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.article, size: 64, color: Colors.grey),
+                    const SizedBox(height: 16),
+                    Text('News Details for: $newsId'),
+                    const SizedBox(height: 8),
+                    const Text(
+                      'Implementation in progress',
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                    const SizedBox(height: 24),
+                    ElevatedButton(
+                      onPressed: () => context.go(AppRoutes.news),
+                      child: const Text('Back to News'),
+                    ),
+                  ],
+                ),
+              ),
             );
           } catch (e, st) {
             debugPrint('[ROUTE ERROR] NewsDetails: $e\n$st');

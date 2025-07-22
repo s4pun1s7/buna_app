@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart' show kIsWeb, kDebugMode;
 import 'app.dart';
+import 'utils/restart_widget.dart';
 import 'providers/riverpod_setup.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'providers/theme_provider.dart';
+import 'providers/locale_provider.dart';
 import 'services/connectivity_service.dart';
 import 'services/analytics_service.dart';
 import 'services/lazy_loading_service.dart';
 import 'services/performance_monitoring_service.dart';
-import 'package:flutter/foundation.dart' show kDebugMode;
+import 'services/api_service.dart';
+import 'services/log_service.dart';
+import 'config/firebase_config.dart';
 import 'dart:async';
 
 /// Request permissions asynchronously without blocking startup
@@ -43,18 +47,10 @@ Future<void> initializeAppServices() async {
     // Track app initialization start
     final appInitStart = DateTime.now();
 
-    // Initialize Firebase with platform-specific options
+    // Initialize Firebase with secure configuration
     if (kIsWeb) {
       await Firebase.initializeApp(
-        options: const FirebaseOptions(
-          apiKey: 'AIzaSyD2xqxPjbnA6t-TFsn2pNAuy1VHDOK4l-0',
-          authDomain: 'buna-app-4e064.firebaseapp.com',
-          projectId: 'buna-app-4e064',
-          storageBucket: 'buna-app-4e064.appspot.com',
-          messagingSenderId: '177152010877',
-          appId: '1:177152010877:web:96f0625f1a29a0bc825f14',
-          measurementId: 'G-3XR3FVMHZY',
-        ),
+        options: FirebaseConfig.optionsWithFallback,
       );
     } else {
       await Firebase.initializeApp();
