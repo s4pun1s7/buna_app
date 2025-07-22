@@ -437,12 +437,6 @@ abstract class AppLocalizations {
   /// **'Deny'**
   String get deny;
 
-  /// No description provided for @devToolsMenu.
-  ///
-  /// In en, this message translates to:
-  /// **'DevTools Menu'**
-  String get devToolsMenu;
-
   /// No description provided for @hotReload.
   ///
   /// In en, this message translates to:

@@ -4,6 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../config/assets.dart';
 import '../../config/app_config.dart';
 import 'package:buna_app/l10n/app_localizations.dart';
+// ...existing code...
 
 class InfoScreen extends ConsumerWidget {
   const InfoScreen({super.key});
@@ -17,7 +18,7 @@ class InfoScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Scaffold(body: _buildBody(context));
+    return _buildBody(context);
   }
 
   Widget _buildBody(BuildContext context) {
@@ -109,21 +110,9 @@ class InfoScreen extends ConsumerWidget {
                   spacing: 12,
                   runSpacing: 12,
                   children: [
-                    _editionButton(
-                      context,
-                      '2023',
-                      'https://bunavarna.com/en/buna-2023/',
-                    ),
-                    _editionButton(
-                      context,
-                      '2024',
-                      'https://bunavarna.com/en/buna-2024/',
-                    ),
-                    _editionButton(
-                      context,
-                      '2025',
-                      'https://bunavarna.com/en/buna-2025/',
-                    ),
+                    _editionButton(context, '2023', ''),
+                    _editionButton(context, '2024', ''),
+                    _editionButton(context, '2025', ''),
                   ],
                 ),
               ],

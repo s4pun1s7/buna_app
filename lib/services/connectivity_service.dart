@@ -1,3 +1,4 @@
+import 'log_service.dart';
 import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/foundation.dart';
@@ -34,7 +35,7 @@ class ConnectivityService {
       _updateConnectionStatus(results);
     } catch (e) {
       if (kDebugMode) {
-        print('Error checking connectivity: $e');
+        LogService.error('Error checking connectivity', e);
       }
       _updateConnectionStatus([ConnectivityResult.none]);
     }
@@ -50,7 +51,7 @@ class ConnectivityService {
       _connectionStatusController.add(_isConnected);
 
       if (kDebugMode) {
-        print(
+        LogService.debug(
           '🌐 Connectivity changed: ${_isConnected ? 'Online' : 'Offline'}',
         );
       }

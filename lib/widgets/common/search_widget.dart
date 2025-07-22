@@ -1,3 +1,4 @@
+import 'package:buna_app/services/log_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/festival_data_provider.dart';
@@ -53,8 +54,8 @@ class _SearchWidgetState extends ConsumerState<SearchWidget> {
       // Call callback if provided
       widget.onSearch?.call(query);
     } catch (e, stack) {
-      debugPrint('[SearchWidget] Error during search: \\${e.toString()}');
-      debugPrint('[SearchWidget] Stack: \\${stack.toString()}');
+      LogService.error('[SearchWidget] Error during search', e);
+      LogService.error('[SearchWidget] Stack', stack);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Error performing search: \\${e.toString()}'),

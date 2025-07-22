@@ -1,3 +1,4 @@
+import 'log_service.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
@@ -179,7 +180,7 @@ class ImageOptimizationService {
       try {
         await precacheImage(AssetImage(imagePath), context);
       } catch (e) {
-        debugPrint('Failed to preload image $imagePath: $e');
+        LogService.error('Failed to preload image $imagePath', e);
       }
     }
   }

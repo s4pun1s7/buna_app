@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import '../config/feature_flags.dart';
 
@@ -21,6 +19,8 @@ class RouteMeta {
 }
 
 class AppRoutes {
+  static const String artistDemo = '/artist-demo';
+  static const String artistDemoName = 'artist-demo';
   // Private constructor to prevent instantiation
   AppRoutes._();
 
@@ -169,13 +169,7 @@ class AppRoutes {
       icon: Icons.location_city,
       isEnabled: () => FeatureFlags.enableVenues,
     ),
-    RouteMeta(
-      path: maps,
-      name: mapsName,
-      title: 'Map',
-      icon: Icons.map,
-      isEnabled: () => FeatureFlags.enableMaps,
-    ),
+    // Map removed from bottom navigation
     RouteMeta(
       path: news,
       name: newsName,
@@ -187,7 +181,7 @@ class AppRoutes {
       path: info,
       name: infoName,
       title: 'Info',
-      icon: Icons.info_outline,
+      icon: Icons.info,
       isEnabled: () => FeatureFlags.enableInfo,
     ),
   ];

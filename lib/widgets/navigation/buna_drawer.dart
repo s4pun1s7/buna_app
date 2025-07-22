@@ -4,8 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../navigation/route_constants.dart';
 import '../../providers/user_provider.dart';
-import '../../services/auth_service.dart';
-import '../common/index.dart';
+import '../common/auth_button_builder.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class BunaDrawer extends ConsumerWidget {
@@ -24,51 +23,58 @@ class BunaDrawer extends ConsumerWidget {
               children: [
                 _buildSectionTitle('Festival Features'),
                 ...AppRoutes.drawerRoutes
-                    .where((r) => r.isEnabled() && (r.name == AppRoutes.scheduleName || r.name == AppRoutes.artistsName))
-                    .map((route) => _buildDrawerItem(context, icon: route.icon, title: route.title, route: route.path)),
+                    .where(
+                      (r) =>
+                          r.isEnabled() &&
+                          (r.name == AppRoutes.scheduleName ||
+                              r.name == AppRoutes.artistsName),
+                    )
+                    .map(
+                      (route) => _buildDrawerItem(
+                        context,
+                        icon: route.icon,
+                        title: route.title,
+                        route: route.path,
+                      ),
+                    ),
                 _buildSectionTitle('Interactive Features'),
                 ...AppRoutes.drawerRoutes
-                    .where((r) => r.isEnabled() && (r.name == AppRoutes.qrScannerName || r.name == AppRoutes.arName || r.name == AppRoutes.mapGalleryName || r.name == AppRoutes.socialName))
-                    .map((route) => _buildDrawerItem(context, icon: route.icon, title: route.title, route: route.path)),
+                    .where(
+                      (r) =>
+                          r.isEnabled() &&
+                          (r.name == AppRoutes.qrScannerName ||
+                              r.name == AppRoutes.arName ||
+                              r.name == AppRoutes.mapGalleryName ||
+                              r.name == AppRoutes.socialName),
+                    )
+                    .map(
+                      (route) => _buildDrawerItem(
+                        context,
+                        icon: route.icon,
+                        title: route.title,
+                        route: route.path,
+                      ),
+                    ),
                 _buildSectionTitle('Support Features'),
                 ...AppRoutes.drawerRoutes
-                    .where((r) => r.isEnabled() && r.name == AppRoutes.feedbackName)
-                    .map((route) => _buildDrawerItem(context, icon: route.icon, title: route.title, route: route.path)),
+                    .where(
+                      (r) => r.isEnabled() && r.name == AppRoutes.feedbackName,
+                    )
+                    .map(
+                      (route) => _buildDrawerItem(
+                        context,
+                        icon: route.icon,
+                        title: route.title,
+                        route: route.path,
+                      ),
+                    ),
               ],
             ),
           ),
           if (userAsync.value != null)
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: OutlinedButton.icon(
-                icon: const Icon(Icons.logout),
-                label: const Text('Sign Out'),
-                onPressed: () async {
-                  showDialog(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (_) =>
-                        const AnimatedLoadingDialog(message: 'Signing out...'),
-                  );
-                  try {
-                    await AuthService().signOut();
-                    if (context.mounted) {
-                      Navigator.of(context).pop();
-                      Navigator.of(context).popUntil((route) => route.isFirst);
-                    }
-                  } catch (e) {
-                    if (context.mounted) {
-                      Navigator.of(context).pop(); // Close loading dialog
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Sign-out failed: ${e.toString()}'),
-                          backgroundColor: Colors.red,
-                        ),
-                      );
-                    }
-                  }
-                },
-              ),
+              child: buildAuthButton(context, userAsync.value!),
             ),
         ],
       ),
@@ -160,8 +166,6 @@ class BunaDrawer extends ConsumerWidget {
     );
   }
 
-
-
   Widget _buildSectionTitle(String title) {
     return Builder(
       builder: (context) {
@@ -215,5 +219,4 @@ class BunaDrawer extends ConsumerWidget {
       },
     );
   }
-
 }

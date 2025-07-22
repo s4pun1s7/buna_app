@@ -1,9 +1,9 @@
 import '../models/festival_data.dart';
 
-/// Comprehensive mock data service for Buna Festival
-class MockDataService {
-  /// Generate mock news articles
-  static List<NewsArticle> getMockNews() {
+/// Comprehensive data service for Buna Festival
+class DataService {
+  /// Get news articles
+  static List<NewsArticle> getNews() {
     return [
       NewsArticle(
         id: 1,
@@ -16,7 +16,7 @@ class MockDataService {
         featuredImageUrl: null,
         author: 'Festival Team',
         categories: ['Festival', 'Announcement'],
-        url: 'https://bunavarna.com/news/buna-festival-2024-announcement',
+        url: '',
       ),
       NewsArticle(
         id: 2,
@@ -29,7 +29,7 @@ class MockDataService {
         featuredImageUrl: null,
         author: 'Venue Coordinator',
         categories: ['Venues', 'Festival'],
-        url: 'https://bunavarna.com/news/new-interactive-venues',
+        url: '',
       ),
       NewsArticle(
         id: 3,
@@ -42,7 +42,7 @@ class MockDataService {
         featuredImageUrl: null,
         author: 'Art Director',
         categories: ['Artists', 'Festival'],
-        url: 'https://bunavarna.com/news/international-artist-lineup',
+        url: '',
       ),
       NewsArticle(
         id: 4,
@@ -66,7 +66,7 @@ Early bird discounts offer up to 30% off regular prices, making this the perfect
         author: 'Marketing Team',
         featuredImageUrl: null,
         categories: ['Tickets', 'Festival'],
-        url: 'https://bunavarna.com/news/festival-passes-available',
+        url: '',
       ),
       NewsArticle(
         id: 5,
@@ -94,13 +94,13 @@ Applications are open until June 1st, with interviews and training sessions sche
         author: 'Volunteer Coordinator',
         featuredImageUrl: null,
         categories: ['Volunteers', 'Festival'],
-        url: 'https://bunavarna.com/news/volunteer-applications-open',
+        url: '',
       ),
     ];
   }
 
-  /// Generate mock events
-  static List<FestivalEvent> getMockEvents() {
+  /// Get events
+  static List<FestivalEvent> getEvents() {
     return [
       FestivalEvent(
         id: 1,
@@ -112,7 +112,7 @@ Applications are open until June 1st, with interviews and training sessions sche
         venue: 'Main Square',
         category: 'Ceremony',
         featuredImageUrl: null,
-        url: 'https://bunavarna.com/events/opening-ceremony',
+        url: '',
       ),
       FestivalEvent(
         id: 2,
@@ -124,7 +124,7 @@ Applications are open until June 1st, with interviews and training sessions sche
         venue: 'City Gallery',
         category: 'Exhibition',
         featuredImageUrl: null,
-        url: 'https://bunavarna.com/events/contemporary-art-exhibition',
+        url: '',
       ),
       FestivalEvent(
         id: 3,
@@ -136,7 +136,7 @@ Applications are open until June 1st, with interviews and training sessions sche
         venue: 'Outdoor Amphitheater',
         category: 'Performance',
         featuredImageUrl: null,
-        url: 'https://bunavarna.com/events/live-music-performance',
+        url: '',
       ),
       FestivalEvent(
         id: 4,
@@ -153,7 +153,7 @@ The exhibition also includes workshops where participants can learn about digita
         venue: 'Digital Art Pavilion',
         category: 'Digital Art',
         featuredImageUrl: null,
-        url: 'https://bunavarna.com/events/digital-art-vr',
+        url: '',
       ),
       FestivalEvent(
         id: 5,
@@ -170,7 +170,7 @@ Artists will be present to discuss their work and the environmental themes they 
         venue: 'Seaside Park',
         category: 'Environmental Art',
         featuredImageUrl: null,
-        url: 'https://bunavarna.com/events/environmental-art',
+        url: '',
       ),
       FestivalEvent(
         id: 6,
@@ -192,7 +192,7 @@ All skill levels are welcome, and materials are provided. Pre-registration is re
         venue: 'Art Studio Complex',
         category: 'Workshop',
         featuredImageUrl: null,
-        url: 'https://bunavarna.com/events/artist-workshops',
+        url: '',
       ),
       FestivalEvent(
         id: 7,
@@ -209,13 +209,13 @@ The ceremony also includes awards for outstanding contributions to the festival 
         venue: 'Main Square',
         category: 'Ceremony',
         featuredImageUrl: null,
-        url: 'https://bunavarna.com/events/closing-ceremony',
+        url: '',
       ),
     ];
   }
 
-  /// Generate mock venues
-  static List<Venue> getMockVenues() {
+  /// Get venues
+  static List<Venue> getVenues() {
     return [
       Venue(
         id: 1,
@@ -317,8 +317,8 @@ The underground location creates an intimate atmosphere perfect for experimental
     ];
   }
 
-  /// Generate mock festival information
-  static FestivalInfo getMockFestivalInfo() {
+  /// Get festival information
+  static FestivalInfo getFestivalInfo() {
     return FestivalInfo(
       title: 'Buna Festival 2024',
       description:
@@ -327,19 +327,19 @@ The underground location creates an intimate atmosphere perfect for experimental
       metadata: {
         'excerpt':
             'Experience the magic of art and culture at Buna Festival 2024 - three weeks of creative celebration in Varna, Bulgaria.',
-        'url': 'https://bunavarna.com/about',
+        'url': '',
       },
     );
   }
 
-  /// Generate mock search results
-  static SearchResults getMockSearchResults(String query) {
+  /// Get search results
+  static SearchResults getSearchResults(String query) {
     final lowercaseQuery = query.toLowerCase();
-    final mockNews = getMockNews();
-    final mockEvents = getMockEvents();
-    final mockVenues = getMockVenues();
+    final news = getNews();
+    final events = getEvents();
+    final venues = getVenues();
 
-    final filteredNews = mockNews
+    final filteredNews = news
         .where(
           (article) =>
               article.title.toLowerCase().contains(lowercaseQuery) ||
@@ -348,7 +348,7 @@ The underground location creates an intimate atmosphere perfect for experimental
         )
         .toList();
 
-    final filteredEvents = mockEvents
+    final filteredEvents = events
         .where(
           (event) =>
               event.title.toLowerCase().contains(lowercaseQuery) ||
@@ -358,7 +358,7 @@ The underground location creates an intimate atmosphere perfect for experimental
         )
         .toList();
 
-    final filteredVenues = mockVenues
+    final filteredVenues = venues
         .where(
           (venue) =>
               venue.name.toLowerCase().contains(lowercaseQuery) ||

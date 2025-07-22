@@ -1,3 +1,4 @@
+import 'package:buna_app/services/log_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../navigation/app_router.dart';
@@ -50,7 +51,7 @@ class SplashScreen extends ConsumerWidget {
   ) {
     return userAsync.when(
       data: (user) {
-        debugPrint(
+        LogService.debug(
           'SplashScreen: user = ${user?.uid ?? 'null'}, isAnonymous = ${user?.isAnonymous}',
         );
         WidgetsBinding.instance.addPostFrameCallback((_) {

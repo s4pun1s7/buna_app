@@ -97,8 +97,8 @@ class AppErrorWidget extends ConsumerWidget {
   }
 }
 
-/// Animated error dialog for displaying errors with animation.
-class AnimatedErrorDialog extends StatelessWidget {
+
+class AnimatedErrorDialog extends ConsumerWidget {
   final String title;
   final String message;
   final VoidCallback? onRetry;
@@ -112,7 +112,8 @@ class AnimatedErrorDialog extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
     return Center(
       child: AnimatedScale(
         scale: 1.0,
@@ -123,11 +124,11 @@ class AnimatedErrorDialog extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.all(32),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: theme.dialogBackgroundColor,
               borderRadius: BorderRadius.circular(16),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.1),
+                  color: theme.shadowColor.withOpacity(0.1),
                   blurRadius: 16,
                 ),
               ],
@@ -137,13 +138,13 @@ class AnimatedErrorDialog extends StatelessWidget {
               children: [
                 Icon(
                   Icons.error_outline,
-                  color: Theme.of(context).colorScheme.error,
+                  color: theme.colorScheme.error,
                   size: 48,
                 ),
                 const SizedBox(height: 16),
-                Text(title, style: Theme.of(context).textTheme.titleLarge),
+                Text(title, style: theme.textTheme.titleLarge),
                 const SizedBox(height: 8),
-                Text(message, textAlign: TextAlign.center),
+                Text(message, textAlign: TextAlign.center, style: theme.textTheme.bodyMedium),
                 const SizedBox(height: 24),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../widgets/navigation/index.dart';
-import '../widgets/devtools_menu_sheet.dart';
 import '../widgets/common/index.dart';
 import '../providers/theme_provider.dart';
 import '../services/analytics_service.dart';
@@ -44,14 +43,11 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
       case AppRoutes.venues:
         _currentIndex = 1;
         break;
-      case AppRoutes.maps:
+      case AppRoutes.news:
         _currentIndex = 2;
         break;
-      case AppRoutes.news:
-        _currentIndex = 3;
-        break;
       case AppRoutes.info:
-        _currentIndex = 4;
+        _currentIndex = 3;
         break;
       default:
         _currentIndex = 0;
@@ -67,40 +63,18 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
         context.go(AppRoutes.venues);
         break;
       case 2:
-        context.go(AppRoutes.maps);
-        break;
-      case 3:
         context.go(AppRoutes.news);
         break;
-      case 4:
+      case 3:
         context.go(AppRoutes.info);
         break;
     }
-  }
-
-  Widget _buildDevToolsButton() {
-    return IconButton(
-      icon: const Icon(Icons.build), // Wrench-like icon
-      tooltip: 'DEV',
-      onPressed: () {
-        showModalBottomSheet(
-          context: context,
-          builder: (context) => DevToolsMenuSheet(
-            title: 'DevTools',
-            onClose: () => Navigator.of(context).pop(),
-            iosSizeMode: false, // Replace with actual state if needed
-            toggleIosSizeMode: () {}, // Replace with actual callback if needed
-          ),
-        );
-      },
-    );
   }
 
   PreferredSizeWidget _buildAppBar() {
     return AppBar(
       title: _getTitle(),
       actions: [
-        _buildDevToolsButton(),
         _buildThemeToggle(),
         _buildLanguageToggle(),
         _buildMenuButton(),

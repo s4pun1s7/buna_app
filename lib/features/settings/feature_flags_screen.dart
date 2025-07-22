@@ -146,11 +146,6 @@ class _FeatureFlagsScreenState extends ConsumerState<FeatureFlagsScreen> {
             'Enable QR scanner',
           ),
           _buildFeatureFlag(
-            'AR Experiences',
-            FeatureFlags.enableAR,
-            'Enable AR experiences',
-          ),
-          _buildFeatureFlag(
             'Map Gallery',
             FeatureFlags.enableMapGallery,
             'Enable map gallery',

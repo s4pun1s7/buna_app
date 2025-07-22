@@ -4,6 +4,7 @@ import 'package:flutter/rendering.dart';
 import 'package:buna_app/widgets/common/error_screen.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
   testWidgets('ErrorScreen displays message and retry button', (tester) async {
     bool retried = false;
     await tester.pumpWidget(

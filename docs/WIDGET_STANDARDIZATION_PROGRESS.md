@@ -103,7 +103,6 @@ Tracking the progress of widget inheritance pattern standardization across the B
    - **Reason**: Could benefit from branding providers
    - **Benefits**: Dynamic branding and theming
 
-5. **`DevToolsMenuSheet`** - `lib/widgets/devtools_menu_sheet.dart`
    - **Reason**: Could benefit from dev tools providers
    - **Benefits**: Dynamic dev tools configuration
 

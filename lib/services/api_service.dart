@@ -1,13 +1,12 @@
+import 'log_service.dart';
 import 'dart:convert';
 import 'dart:async';
 import 'package:http/http.dart' as http;
 import '../models/festival_data.dart';
 import '../utils/debouncer.dart';
 import 'error_handler.dart';
-import 'mock_data_service.dart';
+import 'data_service.dart' as data_service;
 import 'cache_service.dart';
-import 'log_service.dart';
-import 'package:flutter/foundation.dart';
 
 /// API service for communicating with the Buna Festival website
 class ApiService {
@@ -64,7 +63,7 @@ class ApiService {
   }
   // API is now enabled. Removed _apiDisabled flag.
 
-  static const String _baseUrl = 'https://bunavarna.com';
+  static const String _baseUrl = '';
   static const String _apiEndpoint = '/wp-json/wp/v2';
   static const Duration _timeout = Duration(seconds: 30);
 
@@ -84,10 +83,7 @@ class ApiService {
     T Function(List<dynamic>) fromJson,
   ) async {
     final response = await http
-        .get(
-          Uri.parse(url),
-          headers: {'Accept': 'application/json'},
-        )
+        .get(Uri.parse(url), headers: {'Accept': 'application/json'})
         .timeout(_timeout);
 
     if (response.statusCode == 200) {
@@ -112,8 +108,8 @@ class ApiService {
     int pageSize = 5,
   }) async {
     if (_newsApiKey.isEmpty) {
-      // Fallback to mock data if no API key
-      return MockDataService.getMockNews();
+      // Fallback to local data if no API key
+      return data_service.DataService.getNews();
     }
     try {
       final response = await http
@@ -164,7 +160,7 @@ class ApiService {
     int page = 1,
     int perPage = 10,
   }) async {
-    // API is enabled. No mock fallback here.
+    // API is enabled. No local fallback here.
 
     final cacheKey = 'news_page_$page';
     return await fetchWithCache<List<NewsArticle>>(
@@ -188,7 +184,7 @@ class ApiService {
     int page = 1,
     int perPage = 20,
   }) async {
-    // API is enabled. No mock fallback here.
+    // API is enabled. No local fallback here.
 
     final cacheKey = 'events_page_$page';
     return await fetchWithCache<List<FestivalEvent>>(
@@ -236,7 +232,7 @@ class ApiService {
     int page = 1,
     int perPage = 20,
   }) async {
-    // API is enabled. No mock fallback here.
+    // API is enabled. No local fallback here.
     try {
       final response = await http
           .get(
@@ -268,7 +264,7 @@ class ApiService {
 
   /// Fetch venue information
   static Future<List<Venue>> fetchVenues() async {
-    // API is enabled. No mock fallback here.
+    // API is enabled. No local fallback here.
 
     const cacheKey = 'venues';
     return await fetchWithCache<List<Venue>>(
@@ -310,7 +306,7 @@ class ApiService {
 
   /// Fetch festival information
   static Future<FestivalInfo> fetchFestivalInfo() async {
-    // API is enabled. No mock fallback here.
+    // API is enabled. No local fallback here.
 
     return await _debouncedApiCall(() async {
       try {
@@ -480,11 +476,11 @@ class ApiService {
       // 'apiDisabled': false, // No longer used
     };
     if (verbose) {
-      debugPrint('--- API Configuration ---');
+      LogService.debug('--- API Configuration ---');
       config.forEach((key, value) {
-        debugPrint('$key: $value');
+        LogService.debug('$key: $value');
       });
-      debugPrint('-------------------------');
+      LogService.debug('-------------------------');
     }
     return config;
   }

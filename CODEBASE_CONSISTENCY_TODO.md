@@ -36,7 +36,6 @@
   - [x] `lib/app.dart:15` - Convert 'key' to super parameter
   - [x] `lib/utils/restart_widget.dart:5` - Convert 'key' to super parameter
   - [x] `lib/widgets/buna_app_menus_overlay.dart:9,89` - Convert 'key' to super parameter
-  - [x] `lib/widgets/devtools_menu_sheet.dart:9` - Convert 'key' to super parameter
 
 - [x] **Fix BuildContext async gaps** (6 files) ✅
   - [x] `lib/features/settings/feature_flags_screen.dart:34` - Already has mounted check (false positive)

@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:buna_app/widgets/common/offline_banner.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
   testWidgets('OfflineBanner displays correct message', (tester) async {
     await tester.pumpWidget(
       ProviderScope(

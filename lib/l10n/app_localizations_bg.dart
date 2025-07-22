@@ -180,9 +180,6 @@ class AppLocalizationsBg extends AppLocalizations {
   String get deny => 'Откажи';
 
   @override
-  String get devToolsMenu => 'Меню за разработчици';
-
-  @override
   String get hotReload => 'Горещо презареждане';
 
   @override

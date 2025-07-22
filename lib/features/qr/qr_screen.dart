@@ -32,43 +32,37 @@ class _QRScreenState extends ConsumerState<QRScreen> {
           ),
         ],
       ),
-      body: Padding(padding: const EdgeInsets.all(16), child: _buildBody()),
-    );
-  }
-
-  Widget _buildBody() {
-    return Column(
-      children: [
-        _buildHeader(),
-        Expanded(child: _buildScannerArea()),
-        _buildBottomSection(),
-      ],
-    );
-  }
-
-  Widget _buildHeader() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            AppLocalizations.of(context)!.scanFestivalQRCodes,
-            style: Theme.of(
-              context,
-            ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            AppLocalizations.of(context)!.scanQRCodesDescription,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: Theme.of(context).colorScheme.outline,
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            // Scanner area
+            Expanded(child: _buildScannerArea()),
+            // Description and instructions (formerly _buildHeader)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  AppLocalizations.of(context)!.scanFestivalQRCodes,
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  AppLocalizations.of(context)!.scanQRCodesDescription,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Theme.of(context).colorScheme.outline,
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
+            _buildBottomSection(),
+          ],
+        ),
       ),
     );
   }
+
+  // ...existing code...
 
   Widget _buildScannerArea() {
     if (_isLoading) {

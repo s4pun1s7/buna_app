@@ -180,9 +180,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get deny => 'Deny';
 
   @override
-  String get devToolsMenu => 'DevTools Menu';
-
-  @override
   String get hotReload => 'Hot Reload';
 
   @override

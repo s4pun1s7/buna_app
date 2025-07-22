@@ -4,7 +4,6 @@ import '../../models/festival_data.dart';
 import '../../services/api_service.dart';
 import '../../widgets/common/index.dart';
 import '../../widgets/venue_event/index.dart';
-import '../../widgets/navigation/buna_app_bar.dart';
 import 'package:go_router/go_router.dart';
 import '../../navigation/route_constants.dart';
 
@@ -131,19 +130,7 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: BunaAppBar(
-        title: 'Festival Schedule',
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.info_outline),
-            onPressed: () => _showInfoDialog(context),
-            tooltip: 'About Schedule',
-          ),
-        ],
-      ),
-      body: _buildBody(),
-    );
+    return _buildBody();
   }
 
   Widget _buildBody() {
@@ -429,24 +416,6 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen>
               context.go(AppRoutes.eventDetailsPath(event.title));
             },
             child: const Text('Full Details'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _showInfoDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('About the Schedule'),
-        content: const Text(
-          'This is a simple schedule viewer. It shows events in a timeline, list, and calendar view. You can filter events by date and view details about each event. The data is fetched from an API and may not be accurate or complete.',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('OK'),
           ),
         ],
       ),

@@ -1,55 +1,63 @@
+import '../../services/artist_data_service.dart';
 import '../../models/artist.dart';
-import '../../config/mock_data.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'dart:io';
 
+class LocalArtistDataSource implements ArtistDataSource {
+  @override
+  Future<List<Artist>> fetchArtists() async {
+    // Add 4 new unique artists and the sample artist from ArtistDataService
+    return [
+      Artist(
+        id: 'artist_002',
+        name: 'Lina Müller',
+        country: 'Germany',
+        bio:
+            'Lina is a multimedia artist exploring the intersection of sound and sculpture. Her installations have been exhibited across Europe.',
+        specialty: 'Sound Art, Sculpture',
+        imageUrl: 'https://example.com/artists/lina_mueller.jpg',
+        website: 'https://linamueller.art',
+        socialMedia: ['https://instagram.com/lina.mueller'],
+      ),
+      Artist(
+        id: 'artist_003',
+        name: 'Carlos Rivera',
+        country: 'Mexico',
+        bio:
+            'Carlos is a muralist and street artist whose vibrant works bring color and life to urban spaces.',
+        specialty: 'Mural, Street Art',
+        imageUrl: 'https://example.com/artists/carlos_rivera.jpg',
+        website: 'https://carlosrivera.mx',
+        socialMedia: ['https://twitter.com/carlosrivera'],
+      ),
+      Artist(
+        id: 'artist_004',
+        name: 'Amina El-Sayed',
+        country: 'Egypt',
+        bio:
+            'Amina is a contemporary painter whose abstract works are inspired by the landscapes and culture of North Africa.',
+        specialty: 'Painting, Abstract',
+        imageUrl: 'https://example.com/artists/amina_elsayed.jpg',
+        website: 'https://aminaelsayed.com',
+        socialMedia: ['https://facebook.com/amina.elsayed'],
+      ),
+      Artist(
+        id: 'artist_005',
+        name: 'Sophie Dubois',
+        country: 'France',
+        bio:
+            'Sophie is a performance artist and choreographer known for her innovative site-specific dance pieces.',
+        specialty: 'Performance, Dance',
+        imageUrl: 'https://example.com/artists/sophie_dubois.jpg',
+        website: 'https://sophiedubois.fr',
+        socialMedia: ['https://instagram.com/sophie.dubois'],
+      ),
+      ...ArtistDataService.getArtists(),
+    ];
+  }
+}
+
+/// ArtistDataSource interface for fetching artists.
+///
+/// Implement this class to provide artist data from your preferred source.
 abstract class ArtistDataSource {
   Future<List<Artist>> fetchArtists();
 }
-
-class MockArtistDataSource implements ArtistDataSource {
-  @override
-  Future<List<Artist>> fetchArtists() async {
-    await Future.delayed(const Duration(milliseconds: 500));
-    return MockData.artists;
-  }
-}
-
-class ApiArtistDataSource implements ArtistDataSource {
-  static const String _endpoint = 'https://api.example.com/artists'; // TODO: Replace with real endpoint
-
-  @override
-  Future<List<Artist>> fetchArtists() async {
-    try {
-      final response = await http.get(Uri.parse(_endpoint));
-      if (response.statusCode == 200) {
-        final List<dynamic> data = json.decode(response.body);
-        return data.map((item) => _fromJson(item)).toList();
-      } else if (response.statusCode == 404) {
-        throw Exception('No artists found.');
-      } else {
-        throw Exception('Server error: ${response.statusCode}');
-      }
-    } on SocketException {
-      throw Exception('No internet connection. Please check your network.');
-    } on FormatException {
-      throw Exception('Invalid data format received from server.');
-    } catch (e) {
-      throw Exception('Failed to load artists: $e');
-    }
-  }
-
-  Artist _fromJson(Map<String, dynamic> json) {
-    return Artist(
-      id: json['id'] as String,
-      name: json['name'] as String,
-      country: json['country'] as String,
-      bio: json['bio'] as String,
-      specialty: json['specialty'] as String,
-      imageUrl: json['imageUrl'] as String?,
-      website: (json['website'] as String?) ?? '',
-      socialMedia: List<String>.from(json['socialMedia'] as List<dynamic>),
-    );
-  }
-} 

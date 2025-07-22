@@ -170,20 +170,6 @@ lib/
 ## 🔧 **Services Architecture**
 
 ### **Core Services**
-- **LogService**: Centralized logging with multiple levels
-- **ErrorHandler**: Advanced error handling with retry mechanisms
-- **ApiService**: Robust API integration with caching and retries
-- **CacheService**: Persistent data caching with intelligent invalidation
-- **AuthService**: Authentication and user management
-- **PerformanceMonitoringService**: Real-time performance tracking
-
-### **Error Handling**
-- **Automatic Retries**: Exponential backoff for failed requests
-- **Error Categorization**: Specific error types and user-friendly messages
-- **Graceful Degradation**: Offline support and fallback mechanisms
-- **Comprehensive Logging**: Detailed error tracking and debugging
-
----
 
 ## 🧪 **Testing**
 

@@ -1,3 +1,4 @@
+import 'package:buna_app/services/log_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/schedule.dart' as schedule_model;
@@ -53,8 +54,8 @@ class NextEventCard extends ConsumerWidget {
         ),
       );
     } catch (e, stack) {
-      debugPrint('[NextEventCard] Error building card: ${e.toString()}');
-      debugPrint('[NextEventCard] Stack: ${stack.toString()}');
+      LogService.error('[NextEventCard] Error building card', e);
+      LogService.error('[NextEventCard] Stack', stack);
       return Card(
         color: Colors.red[50],
         child: Padding(

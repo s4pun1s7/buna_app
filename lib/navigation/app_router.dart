@@ -1,316 +1,136 @@
+import '../features/artists/artist_demo_route.dart';
+import 'package:buna_app/services/log_service.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../features/map_gallery/map_gallery_screen.dart';
+import '../features/social/social_screen.dart';
 import '../features/onboarding/onboarding_screen.dart';
-import '../features/venues/venues_screen.dart';
+// import '../features/venues/venues_screen.dart';
+import '../features/venues_map/venues_map_screen.dart';
 import '../features/news/news_screen.dart';
 import '../features/info/info_screen.dart';
 import '../features/schedule/schedule_screen.dart';
 import '../features/artists/artists_screen.dart';
 import '../features/qr/qr_screen.dart';
-import '../features/ar/ar_screen.dart';
-import '../features/map_gallery/map_gallery_screen.dart';
-import '../features/social/social_screen.dart';
 import '../features/feedback/feedback_screen.dart';
 import '../features/settings/feature_flags_screen.dart';
+// import '../features/maps/maps_screen.dart';
+import '../widgets/splash_screen.dart';
+import '../widgets/home/quick_actions.dart';
 import '../config/feature_flags.dart';
 import 'route_constants.dart';
 import 'route_guards.dart';
-import 'main_layout.dart';
 import 'route_observer.dart';
+import 'main_layout.dart';
 import '../widgets/common/index.dart';
-import '../widgets/splash_screen.dart';
 // Import the optimized home screen
-import '../widgets/home/optimized_home_screen.dart';
-import '../features/maps/maps_screen.dart';
 
 /// Main router configuration for the Buna Festival app
 class AppRouter {
+  /// Navigate to onboarding
+  static void goToOnboarding(BuildContext context) {
+    context.go(AppRoutes.onboarding);
+  }
+
   // Private constructor to prevent instantiation
   AppRouter._();
 
-  /// Global route observer for analytics
-  static final _routeObserver = AppRouteObserver();
-
-  /// Main router configuration
+  /// The main GoRouter instance for the app
   static final GoRouter router = GoRouter(
-    initialLocation: '/splash',
-    debugLogDiagnostics: FeatureFlags.enableDebugMode,
-
-    // Route observers for analytics
-    observers: FeatureFlags.enableAnalytics ? [_routeObserver] : [],
-
-    // Routes configuration with lazy loading
+    initialLocation: AppRoutes.splash,
     routes: [
+      GoRoute(
+        path: AppRoutes.artistDemo,
+        name: AppRoutes.artistDemoName,
+        builder: (context, state) => const ArtistDemoRoute(),
+      ),
       GoRoute(
         path: AppRoutes.splash,
         name: AppRoutes.splashName,
         builder: (context, state) => const SplashScreen(),
       ),
-      // Public routes (no authentication required)
       GoRoute(
         path: AppRoutes.onboarding,
         name: AppRoutes.onboardingName,
         builder: (context, state) => const OnboardingScreen(),
       ),
-
-      // Protected routes with shell layout
-      ShellRoute(
-        builder: (context, state, child) => MainLayout(child: child),
-        routes: [
-          // Core navigation routes with lazy loading
-          if (FeatureFlags.enableHome)
-            GoRoute(
-              path: AppRoutes.home,
-              name: AppRoutes.homeName,
-              builder: (context, state) =>
-                  const OptimizedHomeScreen(), // Use optimized version
-            ),
-          if (FeatureFlags.enableVenues)
-            GoRoute(
-              path: AppRoutes.venues,
-              name: AppRoutes.venuesName,
-              builder: (context, state) => const VenuesScreen(),
-            ),
-          if (FeatureFlags.enableNews)
-            GoRoute(
-              path: AppRoutes.news,
-              name: AppRoutes.newsName,
-              builder: (context, state) => const NewsScreen(),
-            ),
-          if (FeatureFlags.enableInfo)
-            GoRoute(
-              path: AppRoutes.info,
-              name: AppRoutes.infoName,
-              builder: (context, state) => const InfoScreen(),
-            ),
-
-          // Festival feature routes with lazy loading
-          if (FeatureFlags.enableSchedule)
-            GoRoute(
-              path: AppRoutes.schedule,
-              name: AppRoutes.scheduleName,
-              builder: (context, state) => const ScheduleScreen(),
-            ),
-          if (FeatureFlags.enableArtists)
-            GoRoute(
-              path: AppRoutes.artists,
-              name: AppRoutes.artistsName,
-              builder: (context, state) => const ArtistsScreen(),
-            ),
-
-          // Interactive feature routes with lazy loading
-          if (FeatureFlags.enableQRScanner)
-            GoRoute(
-              path: AppRoutes.qrScanner,
-              name: AppRoutes.qrScannerName,
-              builder: (context, state) {
-                // Lazy load QR screen to reduce initial bundle size
-                return FutureBuilder(
-                  future: _loadQRScreen(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      return snapshot.data ?? const _LoadingScreen();
-                    }
-                    return const _LoadingScreen();
-                  },
-                );
-              },
-            ),
-          if (FeatureFlags.enableAR)
-            GoRoute(
-              path: AppRoutes.ar,
-              name: AppRoutes.arName,
-              builder: (context, state) {
-                // Lazy load AR screen to reduce initial bundle size
-                return FutureBuilder(
-                  future: _loadARScreen(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      return snapshot.data ?? const _LoadingScreen();
-                    }
-                    return const _LoadingScreen();
-                  },
-                );
-              },
-            ),
-          if (FeatureFlags.enableMapGallery)
-            GoRoute(
-              path: AppRoutes.mapGallery,
-              name: AppRoutes.mapGalleryName,
-              builder: (context, state) {
-                // Lazy load map gallery to reduce initial bundle size
-                return FutureBuilder(
-                  future: _loadMapGalleryScreen(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      return snapshot.data ?? const _LoadingScreen();
-                    }
-                    return const _LoadingScreen();
-                  },
-                );
-              },
-            ),
-          if (FeatureFlags.enableSocialFeed)
-            GoRoute(
-              path: AppRoutes.social,
-              name: AppRoutes.socialName,
-              builder: (context, state) {
-                // Lazy load social screen to reduce initial bundle size
-                return FutureBuilder(
-                  future: _loadSocialScreen(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      return snapshot.data ?? const _LoadingScreen();
-                    }
-                    return const _LoadingScreen();
-                  },
-                );
-              },
-            ),
-
-          // Support feature routes
-          if (FeatureFlags.enableFeedback)
-            GoRoute(
-              path: AppRoutes.feedback,
-              name: AppRoutes.feedbackName,
-              builder: (context, state) => const FeedbackScreen(),
-            ),
-
-          // Development routes (only in debug mode)
-          if (FeatureFlags.enableDebugMode)
-            GoRoute(
-              path: AppRoutes.featureFlags,
-              name: AppRoutes.featureFlagsName,
-              builder: (context, state) => const FeatureFlagsScreen(),
-            ),
-
-          // New feature routes
-          if (FeatureFlags.enableMaps)
-            GoRoute(
-              path: AppRoutes.maps,
-              name: AppRoutes.mapsName,
-              builder: (context, state) {
-                // Lazy load MapsScreen to reduce initial bundle size
-                return FutureBuilder(
-                  future: Future.value(const MapsScreen()),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      return snapshot.data ?? const _LoadingScreen();
-                    }
-                    return const _LoadingScreen();
-                  },
-                );
-              },
-            ),
-        ],
-      ),
-
-      // Detail routes (future implementation)
       GoRoute(
-        path: AppRoutes.venueDetails,
-        name: AppRoutes.venueDetailsName,
-        pageBuilder: (context, state) {
-          final id = state.pathParameters['id'] ?? '';
-          return CustomTransitionPage(
-            key: state.pageKey,
-            child: Scaffold(
-              appBar: AppBar(title: Text('Venue $id')),
-              body: Center(child: Text('Venue details for $id')),
-            ),
-            transitionsBuilder: (context, animation, secondaryAnimation, child) {
-              const begin = Offset(1.0, 0.0);
-              const end = Offset.zero;
-              const curve = Curves.ease;
-              final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-              return SlideTransition(
-                position: animation.drive(tween),
-                child: child,
-              );
-            },
-          );
-        },
+        path: AppRoutes.home,
+        name: AppRoutes.homeName,
+        builder: (context, state) =>
+            MainLayout(child: const OptimizedHomeScreen()),
       ),
       GoRoute(
-        path: AppRoutes.eventDetails,
-        name: AppRoutes.eventDetailsName,
-        pageBuilder: (context, state) {
-          final id = state.pathParameters['id'] ?? '';
-          return CustomTransitionPage(
-            key: state.pageKey,
-            child: Scaffold(
-              appBar: AppBar(title: Text('Event $id')),
-              body: Center(child: Text('Event details for $id')),
-            ),
-            transitionsBuilder: (context, animation, secondaryAnimation, child) {
-              const begin = Offset(1.0, 0.0);
-              const end = Offset.zero;
-              const curve = Curves.ease;
-              final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-              return SlideTransition(
-                position: animation.drive(tween),
-                child: child,
-              );
-            },
-          );
-        },
+        path: AppRoutes.venues,
+        name: AppRoutes.venuesName,
+        builder: (context, state) => MainLayout(child: const VenuesMapScreen()),
       ),
       GoRoute(
-        path: AppRoutes.newsDetails,
-        name: AppRoutes.newsDetailsName,
-        pageBuilder: (context, state) {
-          final id = state.pathParameters['id'] ?? '';
-          return CustomTransitionPage(
-            key: state.pageKey,
-            child: Scaffold(
-              appBar: AppBar(title: Text('News $id')),
-              body: Center(child: Text('News details for $id')),
-            ),
-            transitionsBuilder: (context, animation, secondaryAnimation, child) {
-              const begin = Offset(1.0, 0.0);
-              const end = Offset.zero;
-              const curve = Curves.ease;
-              final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-              return SlideTransition(
-                position: animation.drive(tween),
-                child: child,
-              );
-            },
-          );
-        },
+        path: AppRoutes.maps,
+        name: AppRoutes.mapsName,
+        builder: (context, state) => MainLayout(child: const VenuesMapScreen()),
+      ),
+      GoRoute(
+        path: AppRoutes.news,
+        name: AppRoutes.newsName,
+        builder: (context, state) => MainLayout(child: const NewsScreen()),
+      ),
+      GoRoute(
+        path: AppRoutes.info,
+        name: AppRoutes.infoName,
+        builder: (context, state) => MainLayout(child: const InfoScreen()),
+      ),
+      GoRoute(
+        path: AppRoutes.schedule,
+        name: AppRoutes.scheduleName,
+        builder: (context, state) => const ScheduleScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.artists,
+        name: AppRoutes.artistsName,
+        builder: (context, state) => MainLayout(child: const ArtistsScreen()),
+      ),
+      GoRoute(
+        path: AppRoutes.qrScanner,
+        name: AppRoutes.qrScannerName,
+        builder: (context, state) => MainLayout(child: const QRScreen()),
+      ),
+      GoRoute(
+        path: AppRoutes.mapGallery,
+        name: AppRoutes.mapGalleryName,
+        builder: (context, state) => const MapGalleryScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.social,
+        name: AppRoutes.socialName,
+        builder: (context, state) => const SocialScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.feedback,
+        name: AppRoutes.feedbackName,
+        builder: (context, state) => const FeedbackScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.featureFlags,
+        name: AppRoutes.featureFlagsName,
+        builder: (context, state) => const FeatureFlagsScreen(),
       ),
     ],
-
-    // Global error handling
     errorBuilder: (context, state) {
-      debugPrint('[ROUTE ERROR] Route not found: ${state.uri}');
-      return AppErrorWidget(message: 'Route not found: ${state.uri}', onRetry: () => context.go(AppRoutes.home));
+      LogService.error('[ROUTE ERROR] Route not found', state.uri);
+      return AppErrorWidget(
+        message: 'Route not found: ${state.uri}',
+        onRetry: () => context.go(AppRoutes.home),
+      );
     },
-
-    // Route guards and redirects
     redirect: (context, state) => RouteGuards.handleRedirect(context, state),
+    observers: [AppRouteObserver()],
   );
 
-  // Lazy loading functions for heavy screens
-  static Future<Widget> _loadQRScreen() async {
-    // Simulate loading time and return the screen
-    await Future.delayed(const Duration(milliseconds: 100));
-    return const QRScreen();
-  }
+  /// Global route observer for analytics
+  // Removed unused private declaration
 
-  static Future<Widget> _loadARScreen() async {
-    await Future.delayed(const Duration(milliseconds: 100));
-    return const ARScreen();
-  }
-
-  static Future<Widget> _loadMapGalleryScreen() async {
-    await Future.delayed(const Duration(milliseconds: 100));
-    return const MapGalleryScreen();
-  }
-
-  static Future<Widget> _loadSocialScreen() async {
-    await Future.delayed(const Duration(milliseconds: 100));
-    return const SocialScreen();
-  }
+  // Removed unused private declaration
 
   /// Navigate to a route with parameters
   static void goToVenueDetails(BuildContext context, String venueId) {
@@ -369,12 +189,6 @@ class AppRouter {
     }
   }
 
-  static void goToAR(BuildContext context) {
-    if (FeatureFlags.enableAR) {
-      context.go('/ar');
-    }
-  }
-
   static void goToMapGallery(BuildContext context) {
     if (FeatureFlags.enableMapGallery) {
       context.go('/map-gallery');
@@ -399,11 +213,6 @@ class AppRouter {
     }
   }
 
-  /// Navigate to onboarding
-  static void goToOnboarding(BuildContext context) {
-    context.go(AppRoutes.onboarding);
-  }
-
   /// Get current route name
   static String getCurrentRouteName(BuildContext context) {
     final state = GoRouterState.of(context);
@@ -424,22 +233,4 @@ class AppRouter {
 }
 
 /// Loading screen widget for lazy-loaded routes
-class _LoadingScreen extends StatelessWidget {
-  const _LoadingScreen();
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CircularProgressIndicator(),
-            SizedBox(height: 16),
-            Text('Loading...'),
-          ],
-        ),
-      ),
-    );
-  }
-}
+// Removed unused private declaration

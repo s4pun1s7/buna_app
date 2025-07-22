@@ -46,13 +46,13 @@ class _NewsScreenState extends ConsumerState<NewsScreen> {
     });
   }
 
+  // Removed unused imports
+
   Future<void> _loadMoreNews() async {
     if (_isLoadingMore) return;
-
     setState(() {
       _isLoadingMore = true;
     });
-
     try {
       await ref.read(newsStateProvider.notifier).loadMore(_currentPage + 1);
       setState(() {
@@ -89,7 +89,7 @@ class _NewsScreenState extends ConsumerState<NewsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: _buildBody());
+    return _buildBody();
   }
 
   Widget _buildBody() {
@@ -102,7 +102,10 @@ class _NewsScreenState extends ConsumerState<NewsScreen> {
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stackTrace) {
           final appError = error as AppException;
-          return AppErrorWidget(message: appError.message, onRetry: () => ref.read(newsStateProvider.notifier).refresh());
+          return AppErrorWidget(
+            message: appError.message,
+            onRetry: () => ref.read(newsStateProvider.notifier).refresh(),
+          );
         },
       ),
     );
