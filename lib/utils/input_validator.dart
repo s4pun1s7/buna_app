@@ -75,7 +75,7 @@ class InputValidator {
   /// Log validation failures for security monitoring
   static void _logValidationFailure(String type, String? value) {
     if (kDebugMode) {
-      print('🚨 Input validation failed for $type: $value');
+      print('🚨 Input validation failed for $type');
     }
     // In production, this could be sent to security monitoring
   }
