@@ -4,7 +4,8 @@ import '../../models/festival_data.dart';
 import '../../services/api_service.dart';
 import '../../widgets/common/index.dart';
 import '../../widgets/venue_event/index.dart';
-import '../../services/error_handler.dart';
+import 'package:go_router/go_router.dart';
+import '../../navigation/route_constants.dart';
 
 /// Schedule screen showing all festival events in a timeline
 class ScheduleScreen extends ConsumerStatefulWidget {
@@ -129,20 +130,7 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Festival Schedule'),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.info_outline),
-            onPressed: () => _showInfoDialog(context),
-            tooltip: 'About Schedule',
-          ),
-        ],
-      ),
-      body: _buildBody(),
-    );
+    return _buildBody();
   }
 
   Widget _buildBody() {
@@ -151,7 +139,7 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen>
     }
 
     if (_error != null) {
-      return ErrorScreen(error: AppException(_error!), onRetry: _loadEvents);
+      return AppErrorWidget(message: _error, onRetry: _loadEvents);
     }
 
     if (_allEvents.isEmpty) {
@@ -422,23 +410,12 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen>
             onPressed: () => Navigator.pop(context),
             child: const Text('Close'),
           ),
-        ],
-      ),
-    );
-  }
-
-  void _showInfoDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('About the Schedule'),
-        content: const Text(
-          'This is a simple schedule viewer. It shows events in a timeline, list, and calendar view. You can filter events by date and view details about each event. The data is fetched from an API and may not be accurate or complete.',
-        ),
-        actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('OK'),
+            onPressed: () {
+              Navigator.pop(context);
+              context.go(AppRoutes.eventDetailsPath(event.title));
+            },
+            child: const Text('Full Details'),
           ),
         ],
       ),

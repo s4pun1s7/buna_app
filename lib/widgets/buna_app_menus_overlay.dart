@@ -1,43 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class BunaAppMenusOverlay extends StatefulWidget {
+class BunaAppMenusOverlay extends ConsumerWidget {
   final Widget child;
   final bool iosSizeMode;
   final Size iosSize;
   final VoidCallback toggleIosSizeMode;
 
   const BunaAppMenusOverlay({
-    Key? key,
+    super.key,
     required this.child,
     required this.iosSizeMode,
     required this.iosSize,
     required this.toggleIosSizeMode,
-  }) : super(key: key);
+  });
+
 
   @override
-  State<BunaAppMenusOverlay> createState() => _BunaAppMenusOverlayState();
-}
-
-class _BunaAppMenusOverlayState extends State<BunaAppMenusOverlay> {
-  void _openMenu(String menu) {
-    showModalBottomSheet(
-      context: context,
-      builder: (context) {
-        if (menu == 'devtools') {
-          return DevToolsMenuSheet(
-            onClose: () => Navigator.of(context).pop(),
-            iosSizeMode: widget.iosSizeMode,
-            toggleIosSizeMode: widget.toggleIosSizeMode,
-          );
-        }
-        // Add more menus here
-        return const SizedBox.shrink();
-      },
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
     return Directionality(
       textDirection: TextDirection.ltr,
       child: Scaffold(
@@ -50,29 +31,24 @@ class _BunaAppMenusOverlayState extends State<BunaAppMenusOverlay> {
           automaticallyImplyLeading: false,
           title: Row(
             children: [
-              IconButton(
-                icon: const Icon(Icons.menu, size: 32),
-                tooltip: 'DevTools Menu',
-                onPressed: () => _openMenu('devtools'),
-              ),
-              // Add more top bar buttons here if needed
+              // DevTools menu button removed
             ],
           ),
         ),
         body: Stack(
           children: [
             Center(
-              child: widget.iosSizeMode
+              child: iosSizeMode
                   ? Container(
-                      width: widget.iosSize.width,
-                      height: widget.iosSize.height,
+                      width: iosSize.width,
+                      height: iosSize.height,
                       decoration: BoxDecoration(
-                        color: Colors.black,
+                        color: theme.colorScheme.surface,
                         borderRadius: BorderRadius.circular(32),
                       ),
-                      child: widget.child,
+                      child: child,
                     )
-                  : widget.child,
+                  : child,
             ),
             // ...other overlays if needed...
           ],
@@ -82,19 +58,20 @@ class _BunaAppMenusOverlayState extends State<BunaAppMenusOverlay> {
   }
 }
 
-class DevToolsMenuSheet extends StatelessWidget {
+class DevToolsMenuSheet extends ConsumerWidget {
   final VoidCallback onClose;
   final bool iosSizeMode;
   final VoidCallback toggleIosSizeMode;
   const DevToolsMenuSheet({
-    Key? key,
+    super.key,
     required this.onClose,
     required this.iosSizeMode,
     required this.toggleIosSizeMode,
-  }) : super(key: key);
+  });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -102,9 +79,9 @@ class DevToolsMenuSheet extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            Text(
               'DevTools',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
             ListTile(

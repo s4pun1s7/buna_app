@@ -1,7 +1,7 @@
+import 'package:buna_app/services/log_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../navigation/app_router.dart';
-// TODO: Remove unused import if not needed
 import 'branding/index.dart';
 import '../providers/user_provider.dart';
 import '../services/auth_service.dart';
@@ -51,7 +51,7 @@ class SplashScreen extends ConsumerWidget {
   ) {
     return userAsync.when(
       data: (user) {
-        debugPrint(
+        LogService.debug(
           'SplashScreen: user = ${user?.uid ?? 'null'}, isAnonymous = ${user?.isAnonymous}',
         );
         WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -79,7 +79,6 @@ class SplashScreen extends ConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // TODO: Remove or replace BunaLogoWithText with a valid widget or fallback
             const BunaLogoWithText(logoSize: 80, textSize: 24),
             const SizedBox(height: 16),
             Text('Loading...', style: Theme.of(context).textTheme.bodyLarge),
@@ -95,7 +94,6 @@ class SplashScreen extends ConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // TODO: Remove or replace BunaLogoWithText with a valid widget or fallback
             const SizedBox(height: 32),
             const Icon(Icons.error_outline, size: 64, color: Colors.red),
             const SizedBox(height: 16),

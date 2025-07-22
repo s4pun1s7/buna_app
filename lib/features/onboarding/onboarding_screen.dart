@@ -5,6 +5,8 @@ import '../../providers/locale_provider.dart';
 import '../../navigation/route_guards.dart';
 import '../../navigation/route_constants.dart';
 import '../../services/auth_service.dart';
+// ...existing code...
+import 'package:buna_app/l10n/app_localizations.dart';
 
 class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
@@ -19,12 +21,12 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   String? _authError;
   final AuthService _authService = AuthService();
 
-  void _selectLanguage(String lang) {
+  void _selectLanguage(String lang) async {
     setState(() {
       _selectedLanguage = lang;
     });
     final localeNotifier = ref.read(localeProvider.notifier);
-    localeNotifier.setLocale(Locale(lang));
+    await localeNotifier.setLocale(Locale(lang));
   }
 
   Future<void> _signInWithGoogle() async {
@@ -69,10 +71,30 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     }
   }
 
+  Future<void> _signInWithEmail() async {
+    // TODO: Implement email sign-in
+    setState(() {
+      _authError = 'Email sign-in not yet implemented.';
+    });
+  }
+
+  Future<void> _signInWithApple() async {
+    // TODO: Implement Apple sign-in
+    setState(() {
+      _authError = 'Apple sign-in not yet implemented.';
+    });
+  }
+
+  Future<void> _signInWithFacebook() async {
+    // TODO: Implement Facebook sign-in
+    setState(() {
+      _authError = 'Facebook sign-in not yet implemented.';
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: null,
       body: Container(
         width: double.infinity,
         height: double.infinity,
@@ -84,182 +106,193 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
               top: 24,
               left: 24,
               child: Image.asset(
-                'assets/buna_blue.png',
+                'assets/images/buna_pink.png',
                 width: 64,
                 height: 64,
                 fit: BoxFit.contain,
               ),
             ),
-            // Pink geometric shape and number "3"
-            Positioned(
-              top: -40,
-              left: -30,
-              child: SizedBox(
-                width: 220,
-                height: 220,
-                child: Stack(
+            Align(
+              alignment: Alignment.topCenter,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 48, left: 32, right: 32),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Container(
-                      width: 220,
-                      height: 220,
-                      decoration: BoxDecoration(
+                    Text(
+                      AppLocalizations.of(context)!.bunaVol3,
+                      style: TextStyle(
                         color: Color(0xFFFF8EB4),
-                        shape: BoxShape.rectangle,
+                        fontSize: 28,
+                        fontFamily: 'RobotoMono',
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Positioned(
-                      top: 40,
-                      left: 40,
-                      child: Text(
-                        '3',
-                        style: TextStyle(
-                          fontSize: 100,
-                          color: Color(0xFFFF8EB4),
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'RobotoMono',
+                    Container(
+                      margin: EdgeInsets.symmetric(vertical: 8),
+                      height: 2,
+                      color: Color(0xFFFF8EB4),
+                    ),
+                    Text(
+                      AppLocalizations.of(context)!.forumForContemporaryArt,
+                      style: TextStyle(
+                        color: Color(0xFFFF8EB4),
+                        fontSize: 22,
+                        fontFamily: 'RobotoMono',
+                        fontWeight: FontWeight.w400,
+                        height: 1.2,
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.symmetric(vertical: 8),
+                      height: 2,
+                      color: Color(0xFFFF8EB4),
+                    ),
+                    Text(
+                      AppLocalizations.of(context)!.festivalDates,
+                      style: TextStyle(
+                        color: Color(0xFFFF8EB4),
+                        fontSize: 20,
+                        fontFamily: 'RobotoMono',
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    // Language toggle
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        ChoiceChip(
+                          label: Text(AppLocalizations.of(context)!.english),
+                          selected: _selectedLanguage == 'en',
+                          onSelected: (_) => _selectLanguage('en'),
+                          selectedColor: Color(0xFFFF8EB4),
+                          labelStyle: TextStyle(
+                            color: _selectedLanguage == 'en'
+                                ? Color(0xFF0052CC)
+                                : Color(0xFFFF8EB4),
+                            fontFamily: 'RobotoMono',
+                          ),
                         ),
-                      ),
+                        const SizedBox(width: 12),
+                        ChoiceChip(
+                          label: Text(AppLocalizations.of(context)!.bulgarian),
+                          selected: _selectedLanguage == 'bg',
+                          onSelected: (_) => _selectLanguage('bg'),
+                          selectedColor: Color(0xFFFF8EB4),
+                          labelStyle: TextStyle(
+                            color: _selectedLanguage == 'bg'
+                                ? Color(0xFF0052CC)
+                                : Color(0xFFFF8EB4),
+                            fontFamily: 'RobotoMono',
+                          ),
+                        ),
+                      ],
                     ),
+                    const SizedBox(height: 24),
+                    // Sign-in buttons (vertical, pretty)
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        ElevatedButton.icon(
+                          onPressed: _isLoading ? null : _signInWithGoogle,
+                          icon: const Icon(Icons.login, size: 18),
+                          label: Text(
+                            AppLocalizations.of(context)!.signInGoogle,
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: const Size(120, 40),
+                            textStyle: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                            backgroundColor: Color(0xFFFF8EB4),
+                            foregroundColor: Color(0xFF0052CC),
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        ElevatedButton.icon(
+                          onPressed: _isLoading ? null : _signInWithEmail,
+                          icon: const Icon(Icons.email, size: 18),
+                          label: const Text('Email'),
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: const Size(120, 40),
+                            textStyle: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                            backgroundColor: Color(0xFFFF8EB4),
+                            foregroundColor: Color(0xFF0052CC),
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        ElevatedButton.icon(
+                          onPressed: _isLoading ? null : _signInWithApple,
+                          icon: const Icon(Icons.apple, size: 18),
+                          label: const Text('Apple'),
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: const Size(120, 40),
+                            textStyle: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                            backgroundColor: Color(0xFFFF8EB4),
+                            foregroundColor: Color(0xFF0052CC),
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        ElevatedButton.icon(
+                          onPressed: _isLoading ? null : _signInWithFacebook,
+                          icon: const Icon(Icons.facebook, size: 18),
+                          label: const Text('Facebook'),
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: const Size(120, 40),
+                            textStyle: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                            backgroundColor: Color(0xFFFF8EB4),
+                            foregroundColor: Color(0xFF0052CC),
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        ElevatedButton.icon(
+                          onPressed: _isLoading ? null : _signInAnonymously,
+                          icon: const Icon(Icons.person_outline, size: 18),
+                          label: _isLoading
+                              ? Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    SizedBox(
+                                      width: 16,
+                                      height: 16,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Text(AppLocalizations.of(context)!.loading),
+                                  ],
+                                )
+                              : Text(AppLocalizations.of(context)!.signInGuest),
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: const Size(120, 40),
+                            textStyle: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                            backgroundColor: Color(0xFFFF8EB4),
+                            foregroundColor: Color(0xFF0052CC),
+                          ),
+                        ),
+                      ],
+                    ),
+                    if (_authError != null) ...[
+                      const SizedBox(height: 16),
+                      Text(
+                        _authError!,
+                        style: const TextStyle(color: Colors.red),
+                      ),
+                    ],
                   ],
                 ),
-              ),
-            ),
-            // Event details and interactive elements
-            Positioned(
-              top: 220,
-              left: 32,
-              right: 32,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    'BUNA | Vol.3',
-                    style: TextStyle(
-                      color: Color(0xFFFF8EB4),
-                      fontSize: 28,
-                      fontFamily: 'RobotoMono',
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.symmetric(vertical: 8),
-                    height: 2,
-                    color: Color(0xFFFF8EB4),
-                  ),
-                  Text(
-                    'FORUM FOR CONTEMPORARY ART',
-                    style: TextStyle(
-                      color: Color(0xFFFF8EB4),
-                      fontSize: 22,
-                      fontFamily: 'RobotoMono',
-                      fontWeight: FontWeight.w400,
-                      height: 1.2,
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.symmetric(vertical: 8),
-                    height: 2,
-                    color: Color(0xFFFF8EB4),
-                  ),
-                  Text(
-                    '3-8 Sept.2025',
-                    style: TextStyle(
-                      color: Color(0xFFFF8EB4),
-                      fontSize: 20,
-                      fontFamily: 'RobotoMono',
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  // Language toggle
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      ChoiceChip(
-                        label: const Text('English'),
-                        selected: _selectedLanguage == 'en',
-                        onSelected: (_) => _selectLanguage('en'),
-                        selectedColor: Color(0xFFFF8EB4),
-                        labelStyle: TextStyle(
-                          color: _selectedLanguage == 'en'
-                              ? Color(0xFF0052CC)
-                              : Color(0xFFFF8EB4),
-                          fontFamily: 'RobotoMono',
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      ChoiceChip(
-                        label: const Text('Български'),
-                        selected: _selectedLanguage == 'bg',
-                        onSelected: (_) => _selectLanguage('bg'),
-                        selectedColor: Color(0xFFFF8EB4),
-                        labelStyle: TextStyle(
-                          color: _selectedLanguage == 'bg'
-                              ? Color(0xFF0052CC)
-                              : Color(0xFFFF8EB4),
-                          fontFamily: 'RobotoMono',
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 24),
-                  // Sign-in buttons
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ElevatedButton.icon(
-                        onPressed: _isLoading ? null : _signInWithGoogle,
-                        icon: const Icon(Icons.login, size: 18),
-                        label: const Text('Google'),
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: const Size(120, 40),
-                          textStyle: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                          backgroundColor: Color(0xFFFF8EB4),
-                          foregroundColor: Color(0xFF0052CC),
-                        ),
-                      ),
-                      const SizedBox(width: 16),
-                      ElevatedButton.icon(
-                        onPressed: _isLoading ? null : _signInAnonymously,
-                        icon: const Icon(Icons.person_outline, size: 18),
-                        label: _isLoading
-                            ? Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  SizedBox(
-                                    width: 16,
-                                    height: 16,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  const Text('Loading...'),
-                                ],
-                              )
-                            : const Text('Guest'),
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: const Size(120, 40),
-                          textStyle: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                          backgroundColor: Color(0xFFFF8EB4),
-                          foregroundColor: Color(0xFF0052CC),
-                        ),
-                      ),
-                    ],
-                  ),
-                  if (_authError != null) ...[
-                    const SizedBox(height: 16),
-                    Text(
-                      _authError!,
-                      style: const TextStyle(color: Colors.red),
-                    ),
-                  ],
-                ],
               ),
             ),
           ],

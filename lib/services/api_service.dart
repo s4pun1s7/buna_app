@@ -1,24 +1,69 @@
+import 'log_service.dart';
 import 'dart:convert';
 import 'dart:async';
 import 'package:http/http.dart' as http;
 import '../models/festival_data.dart';
 import '../utils/debouncer.dart';
 import 'error_handler.dart';
-import 'mock_data_service.dart';
-import 'package:flutter/foundation.dart';
-
-// TODO: Move Artist model to its own file (lib/models/artist.dart)
-class Artist {
-  final String name;
-  Artist({required this.name});
-}
+import 'data_service.dart' as data_service;
+import 'cache_service.dart';
 
 /// API service for communicating with the Buna Festival website
 class ApiService {
-  // Flag to temporarily disable API calls
-  static const bool _apiDisabled = true; // Set to false to re-enable API
+  static Timer? _backgroundSyncTimer;
 
-  static const String _baseUrl = 'https://bunavarna.com';
+  /// Starts in-app background sync for news, events, and venues.
+  /// Call this once (e.g., in main.dart) to keep cache fresh while app is open.
+  static void startBackgroundSync({
+    Duration interval = const Duration(minutes: 15),
+  }) {
+    _backgroundSyncTimer?.cancel();
+    _backgroundSyncTimer = Timer.periodic(interval, (_) async {
+      try {
+        // Refresh news (first page)
+        await fetchNews(page: 1);
+        // Refresh events (first page)
+        await fetchEvents(page: 1);
+        // Refresh venues
+        await fetchVenues();
+        // Add more endpoints as needed
+      } catch (e) {
+        // Ignore errors, will try again next interval
+      }
+    });
+  }
+
+  /// Stops background sync if needed
+  static void stopBackgroundSync() {
+    _backgroundSyncTimer?.cancel();
+    _backgroundSyncTimer = null;
+  }
+
+  /// Generic offline-first cache wrapper for API calls
+  static Future<T> fetchWithCache<T>({
+    required String cacheKey,
+    required Future<T> Function() fetchFunction,
+    Duration expiry = const Duration(minutes: 15),
+    T Function(dynamic)? fromJson,
+  }) async {
+    // Try persistent cache first
+    final cached = await CacheService.getData(cacheKey);
+    if (cached != null && fromJson != null) {
+      try {
+        return fromJson(cached);
+      } catch (_) {}
+    } else if (cached != null) {
+      return cached as T;
+    }
+    // If not cached, fetch from network
+    final result = await fetchFunction();
+    // Save to persistent cache
+    await CacheService.setData(cacheKey, result, expiry: expiry);
+    return result;
+  }
+  // API is now enabled. Removed _apiDisabled flag.
+
+  static const String _baseUrl = '';
   static const String _apiEndpoint = '/wp-json/wp/v2';
   static const Duration _timeout = Duration(seconds: 30);
 
@@ -31,6 +76,28 @@ class ApiService {
   // Debouncer for API calls to prevent rate limiting
   static final APIDebouncer _apiDebouncer = APIDebouncer();
 
+  /// Helper method to make API requests with proper error handling
+  static Future<T> _makeApiRequest<T>(
+    String url,
+    String endpoint,
+    T Function(List<dynamic>) fromJson,
+  ) async {
+    final response = await http
+        .get(Uri.parse(url), headers: {'Accept': 'application/json'})
+        .timeout(_timeout);
+
+    if (response.statusCode == 200) {
+      final List<dynamic> data = json.decode(response.body);
+      return fromJson(data);
+    } else {
+      throw _errorHandler.handleApiError(
+        'Failed to load data',
+        endpoint,
+        response.statusCode,
+      );
+    }
+  }
+
   // --- Free Public API Integrations ---
 
   static const String _newsApiKey = '';
@@ -41,8 +108,8 @@ class ApiService {
     int pageSize = 5,
   }) async {
     if (_newsApiKey.isEmpty) {
-      // Fallback to mock data if no API key
-      return MockDataService.getMockNews();
+      // Fallback to local data if no API key
+      return data_service.DataService.getNews();
     }
     try {
       final response = await http
@@ -88,64 +155,28 @@ class ApiService {
     }
   }
 
-  /// Fetch artists from Harvard Art Museums API (free API, requires API key)
-  static Future<List<Artist>> fetchPublicArtists({
-    int page = 1,
-    int size = 5,
-  }) async {
-    // TODO: Replace with real implementation
-    return [];
-  }
-
   /// Fetch news articles from the festival website
   static Future<List<NewsArticle>> fetchNews({
     int page = 1,
     int perPage = 10,
   }) async {
-    if (_apiDisabled) {
-      return MockDataService.getMockNews();
-    }
+    // API is enabled. No local fallback here.
 
-    return await _debouncedApiCall(() async {
-      try {
-        final cacheKey = 'news_page_$page';
-        if (_isCacheValid(cacheKey)) {
-          return _cache[cacheKey]['data'];
-        }
-
-        final response = await http
-            .get(
-              Uri.parse(
-                '$_baseUrl$_apiEndpoint/posts?page=$page&per_page=$perPage&_embed',
-              ),
-              headers: {'Accept': 'application/json'},
-            )
-            .timeout(_timeout);
-
-        if (response.statusCode == 200) {
-          final List<dynamic> data = json.decode(response.body);
-          final articles = data
-              .map((json) => NewsArticle.fromJson(json))
-              .toList();
-
-          _cache[cacheKey] = {'data': articles, 'timestamp': DateTime.now()};
-
-          return articles;
-        } else {
-          throw _errorHandler.handleApiError(
-            'Failed to load news',
-            '$_apiEndpoint/posts',
-            response.statusCode,
-          );
-        }
-      } on TimeoutException {
-        throw _errorHandler.handleError(
-          TimeoutException('Request timed out', const Duration(seconds: 30)),
-        );
-      } catch (e, stackTrace) {
-        throw _errorHandler.handleError(e, stackTrace);
-      }
-    });
+    final cacheKey = 'news_page_$page';
+    return await fetchWithCache<List<NewsArticle>>(
+      cacheKey: cacheKey,
+      expiry: _cacheExpiry,
+      fromJson: (data) =>
+          (data as List<dynamic>).map((e) => NewsArticle.fromJson(e)).toList(),
+      fetchFunction: () async {
+        LogService.info('Fetching news page $page');
+        return await _makeApiRequest<List<NewsArticle>>(
+          '$_baseUrl$_apiEndpoint/posts?page=$page&per_page=$perPage&_embed',
+          '$_apiEndpoint/posts',
+          (data) => data.map((json) => NewsArticle.fromJson(json)).toList(),
+        ).retryWithBackoff(_errorHandler);
+      },
+    );
   }
 
   /// Fetch events from the festival website
@@ -153,54 +184,47 @@ class ApiService {
     int page = 1,
     int perPage = 20,
   }) async {
-    if (_apiDisabled) {
-      return MockDataService.getMockEvents();
-    }
+    // API is enabled. No local fallback here.
 
-    return await _debouncedApiCall(() async {
-      try {
-        final cacheKey = 'events_page_$page';
-        if (_isCacheValid(cacheKey)) {
-          return _cache[cacheKey]['data'];
-        }
-
-        // Try to fetch from custom endpoint if available
-        final response = await http
-            .get(
-              Uri.parse(
-                '$_baseUrl$_apiEndpoint/events?page=$page&per_page=$perPage&_embed',
-              ),
-              headers: {'Accept': 'application/json'},
-            )
-            .timeout(_timeout);
-
-        if (response.statusCode == 200) {
-          final List<dynamic> data = json.decode(response.body);
-          final events = data
-              .map((json) => FestivalEvent.fromJson(json))
-              .toList();
-
-          _cache[cacheKey] = {'data': events, 'timestamp': DateTime.now()};
-
-          return events;
-        } else if (response.statusCode == 404) {
-          // Fallback to posts with event category
-          return await _fetchEventsFromPosts(page: page, perPage: perPage);
-        } else {
-          throw _errorHandler.handleApiError(
-            'Failed to load events',
-            '$_apiEndpoint/events',
-            response.statusCode,
+    final cacheKey = 'events_page_$page';
+    return await fetchWithCache<List<FestivalEvent>>(
+      cacheKey: cacheKey,
+      expiry: _cacheExpiry,
+      fromJson: (data) => (data as List<dynamic>)
+          .map((e) => FestivalEvent.fromJson(e))
+          .toList(),
+      fetchFunction: () async {
+        try {
+          final response = await http
+              .get(
+                Uri.parse(
+                  '$_baseUrl$_apiEndpoint/events?page=$page&per_page=$perPage&_embed',
+                ),
+                headers: {'Accept': 'application/json'},
+              )
+              .timeout(_timeout);
+          if (response.statusCode == 200) {
+            final List<dynamic> data = json.decode(response.body);
+            return data.map((json) => FestivalEvent.fromJson(json)).toList();
+          } else if (response.statusCode == 404) {
+            // Fallback to posts with event category
+            return await _fetchEventsFromPosts(page: page, perPage: perPage);
+          } else {
+            throw _errorHandler.handleApiError(
+              'Failed to load events',
+              '$_apiEndpoint/events',
+              response.statusCode,
+            );
+          }
+        } on TimeoutException {
+          throw _errorHandler.handleError(
+            TimeoutException('Request timed out', const Duration(seconds: 30)),
           );
+        } catch (e, stackTrace) {
+          throw _errorHandler.handleError(e, stackTrace);
         }
-      } on TimeoutException {
-        throw _errorHandler.handleError(
-          TimeoutException('Request timed out', const Duration(seconds: 30)),
-        );
-      } catch (e, stackTrace) {
-        throw _errorHandler.handleError(e, stackTrace);
-      }
-    });
+      },
+    );
   }
 
   /// Fetch events from posts with event category
@@ -208,9 +232,7 @@ class ApiService {
     int page = 1,
     int perPage = 20,
   }) async {
-    if (_apiDisabled) {
-      return MockDataService.getMockEvents();
-    }
+    // API is enabled. No local fallback here.
     try {
       final response = await http
           .get(
@@ -242,56 +264,49 @@ class ApiService {
 
   /// Fetch venue information
   static Future<List<Venue>> fetchVenues() async {
-    if (_apiDisabled) {
-      return MockDataService.getMockVenues();
-    }
+    // API is enabled. No local fallback here.
 
-    return await _debouncedApiCall(() async {
-      try {
-        const cacheKey = 'venues';
-        if (_isCacheValid(cacheKey)) {
-          return _cache[cacheKey]['data'];
-        }
-
-        final response = await http
-            .get(
-              Uri.parse('$_baseUrl$_apiEndpoint/venues?_embed'),
-              headers: {'Accept': 'application/json'},
-            )
-            .timeout(_timeout);
-
-        if (response.statusCode == 200) {
-          final List<dynamic> data = json.decode(response.body);
-          final venues = data.map((json) => Venue.fromJson(json)).toList();
-
-          _cache[cacheKey] = {'data': venues, 'timestamp': DateTime.now()};
-
-          return venues;
-        } else if (response.statusCode == 404) {
-          // Return empty list if venues endpoint doesn't exist
-          return [];
-        } else {
-          throw _errorHandler.handleApiError(
-            'Failed to load venues',
-            '$_apiEndpoint/venues',
-            response.statusCode,
+    const cacheKey = 'venues';
+    return await fetchWithCache<List<Venue>>(
+      cacheKey: cacheKey,
+      expiry: _cacheExpiry,
+      fromJson: (data) =>
+          (data as List<dynamic>).map((e) => Venue.fromJson(e)).toList(),
+      fetchFunction: () async {
+        try {
+          final response = await http
+              .get(
+                Uri.parse('$_baseUrl$_apiEndpoint/venues?_embed'),
+                headers: {'Accept': 'application/json'},
+              )
+              .timeout(_timeout);
+          if (response.statusCode == 200) {
+            final List<dynamic> data = json.decode(response.body);
+            return data.map((json) => Venue.fromJson(json)).toList();
+          } else if (response.statusCode == 404) {
+            // Return empty list if venues endpoint doesn't exist
+            return [];
+          } else {
+            throw _errorHandler.handleApiError(
+              'Failed to load venues',
+              '$_apiEndpoint/venues',
+              response.statusCode,
+            );
+          }
+        } on TimeoutException {
+          throw _errorHandler.handleError(
+            TimeoutException('Request timed out', const Duration(seconds: 30)),
           );
+        } catch (e, stackTrace) {
+          throw _errorHandler.handleError(e, stackTrace);
         }
-      } on TimeoutException {
-        throw _errorHandler.handleError(
-          TimeoutException('Request timed out', const Duration(seconds: 30)),
-        );
-      } catch (e, stackTrace) {
-        throw _errorHandler.handleError(e, stackTrace);
-      }
-    });
+      },
+    );
   }
 
   /// Fetch festival information
   static Future<FestivalInfo> fetchFestivalInfo() async {
-    if (_apiDisabled) {
-      return MockDataService.getMockFestivalInfo();
-    }
+    // API is enabled. No local fallback here.
 
     return await _debouncedApiCall(() async {
       try {
@@ -341,9 +356,7 @@ class ApiService {
 
   /// Search content across the website
   static Future<SearchResults> search(String query, {int page = 1}) async {
-    if (_apiDisabled) {
-      return MockDataService.getMockSearchResults(query);
-    }
+    // API is enabled. No mock fallback here.
 
     return await _debouncedApiCall(() async {
       try {
@@ -417,9 +430,7 @@ class ApiService {
 
   /// Test API connectivity
   static Future<bool> testConnection() async {
-    if (_apiDisabled) {
-      return true; // Return true when API is disabled
-    }
+    // API is enabled. No disabled check.
 
     try {
       final response = await http
@@ -451,7 +462,7 @@ class ApiService {
       'total_entries': _cache.length,
       'entries': _cache.keys.toList(),
       'is_debouncer_active': _apiDebouncer.isActive,
-      'api_disabled': _apiDisabled,
+      // 'api_disabled': false, // No longer used
     };
   }
 
@@ -462,14 +473,14 @@ class ApiService {
       'apiEndpoint': _apiEndpoint,
       'timeout': _timeout.inSeconds,
       'cacheExpiry': _cacheExpiry.inMinutes,
-      'apiDisabled': _apiDisabled,
+      // 'apiDisabled': false, // No longer used
     };
     if (verbose) {
-      debugPrint('--- API Configuration ---');
+      LogService.debug('--- API Configuration ---');
       config.forEach((key, value) {
-        debugPrint('$key: $value');
+        LogService.debug('$key: $value');
       });
-      debugPrint('-------------------------');
+      LogService.debug('-------------------------');
     }
     return config;
   }

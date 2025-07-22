@@ -62,8 +62,7 @@ import 'app_localizations_en.dart';
 /// be consistent with the languages listed in the AppLocalizations.supportedLocales
 /// property.
 abstract class AppLocalizations {
-  AppLocalizations(String locale)
-    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+  AppLocalizations(String locale) : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
@@ -71,8 +70,7 @@ abstract class AppLocalizations {
     return Localizations.of<AppLocalizations>(context, AppLocalizations);
   }
 
-  static const LocalizationsDelegate<AppLocalizations> delegate =
-      _AppLocalizationsDelegate();
+  static const LocalizationsDelegate<AppLocalizations> delegate = _AppLocalizationsDelegate();
 
   /// A list of this localizations delegate along with the default localizations
   /// delegates.
@@ -84,18 +82,17 @@ abstract class AppLocalizations {
   /// Additional delegates can be added by appending to this list in
   /// MaterialApp. This list does not have to be used at all if a custom list
   /// of delegates is preferred or required.
-  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
-      <LocalizationsDelegate<dynamic>>[
-        delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ];
+  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates = <LocalizationsDelegate<dynamic>>[
+    delegate,
+    GlobalMaterialLocalizations.delegate,
+    GlobalCupertinoLocalizations.delegate,
+    GlobalWidgetsLocalizations.delegate,
+  ];
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('bg'),
-    Locale('en'),
+    Locale('en')
   ];
 
   /// No description provided for @appTitle.
@@ -440,12 +437,6 @@ abstract class AppLocalizations {
   /// **'Deny'**
   String get deny;
 
-  /// No description provided for @devToolsMenu.
-  ///
-  /// In en, this message translates to:
-  /// **'DevTools Menu'**
-  String get devToolsMenu;
-
   /// No description provided for @hotReload.
   ///
   /// In en, this message translates to:
@@ -475,10 +466,537 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'App Settings'**
   String get appSettings;
+
+  /// No description provided for @homeLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Varna | Bulgaria'**
+  String get homeLocation;
+
+  /// No description provided for @homeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'BUNA | Vol. 3'**
+  String get homeTitle;
+
+  /// No description provided for @homeSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'FORUM FOR CONTEMPORARY ART'**
+  String get homeSubtitle;
+
+  /// No description provided for @homeFeatured.
+  ///
+  /// In en, this message translates to:
+  /// **'Featured'**
+  String get homeFeatured;
+
+  /// No description provided for @homeQuickActions.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick Actions'**
+  String get homeQuickActions;
+
+  /// No description provided for @homeMap.
+  ///
+  /// In en, this message translates to:
+  /// **'Map'**
+  String get homeMap;
+
+  /// No description provided for @homeSchedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Schedule'**
+  String get homeSchedule;
+
+  /// No description provided for @homeArtists.
+  ///
+  /// In en, this message translates to:
+  /// **'Artists'**
+  String get homeArtists;
+
+  /// No description provided for @homeVenues.
+  ///
+  /// In en, this message translates to:
+  /// **'Venues'**
+  String get homeVenues;
+
+  /// No description provided for @homeFeaturedArtist.
+  ///
+  /// In en, this message translates to:
+  /// **'Featured Artist'**
+  String get homeFeaturedArtist;
+
+  /// No description provided for @homeFeaturedArtistBio.
+  ///
+  /// In en, this message translates to:
+  /// **'Discover amazing artists at Buna Festival.'**
+  String get homeFeaturedArtistBio;
+
+  /// No description provided for @homeFeaturedArtistSpecialty.
+  ///
+  /// In en, this message translates to:
+  /// **'Contemporary Art'**
+  String get homeFeaturedArtistSpecialty;
+
+  /// No description provided for @homeFeaturedVenue.
+  ///
+  /// In en, this message translates to:
+  /// **'Main Gallery'**
+  String get homeFeaturedVenue;
+
+  /// No description provided for @homeFeaturedVenueAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Central Varna'**
+  String get homeFeaturedVenueAddress;
+
+  /// No description provided for @homeFeaturedVenueEvent.
+  ///
+  /// In en, this message translates to:
+  /// **'Art Exhibition'**
+  String get homeFeaturedVenueEvent;
+
+  /// No description provided for @homeNextEvent.
+  ///
+  /// In en, this message translates to:
+  /// **'Opening Ceremony'**
+  String get homeNextEvent;
+
+  /// No description provided for @homeNextEventVenue.
+  ///
+  /// In en, this message translates to:
+  /// **'Main Square'**
+  String get homeNextEventVenue;
+
+  /// No description provided for @homeNextEventVenueAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Varna Center'**
+  String get homeNextEventVenueAddress;
+
+  /// No description provided for @homeNewsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Festival Updates'**
+  String get homeNewsTitle;
+
+  /// No description provided for @homeNewsContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Latest news and updates from Buna Festival.'**
+  String get homeNewsContent;
+
+  /// No description provided for @homeNewsExcerpt.
+  ///
+  /// In en, this message translates to:
+  /// **'Stay updated with the latest festival news.'**
+  String get homeNewsExcerpt;
+
+  /// No description provided for @homeNewsAuthor.
+  ///
+  /// In en, this message translates to:
+  /// **'Festival Team'**
+  String get homeNewsAuthor;
+
+  /// No description provided for @homeNewsCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'News'**
+  String get homeNewsCategory;
+
+  /// No description provided for @artistCountryInternational.
+  ///
+  /// In en, this message translates to:
+  /// **'International'**
+  String get artistCountryInternational;
+
+  /// No description provided for @bunaVol3.
+  ///
+  /// In en, this message translates to:
+  /// **'BUNA | Vol.3'**
+  String get bunaVol3;
+
+  /// No description provided for @forumForContemporaryArt.
+  ///
+  /// In en, this message translates to:
+  /// **'FORUM FOR CONTEMPORARY ART'**
+  String get forumForContemporaryArt;
+
+  /// No description provided for @festivalDates.
+  ///
+  /// In en, this message translates to:
+  /// **'3-8 Sept.2025'**
+  String get festivalDates;
+
+  /// No description provided for @english.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get english;
+
+  /// No description provided for @bulgarian.
+  ///
+  /// In en, this message translates to:
+  /// **'Български'**
+  String get bulgarian;
+
+  /// No description provided for @signInGoogle.
+  ///
+  /// In en, this message translates to:
+  /// **'Google'**
+  String get signInGoogle;
+
+  /// No description provided for @signInGuest.
+  ///
+  /// In en, this message translates to:
+  /// **'Guest'**
+  String get signInGuest;
+
+  /// No description provided for @feedback.
+  ///
+  /// In en, this message translates to:
+  /// **'Feedback'**
+  String get feedback;
+
+  /// No description provided for @shareYourFeedback.
+  ///
+  /// In en, this message translates to:
+  /// **'Share Your Feedback'**
+  String get shareYourFeedback;
+
+  /// No description provided for @feedbackHelpText.
+  ///
+  /// In en, this message translates to:
+  /// **'Help us improve the Buna Festival experience by sharing your thoughts, suggestions, or reporting any issues.'**
+  String get feedbackHelpText;
+
+  /// No description provided for @category.
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get category;
+
+  /// No description provided for @emailOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Email (Optional)'**
+  String get emailOptional;
+
+  /// No description provided for @invalidEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid email address'**
+  String get invalidEmail;
+
+  /// No description provided for @messageRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Message *'**
+  String get messageRequired;
+
+  /// No description provided for @enterMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your message'**
+  String get enterMessage;
+
+  /// No description provided for @messageTooShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Message must be at least 10 characters long'**
+  String get messageTooShort;
+
+  /// No description provided for @needImmediateHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Need Immediate Help?'**
+  String get needImmediateHelp;
+
+  /// No description provided for @urgentSupportText.
+  ///
+  /// In en, this message translates to:
+  /// **'For urgent issues during the festival, please contact our support team:'**
+  String get urgentSupportText;
+
+  /// No description provided for @callSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Call Support'**
+  String get callSupport;
+
+  /// No description provided for @emailSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Email Support'**
+  String get emailSupport;
+
+  /// No description provided for @visitInPerson.
+  ///
+  /// In en, this message translates to:
+  /// **'Visit in person'**
+  String get visitInPerson;
+
+  /// No description provided for @success.
+  ///
+  /// In en, this message translates to:
+  /// **'Success'**
+  String get success;
+
+  /// No description provided for @thankYouFeedback.
+  ///
+  /// In en, this message translates to:
+  /// **'Thank you for your feedback!'**
+  String get thankYouFeedback;
+
+  /// No description provided for @feedbackAppreciation.
+  ///
+  /// In en, this message translates to:
+  /// **'We appreciate your input and will use it to improve the festival experience.'**
+  String get feedbackAppreciation;
+
+  /// No description provided for @aboutFeedback.
+  ///
+  /// In en, this message translates to:
+  /// **'About Feedback'**
+  String get aboutFeedback;
+
+  /// No description provided for @featureComingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'This feature is coming soon...'**
+  String get featureComingSoon;
+
+  /// No description provided for @close.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get close;
+
+  /// No description provided for @errorSubmittingFeedback.
+  ///
+  /// In en, this message translates to:
+  /// **'Error submitting feedback: {error}'**
+  String errorSubmittingFeedback(Object error);
+
+  /// No description provided for @bunaForum.
+  ///
+  /// In en, this message translates to:
+  /// **'Buna Forum'**
+  String get bunaForum;
+
+  /// No description provided for @qrScanner.
+  ///
+  /// In en, this message translates to:
+  /// **'QR Scanner'**
+  String get qrScanner;
+
+  /// No description provided for @aboutQRScanner.
+  ///
+  /// In en, this message translates to:
+  /// **'About QR Scanner'**
+  String get aboutQRScanner;
+
+  /// No description provided for @scanFestivalQRCodes.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan Festival QR Codes'**
+  String get scanFestivalQRCodes;
+
+  /// No description provided for @scanQRCodesDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan QR codes around the festival to unlock exclusive content, get event information, and earn rewards.'**
+  String get scanQRCodesDescription;
+
+  /// No description provided for @eventInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Event Information'**
+  String get eventInformation;
+
+  /// No description provided for @eventInfoContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Opening Ceremony\n\nTime: 7:00 PM\nVenue: Main Square\n\nJoin us for the spectacular opening of Buna Festival 2024!'**
+  String get eventInfoContent;
+
+  /// No description provided for @venueInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Venue Information'**
+  String get venueInformation;
+
+  /// No description provided for @venueInfoContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Main Square\n\nAddress: Central Square, Varna\n\nPrimary venue for major festival events.'**
+  String get venueInfoContent;
+
+  /// No description provided for @artistInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Artist Information'**
+  String get artistInformation;
+
+  /// No description provided for @artistInfoContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Elena Rodriguez\n\nLight artist from Spain.\n\nKnown for large-scale installations.'**
+  String get artistInfoContent;
+
+  /// No description provided for @workshopInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Workshop Information'**
+  String get workshopInformation;
+
+  /// No description provided for @workshopInfoContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Digital Art Workshop\n\nLearn about digital art techniques and tools.\n\nOpen to all ages.'**
+  String get workshopInfoContent;
+
+  /// No description provided for @rewardUnlocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Reward Unlocked!'**
+  String get rewardUnlocked;
+
+  /// No description provided for @rewardInfoContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Free Coffee\n\nShow this code at any festival café to claim your free coffee!'**
+  String get rewardInfoContent;
+
+  /// No description provided for @claim.
+  ///
+  /// In en, this message translates to:
+  /// **'Claim'**
+  String get claim;
+
+  /// No description provided for @qrCodeInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'QR Code Information'**
+  String get qrCodeInformation;
+
+  /// No description provided for @qrCodeInfoContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Code: {code}\n\nThis QR code contains festival information.'**
+  String qrCodeInfoContent(Object code);
+
+  /// No description provided for @sharingQRCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Sharing QR code: {code}'**
+  String sharingQRCode(Object code);
+
+  /// No description provided for @generateQRCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate QR Code'**
+  String get generateQRCode;
+
+  /// No description provided for @qrCodeGenerationComingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'QR code generation feature coming soon...'**
+  String get qrCodeGenerationComingSoon;
+
+  /// No description provided for @scanFromGallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan from Gallery'**
+  String get scanFromGallery;
+
+  /// No description provided for @galleryScanningComingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Gallery scanning feature coming soon...'**
+  String get galleryScanningComingSoon;
+
+  /// No description provided for @mapGallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Map Gallery'**
+  String get mapGallery;
+
+  /// No description provided for @openFullMap.
+  ///
+  /// In en, this message translates to:
+  /// **'Open full map'**
+  String get openFullMap;
+
+  /// No description provided for @filterOptions.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter options'**
+  String get filterOptions;
+
+  /// No description provided for @tabGrid.
+  ///
+  /// In en, this message translates to:
+  /// **'Grid'**
+  String get tabGrid;
+
+  /// No description provided for @tabList.
+  ///
+  /// In en, this message translates to:
+  /// **'List'**
+  String get tabList;
+
+  /// No description provided for @tabMap.
+  ///
+  /// In en, this message translates to:
+  /// **'Map'**
+  String get tabMap;
+
+  /// No description provided for @fullMap.
+  ///
+  /// In en, this message translates to:
+  /// **'Full Map'**
+  String get fullMap;
+
+  /// No description provided for @fullMapComingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Full interactive map coming soon!'**
+  String get fullMapComingSoon;
+
+  /// No description provided for @locationLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Location: {location}'**
+  String locationLabel(Object location);
+
+  /// No description provided for @categoryLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Category: {category}'**
+  String categoryLabel(Object category);
+
+  /// No description provided for @tagsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Tags: {tags}'**
+  String tagsLabel(Object tags);
+
+  /// No description provided for @loginRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Login Required'**
+  String get loginRequired;
+
+  /// No description provided for @loginToAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Please log in to access this feature.'**
+  String get loginToAccess;
 }
 
-class _AppLocalizationsDelegate
-    extends LocalizationsDelegate<AppLocalizations> {
+class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
   const _AppLocalizationsDelegate();
 
   @override
@@ -487,26 +1005,25 @@ class _AppLocalizationsDelegate
   }
 
   @override
-  bool isSupported(Locale locale) =>
-      <String>['bg', 'en'].contains(locale.languageCode);
+  bool isSupported(Locale locale) => <String>['bg', 'en'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
 }
 
 AppLocalizations lookupAppLocalizations(Locale locale) {
+
+
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
-    case 'bg':
-      return AppLocalizationsBg();
-    case 'en':
-      return AppLocalizationsEn();
+    case 'bg': return AppLocalizationsBg();
+    case 'en': return AppLocalizationsEn();
   }
 
   throw FlutterError(
     'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
     'an issue with the localizations generation tool. Please file an issue '
     'on GitHub with a reproducible sample app and the gen-l10n configuration '
-    'that was used.',
+    'that was used.'
   );
 }

@@ -1,3 +1,4 @@
+import 'log_service.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/foundation.dart';
 
@@ -10,7 +11,7 @@ class AnalyticsService {
     String? screenClass,
   }) async {
     if (kDebugMode) {
-      print('📊 Screen View: $screenName');
+      LogService.debug('📊 Screen View: $screenName');
       return;
     }
 
@@ -26,7 +27,7 @@ class AnalyticsService {
     Map<String, Object>? parameters,
   }) async {
     if (kDebugMode) {
-      print('📊 Event: $name ${parameters ?? {}}');
+      LogService.debug('📊 Event: $name ${parameters ?? {}}');
       return;
     }
 

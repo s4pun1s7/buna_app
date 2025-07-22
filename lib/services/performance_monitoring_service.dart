@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
+import 'log_service.dart';
 
 /// Service for monitoring app performance metrics
 class PerformanceMonitoringService {
@@ -19,7 +20,7 @@ class PerformanceMonitoringService {
   /// Initialize performance monitoring
   void initialize() {
     if (kDebugMode) {
-      print('🔍 Performance monitoring initialized');
+      LogService.info('🔍 Performance monitoring initialized');
       _startMemoryMonitoring();
     }
   }
@@ -47,14 +48,14 @@ class PerformanceMonitoringService {
       if (memoryInfo > 200.0) {
         // MB
         if (kDebugMode) {
-          print(
+          LogService.warning(
             '⚠️ High memory usage detected: ${memoryInfo.toStringAsFixed(1)}MB',
           );
         }
       }
     } catch (e) {
       if (kDebugMode) {
-        print('Failed to collect memory metrics: $e');
+        LogService.error('Failed to collect memory metrics', e);
       }
     }
   }
@@ -73,7 +74,7 @@ class PerformanceMonitoringService {
   void trackRouteNavigationStart(String routeName) {
     _routeStartTimes[routeName] = DateTime.now();
     if (kDebugMode) {
-      print('📍 Navigation started to: $routeName');
+      LogService.navigation('current', routeName);
     }
   }
 
@@ -86,15 +87,13 @@ class PerformanceMonitoringService {
       _routeStartTimes.remove(routeName);
 
       if (kDebugMode) {
-        print(
-          '✅ Navigation to $routeName completed in ${duration.inMilliseconds}ms',
-        );
+        LogService.performance('Navigation to $routeName', duration);
       }
 
       // Alert for slow navigation (> 2 seconds)
       if (duration.inMilliseconds > 2000) {
         if (kDebugMode) {
-          print(
+          LogService.warning(
             '⚠️ Slow navigation detected for $routeName: ${duration.inMilliseconds}ms',
           );
         }
@@ -117,13 +116,13 @@ class PerformanceMonitoringService {
       _routeStartTimes.remove('image_$imagePath');
 
       if (kDebugMode) {
-        print('🖼️ Image loaded: $imagePath in ${duration.inMilliseconds}ms');
+        LogService.performance('Image loaded: $imagePath', duration);
       }
 
       // Alert for slow image loading (> 1 second)
       if (duration.inMilliseconds > 1000) {
         if (kDebugMode) {
-          print(
+          LogService.warning(
             '⚠️ Slow image loading: $imagePath took ${duration.inMilliseconds}ms',
           );
         }
@@ -267,7 +266,7 @@ ${_generateRecommendations(metrics)}
     _memoryUsageHistory.clear();
 
     if (kDebugMode) {
-      print('🧹 Performance metrics cleared');
+      LogService.info('🧹 Performance metrics cleared');
     }
   }
 

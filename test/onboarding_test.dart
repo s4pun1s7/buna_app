@@ -7,7 +7,8 @@ void main() {
 
   group('Onboarding Tests', () {
     setUp(() async {
-      // Clear any existing preferences before each test
+      // Initialize mock SharedPreferences and clear before each test
+      SharedPreferences.setMockInitialValues({});
       final prefs = await SharedPreferences.getInstance();
       await prefs.remove('has_completed_onboarding');
     });

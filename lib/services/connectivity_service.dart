@@ -1,3 +1,4 @@
+import 'log_service.dart';
 import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/foundation.dart';
@@ -19,7 +20,7 @@ class ConnectivityService {
     // Check initial connection status
     await _checkConnectionStatus();
 
-    // Listen for connectivity changes
+    // Listen for connectivity changes (now emits List<ConnectivityResult>)
     _connectivity.onConnectivityChanged.listen((
       List<ConnectivityResult> results,
     ) {
@@ -34,7 +35,7 @@ class ConnectivityService {
       _updateConnectionStatus(results);
     } catch (e) {
       if (kDebugMode) {
-        print('Error checking connectivity: $e');
+        LogService.error('Error checking connectivity', e);
       }
       _updateConnectionStatus([ConnectivityResult.none]);
     }
@@ -43,20 +44,21 @@ class ConnectivityService {
   /// Update connection status and notify listeners
   void _updateConnectionStatus(List<ConnectivityResult> results) {
     final wasConnected = _isConnected;
-    _isConnected =
-        results.isNotEmpty &&
-        results.any((result) => result != ConnectivityResult.none);
+    // Consider connected if any result is not ConnectivityResult.none
+    _isConnected = results.any((r) => r != ConnectivityResult.none);
 
     if (wasConnected != _isConnected) {
       _connectionStatusController.add(_isConnected);
 
       if (kDebugMode) {
-        print(
+        LogService.debug(
           '🌐 Connectivity changed: ${_isConnected ? 'Online' : 'Offline'}',
         );
       }
     }
   }
+
+  // Remove _updateConnectionStatusFromSingle, no longer needed
 
   /// Check if currently connected
   bool get isConnected => _isConnected;
@@ -69,26 +71,33 @@ class ConnectivityService {
     try {
       final results = await _connectivity.checkConnectivity();
       if (results.isEmpty) return 'None';
-
-      final result = results.first;
-      switch (result) {
-        case ConnectivityResult.wifi:
-          return 'WiFi';
-        case ConnectivityResult.mobile:
-          return 'Mobile';
-        case ConnectivityResult.ethernet:
-          return 'Ethernet';
-        case ConnectivityResult.vpn:
-          return 'VPN';
-        case ConnectivityResult.bluetooth:
-          return 'Bluetooth';
-        case ConnectivityResult.other:
-          return 'Other';
-        case ConnectivityResult.none:
-          return 'None';
-      }
+      // Return the first non-none type, or 'None' if all are none
+      final first = results.firstWhere(
+        (r) => r != ConnectivityResult.none,
+        orElse: () => ConnectivityResult.none,
+      );
+      return _connectivityResultToString(first);
     } catch (e) {
       return 'Unknown';
+    }
+  }
+
+  String _connectivityResultToString(ConnectivityResult result) {
+    switch (result) {
+      case ConnectivityResult.wifi:
+        return 'WiFi';
+      case ConnectivityResult.mobile:
+        return 'Mobile';
+      case ConnectivityResult.ethernet:
+        return 'Ethernet';
+      case ConnectivityResult.vpn:
+        return 'VPN';
+      case ConnectivityResult.bluetooth:
+        return 'Bluetooth';
+      case ConnectivityResult.other:
+        return 'Other';
+      case ConnectivityResult.none:
+        return 'None';
     }
   }
 

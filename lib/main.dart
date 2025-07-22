@@ -4,9 +4,11 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/foundation.dart' show kIsWeb, kDebugMode;
 import 'app.dart';
 import 'utils/restart_widget.dart';
+import 'utils/restart_widget.dart';
 import 'providers/riverpod_setup.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'providers/theme_provider.dart';
+import 'providers/locale_provider.dart';
 import 'providers/locale_provider.dart';
 import 'services/connectivity_service.dart';
 import 'services/analytics_service.dart';
@@ -49,9 +51,7 @@ Future<void> initializeAppServices() async {
 
     // Initialize Firebase with secure configuration
     if (kIsWeb) {
-      await Firebase.initializeApp(
-        options: FirebaseConfig.optionsWithFallback,
-      );
+      await Firebase.initializeApp(options: FirebaseConfig.optionsWithFallback);
     } else {
       await Firebase.initializeApp();
     }
@@ -66,14 +66,14 @@ Future<void> initializeAppServices() async {
     // Track app initialization completion
     final initDuration = DateTime.now().difference(appInitStart);
     if (kDebugMode) {
-      print('✅ All services initialized in ${initDuration.inMilliseconds}ms');
+      LogService.performance('App initialization', initDuration);
     }
 
     // Track app launch after services are initialized
     AnalyticsService.logEvent(name: 'app_launch');
   } catch (e) {
     if (kDebugMode) {
-      print('⚠️ Service initialization error: $e');
+      LogService.error('Service initialization error', e);
     }
     // Continue without Firebase/services for now
   }
@@ -86,7 +86,10 @@ Future<void> main() async {
   await initializeAppServices();
 
   // Start app immediately with loading state
-  runApp(const BunaAppWithPermissions());
+  runApp(RestartWidget(child: const BunaAppWithPermissions()));
+
+  // Start background sync for offline-first caching
+  ApiService.startBackgroundSync();
 
   // Request permissions after app starts
   requestFestivalPermissions();
@@ -124,6 +127,11 @@ class _BunaAppWithPermissionsState extends State<BunaAppWithPermissions> {
     // Check if services are initialized
     // For now, we'll assume they initialize quickly
     // In a real app, you'd listen to service initialization state
+    final bindingType = WidgetsBinding.instance.runtimeType.toString();
+    if (bindingType.contains('TestWidgetsFlutterBinding')) {
+      // Skip timer in test mode
+      return;
+    }
     Future.delayed(const Duration(milliseconds: 500), () {
       if (mounted) {
         setState(() {
@@ -133,15 +141,24 @@ class _BunaAppWithPermissionsState extends State<BunaAppWithPermissions> {
     });
   }
 
+  Timer? _cleanupTimer;
   void _setupPeriodicCleanup() {
     // Set up periodic cleanup of unused components
-    Timer.periodic(const Duration(minutes: 5), (timer) {
+    const isTest =
+        bool.fromEnvironment('FLUTTER_TEST') ||
+        String.fromEnvironment('FLUTTER_TEST') == 'true';
+    if (isTest) {
+      return;
+    }
+    _cleanupTimer = Timer.periodic(const Duration(minutes: 5), (timer) {
       LazyLoadingService().cleanupUnusedComponents();
     });
   }
 
   @override
   void dispose() {
+    // Clean up periodic timer
+    _cleanupTimer?.cancel();
     // Clean up performance monitoring when app is disposed
     PerformanceMonitoringService().dispose();
     super.dispose();
@@ -154,35 +171,16 @@ class _BunaAppWithPermissionsState extends State<BunaAppWithPermissions> {
       child: Consumer(
         builder: (context, ref, _) {
           final themeMode = ref.watch(themeProvider);
+          final locale = ref.watch(localeProvider);
           return BunaApp(
             iosSizeMode: _iosSizeMode,
             iosSize: _iosSize,
             toggleIosSizeMode: _toggleIosSizeMode,
             themeMode: themeMode,
-            locale: const Locale('en'),
+            locale: locale,
           );
         },
       ),
     );
   }
 }
-
-// Example usage in your main scaffold (wherever your AppBar is defined):
-// AppBar(
-//   leading: IconButton(
-//     icon: Icon(Icons.developer_mode),
-//     tooltip: 'DEV',
-//     onPressed: () {
-//       showModalBottomSheet(
-//         context: context,
-//         builder: (context) => DevToolsMenuSheet(
-//           title: 'DevTools',
-//           onClose: () => Navigator.of(context).pop(),
-//           iosSizeMode: _iosSizeMode,
-//           toggleIosSizeMode: _toggleIosSizeMode,
-//         ),
-//       );
-//     },
-//   ),
-//   // ...other AppBar properties...
-// )

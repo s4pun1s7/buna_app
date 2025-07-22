@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../widgets/common/index.dart';
-import '../../services/error_handler.dart';
 import '../../providers/user_provider.dart';
+import 'map_gallery_service.dart';
+import 'package:buna_app/l10n/app_localizations.dart';
+import '../../widgets/navigation/buna_app_bar.dart';
 
 /// Map gallery item model
 class MapGalleryItem {
@@ -37,6 +39,12 @@ class MapGalleryScreen extends ConsumerStatefulWidget {
   ConsumerState<MapGalleryScreen> createState() => _MapGalleryScreenState();
 }
 
+// Provider for the map gallery data source (switchable for mock/API)
+final mapGalleryDataSourceProvider = Provider<MapGalleryDataSource>((ref) {
+  // Swap to ApiMapGalleryDataSource() for real API
+  return MockMapGalleryDataSource();
+});
+
 class _MapGalleryScreenState extends ConsumerState<MapGalleryScreen>
     with TickerProviderStateMixin {
   late TabController _tabController;
@@ -67,122 +75,9 @@ class _MapGalleryScreenState extends ConsumerState<MapGalleryScreen>
         _error = null;
       });
 
-      // Simulate API call delay
-      await Future.delayed(const Duration(seconds: 1));
-
-      // Mock data - in real app this would come from API
-      final items = [
-        MapGalleryItem(
-          id: '1',
-          title: 'Main Square',
-          description:
-              'The heart of Varna and the primary venue for major festival events. Features the iconic light installation "Urban Dreams" by Elena Rodriguez.',
-          category: 'Venue',
-          date: DateTime.now().subtract(const Duration(days: 1)),
-          location: 'Central Square, Varna',
-          tags: ['main venue', 'light art', 'ceremonies'],
-          isInteractive: true,
-        ),
-        MapGalleryItem(
-          id: '2',
-          title: 'City Gallery',
-          description:
-              'A modern, purpose-built gallery space showcasing contemporary art exhibitions from international and local artists.',
-          category: 'Gallery',
-          date: DateTime.now().subtract(const Duration(days: 2)),
-          location: '123 Art Street, Varna',
-          tags: ['contemporary art', 'exhibitions', 'indoor'],
-          isInteractive: true,
-        ),
-        MapGalleryItem(
-          id: '3',
-          title: 'Digital Art Pavilion',
-          description:
-              'Cutting-edge venue for digital art and technology-based installations featuring VR experiences and AI-generated artwork.',
-          category: 'Technology',
-          date: DateTime.now().subtract(const Duration(days: 3)),
-          location: '456 Innovation Boulevard, Varna',
-          tags: ['digital art', 'VR', 'AI', 'technology'],
-          isInteractive: true,
-        ),
-        MapGalleryItem(
-          id: '4',
-          title: 'Seaside Park Environmental Installation',
-          description:
-              'Large-scale environmental art installation using sustainable materials to address climate change and environmental conservation.',
-          category: 'Environmental',
-          date: DateTime.now().subtract(const Duration(days: 4)),
-          location: 'Seaside Park, Varna',
-          tags: ['environmental art', 'sustainability', 'outdoor'],
-          isInteractive: true,
-        ),
-        MapGalleryItem(
-          id: '5',
-          title: 'Outdoor Amphitheater',
-          description:
-              'Stunning open-air performance venue located on the Black Sea coast, perfect for live music and theatrical performances.',
-          category: 'Performance',
-          date: DateTime.now().subtract(const Duration(days: 5)),
-          location: 'Seaside Park, Varna',
-          tags: ['music', 'theater', 'outdoor', 'performance'],
-          isInteractive: true,
-        ),
-        MapGalleryItem(
-          id: '6',
-          title: 'Art Studio Complex',
-          description:
-              'Dedicated space for workshops and masterclasses with multiple studio spaces equipped for various art mediums.',
-          category: 'Workshop',
-          date: DateTime.now().subtract(const Duration(days: 6)),
-          location: '789 Creative Lane, Varna',
-          tags: ['workshops', 'masterclasses', 'learning'],
-          isInteractive: true,
-        ),
-        MapGalleryItem(
-          id: '7',
-          title: 'Underground Theater',
-          description:
-              'Converted warehouse space transformed into an experimental theater venue with industrial aesthetic.',
-          category: 'Theater',
-          date: DateTime.now().subtract(const Duration(days: 7)),
-          location: '321 Industrial Zone, Varna',
-          tags: ['experimental', 'theater', 'underground'],
-          isInteractive: true,
-        ),
-        MapGalleryItem(
-          id: '8',
-          title: 'Festival Information Center',
-          description:
-              'Central hub for festival information, ticket sales, and visitor assistance.',
-          category: 'Information',
-          date: DateTime.now().subtract(const Duration(days: 8)),
-          location: 'Festival Square, Varna',
-          tags: ['information', 'tickets', 'assistance'],
-          isInteractive: false,
-        ),
-        MapGalleryItem(
-          id: '9',
-          title: 'Food & Beverage Area',
-          description:
-              'Culinary zone featuring local and international cuisine, food trucks, and festival bars.',
-          category: 'Food',
-          date: DateTime.now().subtract(const Duration(days: 9)),
-          location: 'Culinary Corner, Varna',
-          tags: ['food', 'drinks', 'culinary'],
-          isInteractive: false,
-        ),
-        MapGalleryItem(
-          id: '10',
-          title: 'Merchandise Shop',
-          description:
-              'Official festival merchandise store with limited edition items and artist collaborations.',
-          category: 'Shopping',
-          date: DateTime.now().subtract(const Duration(days: 10)),
-          location: 'Festival Market, Varna',
-          tags: ['merchandise', 'shopping', 'souvenirs'],
-          isInteractive: false,
-        ),
-      ];
+      // Use the data source provider
+      final dataSource = ref.read(mapGalleryDataSourceProvider);
+      final items = await dataSource.fetchItems();
 
       setState(() {
         _allItems = items;
@@ -280,29 +175,21 @@ class _MapGalleryScreenState extends ConsumerState<MapGalleryScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Map Gallery'),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+      appBar: BunaAppBar(
+        title: AppLocalizations.of(context)!.mapGallery,
         actions: [
           IconButton(
             icon: const Icon(Icons.map),
             onPressed: _openFullMap,
-            tooltip: 'Open full map',
+            tooltip: AppLocalizations.of(context)!.openFullMap,
           ),
           IconButton(
             icon: const Icon(Icons.filter_list),
             onPressed: _showFilterDialog,
-            tooltip: 'Filter options',
+            tooltip: AppLocalizations.of(context)!.filterOptions,
           ),
         ],
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: const [
-            Tab(icon: Icon(Icons.grid_view), text: 'Grid'),
-            Tab(icon: Icon(Icons.list), text: 'List'),
-            Tab(icon: Icon(Icons.map), text: 'Map'),
-          ],
-        ),
+        // bottom: TabBar(...)
       ),
       body: _buildBody(),
     );
@@ -314,10 +201,7 @@ class _MapGalleryScreenState extends ConsumerState<MapGalleryScreen>
     }
 
     if (_error != null) {
-      return ErrorScreen(
-        error: AppException(_error!),
-        onRetry: _loadMapGallery,
-      );
+      return AppErrorWidget(message: _error, onRetry: _loadMapGallery);
     }
 
     if (_allItems.isEmpty) {
@@ -582,12 +466,12 @@ class _MapGalleryScreenState extends ConsumerState<MapGalleryScreen>
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Full Map'),
-        content: const Text('Full interactive map coming soon!'),
+        title: Text(AppLocalizations.of(context)!.fullMap),
+        content: Text(AppLocalizations.of(context)!.fullMapComingSoon),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Close'),
+            child: Text(AppLocalizations.of(context)!.close),
           ),
         ],
       ),
@@ -665,18 +549,18 @@ class _MapGalleryScreenState extends ConsumerState<MapGalleryScreen>
           children: [
             Text(item.description),
             const SizedBox(height: 8),
-            Text('Location: ${item.location}'),
-            Text('Category: ${item.category}'),
+            Text(AppLocalizations.of(context)!.locationLabel(item.location)),
+            Text(AppLocalizations.of(context)!.categoryLabel(item.category)),
             if (item.tags.isNotEmpty) ...[
               const SizedBox(height: 8),
-              Text('Tags: ${item.tags.join(", ")}'),
+              Text(AppLocalizations.of(context)!.tagsLabel(item.tags.join(", "))),
             ],
           ],
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Close'),
+            child: Text(AppLocalizations.of(context)!.close),
           ),
         ],
       ),
@@ -689,12 +573,12 @@ class _MapGalleryScreenState extends ConsumerState<MapGalleryScreen>
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: const Text('Login Required'),
-            content: const Text('Please log in to access this feature.'),
+            title: Text(AppLocalizations.of(context)!.loginRequired),
+            content: Text(AppLocalizations.of(context)!.loginToAccess),
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
-                child: const Text('Close'),
+                child: Text(AppLocalizations.of(context)!.close),
               ),
             ],
           ),

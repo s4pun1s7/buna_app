@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../widgets/common/index.dart';
+import '../../config/mock_data.dart';
+import 'package:buna_app/l10n/app_localizations.dart';
+import '../../widgets/navigation/buna_app_bar.dart';
 
 /// QR code scanner screen for festival interactions
 class QRScreen extends ConsumerStatefulWidget {
@@ -19,54 +22,47 @@ class _QRScreenState extends ConsumerState<QRScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('QR Scanner'),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+      appBar: BunaAppBar(
+        title: AppLocalizations.of(context)!.qrScanner,
         actions: [
           IconButton(
             icon: const Icon(Icons.info_outline),
             onPressed: () => _showInfoDialog(context),
-            tooltip: 'About QR Scanner',
+            tooltip: AppLocalizations.of(context)!.aboutQRScanner,
           ),
         ],
       ),
-      body: Padding(padding: const EdgeInsets.all(16), child: _buildBody()),
-    );
-  }
-
-  Widget _buildBody() {
-    return Column(
-      children: [
-        _buildHeader(),
-        Expanded(child: _buildScannerArea()),
-        _buildBottomSection(),
-      ],
-    );
-  }
-
-  Widget _buildHeader() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Scan Festival QR Codes',
-            style: Theme.of(
-              context,
-            ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'Scan QR codes around the festival to unlock exclusive content, get event information, and earn rewards.',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: Theme.of(context).colorScheme.outline,
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            // Scanner area
+            Expanded(child: _buildScannerArea()),
+            // Description and instructions (formerly _buildHeader)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  AppLocalizations.of(context)!.scanFestivalQRCodes,
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  AppLocalizations.of(context)!.scanQRCodesDescription,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Theme.of(context).colorScheme.outline,
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
+            _buildBottomSection(),
+          ],
+        ),
       ),
     );
   }
+
+  // ...existing code...
 
   Widget _buildScannerArea() {
     if (_isLoading) {
@@ -385,14 +381,7 @@ class _QRScreenState extends ConsumerState<QRScreen> {
 
   void _simulateQRScan() {
     // Simulate scanning a QR code
-    final mockCodes = [
-      'buna://event/opening-ceremony',
-      'buna://venue/main-square',
-      'buna://artist/elena-rodriguez',
-      'buna://workshop/digital-art',
-      'buna://reward/free-coffee',
-    ];
-
+    final mockCodes = MockData.qrCodes;
     final randomCode = mockCodes[DateTime.now().millisecond % mockCodes.length];
 
     setState(() {
@@ -466,14 +455,12 @@ class _QRScreenState extends ConsumerState<QRScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Event Information'),
-        content: const Text(
-          'Opening Ceremony\n\nTime: 7:00 PM\nVenue: Main Square\n\nJoin us for the spectacular opening of Buna Festival 2024!',
-        ),
+        title: Text(AppLocalizations.of(context)!.eventInformation),
+        content: Text(AppLocalizations.of(context)!.eventInfoContent),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Close'),
+            child: Text(AppLocalizations.of(context)!.close),
           ),
         ],
       ),
@@ -484,14 +471,12 @@ class _QRScreenState extends ConsumerState<QRScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Venue Information'),
-        content: const Text(
-          'Main Square\n\nAddress: Central Square, Varna\n\nPrimary venue for major festival events.',
-        ),
+        title: Text(AppLocalizations.of(context)!.venueInformation),
+        content: Text(AppLocalizations.of(context)!.venueInfoContent),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Close'),
+            child: Text(AppLocalizations.of(context)!.close),
           ),
         ],
       ),
@@ -502,14 +487,12 @@ class _QRScreenState extends ConsumerState<QRScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Artist Information'),
-        content: const Text(
-          'Elena Rodriguez\n\nLight artist known for large-scale environmental installations.',
-        ),
+        title: Text(AppLocalizations.of(context)!.artistInformation),
+        content: Text(AppLocalizations.of(context)!.artistInfoContent),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Close'),
+            child: Text(AppLocalizations.of(context)!.close),
           ),
         ],
       ),
@@ -520,14 +503,12 @@ class _QRScreenState extends ConsumerState<QRScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Workshop Information'),
-        content: const Text(
-          'Digital Art Creation\n\nLearn to create digital art using AI tools with Hiroshi Tanaka.',
-        ),
+        title: Text(AppLocalizations.of(context)!.workshopInformation),
+        content: Text(AppLocalizations.of(context)!.workshopInfoContent),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Close'),
+            child: Text(AppLocalizations.of(context)!.close),
           ),
         ],
       ),
@@ -538,14 +519,12 @@ class _QRScreenState extends ConsumerState<QRScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Reward Unlocked!'),
-        content: const Text(
-          'Free Coffee\n\nShow this code at any festival café to claim your free coffee!',
-        ),
+        title: Text(AppLocalizations.of(context)!.rewardUnlocked),
+        content: Text(AppLocalizations.of(context)!.rewardInfoContent),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Claim'),
+            child: Text(AppLocalizations.of(context)!.claim),
           ),
         ],
       ),
@@ -556,14 +535,12 @@ class _QRScreenState extends ConsumerState<QRScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('QR Code Information'),
-        content: Text(
-          'Code: $code\n\nThis QR code contains festival information.',
-        ),
+        title: Text(AppLocalizations.of(context)!.qrCodeInformation),
+        content: Text(AppLocalizations.of(context)!.qrCodeInfoContent(code)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Close'),
+            child: Text(AppLocalizations.of(context)!.close),
           ),
         ],
       ),
@@ -573,7 +550,7 @@ class _QRScreenState extends ConsumerState<QRScreen> {
   void _shareQRCode(String code) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Sharing QR code: $code'),
+        content: Text(AppLocalizations.of(context)!.sharingQRCode(code)),
         duration: const Duration(seconds: 2),
       ),
     );
@@ -583,12 +560,12 @@ class _QRScreenState extends ConsumerState<QRScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Generate QR Code'),
-        content: const Text('QR code generation feature coming soon...'),
+        title: Text(AppLocalizations.of(context)!.generateQRCode),
+        content: Text(AppLocalizations.of(context)!.qrCodeGenerationComingSoon),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Close'),
+            child: Text(AppLocalizations.of(context)!.close),
           ),
         ],
       ),
@@ -599,12 +576,12 @@ class _QRScreenState extends ConsumerState<QRScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Scan from Gallery'),
-        content: const Text('Gallery scanning feature coming soon...'),
+        title: Text(AppLocalizations.of(context)!.scanFromGallery),
+        content: Text(AppLocalizations.of(context)!.galleryScanningComingSoon),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Close'),
+            child: Text(AppLocalizations.of(context)!.close),
           ),
         ],
       ),

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Buna Festival Logo Widget
 ///
 /// Displays the appropriate logo based on the current theme:
 /// - Light theme: Blue logo
 /// - Dark theme: Pink logo
-class BunaLogo extends StatelessWidget {
+class BunaLogo extends ConsumerWidget {
   final double? width;
   final double? height;
   final BoxFit fit;
@@ -20,9 +21,9 @@ class BunaLogo extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final logoAsset = isDark ? 'assets/buna_pink.png' : 'assets/buna_blue.png';
+    final logoAsset = isDark ? 'assets/images/buna_pink.png' : 'assets/images/buna_blue.png';
 
     return Container(
       width: width,
@@ -31,8 +32,8 @@ class BunaLogo extends StatelessWidget {
       child: Image.asset(
         logoAsset,
         fit: fit,
-        cacheWidth: width != null ? width!.toInt() : null,
-        cacheHeight: height != null ? height!.toInt() : null,
+        cacheWidth: width?.toInt(),
+        cacheHeight: height?.toInt(),
         errorBuilder: (context, error, stackTrace) {
           // Fallback to icon if image fails to load
           return Icon(
@@ -49,7 +50,7 @@ class BunaLogo extends StatelessWidget {
 /// Buna Festival Logo with Text
 ///
 /// Displays the logo with the festival name below it
-class BunaLogoWithText extends StatelessWidget {
+class BunaLogoWithText extends ConsumerWidget {
   final double? logoSize;
   final double? textSize;
   final bool showSubtitle;
@@ -66,7 +67,7 @@ class BunaLogoWithText extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final effectiveTextColor =
         textColor ?? Theme.of(context).colorScheme.onSurface;
 

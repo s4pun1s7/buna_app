@@ -138,6 +138,31 @@ class FestivalEvent {
         .replaceAll('&quot;', '"')
         .trim();
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': {'rendered': title},
+      'content': {'rendered': description},
+      'meta': {
+        'event_start_date': startDate?.toIso8601String(),
+        'event_end_date': endDate?.toIso8601String(),
+        'event_start_time': startTime,
+        'event_end_time': endTime,
+        'event_location': location,
+        'event_venue': venue,
+        'event_category': category,
+      },
+      'link': url,
+      '_embedded': featuredImageUrl != null
+          ? {
+              'wp:featuredmedia': [
+                {'source_url': featuredImageUrl}
+              ]
+            }
+          : null,
+    };
+  }
 }
 
 /// Venue model

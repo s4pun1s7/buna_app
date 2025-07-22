@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class OnboardingStep extends StatelessWidget {
+class OnboardingStep extends ConsumerWidget {
   final String title;
   final String description;
   final VoidCallback onNext;
@@ -15,7 +16,7 @@ class OnboardingStep extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [

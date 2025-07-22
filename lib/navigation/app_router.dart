@@ -1,53 +1,55 @@
+import '../features/artists/artist_demo_route.dart';
+import 'package:buna_app/services/log_service.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../features/map_gallery/map_gallery_screen.dart';
+import '../features/social/social_screen.dart';
 import '../features/onboarding/onboarding_screen.dart';
-import '../features/venues/venues_screen.dart';
+// import '../features/venues/venues_screen.dart';
+import '../features/venues_map/venues_map_screen.dart';
 import '../features/news/news_screen.dart';
 import '../features/info/info_screen.dart';
 import '../features/schedule/schedule_screen.dart';
 import '../features/artists/artists_screen.dart';
 import '../features/qr/qr_screen.dart';
-import '../features/ar/ar_screen.dart';
-import '../features/map_gallery/map_gallery_screen.dart';
-import '../features/social/social_screen.dart';
 import '../features/feedback/feedback_screen.dart';
 import '../features/settings/feature_flags_screen.dart';
-import '../services/error_handler.dart';
+// import '../features/maps/maps_screen.dart';
+import '../widgets/splash_screen.dart';
+import '../widgets/home/quick_actions.dart';
 import '../config/feature_flags.dart';
 import '../utils/input_validator.dart';
 import 'route_constants.dart';
 import 'route_guards.dart';
-import 'main_layout.dart';
 import 'route_observer.dart';
+import 'main_layout.dart';
 import '../widgets/common/index.dart';
-import '../widgets/splash_screen.dart';
 // Import the optimized home screen
-import '../widgets/home/optimized_home_screen.dart';
 
 /// Main router configuration for the Buna Festival app
 class AppRouter {
+  /// Navigate to onboarding
+  static void goToOnboarding(BuildContext context) {
+    context.go(AppRoutes.onboarding);
+  }
+
   // Private constructor to prevent instantiation
   AppRouter._();
 
-  /// Global route observer for analytics
-  static final _routeObserver = AppRouteObserver();
-
-  /// Main router configuration
+  /// The main GoRouter instance for the app
   static final GoRouter router = GoRouter(
-    initialLocation: '/splash',
-    debugLogDiagnostics: FeatureFlags.enableDebugMode,
-
-    // Route observers for analytics
-    observers: FeatureFlags.enableAnalytics ? [_routeObserver] : [],
-
-    // Routes configuration with lazy loading
+    initialLocation: AppRoutes.splash,
     routes: [
+      GoRoute(
+        path: AppRoutes.artistDemo,
+        name: AppRoutes.artistDemoName,
+        builder: (context, state) => const ArtistDemoRoute(),
+      ),
       GoRoute(
         path: AppRoutes.splash,
         name: AppRoutes.splashName,
         builder: (context, state) => const SplashScreen(),
       ),
-      // Public routes (no authentication required)
       GoRoute(
         path: AppRoutes.onboarding,
         name: AppRoutes.onboardingName,
@@ -193,18 +195,20 @@ class AppRouter {
         name: AppRoutes.venueDetailsName,
         builder: (context, state) {
           final venueId = state.pathParameters['id'];
-          
+
           // Validate input with security checks
           if (!InputValidator.validateRouteParam('venueId', venueId)) {
             debugPrint(
               '[ROUTE ERROR] VenueDetails: Invalid venueId format for uri: \'${state.uri}\'',
             );
             return ErrorScreen(
-              error: AppException('Invalid venue ID format. Please check the URL.'),
+              error: AppException(
+                'Invalid venue ID format. Please check the URL.',
+              ),
               onRetry: () => context.go(AppRoutes.venues),
             );
           }
-          
+
           try {
             // TODO: Implement VenueDetailsScreen with proper venue service
             debugPrint('[ROUTE] VenueDetails: Loaded venueId=$venueId');
@@ -249,18 +253,20 @@ class AppRouter {
         name: AppRoutes.eventDetailsName,
         builder: (context, state) {
           final eventId = state.pathParameters['id'];
-          
+
           // Validate input with security checks
           if (!InputValidator.validateRouteParam('eventId', eventId)) {
             debugPrint(
               '[ROUTE ERROR] EventDetails: Invalid eventId format for uri: \'${state.uri}\'',
             );
             return ErrorScreen(
-              error: AppException('Invalid event ID format. Please check the URL.'),
+              error: AppException(
+                'Invalid event ID format. Please check the URL.',
+              ),
               onRetry: () => context.go(AppRoutes.schedule),
             );
           }
-          
+
           try {
             // TODO: Implement EventDetailsScreen with proper event service
             debugPrint('[ROUTE] EventDetails: Loaded eventId=$eventId');
@@ -305,18 +311,20 @@ class AppRouter {
         name: AppRoutes.newsDetailsName,
         builder: (context, state) {
           final newsId = state.pathParameters['id'];
-          
+
           // Validate input with security checks
           if (!InputValidator.validateRouteParam('newsId', newsId)) {
             debugPrint(
               '[ROUTE ERROR] NewsDetails: Invalid newsId format for uri: \'${state.uri}\'',
             );
             return ErrorScreen(
-              error: AppException('Invalid news ID format. Please check the URL.'),
+              error: AppException(
+                'Invalid news ID format. Please check the URL.',
+              ),
               onRetry: () => context.go(AppRoutes.news),
             );
           }
-          
+
           try {
             // TODO: Implement NewsDetailsScreen with proper news service
             debugPrint('[ROUTE] NewsDetails: Loaded newsId=$newsId');
@@ -360,38 +368,20 @@ class AppRouter {
 
     // Global error handling
     errorBuilder: (context, state) {
-      debugPrint('[ROUTE ERROR] Route not found: ${state.uri}');
-      return ErrorScreen(
-        error: AppException('Route not found: ${state.uri}'),
+      LogService.error('[ROUTE ERROR] Route not found', state.uri);
+      return AppErrorWidget(
+        message: 'Route not found: ${state.uri}',
         onRetry: () => context.go(AppRoutes.home),
       );
     },
-
-    // Route guards and redirects
     redirect: (context, state) => RouteGuards.handleRedirect(context, state),
+    observers: [AppRouteObserver()],
   );
 
-  // Lazy loading functions for heavy screens
-  static Future<Widget> _loadQRScreen() async {
-    // Simulate loading time and return the screen
-    await Future.delayed(const Duration(milliseconds: 100));
-    return const QRScreen();
-  }
+  /// Global route observer for analytics
+  // Removed unused private declaration
 
-  static Future<Widget> _loadARScreen() async {
-    await Future.delayed(const Duration(milliseconds: 100));
-    return const ARScreen();
-  }
-
-  static Future<Widget> _loadMapGalleryScreen() async {
-    await Future.delayed(const Duration(milliseconds: 100));
-    return const MapGalleryScreen();
-  }
-
-  static Future<Widget> _loadSocialScreen() async {
-    await Future.delayed(const Duration(milliseconds: 100));
-    return const SocialScreen();
-  }
+  // Removed unused private declaration
 
   /// Navigate to a route with parameters
   static void goToVenueDetails(BuildContext context, String venueId) {
@@ -450,12 +440,6 @@ class AppRouter {
     }
   }
 
-  static void goToAR(BuildContext context) {
-    if (FeatureFlags.enableAR) {
-      context.go('/ar');
-    }
-  }
-
   static void goToMapGallery(BuildContext context) {
     if (FeatureFlags.enableMapGallery) {
       context.go('/map-gallery');
@@ -480,11 +464,6 @@ class AppRouter {
     }
   }
 
-  /// Navigate to onboarding
-  static void goToOnboarding(BuildContext context) {
-    context.go(AppRoutes.onboarding);
-  }
-
   /// Get current route name
   static String getCurrentRouteName(BuildContext context) {
     final state = GoRouterState.of(context);
@@ -505,22 +484,4 @@ class AppRouter {
 }
 
 /// Loading screen widget for lazy-loaded routes
-class _LoadingScreen extends StatelessWidget {
-  const _LoadingScreen();
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CircularProgressIndicator(),
-            SizedBox(height: 16),
-            Text('Loading...'),
-          ],
-        ),
-      ),
-    );
-  }
-}
+// Removed unused private declaration

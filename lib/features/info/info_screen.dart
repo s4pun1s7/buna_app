@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../config/assets.dart';
+import '../../config/app_config.dart';
+import 'package:buna_app/l10n/app_localizations.dart';
+// ...existing code...
 
-class InfoScreen extends StatelessWidget {
+class InfoScreen extends ConsumerWidget {
   const InfoScreen({super.key});
 
   void _launchUrl(String url) async {
@@ -12,8 +17,8 @@ class InfoScreen extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(body: _buildBody(context));
+  Widget build(BuildContext context, WidgetRef ref) {
+    return _buildBody(context);
   }
 
   Widget _buildBody(BuildContext context) {
@@ -28,7 +33,7 @@ class InfoScreen extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(16),
                 child: Image.asset(
-                  'assets/images/buna_logo.png',
+                  AppAssets.bunaBlack,
                   height: 100,
                   cacheWidth: 200,
                   fit: BoxFit.contain,
@@ -38,7 +43,7 @@ class InfoScreen extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               Text(
-                'Buna Forum',
+                AppLocalizations.of(context)!.bunaForum,
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.bold,
                   color: colorScheme.primary,
@@ -105,21 +110,9 @@ class InfoScreen extends StatelessWidget {
                   spacing: 12,
                   runSpacing: 12,
                   children: [
-                    _editionButton(
-                      context,
-                      '2023',
-                      'https://bunavarna.com/en/buna-2023/',
-                    ),
-                    _editionButton(
-                      context,
-                      '2024',
-                      'https://bunavarna.com/en/buna-2024/',
-                    ),
-                    _editionButton(
-                      context,
-                      '2025',
-                      'https://bunavarna.com/en/buna-2025/',
-                    ),
+                    _editionButton(context, '2023', ''),
+                    _editionButton(context, '2024', ''),
+                    _editionButton(context, '2025', ''),
                   ],
                 ),
               ],
@@ -147,13 +140,15 @@ class InfoScreen extends StatelessWidget {
                 const SizedBox(height: 12),
                 ListTile(
                   leading: const Icon(Icons.email),
-                  title: const Text('forum@bunavarna.com'),
-                  onTap: () => _launchUrl('mailto:forum@bunavarna.com'),
+                  title: Text(AppConfig.supportEmail),
+                  subtitle: Text(AppLocalizations.of(context)!.emailSupport),
+                  onTap: () => _launchUrl('mailto:${AppConfig.supportEmail}'),
                 ),
                 ListTile(
                   leading: const Icon(Icons.phone),
-                  title: const Text('088 9044007 (Ralitsa)'),
-                  onTap: () => _launchUrl('tel:+3590889044007'),
+                  title: Text(AppConfig.supportPhone),
+                  subtitle: Text(AppLocalizations.of(context)!.callSupport),
+                  onTap: () => _launchUrl('tel:${AppConfig.supportPhone}'),
                 ),
               ],
             ),

@@ -3,7 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:buna_app/l10n/app_localizations.dart';
 import 'package:buna_app/theme/app_theme.dart';
-import 'package:buna_app/navigation/app_router.dart';
+import 'package:buna_app/navigation/app_router.dart'; // AR screen removed from router config
 
 class BunaApp extends ConsumerWidget {
   final ThemeMode themeMode;
@@ -13,13 +13,13 @@ class BunaApp extends ConsumerWidget {
   final VoidCallback toggleIosSizeMode;
 
   const BunaApp({
-    Key? key,
+    super.key,
     required this.themeMode,
     required this.locale,
     required this.iosSizeMode,
     required this.iosSize,
     required this.toggleIosSizeMode,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

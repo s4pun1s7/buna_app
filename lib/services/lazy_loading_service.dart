@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
+import 'log_service.dart';
 
 /// Service for managing lazy loading of components and services
 class LazyLoadingService {
@@ -49,7 +50,7 @@ class LazyLoadingService {
   /// Preload critical components for better UX
   Future<void> preloadCriticalComponents() async {
     if (kDebugMode) {
-      print('🚀 Preloading critical components...');
+      LogService.info('🚀 Preloading critical components...');
     }
 
     final preloadTasks = [
@@ -70,11 +71,11 @@ class LazyLoadingService {
     try {
       await Future.wait(preloadTasks, eagerError: false);
       if (kDebugMode) {
-        print('✅ Critical components preloaded');
+        LogService.info('✅ Critical components preloaded');
       }
     } catch (e) {
       if (kDebugMode) {
-        print('⚠️ Some components failed to preload: $e');
+        LogService.warning('⚠️ Some components failed to preload', e);
       }
     }
   }
@@ -132,7 +133,7 @@ class LazyLoadingService {
       }
 
       if (kDebugMode) {
-        print('🧹 Cleaned up ${keysToRemove.length} unused components');
+        LogService.info('🧹 Cleaned up ${keysToRemove.length} unused components');
       }
     }
   }

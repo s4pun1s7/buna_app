@@ -1,3 +1,4 @@
+import 'package:buna_app/services/log_service.dart';
 import 'package:flutter/material.dart';
 import '../services/analytics_service.dart';
 
@@ -49,6 +50,6 @@ class AppRouteObserver extends RouteObserver<PageRoute<dynamic>> {
     );
 
     // Debug logging
-    debugPrint('Route $action: $previousRouteName -> $routeName');
+    LogService.debug('Route $action: $previousRouteName -> $routeName');
   }
 }

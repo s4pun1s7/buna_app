@@ -1,158 +1,95 @@
 import 'package:flutter/material.dart';
-import '../../services/error_handler.dart' as error_handler;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:buna_app/l10n/app_localizations.dart';
 
-class ErrorScreen extends StatelessWidget {
-  final error_handler.AppException error;
+/// Flexible error widget for full screen, card, or dialog usage
+class AppErrorWidget extends ConsumerWidget {
+  final String? message;
   final VoidCallback? onRetry;
-  final String? customMessage;
+  final String? details;
+  final bool showDetailsButton;
+  final bool isCard;
+  final double? cardHeight;
 
-  const ErrorScreen({
+  const AppErrorWidget({
     super.key,
-    required this.error,
+    this.message,
     this.onRetry,
-    this.customMessage,
+    this.details,
+    this.showDetailsButton = false,
+    this.isCard = false,
+    this.cardHeight,
   });
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                _getErrorIcon(),
-                size: 80,
-                color: Theme.of(
-                  context,
-                ).colorScheme.error.withValues(alpha: 0.6),
-              ),
-              const SizedBox(height: 24),
-              Text(
-                customMessage ?? error.message,
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 12),
-              Text(
-                _getErrorMessage(error),
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Theme.of(
-                    context,
-                  ).colorScheme.onSurface.withValues(alpha: 0.7),
-                ),
-                textAlign: TextAlign.center,
-              ),
-              if (onRetry != null) ...[
-                const SizedBox(height: 32),
-                ElevatedButton.icon(
-                  onPressed: onRetry,
-                  icon: const Icon(Icons.refresh),
-                  label: const Text('Try Again'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 24,
-                      vertical: 12,
-                    ),
-                  ),
-                ),
-              ],
-              const SizedBox(height: 16),
-              TextButton(
-                onPressed: () => _showErrorDetails(context),
-                child: const Text('Error Details'),
-              ),
-            ],
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
+    final content = Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(
+          Icons.error_outline,
+          size: isCard ? 32 : 80,
+          color: Theme.of(context).colorScheme.error.withValues(alpha: 0.7),
+        ),
+        const SizedBox(height: 16),
+        Text(
+          message ?? l10n.error,
+          style: isCard
+              ? Theme.of(context).textTheme.bodyMedium
+              : Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+          textAlign: TextAlign.center,
+        ),
+        if (onRetry != null) ...[
+          const SizedBox(height: 24),
+          ElevatedButton.icon(
+            onPressed: onRetry,
+            icon: const Icon(Icons.refresh),
+            label: Text(l10n.retry),
+          ),
+        ],
+        if (showDetailsButton && details != null) ...[
+          const SizedBox(height: 16),
+          TextButton(
+            onPressed: () => _showErrorDetails(context, details!),
+            child: Text(l10n.error),
+          ),
+        ],
+      ],
+    );
+    if (isCard) {
+      return Card(
+        child: Container(
+          height: cardHeight ?? 120,
+          padding: const EdgeInsets.all(16),
+          child: Center(child: content),
+        ),
+      );
+    } else {
+      return Scaffold(
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: content,
           ),
         ),
-      ),
-    );
-  }
-
-  IconData _getErrorIcon() {
-    switch (error.runtimeType) {
-      case error_handler.NetworkException _:
-        return Icons.wifi_off;
-      case error_handler.ApiException _:
-        return Icons.error_outline;
-      case error_handler.CacheException _:
-        return Icons.storage;
-      case error_handler.ValidationException _:
-        return Icons.warning;
-      default:
-        return Icons.error;
+      );
     }
   }
 
-  String _getErrorMessage(error_handler.AppException error) {
-    switch (error.runtimeType) {
-      case error_handler.NetworkException _:
-        return 'Please check your internet connection and try again.';
-      case error_handler.ApiException _:
-        return 'There was a problem connecting to the server. Please try again later.';
-      case error_handler.CacheException _:
-        return 'There was a problem loading cached data. Please refresh the page.';
-      case error_handler.ValidationException _:
-        return 'The data provided is invalid. Please check your input and try again.';
-      default:
-        return 'An unexpected error occurred. Please try again.';
-    }
-  }
-
-  void _showErrorDetails(BuildContext context) {
-    final scale = MediaQuery.textScalerOf(context).scale(1.0);
+  void _showErrorDetails(BuildContext context, String details) {
+    final l10n = AppLocalizations.of(context)!;
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Error Details'),
+        title: Text(l10n.error),
         content: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text('Type: ${error.runtimeType}'),
-              const SizedBox(height: 8),
-              Text('Message: ${error.message}'),
-              if (error.code != null) ...[
-                const SizedBox(height: 8),
-                Text('Code: ${error.code}'),
-              ],
-              if (error.originalError != null) ...[
-                const SizedBox(height: 8),
-                Text('Original Error: ${error.originalError}'),
-              ],
-              if (error.stackTrace != null) ...[
-                const SizedBox(height: 8),
-                const Text('Stack Trace:'),
-                const SizedBox(height: 4),
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[100],
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  child: Text(
-                    error.stackTrace.toString(),
-                    style: TextStyle(
-                      fontSize: 12 * scale,
-                      fontFamily: 'monospace',
-                    ),
-                  ),
-                ),
-              ],
-            ],
-          ),
+          child: Text(details),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Close'),
+            child: Text(l10n.close),
           ),
         ],
       ),
@@ -160,95 +97,8 @@ class ErrorScreen extends StatelessWidget {
   }
 }
 
-/// Convenience widget for simple error display
-class SimpleErrorScreen extends StatelessWidget {
-  final String message;
-  final VoidCallback? onRetry;
 
-  const SimpleErrorScreen({super.key, required this.message, this.onRetry});
-
-  @override
-  Widget build(BuildContext context) {
-    return ErrorScreen(
-      error: error_handler.AppException(message),
-      onRetry: onRetry,
-    );
-  }
-}
-
-/// Error widget for use in lists or cards
-class ErrorCard extends StatelessWidget {
-  final error_handler.AppException error;
-  final VoidCallback? onRetry;
-  final double? height;
-
-  const ErrorCard({super.key, required this.error, this.onRetry, this.height});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: Container(
-        height: height ?? 120,
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              _getErrorIcon(),
-              color: Theme.of(context).colorScheme.error,
-              size: 32,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              _getErrorMessage(error),
-              style: Theme.of(context).textTheme.bodyMedium,
-              textAlign: TextAlign.center,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-            if (onRetry != null) ...[
-              const SizedBox(height: 8),
-              TextButton(onPressed: onRetry, child: const Text('Retry')),
-            ],
-          ],
-        ),
-      ),
-    );
-  }
-
-  IconData _getErrorIcon() {
-    switch (error.runtimeType) {
-      case error_handler.NetworkException _:
-        return Icons.wifi_off;
-      case error_handler.ApiException _:
-        return Icons.error_outline;
-      case error_handler.CacheException _:
-        return Icons.storage;
-      case error_handler.ValidationException _:
-        return Icons.warning;
-      default:
-        return Icons.error;
-    }
-  }
-
-  String _getErrorMessage(error_handler.AppException error) {
-    switch (error.runtimeType) {
-      case error_handler.NetworkException _:
-        return 'Please check your internet connection and try again.';
-      case error_handler.ApiException _:
-        return 'There was a problem connecting to the server. Please try again later.';
-      case error_handler.CacheException _:
-        return 'There was a problem loading cached data. Please refresh the page.';
-      case error_handler.ValidationException _:
-        return 'The data provided is invalid. Please check your input and try again.';
-      default:
-        return 'An unexpected error occurred. Please try again.';
-    }
-  }
-}
-
-/// Animated error dialog for displaying errors with animation.
-class AnimatedErrorDialog extends StatelessWidget {
+class AnimatedErrorDialog extends ConsumerWidget {
   final String title;
   final String message;
   final VoidCallback? onRetry;
@@ -262,7 +112,8 @@ class AnimatedErrorDialog extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
     return Center(
       child: AnimatedScale(
         scale: 1.0,
@@ -273,11 +124,11 @@ class AnimatedErrorDialog extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.all(32),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: theme.dialogBackgroundColor,
               borderRadius: BorderRadius.circular(16),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.1),
+                  color: theme.shadowColor.withOpacity(0.1),
                   blurRadius: 16,
                 ),
               ],
@@ -287,13 +138,13 @@ class AnimatedErrorDialog extends StatelessWidget {
               children: [
                 Icon(
                   Icons.error_outline,
-                  color: Theme.of(context).colorScheme.error,
+                  color: theme.colorScheme.error,
                   size: 48,
                 ),
                 const SizedBox(height: 16),
-                Text(title, style: Theme.of(context).textTheme.titleLarge),
+                Text(title, style: theme.textTheme.titleLarge),
                 const SizedBox(height: 8),
-                Text(message, textAlign: TextAlign.center),
+                Text(message, textAlign: TextAlign.center, style: theme.textTheme.bodyMedium),
                 const SizedBox(height: 24),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// A reusable loading indicator widget for the Buna Festival App.
 ///
 /// You can easily swap out the indicator style by editing this widget.
-class LoadingIndicator extends StatelessWidget {
+class LoadingIndicator extends ConsumerWidget {
   final String? message;
   final Color? color;
   final double? size;
@@ -11,7 +12,7 @@ class LoadingIndicator extends StatelessWidget {
   const LoadingIndicator({super.key, this.message, this.color, this.size});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -37,12 +38,12 @@ class LoadingIndicator extends StatelessWidget {
 }
 
 /// Animated modal loading dialog for blocking UI during async operations.
-class AnimatedLoadingDialog extends StatelessWidget {
+class AnimatedLoadingDialog extends ConsumerWidget {
   final String? message;
   const AnimatedLoadingDialog({super.key, this.message});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Center(
       child: AnimatedScale(
         scale: 1.0,

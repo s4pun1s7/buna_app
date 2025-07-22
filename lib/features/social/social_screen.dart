@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../widgets/common/index.dart';
-import '../../services/error_handler.dart';
 import '../../providers/user_provider.dart';
+import '../../widgets/navigation/buna_app_bar.dart';
 
 /// Social media post model
 class SocialPost {
@@ -248,9 +248,8 @@ class _SocialScreenState extends ConsumerState<SocialScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Social Feed'),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+      appBar: BunaAppBar(
+        title: 'Social Feed',
         actions: [
           IconButton(
             icon: const Icon(Icons.share),
@@ -263,14 +262,8 @@ class _SocialScreenState extends ConsumerState<SocialScreen>
             tooltip: 'Refresh feed',
           ),
         ],
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: const [
-            Tab(icon: Icon(Icons.timeline), text: 'Timeline'),
-            Tab(icon: Icon(Icons.trending_up), text: 'Trending'),
-            Tab(icon: Icon(Icons.favorite), text: 'Favorites'),
-          ],
-        ),
+        // TabBar remains as bottom property if needed
+        // bottom: TabBar(...)
       ),
       body: _buildBody(),
     );
@@ -282,10 +275,7 @@ class _SocialScreenState extends ConsumerState<SocialScreen>
     }
 
     if (_error != null) {
-      return ErrorScreen(
-        error: AppException(_error!),
-        onRetry: _loadSocialPosts,
-      );
+      return AppErrorWidget(message: _error, onRetry: _loadSocialPosts);
     }
 
     if (_allPosts.isEmpty) {
