@@ -143,33 +143,5 @@ node_modules/
 
 # Build outputs
 build/
-.flutter-plugins
-.flutter-plugins-dependencies
-.packages
-pubspec.lock
-
-# Web
-web/.dart_tool/
-web/build/
-
-# --- Flutter Plugin Dependency Ignores ---
-# Ignore all generated plugin registrant files and ephemeral plugin files for all platforms
-**/generated_plugin_registrant.dart
-**/generated_plugin_registrant.*
-**/ephemeral/
-.flutter-plugins
-.flutter-plugins-dependencies
-
 goup.ps1
-
-# Temporary files
-flutter.tar.xz
-*.tar.xz
-
-# Environment configuration files
-.env
-.env.local
-.env.production
-.env.development
-*.env
 todos.md
