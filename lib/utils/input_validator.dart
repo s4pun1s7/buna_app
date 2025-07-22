@@ -63,11 +63,8 @@ class InputValidator {
     }
     
     // Remove potential script injection attempts
-    final sanitized = feedback
-        .replaceAll(RegExp(r'<script[^>]*>.*?</script>', caseSensitive: false), '')
-        .replaceAll(RegExp(r'javascript:', caseSensitive: false), '')
-        .replaceAll(RegExp(r'on\w+\s*=', caseSensitive: false), '')
-        .trim();
+    // Use an HTML sanitization library to remove harmful content
+    final sanitized = HtmlEscape(HtmlEscapeMode.element).convert(feedback).trim();
     
     return sanitized.isEmpty ? null : sanitized;
   }
@@ -75,7 +72,7 @@ class InputValidator {
   /// Log validation failures for security monitoring
   static void _logValidationFailure(String type, String? value) {
     if (kDebugMode) {
-      print('🚨 Input validation failed for $type: $value');
+      print('🚨 Input validation failed for $type');
     }
     // In production, this could be sent to security monitoring
   }

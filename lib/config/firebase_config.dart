@@ -80,10 +80,8 @@ class FirebaseConfig {
   static FirebaseOptions get optionsWithFallback {
     if (kDebugMode && !isConfigurationValid) {
       // Use development options only in debug mode
-      if (kDebugMode) {
-        print('⚠️ Using development Firebase configuration');
-        print('⚠️ Set environment variables for production');
-      }
+      print('⚠️ Using development Firebase configuration');
+      print('⚠️ Set environment variables for production');
       return _developmentOptions;
     }
     return currentPlatform;
