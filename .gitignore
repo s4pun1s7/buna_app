@@ -161,3 +161,7 @@ web/build/
 .flutter-plugins-dependencies
 
 goup.ps1
+
+# Temporary files
+flutter.tar.xz
+*.tar.xz
