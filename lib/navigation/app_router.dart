@@ -72,7 +72,7 @@ class AppRouter {
             GoRoute(
               path: AppRoutes.venues,
               name: AppRoutes.venuesName,
-              builder: (context, state) => const VenuesScreen(),
+              builder: (context, state) => const VenuesMapScreen(),
             ),
           if (FeatureFlags.enableNews)
             GoRoute(

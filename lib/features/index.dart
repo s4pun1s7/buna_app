@@ -15,5 +15,5 @@ export 'settings/feature_flags_screen.dart';
 export 'social/social_screen.dart';
 export 'venues/schedule_screen.dart';
 export 'venues/venues_data.dart';
-export 'venues/venues_screen.dart';
+
 export 'venues_map/venues_map_screen.dart';
